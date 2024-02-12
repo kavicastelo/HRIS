@@ -1,6 +1,9 @@
 # Intellij IDEA
 *.iml
 *.iws
+.idea
+*.ijs
+*.ipr
 *.ipr
 .idea
 
@@ -8,6 +11,9 @@
 *.project
 *.launch
 *.classpath
+*.htaccess
+*.htpasswd
+*.htgroups
 *.cproject
 *.cdtproject
 *.workspace
