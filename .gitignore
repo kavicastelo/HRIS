@@ -1,3 +1,21 @@
+# Intellij IDEA
+*.iml
+*.iws
+.idea
+*.ijs
+*.ipr
+
+# Eclipse
+*.project
+*.launch
+*.classpath
+*.htaccess
+*.htpasswd
+*.htgroups
+
+# Visual Studio Code
+.vscode
+
 # Compiled class file
 *.class
 
