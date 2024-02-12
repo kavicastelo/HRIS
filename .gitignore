@@ -1,3 +1,22 @@
+# Intellij IDEA
+*.iml
+*.iws
+*.ipr
+.idea
+
+# Eclipse
+*.project
+*.launch
+*.classpath
+*.cproject
+*.cdtproject
+*.workspace
+*.externalToolBuilders
+*.external-system
+
+# Visual Studio Code
+.vscode
+
 # Compiled class file
 *.class
 
