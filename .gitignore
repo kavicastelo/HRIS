@@ -4,6 +4,34 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Intellij IDEA
+*.iml
+*.iws
+.idea
+*.ijs
+*.ipr
+*.ipr
+.idea
+
+# Eclipse
+*.project
+*.launch
+*.classpath
+*.htaccess
+*.htpasswd
+*.htgroups
+*.cproject
+*.cdtproject
+*.workspace
+*.externalToolBuilders
+*.external-system
+
+# Visual Studio Code
+.vscode
+
+# Compiled class file
+*.class
+
 ### STS ###
 .apt_generated
 .classpath
