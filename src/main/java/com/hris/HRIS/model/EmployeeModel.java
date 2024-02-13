@@ -22,7 +22,6 @@ public class EmployeeModel {
     private String gender;
     private String dob;
     private String photo;
-    private String password;
     private String status;
     private Integer level;
     private String token;
