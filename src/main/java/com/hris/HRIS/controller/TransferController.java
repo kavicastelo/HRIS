@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.TransferModel;
 import com.hris.HRIS.repository.TransferRepository;
+import com.hris.HRIS.service.LettersGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +14,21 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/transfer")
 public class TransferController {
+    String approvedLetter;
 
     @Autowired
     TransferRepository transferRepository;
+
+    @Autowired
+    LettersGenerationService lettersGenerationService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody TransferModel transferModel){
         transferRepository.save(transferModel);
 
-        ApiResponse apiResponse = new ApiResponse("Transfer Letter Requested successfully");
+        String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(transferModel);
+
+        ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -117,9 +124,10 @@ public class TransferController {
             existingLetter.setApproved(true);
 
             transferRepository.save(existingLetter);
+            approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
         }
 
-        ApiResponse apiResponse = new ApiResponse("Employee approved successfully");
+        ApiResponse apiResponse = new ApiResponse(approvedLetter);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -132,9 +140,10 @@ public class TransferController {
             existingLetter.setApproved(true);
 
             transferRepository.save(existingLetter);
+            approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
         }
 
-        ApiResponse apiResponse = new ApiResponse("Employee approved successfully");
+        ApiResponse apiResponse = new ApiResponse(approvedLetter);
         return ResponseEntity.ok(apiResponse);
     }
 }
