@@ -1,6 +1,7 @@
 package com.hris.HRIS.service;
 
 import com.hris.HRIS.ThymeleafConfig;
+import com.hris.HRIS.model.PromotionModel;
 import com.hris.HRIS.model.TransferModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,34 +47,34 @@ public class LettersGenerationService {
         return templateEngine.process("rejected-transfer-letter-template", context);
     }
 
-    public String generateReceivedPromotionLetter(TransferModel transferModel) {
+    public String generateReceivedPromotionLetter(PromotionModel promotionModel) {
         Context context = new Context();
-        context.setVariable("name", transferModel.getName());
-        context.setVariable("email", transferModel.getEmail());
-        context.setVariable("phone", transferModel.getPhone());
-        context.setVariable("jobData", transferModel.getJobData());
+        context.setVariable("name", promotionModel.getName());
+        context.setVariable("email", promotionModel.getEmail());
+        context.setVariable("phone", promotionModel.getPhone());
+        context.setVariable("jobData", promotionModel.getJobData());
 
         // Process the Thymeleaf template and return the HTML content as a string
         return templateEngine.process("received-promotion-letter-template", context);
     }
 
-    public String generateApprovedPromotionLetter(TransferModel transferModel) {
+    public String generateApprovedPromotionLetter(PromotionModel promotionModel) {
         Context context = new Context();
-        context.setVariable("name", transferModel.getName());
-        context.setVariable("email", transferModel.getEmail());
-        context.setVariable("phone", transferModel.getPhone());
-        context.setVariable("jobData", transferModel.getJobData());
+        context.setVariable("name", promotionModel.getName());
+        context.setVariable("email", promotionModel.getEmail());
+        context.setVariable("phone", promotionModel.getPhone());
+        context.setVariable("jobData", promotionModel.getJobData());
 
         // Process the Thymeleaf template and return the HTML content as a string
         return templateEngine.process("approved-promotion-letter-template", context);
     }
 
-    public String generateRejectedPromotionLetter(TransferModel transferModel) {
+    public String generateRejectedPromotionLetter(PromotionModel promotionModel) {
         Context context = new Context();
-        context.setVariable("name", transferModel.getName());
-        context.setVariable("email", transferModel.getEmail());
-        context.setVariable("phone", transferModel.getPhone());
-        context.setVariable("jobData", transferModel.getJobData());
+        context.setVariable("name", promotionModel.getName());
+        context.setVariable("email", promotionModel.getEmail());
+        context.setVariable("phone", promotionModel.getPhone());
+        context.setVariable("jobData", promotionModel.getJobData());
 
         // Process the Thymeleaf template and return the HTML content as a string
         return templateEngine.process("rejected-promotion-letter-template", context);
