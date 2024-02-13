@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.PromotionModel;
 import com.hris.HRIS.repository.PromotionRepository;
+import com.hris.HRIS.service.LettersGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +15,21 @@ import java.util.Optional;
 @RequestMapping("api/v1/promotion")
 public class PromotionController {
 
+    String approvedLetter;
+
     @Autowired
     PromotionRepository promotionRepository;
+
+    @Autowired
+    LettersGenerationService lettersGenerationService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody PromotionModel promotionModel){
         promotionRepository.save(promotionModel);
 
-        ApiResponse apiResponse = new ApiResponse("Promotion Letter Requested successfully");
+        String receivedLetter = lettersGenerationService.generateReceivedPromotionLetter(promotionModel);
+
+        ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -117,9 +125,11 @@ public class PromotionController {
             existingLetter.setApproved(true);
 
             promotionRepository.save(existingLetter);
+
+            approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
         }
 
-        ApiResponse apiResponse = new ApiResponse("Employee approved successfully");
+        ApiResponse apiResponse = new ApiResponse(approvedLetter);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -132,9 +142,11 @@ public class PromotionController {
             existingLetter.setApproved(true);
 
             promotionRepository.save(existingLetter);
+
+            approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
         }
 
-        ApiResponse apiResponse = new ApiResponse("Employee approved successfully");
+        ApiResponse apiResponse = new ApiResponse(approvedLetter);
         return ResponseEntity.ok(apiResponse);
     }
 }
