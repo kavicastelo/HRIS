@@ -35,4 +35,48 @@ public class LettersGenerationService {
         return templateEngine.process("approved-transfer-letter-template", context);
     }
 
+    public String generateRejectedTransferLetter(TransferModel transferModel) {
+        Context context = new Context();
+        context.setVariable("name", transferModel.getName());
+        context.setVariable("email", transferModel.getEmail());
+        context.setVariable("phone", transferModel.getPhone());
+        context.setVariable("jobData", transferModel.getJobData());
+
+        // Process the Thymeleaf template and return the HTML content as a string
+        return templateEngine.process("rejected-transfer-letter-template", context);
+    }
+
+    public String generateReceivedPromotionLetter(TransferModel transferModel) {
+        Context context = new Context();
+        context.setVariable("name", transferModel.getName());
+        context.setVariable("email", transferModel.getEmail());
+        context.setVariable("phone", transferModel.getPhone());
+        context.setVariable("jobData", transferModel.getJobData());
+
+        // Process the Thymeleaf template and return the HTML content as a string
+        return templateEngine.process("received-promotion-letter-template", context);
+    }
+
+    public String generateApprovedPromotionLetter(TransferModel transferModel) {
+        Context context = new Context();
+        context.setVariable("name", transferModel.getName());
+        context.setVariable("email", transferModel.getEmail());
+        context.setVariable("phone", transferModel.getPhone());
+        context.setVariable("jobData", transferModel.getJobData());
+
+        // Process the Thymeleaf template and return the HTML content as a string
+        return templateEngine.process("approved-promotion-letter-template", context);
+    }
+
+    public String generateRejectedPromotionLetter(TransferModel transferModel) {
+        Context context = new Context();
+        context.setVariable("name", transferModel.getName());
+        context.setVariable("email", transferModel.getEmail());
+        context.setVariable("phone", transferModel.getPhone());
+        context.setVariable("jobData", transferModel.getJobData());
+
+        // Process the Thymeleaf template and return the HTML content as a string
+        return templateEngine.process("rejected-promotion-letter-template", context);
+    }
+
 }
