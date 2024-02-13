@@ -57,7 +57,6 @@ public class EmployeeController {
             existingEmployee.setGender(employeeModel.getGender());
             existingEmployee.setDob(employeeModel.getDob());
             existingEmployee.setPhoto(employeeModel.getPhoto());
-            existingEmployee.setPassword(employeeModel.getPassword());
             existingEmployee.setStatus(employeeModel.getStatus());
             existingEmployee.setLevel(employeeModel.getLevel());
             existingEmployee.setToken(employeeModel.getToken());
@@ -86,7 +85,6 @@ public class EmployeeController {
             existingEmployee.setGender(employeeModel.getGender());
             existingEmployee.setDob(employeeModel.getDob());
             existingEmployee.setPhoto(employeeModel.getPhoto());
-            existingEmployee.setPassword(employeeModel.getPassword());
             existingEmployee.setStatus(employeeModel.getStatus());
             existingEmployee.setLevel(employeeModel.getLevel());
             existingEmployee.setToken(employeeModel.getToken());
