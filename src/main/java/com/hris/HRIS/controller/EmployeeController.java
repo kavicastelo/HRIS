@@ -64,6 +64,8 @@ public class EmployeeController {
             existingEmployee.setRefreshToken(employeeModel.getRefreshToken());
             existingEmployee.setOtp(employeeModel.getOtp());
             existingEmployee.setOtpExpiry(employeeModel.getOtpExpiry());
+
+            employeeRepository.save(existingEmployee);
         }
 
         ApiResponse apiResponse = new ApiResponse("Employee updated successfully");
@@ -91,6 +93,8 @@ public class EmployeeController {
             existingEmployee.setRefreshToken(employeeModel.getRefreshToken());
             existingEmployee.setOtp(employeeModel.getOtp());
             existingEmployee.setOtpExpiry(employeeModel.getOtpExpiry());
+
+            employeeRepository.save(existingEmployee);
         }
 
         ApiResponse apiResponse = new ApiResponse("Employee updated successfully");
