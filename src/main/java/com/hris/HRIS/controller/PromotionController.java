@@ -5,6 +5,7 @@ import com.hris.HRIS.model.PromotionModel;
 import com.hris.HRIS.repository.PromotionRepository;
 import com.hris.HRIS.service.EmailService;
 import com.hris.HRIS.service.LettersGenerationService;
+import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,9 @@ public class PromotionController {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    SystemAutomateService systemAutomateService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody PromotionModel promotionModel){
@@ -131,6 +135,8 @@ public class PromotionController {
 
             promotionRepository.save(existingLetter);
 
+            systemAutomateService.UpdateEmployeeJobDataPromotion(existingLetter);
+
             approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
             emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
         }
@@ -148,6 +154,8 @@ public class PromotionController {
             existingLetter.setApproved(true);
 
             promotionRepository.save(existingLetter);
+
+            systemAutomateService.UpdateEmployeeJobDataPromotion(existingLetter);
 
             approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
             emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
