@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.PromotionModel;
 import com.hris.HRIS.repository.PromotionRepository;
+import com.hris.HRIS.service.EmailService;
 import com.hris.HRIS.service.LettersGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,15 @@ public class PromotionController {
     @Autowired
     LettersGenerationService lettersGenerationService;
 
+    @Autowired
+    EmailService emailService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody PromotionModel promotionModel){
         promotionRepository.save(promotionModel);
 
         String receivedLetter = lettersGenerationService.generateReceivedPromotionLetter(promotionModel);
+        emailService.sendSimpleEmail(promotionModel.getEmail(), "Promotion Request", "We received your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -127,6 +132,7 @@ public class PromotionController {
             promotionRepository.save(existingLetter);
 
             approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
+            emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
         }
 
         ApiResponse apiResponse = new ApiResponse(approvedLetter);
@@ -144,6 +150,7 @@ public class PromotionController {
             promotionRepository.save(existingLetter);
 
             approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
+            emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
         }
 
         ApiResponse apiResponse = new ApiResponse(approvedLetter);
