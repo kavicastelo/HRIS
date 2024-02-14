@@ -27,7 +27,9 @@ public class ExitListController {
 
         systemAutomateService.UpdateEmployeeJobDataExit(exitListModel);
 
-        ApiResponse apiResponse = new ApiResponse("Add to exit list successfully");
+        float gratuity = systemAutomateService.CalculateGratuity(exitListModel);
+
+        ApiResponse apiResponse = new ApiResponse(gratuity+"");
         return ResponseEntity.ok(apiResponse);
     }
 
