@@ -1,0 +1,113 @@
+package com.hris.HRIS.controller;
+
+import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.model.OnboardingModel;
+import com.hris.HRIS.repository.OnboardingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/v1/onboarding")
+public class OnboardingController {
+    @Autowired
+    OnboardingRepository onboardingRepository;
+
+    @PostMapping("/save")
+    public ResponseEntity<ApiResponse> saveOnboarding(@RequestBody OnboardingModel onboardingModel) {
+        onboardingRepository.save(onboardingModel);
+
+        ApiResponse apiResponse = new ApiResponse("Onboarding saved successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/get/all")
+    public List<OnboardingModel> getAllOnboarding() {
+        return onboardingRepository.findAll();
+    }
+
+    @GetMapping("/get/id/{id}")
+    public ResponseEntity<OnboardingModel> getOnboardingById(@PathVariable String id) {
+        Optional<OnboardingModel> onboardingModelOptional = onboardingRepository.findById(id);
+
+        return onboardingModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/get/employee/email/{email}")
+    public ResponseEntity<OnboardingModel> getOnboardingByEmail(@PathVariable String email) {
+        Optional<OnboardingModel> onboardingModelOptional = onboardingRepository.findByEmployeeEmail(email);
+
+        return onboardingModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/get/admin/email/{email}")
+    public ResponseEntity<OnboardingModel> getOnboardingByAdminEmail(@PathVariable String email) {
+        Optional<OnboardingModel> onboardingModelOptional = onboardingRepository.findByAdminEmail(email);
+
+        return onboardingModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/update/id/{id}")
+    public ResponseEntity<ApiResponse> updateOnboarding(@PathVariable String id, @RequestBody OnboardingModel onboardingModel) {
+        Optional<OnboardingModel> onboardingModelOptional = onboardingRepository.findById(id);
+
+        if (onboardingModelOptional.isPresent()) {
+            OnboardingModel existingOnboarding = onboardingModelOptional.get();
+            existingOnboarding.setEmployeeEmail(onboardingModel.getEmployeeEmail());
+            existingOnboarding.setAdminEmail(onboardingModel.getAdminEmail());
+            existingOnboarding.setDate(onboardingModel.getDate());
+            existingOnboarding.setStatus(onboardingModel.getStatus());
+
+            onboardingRepository.save(existingOnboarding);
+
+            ApiResponse apiResponse = new ApiResponse("Onboarding updated successfully");
+            return ResponseEntity.ok(apiResponse);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/update/status/{id}")
+    public ResponseEntity<ApiResponse> updateOnboardingStatus(@PathVariable String id, @RequestBody OnboardingModel onboardingModel) {
+        Optional<OnboardingModel> onboardingModelOptional = onboardingRepository.findById(id);
+
+        if (onboardingModelOptional.isPresent()) {
+            OnboardingModel existingOnboarding = onboardingModelOptional.get();
+            existingOnboarding.setStatus(onboardingModel.getStatus());
+
+            onboardingRepository.save(existingOnboarding);
+
+            ApiResponse apiResponse = new ApiResponse("Onboarding status updated successfully");
+            return ResponseEntity.ok(apiResponse);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/delete/id/{id}")
+    public ResponseEntity<ApiResponse> deleteOnboarding(@PathVariable String id) {
+        onboardingRepository.deleteById(id);
+
+        ApiResponse apiResponse = new ApiResponse("Onboarding deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @DeleteMapping("/delete/admin/email/{email}")
+    public ResponseEntity<ApiResponse> deleteOnboardingByAdminEmail(@PathVariable String email) {
+        onboardingRepository.deleteByAdminEmail(email);
+
+        ApiResponse apiResponse = new ApiResponse("Onboarding deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @DeleteMapping("/delete/employee/email/{email}")
+    public ResponseEntity<ApiResponse> deleteOnboardingByEmployeeEmail(@PathVariable String email) {
+        onboardingRepository.deleteByEmployeeEmail(email);
+
+        ApiResponse apiResponse = new ApiResponse("Onboarding deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+}
