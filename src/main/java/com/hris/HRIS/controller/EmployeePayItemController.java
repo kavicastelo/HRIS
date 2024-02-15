@@ -31,4 +31,12 @@ public class EmployeePayItemController {
         
         return employeePayItemsList;
     }
+
+    @DeleteMapping("/delete/id/{id}")
+    public ResponseEntity<ApiResponse> removePayItemFromEmployee(@PathVariable String id){
+        employeePayItemRepository.deleteById(id);
+
+        ApiResponse apiResponse = new ApiResponse("Pay item removed from the employee successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
 }
