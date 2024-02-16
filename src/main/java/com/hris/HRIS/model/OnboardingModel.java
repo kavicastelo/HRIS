@@ -16,6 +16,8 @@ public class OnboardingModel {
     private String id;
     private String employeeEmail; // Foreign key to EmployeeModel
     private String adminEmail;    // Foreign key to EmployeeModel with level 0
-    private String date;
+    private String description;
+    private String startdate;
+    private String taskdate;
     private String status;
 }
