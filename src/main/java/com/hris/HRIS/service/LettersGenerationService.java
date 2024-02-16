@@ -1,6 +1,7 @@
 package com.hris.HRIS.service;
 
 import com.hris.HRIS.ThymeleafConfig;
+import com.hris.HRIS.model.OnboardingPlanModel;
 import com.hris.HRIS.model.PromotionModel;
 import com.hris.HRIS.model.TransferModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,16 @@ public class LettersGenerationService {
 
         // Process the Thymeleaf template and return the HTML content as a string
         return templateEngine.process("rejected-promotion-letter-template", context);
+    }
+
+    public String generateOnboardingPlan(OnboardingPlanModel onboardingPlanModel) {
+        Context context = new Context();
+        context.setVariable("id", onboardingPlanModel.getOnboardingId());
+        context.setVariable("description", onboardingPlanModel.getDescription());
+        context.setVariable("taskDate", onboardingPlanModel.getTaskDate());
+
+        // Process the Thymeleaf template and return the HTML content as a string
+        return templateEngine.process("onboarding-plan-template", context);
     }
 
 }

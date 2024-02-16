@@ -3,6 +3,8 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.OnboardingModel;
 import com.hris.HRIS.repository.OnboardingRepository;
+import com.hris.HRIS.service.LettersGenerationService;
+import com.hris.HRIS.service.OnboardingPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +18,19 @@ public class OnboardingController {
     @Autowired
     OnboardingRepository onboardingRepository;
 
+    @Autowired
+    OnboardingPlanService onboardingPlanService;
+
+    @Autowired
+    LettersGenerationService lettersGenerationService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveOnboarding(@RequestBody OnboardingModel onboardingModel) {
         onboardingRepository.save(onboardingModel);
 
-        ApiResponse apiResponse = new ApiResponse("Onboarding saved successfully");
+        String plan = onboardingPlanService.createOnboardingPlan(onboardingModel);
+
+        ApiResponse apiResponse = new ApiResponse(plan);
         return ResponseEntity.ok(apiResponse);
     }
 
