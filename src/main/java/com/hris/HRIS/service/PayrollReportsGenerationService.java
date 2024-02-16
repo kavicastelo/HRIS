@@ -11,6 +11,7 @@ import org.thymeleaf.context.Context;
 
 import com.hris.HRIS.controller.EmployeePayItemController;
 import com.hris.HRIS.controller.PayItemController;
+import com.hris.HRIS.controller.TaxController;
 import com.hris.HRIS.model.EmployeePayItemModel;
 import com.hris.HRIS.model.PayItemModel;
 import com.hris.HRIS.model.PayrollReportModel;
@@ -28,18 +29,22 @@ public class PayrollReportsGenerationService {
     @Autowired
     PayrollReportRepository payrollReportRepository;
 
+    @Autowired
+    TaxController taxController;
+
     public void generatePayrollReport(String reportType, String payPeriod, String email){
         List<EmployeePayItemModel> employeePayItemsList = employeePayItemController.getPayItemsByEmail(email);
         List<Context> payitems = new ArrayList<>();
+        List<Context> deductions = new ArrayList<>();
         
         PayrollReportModel payrollReportModel = new PayrollReportModel();
 
         double amount = 0.0;
         double deductedAmount = 0.0;
 
+        // Calculate earnings for the pay items.
         for(int i = 0; i < employeePayItemsList.size(); i++){
             PayItemModel payItemModel = payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody();
-            System.out.println(payItemModel.getItemName());
 
             Context payitem = new Context();
 
@@ -52,6 +57,18 @@ public class PayrollReportsGenerationService {
             payitems.add(payitem);
         }
 
+        double taxRate = Double.parseDouble(taxController.getTaxRateForSalary(amount - deductedAmount).getBody().getMessage());
+        double totalTax = (amount - deductedAmount) * (taxRate/100);
+
+        Context deduction = new Context();
+        deduction.setVariable("itemName", "Tax");
+        deduction.setVariable("amount", totalTax);
+        deductions.add(deduction);
+
+        deductedAmount += totalTax;
+
+        payrollReportModel.setDeductions(deductions);
+
         payrollReportModel.setPayItems(payitems);
         payrollReportModel.setTotalEarnings(amount);
         payrollReportModel.setTotalDeductions(deductedAmount);
@@ -59,11 +76,11 @@ public class PayrollReportsGenerationService {
         payrollReportModel.setEmail(email);
         payrollReportModel.setPayPeriod(payPeriod);
         payrollReportModel.setReportType(reportType);
+        payrollReportModel.setStatus("Pending approval");
 
         String generatedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         payrollReportModel.setReportGeneratedDate(generatedDateTime);
 
         payrollReportRepository.save(payrollReportModel);
     }
-
 }
