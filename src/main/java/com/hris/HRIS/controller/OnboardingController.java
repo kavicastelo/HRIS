@@ -58,7 +58,9 @@ public class OnboardingController {
             OnboardingModel existingOnboarding = onboardingModelOptional.get();
             existingOnboarding.setEmployeeEmail(onboardingModel.getEmployeeEmail());
             existingOnboarding.setAdminEmail(onboardingModel.getAdminEmail());
-            existingOnboarding.setDate(onboardingModel.getDate());
+            existingOnboarding.setDescription(onboardingModel.getDescription());
+            existingOnboarding.setStartdate(onboardingModel.getStartdate());
+            existingOnboarding.setTaskdate(onboardingModel.getTaskdate());
             existingOnboarding.setStatus(onboardingModel.getStatus());
 
             onboardingRepository.save(existingOnboarding);

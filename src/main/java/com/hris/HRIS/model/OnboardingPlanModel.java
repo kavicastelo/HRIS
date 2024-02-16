@@ -10,14 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @ToString
 
-@Document(collection = "onboarding")
-public class OnboardingModel {
+@Document(collection = "onboardingPlan")
+public class OnboardingPlanModel {
     @Id
     private String id;
-    private String employeeEmail; // Foreign key to EmployeeModel
-    private String adminEmail;    // Foreign key to EmployeeModel with level 0
+    private String onboardingId; // Foreign key referencing the associated onboarding record
     private String description;
-    private String startdate;
-    private String taskdate;
-    private String status;
+    private String taskDate;
 }
