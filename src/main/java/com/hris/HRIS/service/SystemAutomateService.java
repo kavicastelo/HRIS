@@ -2,11 +2,9 @@ package com.hris.HRIS.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.ApiResponse;
-import com.hris.HRIS.model.EmployeeModel;
-import com.hris.HRIS.model.ExitListModel;
-import com.hris.HRIS.model.PromotionModel;
-import com.hris.HRIS.model.TransferModel;
+import com.hris.HRIS.model.*;
 import com.hris.HRIS.repository.EmployeeRepository;
+import com.hris.HRIS.repository.ExitListRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,12 @@ public class SystemAutomateService {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    ExitListRepository exitListRepository;
+
+    @Autowired
+    EmailService emailService;
 
     public void UpdateEmployeeJobDataExit(ExitListModel exitListModel) {
         Optional<EmployeeModel> employee =  employeeRepository.findOneByEmail(exitListModel.getEmail());
@@ -72,5 +76,21 @@ public class SystemAutomateService {
 //        Gratuity Formula: Gratuity (G) = n*b*15/26
 
         return years * baseSalary * 15 / 26;
+    }
+
+    public void addExitList(EmployeeExitModel employeeExitModel) {
+        ExitListModel exitListModel = new ExitListModel();
+
+        exitListModel.setName(employeeExitModel.getName());
+        exitListModel.setEmail(employeeExitModel.getEmail());
+        exitListModel.setPhone(employeeExitModel.getPhone());
+        exitListModel.setAddress(employeeExitModel.getAddress());
+        exitListModel.setJobData(employeeExitModel.getJobData());
+        exitListModel.setDoe(employeeExitModel.getDoe());
+        exitListModel.setDoj(employeeExitModel.getDoj());
+        exitListModel.setPhoto(employeeExitModel.getPhoto());
+        exitListRepository.save(exitListModel);
+
+        emailService.sendSimpleEmail(employeeExitModel.getEmail(), "Employee Exit", "Your exit request has been approved");
     }
 }
