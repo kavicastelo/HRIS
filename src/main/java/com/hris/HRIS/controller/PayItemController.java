@@ -38,6 +38,13 @@ public class PayItemController {
         return payItemModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/get/name/{itemName}")
+    public ResponseEntity<PayItemModel> getPayItemByName(@PathVariable String itemName){
+        Optional<PayItemModel> payItemModelOptional = payItemRepository.findOneByItemName(itemName);
+
+        return payItemModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updatePayItem(@PathVariable String id, @RequestBody PayItemModel payItemModel){
         Optional<PayItemModel> payItemModelOptional = payItemRepository.findById(id);

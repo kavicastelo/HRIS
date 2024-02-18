@@ -1,10 +1,7 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
-import com.hris.HRIS.model.EmployeeModel;
-import com.hris.HRIS.model.PayItemModel;
 import com.hris.HRIS.model.TaxModel;
-import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.TaxRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
