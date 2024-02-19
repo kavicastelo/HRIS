@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/exitlist")
@@ -36,5 +37,12 @@ public class ExitListController {
     @GetMapping("/get/all")
     public List<ExitListModel> getAllExitList() {
         return exitListRepository.findAll();
+    }
+
+    @GetMapping("/get/email/{email}")
+    public ResponseEntity<ExitListModel> getExitListByEmail(@PathVariable String email) {
+        Optional<ExitListModel> exitListModelOptional = exitListRepository.findByEmail(email);
+
+        return exitListModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }
