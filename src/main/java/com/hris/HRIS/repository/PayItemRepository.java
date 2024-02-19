@@ -6,5 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface PayItemRepository extends MongoRepository<PayItemModel, String> {
-    
+
+    Optional<PayItemModel> findOneByItemName(String itemName);
+
 }
