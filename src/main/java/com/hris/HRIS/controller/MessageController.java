@@ -16,7 +16,7 @@ public class MessageController {
     @Autowired
     MessageRepository messageRepository;
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveMessage(MessageModel messageModel) {
         messageRepository.save(messageModel);
 
