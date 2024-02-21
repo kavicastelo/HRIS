@@ -48,7 +48,7 @@ public class MessageController {
         return ResponseEntity.ok(messageModelOptional.orElse(null));
     }
 
-    @DeleteMapping("/id/{id}")
+    @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteMessageById(@PathVariable String id) {
         messageRepository.deleteById(id);
 
