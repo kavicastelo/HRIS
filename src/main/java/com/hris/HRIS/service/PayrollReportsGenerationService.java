@@ -52,9 +52,14 @@ public class PayrollReportsGenerationService {
             payitem.setVariable("description", payItemModel.getDescription());
             payitem.setVariable("amount", employeePayItemsList.get(i).getAmount());
 
-            amount += employeePayItemsList.get(i).getAmount();
-
-            payitems.add(payitem);
+            if(payItemModel.getItemType().equals("Deletion")){
+                deductedAmount += employeePayItemsList.get(i).getAmount();
+                deductions.add(payitem);
+            }else{
+                amount += employeePayItemsList.get(i).getAmount();
+                payitems.add(payitem);
+            }
+            
         }
 
         double taxRate = Double.parseDouble(taxController.getTaxRateForSalary(amount - deductedAmount).getBody().getMessage());
