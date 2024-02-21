@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @RestController
 @RequestMapping("/api/v1/employee/payitems")
 public class EmployeePayItemController {
@@ -62,30 +65,110 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/overtime-payment/{totalHoursAllowed}/{overtimeHoursWorked}")
-    public ResponseEntity<ApiResponse> addOvertimePayments(@PathVariable String email, @PathVariable double totalHoursAllowed, @PathVariable double overtimeHoursWorked) {
+    @PostMapping("{email}/overtime-payment")
+    public ResponseEntity<ApiResponse> addOvertimePayments(@PathVariable String email, @RequestBody String requestBody) {
         
-        List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
-
-        Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
-        Double overtimePayments = 0.0;
-
+        ObjectMapper objectMapper = new ObjectMapper();
         String returnMsg;
 
-        if(overtimeHoursWorked <= totalHoursAllowed){
-            Double overtimePaymentsPerHour = basicSalary/totalHoursAllowed;
+        try {
+            JsonNode requestBodyJson = objectMapper.readTree(requestBody);
 
-            // overtimePayments = overtimeHoursWorked * (overtimePaymentsPerHour + overtimePaymentsPerHour/2);
-            overtimePayments = overtimeHoursWorked * overtimePaymentsPerHour;
+            double totalHoursAllowed = requestBodyJson.get("totalHoursAllowed").asDouble();
+            double overtimeHoursWorked = requestBodyJson.get("overtimeHoursWorked").asDouble();
 
-            ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName("Overtime payment");
+            List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
+
+            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double overtimePayments = 0.0;
+
+            String payitemName = "Overtime payment";
+
+            if(overtimeHoursWorked <= totalHoursAllowed){
+                Double overtimePaymentsPerHour = basicSalary/totalHoursAllowed;
+
+                // overtimePayments = overtimeHoursWorked * (overtimePaymentsPerHour + overtimePaymentsPerHour/2);
+                overtimePayments = overtimeHoursWorked * overtimePaymentsPerHour;
+
+                ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
+
+                if(!payItemModalOptional.hasBody()){
+                    PayItemModel payItemModel = new PayItemModel();
+
+                    payItemModel.setItemName(payitemName);
+                    payItemModel.setDescription("");
+                    payItemModel.setItemType("Addition");
+                    payItemModel.setPaymentType("Variable");
+                    payItemModel.setStatus("Available");
+
+                    payItemController.savePayItem(payItemModel);
+                }
+
+                EmployeePayItemModel employeePayItemModel = new EmployeePayItemModel();
+
+                employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
+                employeePayItemModel.setEmail(email);
+                employeePayItemModel.setAmount(overtimePayments);
+
+                boolean isOvertimePayItemFound = false;
+
+                for(int i = 0; i < employeePayItemsList.size(); i++){
+                    if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+                        isOvertimePayItemFound = true;
+                        updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
+                        break;
+                    }
+                }
+
+                if(!isOvertimePayItemFound){
+                    assignPayItem(employeePayItemModel);
+                }
+
+                returnMsg = "Overtime payments updated successfully.";
+            }else{
+                returnMsg = "Worked hours are out of range.";
+            }
+
+        } catch (Exception e) {
+            
+            returnMsg = "Failed to process the received parameters.";
+        }
+
+        ApiResponse apiResponse = new ApiResponse(returnMsg);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("{email}/late-min-deduction")
+    public ResponseEntity<ApiResponse> addLateMinuteDeductions(@PathVariable String email, @RequestBody String requestBody) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String returnMsg;
+
+        try {
+            JsonNode requestBodyJson = objectMapper.readTree(requestBody);
+
+            double totalHoursAllowed = requestBodyJson.get("totalHoursAllowed").asDouble();
+            double lateMinutes = requestBodyJson.get("lateMinutes").asDouble();
+        
+            String payitemName = "Late minute deductions";
+
+            List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
+
+            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double lateMinuteDeductionAmount = 0.0;
+
+            Double deductionAmountPerHour = basicSalary/totalHoursAllowed;
+
+            lateMinuteDeductionAmount = (lateMinutes/60) * deductionAmountPerHour;
+
+            ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
 
             if(!payItemModalOptional.hasBody()){
                 PayItemModel payItemModel = new PayItemModel();
 
-                payItemModel.setItemName("Overtime payment");
+                payItemModel.setItemName(payitemName);
                 payItemModel.setDescription("");
-                payItemModel.setItemType("Addition");
+                payItemModel.setItemType("Deletion");
                 payItemModel.setPaymentType("Variable");
                 payItemModel.setStatus("Available");
 
@@ -94,27 +177,104 @@ public class EmployeePayItemController {
 
             EmployeePayItemModel employeePayItemModel = new EmployeePayItemModel();
 
-            employeePayItemModel.setPayItemId(payItemController.getPayItemByName("Overtime payment").getBody().getId());
+            employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
             employeePayItemModel.setEmail(email);
-            employeePayItemModel.setAmount(overtimePayments);
+            employeePayItemModel.setAmount(lateMinuteDeductionAmount);
 
-            boolean isOvertimePayItemFound = false;
+            boolean isPayItemFound = false;
 
             for(int i = 0; i < employeePayItemsList.size(); i++){
-                if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals("Overtime payment")){
-                    isOvertimePayItemFound = true;
+                if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+                    isPayItemFound = true;
                     updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
                     break;
                 }
             }
 
-            if(!isOvertimePayItemFound){
+            if(!isPayItemFound){
                 assignPayItem(employeePayItemModel);
             }
 
-            returnMsg = "Overtime payments updated successfully.";
-        }else{
-            returnMsg = "Worked hours are out of range.";
+            returnMsg = "Late minute deductions updated successfully.";
+        
+
+        } catch (Exception e) {
+            
+            returnMsg = "Failed to process the received parameters.";
+        }
+
+        ApiResponse apiResponse = new ApiResponse(returnMsg);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("{email}/nopay-hours-deduction")
+    public ResponseEntity<ApiResponse> addNoPayHoursDeductions(@PathVariable String email, @RequestBody String requestBody) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String returnMsg;
+
+        try {
+            JsonNode requestBodyJson = objectMapper.readTree(requestBody);
+
+            double totalHoursAllowed = requestBodyJson.get("totalHoursAllowed").asDouble();
+            double noPayHours = requestBodyJson.get("noPayHours").asDouble();
+
+            String payitemName = "No pay hours";
+        
+
+            List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
+
+            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double noPayHoursDeductionAmount = 0.0;
+
+            if(noPayHours <= totalHoursAllowed){
+
+                noPayHoursDeductionAmount = (noPayHours/totalHoursAllowed) * basicSalary;
+
+                ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
+
+                if(!payItemModalOptional.hasBody()){
+                    PayItemModel payItemModel = new PayItemModel();
+
+                    payItemModel.setItemName(payitemName);
+                    payItemModel.setDescription("");
+                    payItemModel.setItemType("Deletion");
+                    payItemModel.setPaymentType("Variable");
+                    payItemModel.setStatus("Available");
+
+                    payItemController.savePayItem(payItemModel);
+                }
+
+                EmployeePayItemModel employeePayItemModel = new EmployeePayItemModel();
+
+                employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
+                employeePayItemModel.setEmail(email);
+                employeePayItemModel.setAmount(noPayHoursDeductionAmount);
+
+                boolean isPayItemFound = false;
+
+                for(int i = 0; i < employeePayItemsList.size(); i++){
+                    if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+                        isPayItemFound = true;
+                        updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
+                        break;
+                    }
+                }
+
+                if(!isPayItemFound){
+                    assignPayItem(employeePayItemModel);
+                }
+
+                returnMsg = "No pay hours deductions updated successfully.";
+
+            }else{
+                returnMsg = "No pay hours are out of range.";
+            }
+        
+
+        } catch (Exception e) {
+            
+            returnMsg = "Failed to process the received parameters.";
         }
 
         ApiResponse apiResponse = new ApiResponse(returnMsg);
