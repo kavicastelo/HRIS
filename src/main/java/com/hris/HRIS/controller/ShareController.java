@@ -16,7 +16,7 @@ public class ShareController {
     @Autowired
     ShareRepository shareRepository;
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveShare(@RequestBody ShareModel shareModel) {
         shareRepository.save(shareModel);
 
