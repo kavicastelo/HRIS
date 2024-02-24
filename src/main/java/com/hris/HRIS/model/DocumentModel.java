@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class DocumentModel {
     @Id
     private String id;
+    private String organizationId;
     private String adminId;
     private String content;
     private String timestamp;

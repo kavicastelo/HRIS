@@ -44,6 +44,13 @@ public class DocumentController {
         return ResponseEntity.ok(documentModelOptional.orElse(null));
     }
 
+    @GetMapping("/get/organization/{organizationId}")
+    public ResponseEntity<List<DocumentModel>> getAllDocumentsByOrganizationId(@PathVariable String organizationId) {
+        Optional<List<DocumentModel>> documentModelOptional = documentRepository.findAllByOrganizationId(organizationId);
+
+        return ResponseEntity.ok(documentModelOptional.orElse(null));
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteDocumentById(@PathVariable String id) {
         documentRepository.deleteById(id);
@@ -55,6 +62,14 @@ public class DocumentController {
     @DeleteMapping("/delete/all/admin/{adminId}")
     public ResponseEntity<ApiResponse> deleteAllDocumentsByAdminId(@PathVariable String adminId) {
         documentRepository.deleteAllByAdminId(adminId);
+
+        ApiResponse apiResponse = new ApiResponse("All documents deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @DeleteMapping("/delete/all/organization/{organizationId}")
+    public ResponseEntity<ApiResponse> deleteAllDocumentsByOrganizationId(@PathVariable String organizationId) {
+        documentRepository.deleteAllByOrganizationId(organizationId);
 
         ApiResponse apiResponse = new ApiResponse("All documents deleted successfully");
         return ResponseEntity.ok(apiResponse);

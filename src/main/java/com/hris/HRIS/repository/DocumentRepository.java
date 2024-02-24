@@ -9,5 +9,9 @@ import java.util.Optional;
 public interface DocumentRepository extends MongoRepository<DocumentModel, String> {
     Optional<List<DocumentModel>> findAllByAdminId(String adminId);
 
+    Optional<List<DocumentModel>> findAllByOrganizationId(String organizationId);
+
     void deleteAllByAdminId(String id);
+
+    void deleteAllByOrganizationId(String id);
 }
