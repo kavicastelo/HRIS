@@ -17,7 +17,7 @@ public class EmployeeBelongingsController {
     EmployeeBelongingsRepository employeeBelongingsRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveEmployeeBelongings(EmployeeBelongingsModel employeeBelongingsModel) {
+    public ResponseEntity<ApiResponse> saveEmployeeBelongings(@RequestBody EmployeeBelongingsModel employeeBelongingsModel) {
         employeeBelongingsRepository.save(employeeBelongingsModel);
 
         ApiResponse apiResponse = new ApiResponse("Employee belongings saved successfully.");

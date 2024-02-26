@@ -17,7 +17,7 @@ public class ChannelController {
     ChannelRepository channelRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveChannel(ChannelModel channelModel) {
+    public ResponseEntity<ApiResponse> saveChannel(@RequestBody ChannelModel channelModel) {
         channelRepository.save(channelModel);
 
         ApiResponse apiResponse = new ApiResponse("Channel saved successfully");

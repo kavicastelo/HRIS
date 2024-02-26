@@ -21,10 +21,12 @@ public class DepartmentController {
     SystemAutomateService systemAutomateService;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveDepartment(DepartmentModel departmentModel) {
+    public ResponseEntity<ApiResponse> saveDepartment(@RequestBody DepartmentModel departmentModel) {
         departmentRepository.save(departmentModel);
 
         systemAutomateService.updateOrganizationDepartments(departmentModel);
+
+        systemAutomateService.createDefaultChannels(departmentModel);
 
         ApiResponse apiResponse = new ApiResponse("Department saved successfully");
         return ResponseEntity.ok(apiResponse);
@@ -60,6 +62,8 @@ public class DepartmentController {
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteDepartment(@PathVariable String id){
         systemAutomateService.deleteDepartmentAndUpdateOrganization(id);
+
+        systemAutomateService.deleteChannelsWhenDeleteDepartment(id);
 
         ApiResponse apiResponse = new ApiResponse("Department deleted successfully");
         return ResponseEntity.ok(apiResponse);

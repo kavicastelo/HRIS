@@ -17,7 +17,7 @@ public class OnboardingPlanController {
     OnboardingPlanRepository onboardingPlanRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveOnboardingPlan(OnboardingPlanModel onboardingPlanModel) {
+    public ResponseEntity<ApiResponse> saveOnboardingPlan(@RequestBody OnboardingPlanModel onboardingPlanModel) {
         onboardingPlanRepository.save(onboardingPlanModel);
 
         ApiResponse apiResponse = new ApiResponse("Onboarding plan saved successfully.");
@@ -30,14 +30,14 @@ public class OnboardingPlanController {
     }
 
     @GetMapping("/get/id/{id}")
-    public ResponseEntity<OnboardingPlanModel> getOnboardingPlanById(String id) {
+    public ResponseEntity<OnboardingPlanModel> getOnboardingPlanById(@PathVariable String id) {
         Optional<OnboardingPlanModel> onboardingPlanModelOptional = onboardingPlanRepository.findById(id);
 
         return onboardingPlanModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/get/onboarding/{id}")
-    public ResponseEntity<OnboardingPlanModel> getOnboardingPlanByOnboardingId(String id) {
+    public ResponseEntity<OnboardingPlanModel> getOnboardingPlanByOnboardingId(@PathVariable String id) {
         Optional<OnboardingPlanModel> onboardingPlanModelOptional = onboardingPlanRepository.findByOnboardingId(id);
 
         return onboardingPlanModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());

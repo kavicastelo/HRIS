@@ -5,6 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,7 +23,8 @@ public class EmployeeModel {
     private String address;
     private String organizationId;
     private String departmentId;
-    private Object channels;
+    @Field("channels")
+    private List<ChannelModel> channels;
     private Object jobData;
     private String gender;
     private String dob;

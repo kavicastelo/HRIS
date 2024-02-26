@@ -17,7 +17,7 @@ public class MessageController {
     MessageRepository messageRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveMessage(MessageModel messageModel) {
+    public ResponseEntity<ApiResponse> saveMessage(@RequestBody MessageModel messageModel) {
         messageRepository.save(messageModel);
 
         ApiResponse apiResponse = new ApiResponse("Message saved successfully");

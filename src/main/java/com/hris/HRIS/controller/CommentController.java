@@ -17,7 +17,7 @@ public class CommentController {
     CommentRepository commentRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveComment(CommentModel commentModel){
+    public ResponseEntity<ApiResponse> saveComment(@RequestBody CommentModel commentModel){
         commentRepository.save(commentModel);
 
         ApiResponse apiResponse = new ApiResponse("Comment saved successfully");
