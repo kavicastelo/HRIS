@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.repository.EmployeeRepository;
+import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,14 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    SystemAutomateService systemAutomateService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveEmployee(@RequestBody EmployeeModel employeeModel){
         employeeRepository.save(employeeModel);
+
+        systemAutomateService.updateOrganizationEmployees(employeeModel);
 
         ApiResponse apiResponse = new ApiResponse("Employee saved successfully");
         return ResponseEntity.ok(apiResponse);
@@ -45,27 +51,7 @@ public class EmployeeController {
 
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updateEmployee(@PathVariable String id, @RequestBody EmployeeModel employeeModel){
-        Optional<EmployeeModel> employeeModelOptional = employeeRepository.findById(id);
-
-        if(employeeModelOptional.isPresent()){
-            EmployeeModel existingEmployee = employeeModelOptional.get();
-            existingEmployee.setName(employeeModel.getName());
-            existingEmployee.setEmail(employeeModel.getEmail());
-            existingEmployee.setPhone(employeeModel.getPhone());
-            existingEmployee.setAddress(employeeModel.getAddress());
-            existingEmployee.setJobData(employeeModel.getJobData());
-            existingEmployee.setGender(employeeModel.getGender());
-            existingEmployee.setDob(employeeModel.getDob());
-            existingEmployee.setPhoto(employeeModel.getPhoto());
-            existingEmployee.setStatus(employeeModel.getStatus());
-            existingEmployee.setLevel(employeeModel.getLevel());
-            existingEmployee.setToken(employeeModel.getToken());
-            existingEmployee.setRefreshToken(employeeModel.getRefreshToken());
-            existingEmployee.setOtp(employeeModel.getOtp());
-            existingEmployee.setOtpExpiry(employeeModel.getOtpExpiry());
-
-            employeeRepository.save(existingEmployee);
-        }
+        systemAutomateService.updateEmployeeAndUpdateOrganization(id, employeeModel);
 
         ApiResponse apiResponse = new ApiResponse("Employee updated successfully");
         return ResponseEntity.ok(apiResponse);
@@ -73,27 +59,7 @@ public class EmployeeController {
 
     @PutMapping("/update/email/{email}")
     public ResponseEntity<ApiResponse> updateEmployeeByEmail(@PathVariable String email, @RequestBody EmployeeModel employeeModel){
-        Optional<EmployeeModel> employeeModelOptional = employeeRepository.findOneByEmail(email);
-
-        if(employeeModelOptional.isPresent()){
-            EmployeeModel existingEmployee = employeeModelOptional.get();
-            existingEmployee.setName(employeeModel.getName());
-            existingEmployee.setEmail(employeeModel.getEmail());
-            existingEmployee.setPhone(employeeModel.getPhone());
-            existingEmployee.setAddress(employeeModel.getAddress());
-            existingEmployee.setJobData(employeeModel.getJobData());
-            existingEmployee.setGender(employeeModel.getGender());
-            existingEmployee.setDob(employeeModel.getDob());
-            existingEmployee.setPhoto(employeeModel.getPhoto());
-            existingEmployee.setStatus(employeeModel.getStatus());
-            existingEmployee.setLevel(employeeModel.getLevel());
-            existingEmployee.setToken(employeeModel.getToken());
-            existingEmployee.setRefreshToken(employeeModel.getRefreshToken());
-            existingEmployee.setOtp(employeeModel.getOtp());
-            existingEmployee.setOtpExpiry(employeeModel.getOtpExpiry());
-
-            employeeRepository.save(existingEmployee);
-        }
+        systemAutomateService.updateEmployeeAndUpdateOrganizationByEmail(email, employeeModel);
 
         ApiResponse apiResponse = new ApiResponse("Employee updated successfully");
         return ResponseEntity.ok(apiResponse);
@@ -101,7 +67,7 @@ public class EmployeeController {
 
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteEmployee(@PathVariable String id){
-        employeeRepository.deleteById(id);
+        systemAutomateService.deleteEmployeeAndUpdateOrganization(id);
 
         ApiResponse apiResponse = new ApiResponse("Employee deleted successfully");
         return ResponseEntity.ok(apiResponse);
@@ -109,7 +75,7 @@ public class EmployeeController {
 
     @DeleteMapping("/delete/email/{email}")
     public ResponseEntity<ApiResponse> deleteEmployeeByEmail(@PathVariable String email){
-        employeeRepository.deleteByEmail(email);
+        systemAutomateService.deleteEmployeeAndUpdateOrganizationByEmail(email);
 
         ApiResponse apiResponse = new ApiResponse("Employee deleted successfully");
         return ResponseEntity.ok(apiResponse);

@@ -18,6 +18,9 @@ public class EmployeeModel {
     private String email;
     private String phone;
     private String address;
+    private String organizationId;
+    private String departmentId;
+    private Object channels;
     private Object jobData;
     private String gender;
     private String dob;
