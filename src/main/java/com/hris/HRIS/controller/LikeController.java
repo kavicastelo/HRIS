@@ -17,7 +17,7 @@ public class LikeController {
     LikeRepository likeRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveLike(LikeModel likeModel) {
+    public ResponseEntity<ApiResponse> saveLike(@RequestBody LikeModel likeModel) {
         likeRepository.save(likeModel);
 
         ApiResponse apiResponse = new ApiResponse("Like saved successfully");

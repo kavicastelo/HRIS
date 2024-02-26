@@ -17,7 +17,7 @@ public class OrganizationController {
     OrganizationRepository organizationRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveOrganization(OrganizationModel organizationModel){
+    public ResponseEntity<ApiResponse> saveOrganization(@RequestBody OrganizationModel organizationModel){
         organizationRepository.save(organizationModel);
 
         ApiResponse apiResponse = new ApiResponse("Organization saved successfully");

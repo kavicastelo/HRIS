@@ -2,16 +2,14 @@ package com.hris.HRIS.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.model.*;
-import com.hris.HRIS.repository.DepartmentRepository;
-import com.hris.HRIS.repository.EmployeeRepository;
-import com.hris.HRIS.repository.ExitListRepository;
-import com.hris.HRIS.repository.OrganizationRepository;
+import com.hris.HRIS.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,6 +27,9 @@ public class SystemAutomateService {
 
     @Autowired
     DepartmentRepository departmentRepository;
+
+    @Autowired
+    ChannelRepository channelRepository;
 
     @Autowired
     EmailService emailService;
@@ -332,5 +333,21 @@ public class SystemAutomateService {
                 }
             }
         }
+    }
+
+    public void createDefaultChannels(DepartmentModel departmentModel){
+        ChannelModel channelModel = new ChannelModel();
+        channelModel.setDepartmentId(departmentModel.getId());
+        channelModel.setName(departmentModel.getName() + "Official Channel");
+        channelModel.setDescription("This is official channel for " + departmentModel.getName() + ". Please do not try to edit this channel.");
+        channelModel.setPhoto("");
+
+        channelRepository.save(channelModel);
+    }
+
+    public void deleteChannelsWhenDeleteDepartment(String departmentId){
+        Optional<List<ChannelModel>> channelModel = channelRepository.findAllByDepartmentId(departmentId);
+
+        channelModel.ifPresent(channelModels -> channelRepository.deleteAll(channelModels));
     }
 }

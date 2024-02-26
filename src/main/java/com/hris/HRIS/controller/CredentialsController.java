@@ -18,7 +18,7 @@ public class CredentialsController {
     CredentialsRepository credentialsRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveCredentials(CredentialsModel credentialsModel) {
+    public ResponseEntity<ApiResponse> saveCredentials(@RequestBody CredentialsModel credentialsModel) {
         credentialsRepository.save(credentialsModel);
 
         ApiResponse apiResponse = new ApiResponse("Credentials saved successfully");
