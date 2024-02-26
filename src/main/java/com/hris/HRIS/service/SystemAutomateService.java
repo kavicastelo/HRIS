@@ -1,17 +1,17 @@
 package com.hris.HRIS.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.*;
+import com.hris.HRIS.repository.DepartmentRepository;
 import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.ExitListRepository;
-import jakarta.annotation.PostConstruct;
+import com.hris.HRIS.repository.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,6 +23,12 @@ public class SystemAutomateService {
 
     @Autowired
     ExitListRepository exitListRepository;
+
+    @Autowired
+    OrganizationRepository organizationRepository;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
 
     @Autowired
     EmailService emailService;
@@ -92,5 +98,239 @@ public class SystemAutomateService {
         exitListRepository.save(exitListModel);
 
         emailService.sendSimpleEmail(employeeExitModel.getEmail(), "Employee Exit", "Your exit request has been approved");
+    }
+
+    public void updateOrganizationDepartments(DepartmentModel departmentModel){
+        Optional<OrganizationModel> organization =  organizationRepository.findById(departmentModel.getOrganizationId());
+
+        if (organization.isPresent()) {
+            OrganizationModel existingOrganization = organization.get();
+            // Check if departments list is null, and initialize it if necessary
+            if (existingOrganization.getDepartments() == null) {
+                existingOrganization.setDepartments(new ArrayList<>());
+            }
+
+            // Add the new department to the list
+            existingOrganization.getDepartments().add(departmentModel);
+
+            organizationRepository.save(existingOrganization);
+        }
+    }
+
+    public void updateOrganizationEmployees(EmployeeModel employeeModel){
+        Optional<OrganizationModel> organization =  organizationRepository.findById(employeeModel.getOrganizationId());
+
+        if (organization.isPresent()) {
+            OrganizationModel existingOrganization = organization.get();
+            // Check if employees list is null, and initialize it if necessary
+            if (existingOrganization.getEmployees() == null) {
+                existingOrganization.setEmployees(new ArrayList<>());
+            }
+
+            // Add the new employee to the list
+            existingOrganization.getEmployees().add(employeeModel);
+
+            organizationRepository.save(existingOrganization);
+        }
+    }
+
+    public void deleteDepartmentAndUpdateOrganization(String departmentId) {
+        Optional<DepartmentModel> departmentOptional = departmentRepository.findById(departmentId);
+
+        if (departmentOptional.isPresent()) {
+            DepartmentModel departmentToDelete = departmentOptional.get();
+            String organizationId = departmentToDelete.getOrganizationId();
+
+            // Delete the department
+            departmentRepository.deleteById(departmentId);
+
+            // Update the organization
+            Optional<OrganizationModel> organizationOptional = organizationRepository.findById(organizationId);
+
+            if (organizationOptional.isPresent()) {
+                OrganizationModel existingOrganization = organizationOptional.get();
+
+                // Check if departments list is null, and initialize it if necessary
+                if (existingOrganization.getDepartments() == null) {
+                    existingOrganization.setDepartments(new ArrayList<>());
+                } else {
+                    // Remove the deleted department from the list
+                    existingOrganization.getDepartments().removeIf(d -> d.getId().equals(departmentId));
+                }
+
+                organizationRepository.save(existingOrganization);
+            }
+        }
+    }
+
+    public void deleteEmployeeAndUpdateOrganization(String employeeId) {
+        Optional<EmployeeModel> employeeOptional = employeeRepository.findById(employeeId);
+
+        if (employeeOptional.isPresent()) {
+            EmployeeModel employeeToDelete = employeeOptional.get();
+            String organizationId = employeeToDelete.getOrganizationId();
+
+            // Delete the employee
+            employeeRepository.deleteById(employeeId);
+
+            // Update the organization
+            Optional<OrganizationModel> organizationOptional = organizationRepository.findById(organizationId);
+
+            if (organizationOptional.isPresent()) {
+                OrganizationModel existingOrganization = organizationOptional.get();
+
+                // Check if employees list is null, and initialize it if necessary
+                if (existingOrganization.getEmployees() == null) {
+                    existingOrganization.setEmployees(new ArrayList<>());
+                } else {
+                    // Remove the deleted employee from the list
+                    existingOrganization.getEmployees().removeIf(e -> e.getId().equals(employeeId));
+                }
+
+                organizationRepository.save(existingOrganization);
+            }
+        }
+    }
+
+    public void deleteEmployeeAndUpdateOrganizationByEmail(String employeeEmail) {
+        Optional<EmployeeModel> employeeOptional = employeeRepository.findOneByEmail(employeeEmail);
+
+        if (employeeOptional.isPresent()) {
+            EmployeeModel employeeToDelete = employeeOptional.get();
+            String organizationId = employeeToDelete.getOrganizationId();
+
+            // Delete the employee
+            employeeRepository.deleteById(employeeToDelete.getId());
+
+            // Update the organization
+            Optional<OrganizationModel> organizationOptional = organizationRepository.findById(organizationId);
+
+            if (organizationOptional.isPresent()) {
+                OrganizationModel existingOrganization = organizationOptional.get();
+
+                // Check if employees list is null, and initialize it if necessary
+                if (existingOrganization.getEmployees() == null) {
+                    existingOrganization.setEmployees(new ArrayList<>());
+                } else {
+                    // Remove the deleted employee from the list
+                    existingOrganization.getEmployees().removeIf(e -> e.getEmail().equals(employeeEmail));
+                }
+
+                organizationRepository.save(existingOrganization);
+            }
+        }
+    }
+
+    public void updateDepartmentAndUpdateOrganization(String id, DepartmentModel updatedDepartment) {
+        Optional<DepartmentModel> existingDepartmentOptional = departmentRepository.findById(id);
+
+        if (existingDepartmentOptional.isPresent()) {
+            DepartmentModel existingDepartment = existingDepartmentOptional.get();
+            String organizationId = existingDepartment.getOrganizationId();
+
+            // Update the department
+            existingDepartment.setName(updatedDepartment.getName());
+            existingDepartment.setDescription(updatedDepartment.getDescription());
+
+            departmentRepository.save(existingDepartment);
+
+            // Update the organization
+            Optional<OrganizationModel> organizationOptional = organizationRepository.findById(organizationId);
+
+            if (organizationOptional.isPresent()) {
+                OrganizationModel existingOrganization = organizationOptional.get();
+
+                // Check if departments list is null, and initialize it if necessary
+                if (existingOrganization.getDepartments() == null) {
+                    existingOrganization.setDepartments(new ArrayList<>());
+                } else {
+                    // Find and replace the existing department with the updated one
+                    existingOrganization.getDepartments()
+                            .replaceAll(d -> d.getId().equals(updatedDepartment.getId()) ? updatedDepartment : d);
+                }
+
+                organizationRepository.save(existingOrganization);
+            }
+        }
+    }
+
+    public void updateEmployeeAndUpdateOrganization(String id, EmployeeModel updatedEmployee) {
+        Optional<EmployeeModel> existingEmployeeOptional = employeeRepository.findById(id);
+
+        if (existingEmployeeOptional.isPresent()) {
+            EmployeeModel existingEmployee = existingEmployeeOptional.get();
+            String organizationId = existingEmployee.getOrganizationId();
+
+            // Update the employee
+            existingEmployee.setName(updatedEmployee.getName());
+            existingEmployee.setEmail(updatedEmployee.getEmail());
+            existingEmployee.setPhone(updatedEmployee.getPhone());
+            existingEmployee.setAddress(updatedEmployee.getAddress());
+            existingEmployee.setJobData(updatedEmployee.getJobData());
+            existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
+            existingEmployee.setChannels(updatedEmployee.getChannels());
+            existingEmployee.setDob(updatedEmployee.getDob());
+            existingEmployee.setGender(updatedEmployee.getGender());
+            existingEmployee.setPhoto(updatedEmployee.getPhoto());
+            existingEmployee.setStatus(updatedEmployee.getStatus());
+
+            employeeRepository.save(existingEmployee);
+
+            // Update the organization
+            Optional<OrganizationModel> organizationOptional = organizationRepository.findById(organizationId);
+
+            if (organizationOptional.isPresent()) {
+                OrganizationModel existingOrganization = organizationOptional.get();
+
+                // Check if employees list is null, and initialize it if necessary
+                if (existingOrganization.getEmployees() == null) {
+                    existingOrganization.setEmployees(new ArrayList<>());
+                } else {
+                    // Find and replace the existing employee with the updated one
+                    existingOrganization.getEmployees()
+                            .replaceAll(e -> e.getId().equals(updatedEmployee.getId()) ? updatedEmployee : e);
+                }
+            }
+        }
+    }
+
+    public void updateEmployeeAndUpdateOrganizationByEmail(String email, EmployeeModel updatedEmployee) {
+        Optional<EmployeeModel> existingEmployeeOptional = employeeRepository.findOneByEmail(email);
+
+        if (existingEmployeeOptional.isPresent()) {
+            EmployeeModel existingEmployee = existingEmployeeOptional.get();
+            String organizationId = existingEmployee.getOrganizationId();
+
+            // Update the employee
+            existingEmployee.setName(updatedEmployee.getName());
+            existingEmployee.setEmail(updatedEmployee.getEmail());
+            existingEmployee.setPhone(updatedEmployee.getPhone());
+            existingEmployee.setAddress(updatedEmployee.getAddress());
+            existingEmployee.setJobData(updatedEmployee.getJobData());
+            existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
+            existingEmployee.setChannels(updatedEmployee.getChannels());
+            existingEmployee.setDob(updatedEmployee.getDob());
+            existingEmployee.setGender(updatedEmployee.getGender());
+            existingEmployee.setPhoto(updatedEmployee.getPhoto());
+            existingEmployee.setStatus(updatedEmployee.getStatus());
+
+            employeeRepository.save(existingEmployee);
+
+            // Update the organization
+            Optional<OrganizationModel> organizationOptional = organizationRepository.findById(organizationId);
+
+            if (organizationOptional.isPresent()) {
+                OrganizationModel existingOrganization = organizationOptional.get();
+
+                // Check if employees list is null, and initialize it if necessary
+                if (existingOrganization.getEmployees() == null) {
+                    existingOrganization.setEmployees(new ArrayList<>());
+                } else {
+                    // Find and replace the existing employee with the updated one
+                    existingOrganization.getEmployees()
+                            .replaceAll(e -> e.getEmail().equals(updatedEmployee.getEmail()) ? updatedEmployee : e);
+                }
+            }
+        }
     }
 }

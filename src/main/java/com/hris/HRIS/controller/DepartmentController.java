@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.DepartmentModel;
 import com.hris.HRIS.repository.DepartmentRepository;
+import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,14 @@ public class DepartmentController {
     @Autowired
     DepartmentRepository departmentRepository;
 
+    @Autowired
+    SystemAutomateService systemAutomateService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveDepartment(DepartmentModel departmentModel) {
         departmentRepository.save(departmentModel);
+
+        systemAutomateService.updateOrganizationDepartments(departmentModel);
 
         ApiResponse apiResponse = new ApiResponse("Department saved successfully");
         return ResponseEntity.ok(apiResponse);
@@ -45,15 +51,7 @@ public class DepartmentController {
 
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updateDepartment(@PathVariable String id, @RequestBody DepartmentModel departmentModel){
-        Optional<DepartmentModel> departmentModelOptional = departmentRepository.findById(id);
-
-        if(departmentModelOptional.isPresent()){
-            DepartmentModel existingDepartment = departmentModelOptional.get();
-            existingDepartment.setName(departmentModel.getName());
-            existingDepartment.setDescription(departmentModel.getDescription());
-            existingDepartment.setOrganizationId(departmentModel.getOrganizationId());
-            departmentRepository.save(existingDepartment);
-        }
+        systemAutomateService.updateDepartmentAndUpdateOrganization(id, departmentModel);
 
         ApiResponse apiResponse = new ApiResponse("Department updated successfully");
         return ResponseEntity.ok(apiResponse);
@@ -61,7 +59,7 @@ public class DepartmentController {
 
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteDepartment(@PathVariable String id){
-        departmentRepository.deleteById(id);
+        systemAutomateService.deleteDepartmentAndUpdateOrganization(id);
 
         ApiResponse apiResponse = new ApiResponse("Department deleted successfully");
         return ResponseEntity.ok(apiResponse);
