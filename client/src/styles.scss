@@ -87,7 +87,6 @@ body {
 }
 
 .main-body {
-  min-height: 100vh;
   height: 100%;
   background-color: var(--color-surface-mixed-100);
 }
@@ -95,3 +94,6 @@ body {
 h1, h2, h3, h4, h5, h6, p, span {
   color: var(--color-text-200);
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
