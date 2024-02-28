@@ -41,15 +41,15 @@
   </mat-drawer>
   <mat-drawer-content>
     <div class="row w-100">
-      <div class="d-none d-md-block col-12 col-md-3 h-100" style="border: 1px solid red; height: 200px">
-<!--        chats area-->
+      <div class="d-none d-sm-block col-12 col-sm-3 col-md-3 h-100" style="border: 1px solid red;">
+        <app-chat-list></app-chat-list>
       </div>
-      <div class="col-12 col-md-5 h-100" style="border: 1px solid blue; height: 200px">
-<!--        feed area-->
+      <div class="col-12 col-sm-9 col-md-5 h-100" style="border: 1px solid blue;">
+        <router-outlet></router-outlet>
       </div>
-      <div class="d-none d-md-block col-12 col-md-4 h-100" style="border: 1px solid green; height: 200px">
+      <div class="d-none d-md-block col-12 col-md-4 h-100" style="border: 1px solid green;">
         <div class="container">
-<!--          notification area-->
+          <app-announcement-area></app-announcement-area>
         </div>
       </div>
     </div>
