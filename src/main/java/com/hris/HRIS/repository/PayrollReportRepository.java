@@ -9,5 +9,4 @@ import com.hris.HRIS.model.PayrollReportModel;
 
 public interface PayrollReportRepository extends MongoRepository<PayrollReportModel, String> {
     List<PayrollReportModel> findAllByEmail(String email);
-    Optional<PayrollReportModel> deleteByEmail(String email);
 }
