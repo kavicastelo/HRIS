@@ -20,6 +20,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import { FeedComponent } from './shared/components/feed/feed.component';
 import { ChatListComponent } from './shared/components/chat-list/chat-list.component';
 import { AnnouncementAreaComponent } from './shared/components/announcement-area/announcement-area.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -34,18 +35,19 @@ import { AnnouncementAreaComponent } from './shared/components/announcement-area
     ChatListComponent,
     AnnouncementAreaComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    MatIconModule,
-    MatSidenavModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatExpansionModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
