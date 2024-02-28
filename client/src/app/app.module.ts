@@ -17,6 +17,9 @@ import {FormsModule} from "@angular/forms";
 import { FeedWrapperComponent } from './components/feed-wrapper/feed-wrapper.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import { FeedComponent } from './shared/components/feed/feed.component';
+import { ChatListComponent } from './shared/components/chat-list/chat-list.component';
+import { AnnouncementAreaComponent } from './shared/components/announcement-area/announcement-area.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     ProfileComponent,
     PostImageComponent,
     PostTextComponent,
-    FeedWrapperComponent
+    FeedWrapperComponent,
+    FeedComponent,
+    ChatListComponent,
+    AnnouncementAreaComponent
   ],
   imports: [
     BrowserModule,
