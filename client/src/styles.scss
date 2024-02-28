@@ -97,3 +97,21 @@ h1, h2, h3, h4, h5, h6, p, span {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.btn-1 {
+  background-color: var(--color-primary-200);
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--color-primary-300);
+  }
+}
