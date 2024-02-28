@@ -98,6 +98,20 @@ h1, h2, h3, h4, h5, h6, p, span {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+// cards
+.card{
+  margin: 8px 0;
+  background-color: var(--color-surface-mixed-200);
+
+  .card-title{
+    color: var(--color-text-200);
+  }
+  .card-text{
+    color: var(--color-text-300);
+  }
+}
+// cards end
+
 .btn-1, .btn-2 {
   background-color: var(--color-primary-200);
   color: white;
@@ -127,4 +141,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   outline: none;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-mixed-300);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-mixed-400);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-600);
+}
+::-webkit-scrollbar-thumb:active {
+  background: var(--color-primary-600);
 }
