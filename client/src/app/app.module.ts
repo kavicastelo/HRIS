@@ -14,6 +14,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {FormsModule} from "@angular/forms";
+import { FeedWrapperComponent } from './components/feed-wrapper/feed-wrapper.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 @NgModule({
   declarations: [
@@ -22,7 +25,8 @@ import {FormsModule} from "@angular/forms";
     NotFoundComponent,
     ProfileComponent,
     PostImageComponent,
-    PostTextComponent
+    PostTextComponent,
+    FeedWrapperComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,9 @@ import {FormsModule} from "@angular/forms";
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatIconModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]
