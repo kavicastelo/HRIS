@@ -1,0 +1,38 @@
+.card{
+  margin: 8px 0;
+  background-color: var(--color-surface-mixed-200);
+
+  .card-title{
+    color: var(--color-text-200);
+  }
+  .card-text{
+    color: var(--color-text-300);
+  }
+}
+
+.card.ln{
+  margin-top: 20px;
+
+  .card-text{
+    font-weight: 500;
+  }
+  .text-body-secondary{
+    font-size: 12px;
+    color: var(--color-text-300) !important;
+  }
+
+  .view-all{
+    width: 100%;
+    text-align: center;
+    color: var(--color-text-100);
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.3s ease;
+
+    &:hover{
+      color: var(--color-primary-200);
+    }
+  }
+}
