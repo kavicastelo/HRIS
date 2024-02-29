@@ -1,1 +1,124 @@
-<p>feed works!</p>
+<div style="max-height: 100vh; overflow-y: auto">
+  <div class="card">
+    <div class="card-body">
+      <div class="share-post d-flex w-100">
+        <div class="profile-pic">
+          <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+        </div>
+        <div class="form-floating w-100">
+          <textarea class="form-control" placeholder="" id="share-post" style="height: 80px; width: 100%"></textarea>
+          <label for="share-post">Share Your Thought</label>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mt-3">
+        <div class="d-flex">
+          <button class="btn-3">
+            <mat-icon>add_photo_alternate</mat-icon>&nbsp;&nbsp;photo
+          </button>
+          <button class="btn-3">
+            <mat-icon>video_library</mat-icon>&nbsp;&nbsp;video
+          </button>
+          <button class="btn-3">...</button>
+        </div>
+        <button class="btn-1 px-3">Post</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="author-wrapper d-flex align-items-center justify-content-start">
+        <div class="profile-pic">
+          <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+        </div>
+        <div class="author-name d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <h6>John Doe</h6> &nbsp;&dot;&nbsp; <p>1 day ago</p>
+          </div>
+          <p>Web Developer</p>
+        </div>
+      </div>
+
+      <div class="my-3">
+        <p class="post-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, adipisci alias aliquam animi delectus, dolorum
+          eligendi illum nesciunt praesentium quia, reiciendis rerum sequi sint ullam.</p>
+      </div>
+
+      <div class="posted-content">
+        <img src="./assets/imgs/shared/cover.jpg" alt="post">
+      </div>
+
+      <div class="my-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <div class="post-reaction d-flex align-items-center">
+            <span class="clickable-span">Like</span>
+            <span class="clickable-span">(3)</span>
+          </div>
+          <div class="post-reaction d-flex align-items-center mx-3">
+            <span class="clickable-span">Comment</span>
+            <span class="clickable-span">(2)</span>
+          </div>
+        </div>
+        <div>
+          <div class="post-reaction d-flex align-items-center">
+            <span class="clickable-span">Share</span>
+            <span class="clickable-span">(6)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-start">
+        <div class="profile-pic">
+          <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+        </div>
+        <div class="d-flex flex-column w-100">
+          <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <div class="form-floating w-100">
+              <textarea class="form-control" placeholder="" id="comment-post" style="height: 60px; width: 100%"></textarea>
+              <label for="comment-post">Add a Comment...</label>
+            </div>
+          </a>
+          <div class="collapse" id="collapseExample">
+            <div class="d-flex justify-content-end my-2">
+              <button class="btn-1">Comment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-2">
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="profile-pic">
+            <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+          </div>
+          <div class="comment w-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6>John Doe</h6>
+              <p>1 day ago</p>
+            </div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, adipisci alias aliquam animi delectus, dolorum
+              eligendi illum nesciunt praesentium quia, reiciendis rerum sequi sint ullam.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-2">
+        <div class="d-flex align-items-start justify-content-between">
+          <div class="profile-pic">
+            <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+          </div>
+          <div class="comment w-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6>John Doe</h6>
+              <p>1 day ago</p>
+            </div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, adipisci alias aliquam animi delectus, dolorum
+              eligendi illum nesciunt praesentium quia, reiciendis rerum sequi sint ullam.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

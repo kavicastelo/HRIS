@@ -9,6 +9,13 @@
     color: var(--color-text-300) !important;
   }
 
+  .latest-news{
+    &:hover{
+      cursor: pointer;
+      background-color: var(--color-surface-mixed-100);
+    }
+  }
+
   .view-all{
     width: 100%;
     text-align: center;
@@ -23,4 +30,8 @@
       color: var(--color-primary-200);
     }
   }
+}
+
+::-webkit-scrollbar {
+  width: 0;
 }
