@@ -1,7 +1,6 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
-import com.hris.HRIS.model.PayItemModel;
 import com.hris.HRIS.model.PayrollReportModel;
 import com.hris.HRIS.repository.PayrollReportRepository;
 import com.hris.HRIS.service.PayrollReportsGenerationService;
