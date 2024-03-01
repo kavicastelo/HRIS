@@ -25,11 +25,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   animal: string | undefined;
   name: string | undefined;
 
+  userId: string = "3";
+
   private themeSubscription: Subscription;
   isDarkMode: boolean | undefined;
 
   // test data for profile
   employeeDataStore = employeeDataStore
+  employee: any
 
   constructor(
     private themeService: ThemeService, private dialog: MatDialog,) {
@@ -43,6 +46,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getUser();
+  }
+
+  getUser() {
+    employeeDataStore.forEach((emp) => {
+      if (emp.id == this.userId) {
+        this.employee = [emp];
+      }
+    })
   }
 
   openVideoDialog() {

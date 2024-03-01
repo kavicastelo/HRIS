@@ -16,103 +16,33 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="direct-messages-chat-area">
-        <div class="chat-wrapper">
+        <div class="chat-wrapper" *ngFor="let e of employeeDataStore">
           <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
+            <img src="{{e.photo}}" alt="profile">
           </div>
           <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
+            <h6>{{e.name}}</h6>
             <p>Lorem ipsum dolor sit</p>
           </div>
         </div>
       </div>
     </mat-expansion-panel>
+  </mat-accordion>
 
-    <mat-expansion-panel>
+  <mat-accordion>
+    <mat-expansion-panel style="margin-top: 10px">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Channels
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="direct-messages-chat-area">
-        <div class="chat-wrapper">
+        <div class="chat-wrapper" *ngFor="let c of channelsDataStore">
           <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
+            <img src="{{c.photo}}" alt="{{c.name}}">
           </div>
           <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-        <div class="chat-wrapper">
-          <div class="chat-icon">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>John Doe</h6>
+            <h6>{{c.name}}</h6>
             <p>Lorem ipsum dolor sit</p>
           </div>
         </div>

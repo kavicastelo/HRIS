@@ -1,65 +1,19 @@
-<div class="heading w-100">
-  <div class="d-flex align-items-center justify-content-center">
-    <button class="btn-1" (click)="drawer.toggle()">
-      <mat-icon>reorder</mat-icon>
-    </button>
-<!--    <img src="./assets/images/logo.png" alt="logo" routerLink="/home">-->
-    <span>Chamara Logo</span>
-  </div>
-  <div class="d-flex align-items-center justify-content-around">
-    <button class="btn-1">
-      <mat-icon>settings</mat-icon>
-    </button>
-    <button class="btn-1">
-      <mat-icon>notifications</mat-icon>
-    </button>
-    <div class="main-bar-profile-tag">
-      <div class="d-flex align-items-center">
-        <div class="profile-pic">
-          <img src="./assets/imgs/shared/author.jpg" alt="profile">
-        </div>
-        <div class="d-flex flex-column justify-content-between profile-tag">
-          <h6>John Doe</h6>
-          <span>logout</span>
+<div class="w-100">
+  <div class="row">
+    <div class="col-sm-5 col-md-3">
+      <div class="d-none d-sm-block">
+        <app-chat-list></app-chat-list>
+      </div>
+    </div>
+    <div class="col-12 col-sm-7 col-md-5">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="col-md-4">
+      <div class="d-none d-md-block">
+        <div class="container">
+          <app-announcement-area></app-announcement-area>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="w-100">
-  <mat-drawer-container class="drawer-container main-body">
-    <mat-drawer #drawer mode="over" class="drawer">
-      <span>MENU</span>
-      <ul>
-        <li routerLink="/feed">Feed</li>
-        <li routerLink="/feed">Feed</li>
-        <li routerLink="/feed">Feed</li>
-        <li routerLink="/feed">Feed</li>
-        <li routerLink="/feed">Feed</li>
-        <li routerLink="/feed">Feed</li>
-        <li routerLink="/feed">Feed</li>
-      </ul>
-    </mat-drawer>
-    <mat-drawer-content>
-      <div class="w-100">
-        <div class="row">
-          <div class="col-sm-3 col-md-3">
-            <div class="d-none d-sm-block">
-              <app-chat-list></app-chat-list>
-            </div>
-          </div>
-          <div class="col-12 col-sm-9 col-md-5">
-            <router-outlet></router-outlet>
-          </div>
-          <div class="col-md-4">
-            <div class="d-none d-md-block">
-              <div class="container">
-                <app-announcement-area></app-announcement-area>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </mat-drawer-content>
-  </mat-drawer-container>
 </div>

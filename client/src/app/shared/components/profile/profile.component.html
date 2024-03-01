@@ -2,15 +2,15 @@
   <div class="row card">
     <div class="col" style="position: relative">
       <div class="w-100 d-flex flex-column align-items-center justify-content-center profile-cover">
-        <img src="./assets/imgs/shared/cover.jpg" alt="profile cover">
+        <img src="https://visualwilderness.com/wp-content/uploads/2013/11/canada_3081-710x270.jpg" alt="profile cover">
       </div>
 
-      <div class="d-md-flex w-100">
+      <div class="d-md-flex w-100" *ngFor="let e of employee">
         <div class="profile-img">
-          <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+          <img [src]="e.photo" alt="profile image">
         </div>
 
-        <div class="profile-name" *ngFor="let e of employeeDataStore">
+        <div class="profile-name">
           <h1>{{e.name}}</h1>
           <h5>{{e.jobData.department}}</h5>
         </div>
@@ -20,7 +20,7 @@
 
   <hr>
 
-  <div class="row" *ngFor="let e of employeeDataStore">
+  <div class="row" *ngFor="let e of employee">
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card-2">
         <h4>Info</h4>
