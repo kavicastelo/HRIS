@@ -5,6 +5,7 @@ import {NotFoundComponent} from "./shared/components/not-found/not-found.compone
 import {ProfileComponent} from "./shared/components/profile/profile.component";
 import {FeedWrapperComponent} from "./components/feed-wrapper/feed-wrapper.component";
 import {FeedComponent} from "./shared/components/feed/feed.component";
+import { LogInComponent } from './components/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,7 +15,9 @@ const routes: Routes = [
     { path: 'area', component: FeedComponent }
   ]},
   { path: 'profile', component: ProfileComponent },
-  { path: '**', component:NotFoundComponent }
+  { path: 'login', component: LogInComponent},
+  { path: '**', component:NotFoundComponent },
+
 ];
 
 @NgModule({

@@ -21,6 +21,7 @@ import { FeedComponent } from './shared/components/feed/feed.component';
 import { ChatListComponent } from './shared/components/chat-list/chat-list.component';
 import { AnnouncementAreaComponent } from './shared/components/announcement-area/announcement-area.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import { LogInComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,9 @@ import {MatExpansionModule} from "@angular/material/expansion";
     FeedWrapperComponent,
     FeedComponent,
     ChatListComponent,
-    AnnouncementAreaComponent
+    AnnouncementAreaComponent,
+    LogInComponent
+    
   ],
     imports: [
         BrowserModule,
@@ -47,6 +50,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
         MatIconModule,
         MatSidenavModule,
         MatExpansionModule
+        
     ],
   providers: [],
   bootstrap: [AppComponent]
