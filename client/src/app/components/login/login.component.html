@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="logo_container" ><img alt='Company logo' src="../../assets/Images/HRIS-Systems logo.png"></div>
+  <div class="login_container">
+      <div class="text">
+          welcome
+      </div>
+      <div class="text1">
+        Log in to Continue
+      </div>
+        <form action="#" (ngSubmit)="login()">
+            <div class="data">
+              <label for="username">Username </label>
+              <input type="text" id="username" name="username" [(ngModel)]="email" placeholder="enter your email" >
+            </div>
+            <div class="data">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" [(ngModel)]="password"  placeholder="enter your password" required>
+              <div *ngIf="password.length < 4 "   class="error-message">Password must be at least 8 characters long
+              </div>
+            </div><br/>
+            <div class="forgot-password">
+              <a href="#">Forgot Password?</a>
+            </div>
+            <div class="box05">
+              <button class="button" type="submit" (onclick)="login()">LogIn</button>
+            </div>
+
+
+
+              <div class="text2">
+                Don't have an accout?
+              </div>
+              <div class="signup-link">
+              <a href="#">Request Account</a>
+              </div>
+        </form>
+  </div>
+</div>
+
+<!-- thawa monawd aul -->
