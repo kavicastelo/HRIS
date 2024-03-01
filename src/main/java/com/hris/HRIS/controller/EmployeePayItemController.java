@@ -4,6 +4,8 @@ import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.EmployeePayItemModel;
 import com.hris.HRIS.model.PayItemModel;
 import com.hris.HRIS.repository.EmployeePayItemRepository;
+import com.hris.HRIS.service.PayrollModuleCalculationService;
+import com.hris.HRIS.service.PayrollReportsGenerationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,10 @@ public class EmployeePayItemController {
 
     @Autowired
     PayItemController payItemController;
+
+    @Autowired
+    PayrollModuleCalculationService payrollModuleCalculationService;
+    
 
     @PostMapping("/assign")
     public ResponseEntity<ApiResponse> assignPayItem(@RequestBody EmployeePayItemModel employeePayItemModel) {
@@ -85,10 +91,8 @@ public class EmployeePayItemController {
             String payitemName = "Overtime payment";
 
             if(overtimeHoursWorked <= totalHoursAllowed){
-                Double overtimePaymentsPerHour = basicSalary/totalHoursAllowed;
 
-                // overtimePayments = overtimeHoursWorked * (overtimePaymentsPerHour + overtimePaymentsPerHour/2);
-                overtimePayments = overtimeHoursWorked * overtimePaymentsPerHour;
+                overtimePayments = payrollModuleCalculationService.calculateOvertimePayments(basicSalary, totalHoursAllowed, overtimeHoursWorked);
 
                 ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
 
@@ -157,9 +161,7 @@ public class EmployeePayItemController {
             Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
             Double lateMinuteDeductionAmount = 0.0;
 
-            Double deductionAmountPerHour = basicSalary/totalHoursAllowed;
-
-            lateMinuteDeductionAmount = (lateMinutes/60) * deductionAmountPerHour;
+            lateMinuteDeductionAmount = payrollModuleCalculationService.calculateLateMinuteDeductions(basicSalary, totalHoursAllowed, lateMinutes);
 
             ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
 
@@ -229,7 +231,7 @@ public class EmployeePayItemController {
 
             if(noPayHours <= totalHoursAllowed){
 
-                noPayHoursDeductionAmount = (noPayHours/totalHoursAllowed) * basicSalary;
+                noPayHoursDeductionAmount = payrollModuleCalculationService.calculateNoPayHoursDeductions(basicSalary, totalHoursAllowed, noPayHours);
 
                 ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
 
