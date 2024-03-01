@@ -9,3 +9,117 @@
   border-radius: 5px;
   z-index: 999;
 }
+
+.heading{
+  background-color: var(--color-primary-200);
+  height: 5vw;
+  min-height: 70px;
+  padding: 0 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  img{
+    width: 70px;
+    height: 70px;
+    margin-left: 15px;
+    cursor: pointer;
+  }
+
+  .btn-1{
+    mat-icon {
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .main-bar-profile-tag{
+    .profile-pic{
+      width: 40px;
+      height: 40px;
+      border-radius: 30%;
+      background-color: white;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-left: 10px;
+      border: 2px solid var(--color-primary-500);
+      outline: none;
+      padding: 0;
+      overflow: hidden;
+
+      img{
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .profile-tag{
+      h6, span{
+        margin: 0;
+        padding: 0;
+        color: white;
+        cursor: pointer;
+        transition: color 0.3s ease;
+
+        &:hover{
+          color: var(--color-primary-600);
+        }
+      }
+      span{
+        text-decoration: underline;
+      }
+    }
+  }
+
+  span > a{
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 13px;
+  }
+}
+
+.drawer-container {
+  width: 100%;
+
+  .drawer {
+    width: max(250px, 100px);
+    height: 100%;
+    background-color: #fff;
+
+    ul{
+      list-style: none;
+      li{
+        padding: 10px;
+        cursor: pointer;
+        color: black;
+      }
+      li:hover{
+        background-color: rgba(200,200,200,0.1);
+        color: red;
+        cursor: pointer;
+      }
+    }
+    span{
+      font-size: 12px;
+      margin-left: 20px;
+    }
+  }
+
+  mat-drawer-content {
+    width: 100%;
+    min-height: 88vh;
+  }
+
+}
+
+.fab{
+  font-size: 40px;
+  margin: 5px;
+}
+
+.p-1{
+  color: white;
+}

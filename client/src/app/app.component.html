@@ -6,7 +6,59 @@
            alt="theme" height="40" width="40">
     </button>
 
-    <router-outlet></router-outlet>
+    <div class="heading w-100 sticky-top">
+      <div class="d-flex align-items-center justify-content-center">
+        <button class="btn-1" (click)="drawer.toggle()">
+          <mat-icon>reorder</mat-icon>
+        </button>
+        <!--    <img src="./assets/images/logo.png" alt="logo" routerLink="/home">-->
+        <span class="d-none d-md-flex">Chamara Logo</span>
+      </div>
+      <div class="d-flex align-items-center justify-content-around">
+        <button class="d-flex d-sm-none btn-1" routerLink="/chat-list">
+          <mat-icon>forum</mat-icon>
+        </button>
+        <button class="d-flex d-md-none btn-1" routerLink="/news">
+          <mat-icon>chrome_reader_mode</mat-icon>
+        </button>
+        <button class="btn-1">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button class="btn-1">
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <div class="main-bar-profile-tag" *ngFor="let e of employee">
+          <div class="d-flex align-items-center">
+            <div class="profile-pic">
+              <img [src]="e.photo" alt="profile">
+            </div>
+            <div class="d-flex flex-column justify-content-between profile-tag">
+              <h6>{{e.name}}</h6>
+              <span>logout</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-drawer-container class="drawer-container main-body">
+        <mat-drawer #drawer mode="over" class="drawer">
+          <span>MENU</span>
+          <ul>
+            <li routerLink="/home">Home</li>
+            <li routerLink="/login">Login</li>
+            <li routerLink="/feed">Feed</li>
+            <li routerLink="/feed">Feed</li>
+            <li routerLink="/feed">Feed</li>
+            <li routerLink="/feed">Feed</li>
+            <li routerLink="/feed">Feed</li>
+          </ul>
+        </mat-drawer>
+        <mat-drawer-content>
+          <router-outlet></router-outlet>
+        </mat-drawer-content>
+      </mat-drawer-container>
+    </div>
   </div>
 
 </div>
