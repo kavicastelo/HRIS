@@ -23,7 +23,7 @@ export var multimediaDataStore: MultimediaModel[] = [
     file: 'https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/8f0adbcc262e9e31e887b62e48406407?_a=AQAEufR',
     title: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, aut dolore eius est eveniet unde.',
     status: 'sent',
-    likes: ['1', '2', '3'],
+    likes: ['1', '2', '3', '4', '5', '6'],
     comments: ['1', '2', '3'],
     shares: ['1', '2', '3'],
     timestamp: '2024-02-22 13:27:45',

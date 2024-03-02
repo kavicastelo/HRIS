@@ -51,17 +51,17 @@
         <div class="d-flex align-items-center">
           <div class="post-reaction d-flex align-items-center">
             <span class="clickable-span">Like</span>
-            <span class="clickable-span">({{post.likes}})</span>
+            <span class="clickable-span" (click)="openLikes(post.likers)">({{post.likes}})</span>
           </div>
           <div class="post-reaction d-flex align-items-center mx-3">
             <span class="clickable-span">Comment</span>
-            <span class="clickable-span">({{post.comments}})</span>
+            <span class="clickable-span" (click)="openComments(post.commenters)">({{post.comments}})</span>
           </div>
         </div>
         <div>
           <div class="post-reaction d-flex align-items-center">
             <span class="clickable-span">Share</span>
-            <span class="clickable-span">({{post.shares}})</span>
+            <span class="clickable-span" (click)="openShares(post.sharing)">({{post.shares}})</span>
           </div>
         </div>
       </div>
