@@ -1,0 +1,14 @@
+<div [ngClass]="{'theme-light': !isDarkMode, 'theme-dark': isDarkMode}">
+  <div class="main-body" style="min-height:300px; max-height: fit-content">
+    <h3 style="padding: 20px 20px 0 20px">Who are Contributed</h3>
+
+    <mat-dialog-content class="mat-typography" style="max-height: 70%; overflow-y: auto; overflow-x: hidden">
+      <div class="d-flex align-items-center justify-content-between" *ngFor="let e of data.data">
+        <div class="profile-image">
+          <img [src]="e.photo" alt="profile image">
+        </div>
+        <p>{{e.name}}</p>
+      </div>
+    </mat-dialog-content>
+  </div>
+</div>

@@ -36,7 +36,6 @@ import { LogInComponent } from './components/login/login.component';
     ChatListComponent,
     AnnouncementAreaComponent,
     LogInComponent
-    
   ],
     imports: [
         BrowserModule,
@@ -50,7 +49,7 @@ import { LogInComponent } from './components/login/login.component';
         MatIconModule,
         MatSidenavModule,
         MatExpansionModule
-        
+
     ],
   providers: [],
   bootstrap: [AppComponent]
