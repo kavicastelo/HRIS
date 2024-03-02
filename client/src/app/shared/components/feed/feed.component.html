@@ -51,17 +51,17 @@
         <div class="d-flex align-items-center">
           <div class="post-reaction d-flex align-items-center">
             <span class="clickable-span">Like</span>
-            <span class="clickable-span">(3)</span>
+            <span class="clickable-span">({{post.likes}})</span>
           </div>
           <div class="post-reaction d-flex align-items-center mx-3">
             <span class="clickable-span">Comment</span>
-            <span class="clickable-span">(2)</span>
+            <span class="clickable-span">({{post.comments}})</span>
           </div>
         </div>
         <div>
           <div class="post-reaction d-flex align-items-center">
             <span class="clickable-span">Share</span>
-            <span class="clickable-span">(6)</span>
+            <span class="clickable-span">({{post.shares}})</span>
           </div>
         </div>
       </div>
@@ -86,33 +86,16 @@
       </div>
 
       <div class="my-2" *ngIf="commentSection">
-        <div class="d-flex align-items-start justify-content-between">
+        <div class="my-2 d-flex align-items-start justify-content-between" *ngFor="let c of commentsForPost(post.id)">
           <div class="profile-pic">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+            <img src="{{c.userProfile}}" alt="profile image">
           </div>
           <div class="comment w-100">
             <div class="d-flex justify-content-between align-items-center">
-              <h6>John Doe</h6>
-              <p>1 day ago</p>
+              <h6>{{c.user}}</h6>
+              <p>{{c.time}}</p>
             </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, adipisci alias aliquam animi delectus, dolorum
-              eligendi illum nesciunt praesentium quia, reiciendis rerum sequi sint ullam.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="my-2" *ngIf="commentSection">
-        <div class="d-flex align-items-start justify-content-between">
-          <div class="profile-pic">
-            <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
-          </div>
-          <div class="comment w-100">
-            <div class="d-flex justify-content-between align-items-center">
-              <h6>John Doe</h6>
-              <p>1 day ago</p>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, adipisci alias aliquam animi delectus, dolorum
-              eligendi illum nesciunt praesentium quia, reiciendis rerum sequi sint ullam.</p>
+            <p>{{c.comment}}</p>
           </div>
         </div>
       </div>
