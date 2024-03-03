@@ -19,6 +19,7 @@ public class AttendanceModel {
     private String EmployeeId;
     private String InTime;
     private String OutTime;
+    private String email;
 
 
 
