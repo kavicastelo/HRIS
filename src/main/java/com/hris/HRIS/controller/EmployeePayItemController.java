@@ -349,4 +349,64 @@ public class EmployeePayItemController {
         ApiResponse apiResponse = new ApiResponse(returnMsg);
         return ResponseEntity.ok(apiResponse);
     }
+
+    @PostMapping("{email}/ETFdeductions")
+    public ResponseEntity<ApiResponse> addETFDeductions(@PathVariable String email) {
+
+        String returnMsg;
+
+        try{
+
+            String payitemName = "E.T.F. 3.0%";
+
+            List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
+
+            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double EPFDeductionAmount = 0.0;
+
+            EPFDeductionAmount = payrollModuleCalculationService.calculateEPF(basicSalary, 3.0);
+
+            ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
+
+            if(!payItemModalOptional.hasBody()){
+                PayItemModel payItemModel = new PayItemModel();
+
+                payItemModel.setItemName(payitemName);
+                payItemModel.setDescription("");
+                payItemModel.setItemType("Deletion");
+                payItemModel.setPaymentType("Variable");
+                payItemModel.setStatus("Available");
+
+                payItemController.savePayItem(payItemModel);
+            }
+
+            EmployeePayItemModel employeePayItemModel = new EmployeePayItemModel();
+
+            employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
+            employeePayItemModel.setEmail(email);
+            employeePayItemModel.setAmount(EPFDeductionAmount);
+
+            boolean isPayItemFound = false;
+
+            for(int i = 0; i < employeePayItemsList.size(); i++){
+                if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+                    isPayItemFound = true;
+                    updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
+                    break;
+                }
+            }
+
+            if(!isPayItemFound){
+                assignPayItem(employeePayItemModel);
+            }
+
+            returnMsg = "ETF deductions updated successfully.";
+
+        }catch(Exception e){
+            returnMsg = "Failed to process the received parameters.";
+        }
+
+        ApiResponse apiResponse = new ApiResponse(returnMsg);
+        return ResponseEntity.ok(apiResponse);
+    }
 }
