@@ -29,7 +29,7 @@ public class OpenUserController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @GetMapping("/gel/all")
+    @GetMapping("/get/all")
     public List<OpenUserModel> getAllUsers() {
 
         return openUserRepository.findAll();
@@ -58,10 +58,6 @@ public class OpenUserController {
             existingOpenUser.setName(openUserModel.getName());
             existingOpenUser.setEmail(openUserModel.getEmail());
             existingOpenUser.setPhone_number(openUserModel.getPhone_number());
-            existingOpenUser.setAddress(openUserModel.getAddress());
-            existingOpenUser.setGender(openUserModel.getGender());
-            existingOpenUser.setDob(openUserModel.getDob());
-            existingOpenUser.setPhoto(openUserModel.getPhoto());
 
             openUserRepository.save(existingOpenUser);
         }
@@ -79,10 +75,6 @@ public class OpenUserController {
             existingUser.setName(openUserModel.getName());
             existingUser.setEmail(openUserModel.getEmail());
             existingUser.setPhone_number(openUserModel.getPhone_number());
-            existingUser.setAddress(openUserModel.getAddress());
-            existingUser.setGender(openUserModel.getGender());
-            existingUser.setDob(openUserModel.getDob());
-            existingUser.setPhoto(openUserModel.getPhoto());
 
             openUserRepository.save(existingUser);
         }

@@ -18,8 +18,4 @@ public class OpenUserModel {
     private String name;
     private String email;
     private String phone_number;
-    private String address;
-    private String gender;
-    private String dob;
-    private String photo;
 }
