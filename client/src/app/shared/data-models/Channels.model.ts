@@ -1,7 +1,7 @@
 export interface ChannelsModel {
   id: any,
   name: any,
-  description: any,
+  description?: any,
   departmentId: any,
-  photo: any
+  photo?: any
 }
