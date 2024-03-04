@@ -1,61 +1,62 @@
-.container{
-  height: 100svh;
-  display: flex;
-  flex-direction: row;
-  /*flex-wrap: wrap-reverse;*/
-  align-items: center;
-  justify-content: center;
-  // background-image: url(../../assets/Images/Background.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  max-width: 100%; font-family: Roboto;
-  
-  
-}
-img{
-  width: 500px;
-  height: 400px;
-  opacity: 1;
-}
-
-.login_container{
-  margin-left: 300px;
-  padding: 40px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  outline: none;
-  border-radius: 30px;
-  font-family: "Roboto", sans-serif;
+/* Mobile-first approach */
+.login_container {
+  margin: 20px;
+  padding: 8%;
+  border-radius: 20px;
   background-color: whitesmoke;
   opacity: 0.9;
+  font-family: "Roboto", sans-serif;
+  font-size: smaller;
 }
 
-.login_container .text{
-  font-size: 40px;
+.container {
+  height: 100svh;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../../assets/Images/Background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: Roboto;
+}
+
+img {
+  
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.login_container .text {
+  font-size: 30px;
   font-weight: 600;
   text-align: center;
 }
-.login_container .text1{
+
+.login_container .text1 {
   font-size: 18px;
   text-align: center;
 }
 
-.login_container .text2{
+.login_container .text2 {
   font-size: 15px;
   text-align: center;
 }
 
-.login_container form .data{
+.login_container form .data {
   height: 45px;
   width: 100%;
-  margin: 40px 0 ;
-  
+  margin: 20px 0;
 }
 
-form .data label{
+form .data label {
   font-size: 18px;
 }
 
-form .data input{
+form .data input {
   height: 100%;
   width: 100%;
   padding-left: 10px;
@@ -64,26 +65,25 @@ form .data input{
   border-radius: 10px;
 }
 
-form .data input:focus{
+form .data input:focus {
   border-color: #3498db;
   border-bottom-width: 1px;
 }
 
-form .forgot-password a{
+form .forgot-password a {
   color: #3498db;
   text-decoration: none;
- 
 }
 
-form .forgot-password a:hover{
+form .forgot-password a:hover {
   text-decoration: underline;
-  
 }
 
 form .forgot-password {
   text-align: right;
 }
-.box05 button{
+
+.box05 button {
   width: 100%;
   height: 40px;
   border: none;
@@ -91,39 +91,79 @@ form .forgot-password {
   outline: none;
   font-size: 20px;
   font-weight: bold;
-  margin: 30px 0 30px 0;
+  margin: 20px 0; 
   background-color: #4285f4;
-  color: #4285f4;
   cursor: pointer;
   transition: background-color 0.5s ease;
-}
-
-.box05 button{
-  background-color: #4285f4;
   color: aliceblue;
 }
-.box05 button:hover{
+
+.box05 button:hover {
   background-color: #035dee;
   color: aliceblue;
 }
 
-
-
-form .signup-link a{
+form .signup-link a {
   color: #4285f4;
   text-decoration: none;
-  
 }
 
-form .signup-link a:hover{
+form .signup-link a:hover {
   text-decoration: underline;
-  
 }
 
 form .signup-link {
-  text-align: center; 
+  text-align: center;
 }
-.error-message{
+
+.error-message {
   font-size: small;
 }
 
+/* Desktop responsiveness */
+@media only screen and (min-width: 773px) {
+  .container {
+    height: 100vh;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  img {
+    width: 500px;
+    height: 400px;
+    box-sizing: border-box;
+    margin-right: 20px;
+    margin-bottom: 0; 
+  }
+
+  .login_container {
+    margin: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 40px;
+    width: 400px; 
+  }
+
+  .login_container .text {
+    font-size: 40px;
+  }
+
+  .login_container .text1 {
+    font-size: 18px;
+  }
+
+  .login_container .text2 {
+    font-size: 15px;
+  }
+
+  form .data {
+    margin: 40px 0;
+  }
+
+  .box05 button {
+    margin: 30px 0; 
+  }
+}
