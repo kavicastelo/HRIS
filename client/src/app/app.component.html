@@ -29,10 +29,10 @@
         </button>
         <div class="main-bar-profile-tag" *ngFor="let e of employee">
           <div class="d-flex align-items-center">
-            <div class="profile-pic">
+            <div class="profile-pic me-md-3">
               <img [src]="e.photo" alt="profile">
             </div>
-            <div class="d-flex flex-column justify-content-between profile-tag">
+            <div class="d-none d-md-flex flex-column justify-content-between profile-tag">
               <h6>{{e.name}}</h6>
               <span>logout</span>
             </div>

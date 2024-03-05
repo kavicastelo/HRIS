@@ -9,6 +9,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {NgClass, NgFor, NgIf} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
+import {Router} from "@angular/router";
 
 export interface DialogData {
   animal: string;
@@ -35,7 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   employee: any
 
   constructor(
-    private themeService: ThemeService, private dialog: MatDialog,) {
+    private themeService: ThemeService, private dialog: MatDialog, private router: Router) {
     this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
     });

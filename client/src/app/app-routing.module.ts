@@ -8,6 +8,9 @@ import {FeedComponent} from "./shared/components/feed/feed.component";
 import { LogInComponent } from './components/login/login.component';
 import {ChatListComponent} from "./shared/components/chat-list/chat-list.component";
 import {AnnouncementAreaComponent} from "./shared/components/announcement-area/announcement-area.component";
+import {ProfileAboutComponent} from "./shared/components/profile/profile-about/profile-about.component";
+import {ProfilePostsComponent} from "./shared/components/profile/profile-posts/profile-posts.component";
+import {ProfileActivityComponent} from "./shared/components/profile/profile-activity/profile-activity.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -18,7 +21,12 @@ const routes: Routes = [
   ]},
   { path: 'chat-list', component: ChatListComponent },
   { path: 'news', component: AnnouncementAreaComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, children: [
+    { path: '', redirectTo: '/profile/about', pathMatch: 'full' },
+    { path: 'about/:id', component: ProfileAboutComponent },
+    { path: 'posts/:id', component: ProfilePostsComponent },
+    { path: 'activity/:id', component: ProfileActivityComponent },
+  ]},
   { path: 'login', component: LogInComponent},
   { path: '**', component:NotFoundComponent },
 
