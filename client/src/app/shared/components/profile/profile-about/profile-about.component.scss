@@ -1,0 +1,27 @@
+.card{
+  .list-group{
+    background-color: var(--color-surface-mixed-200);
+    .list-group-item{
+      background-color: var(--color-surface-mixed-200);
+
+      h5{
+        margin: 0;
+      }
+
+      .list-1, .list-2{
+        list-style: none;
+
+        li{
+          font-weight: 500;
+          padding: 7px 0;
+        }
+      }
+
+      .list-1{
+        li{
+          color: var(--color-text-300);
+        }
+      }
+    }
+  }
+}
