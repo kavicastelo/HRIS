@@ -1,1 +1,40 @@
-<p>profile-about works!</p>
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5>Profile Details</h5>
+        <button class="btn-1"><mat-icon>create</mat-icon>&nbsp;<div class="d-none d-md-flex">Edit Profile</div></button>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div *ngFor="let e of employee">
+        <div class="d-flex align-items-center justify-content-between" style="max-width: 400px">
+          <ul class="list-1">
+            <li><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;Full Name</li>
+            <li><i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;&nbsp;DOB</li>
+            <li><i class="fa fa-phone" aria-hidden="true"></i> &nbsp;&nbsp;NIC</li>
+            <li><i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;&nbsp;Address</li>
+            <li><i class="fa fa-building" aria-hidden="true"></i> &nbsp;&nbsp;Email</li>
+            <li><i class="fa fa-compass" aria-hidden="true"></i> &nbsp;&nbsp;Phone</li>
+            <li><i class="fa fa-briefcase" aria-hidden="true"></i> &nbsp;&nbsp;Department</li>
+            <li><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;&nbsp;Joined Date</li>
+            <li><i class="fa fa-genderless" aria-hidden="true"></i> &nbsp;&nbsp;Status</li>
+          </ul>
+
+          <ul class="list-2">
+            <li><span>{{e.name}}</span></li>
+            <li><span>{{e.dob}}</span></li>
+            <li><span>{{e.nic}}</span></li>
+            <li><span>{{e.address}}</span></li>
+            <li><span>{{e.email}}</span></li>
+            <li><span>{{e.phone}}</span></li>
+            <li><span>{{e.jobData.department}}</span></li>
+            <li><span>{{e.jobData.doj}}</span></li>
+            <li><span>{{e.status}}</span></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li class="list-group-item">&nbsp;</li>
+  </ul>
+</div>
