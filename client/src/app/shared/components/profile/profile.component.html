@@ -1,62 +1,88 @@
-<div class="container">
-  <div class="row card">
-    <div class="col" style="position: relative">
-      <div class="w-100 d-flex flex-column align-items-center justify-content-center profile-cover">
-        <img src="https://visualwilderness.com/wp-content/uploads/2013/11/canada_3081-710x270.jpg" alt="profile cover">
-      </div>
+<div class="row card mt-0">
+  <div class="col" style="position: relative">
+    <div class="w-100 d-flex flex-column align-items-center justify-content-center profile-cover">
+      <img src="https://visualwilderness.com/wp-content/uploads/2013/11/canada_3081-710x270.jpg" alt="profile cover">
+    </div>
 
-      <div class="d-md-flex w-100" *ngFor="let e of employee">
+    <div class="container">
+      <div *ngFor="let e of employee">
         <div class="profile-img">
           <img [src]="e.photo" alt="profile image">
         </div>
 
-        <div class="profile-name">
-          <h1>{{e.name}}</h1>
-          <h5>{{e.jobData.department}}</h5>
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="profile-name">
+            <h3>{{e.name}}</h3>
+            <h6>{{e.jobData.position}}</h6>
+          </div>
+          <button class="btn-1"><mat-icon>power_settings_new</mat-icon> &nbsp;Logout</button>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <hr>
+      </div>
+    </div>
 
-  <div class="row" *ngFor="let e of employee">
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card-2">
-        <h4>Info</h4>
-        <ul>
-          <li><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;{{e.name}}</li>
-          <li><i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;&nbsp;{{e.email}}</li>
-          <li><i class="fa fa-phone" aria-hidden="true"></i> &nbsp;&nbsp;{{e.phone}}</li>
-          <li><i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;&nbsp;{{e.address}}</li>
-          <li><i class="fa fa-building" aria-hidden="true"></i> &nbsp;&nbsp;Organization</li>
-          <li><i class="fa fa-compass" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.department}}</li>
-          <li><i class="fa fa-briefcase" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.position}}</li>
-          <li><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.salary}}</li>
-          <li><i class="fa fa-genderless" aria-hidden="true"></i> &nbsp;&nbsp;{{e.gender}}</li>
-          <li><i class="fa fa-birthday-cake" aria-hidden="true"></i> &nbsp;&nbsp;{{e.dob}}</li>
-          <li><span>Joined on: {{e.jobData.doj}}</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-8">
-      <div class="card-2">
-        <div class="d-flex align-items-center justify-content-around">
-          <div class="posting-item" (click)="openVideoDialog()">
-            <span><i class="fa fa-file-video-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Video</span>
-          </div>
-          <div class="vr"></div>
-          <div class="posting-item">
-            <span><i class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Image</span>
-          </div>
-          <div class="d-none d-lg-flex" style="width: 100%">
-            <div class="vr"></div>
-            <div class="posting-item">
-              <span><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Text</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
+</div>
+
+<div class="container">
+
+  <ul class="nav nav-pills my-3">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" routerLink="/profile/about"><mat-icon>face</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Overview</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/profile/posts"><mat-icon>share</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Posts</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/profile/activity"><mat-icon>favorite_border</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Activity</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" aria-disabled="true">menu 4</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" aria-disabled="true">menu 5</a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
+
+<!--  <div class="row" *ngFor="let e of employee">-->
+<!--    <div class="col-12 col-md-6 col-lg-4">-->
+<!--      <div class="card-2">-->
+<!--        <h4>Info</h4>-->
+<!--        <ul>-->
+<!--          <li><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;{{e.name}}</li>-->
+<!--          <li><i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;&nbsp;{{e.email}}</li>-->
+<!--          <li><i class="fa fa-phone" aria-hidden="true"></i> &nbsp;&nbsp;{{e.phone}}</li>-->
+<!--          <li><i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;&nbsp;{{e.address}}</li>-->
+<!--          <li><i class="fa fa-building" aria-hidden="true"></i> &nbsp;&nbsp;Organization</li>-->
+<!--          <li><i class="fa fa-compass" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.department}}</li>-->
+<!--          <li><i class="fa fa-briefcase" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.position}}</li>-->
+<!--          <li><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.salary}}</li>-->
+<!--          <li><i class="fa fa-genderless" aria-hidden="true"></i> &nbsp;&nbsp;{{e.gender}}</li>-->
+<!--          <li><i class="fa fa-birthday-cake" aria-hidden="true"></i> &nbsp;&nbsp;{{e.dob}}</li>-->
+<!--          <li><span>Joined on: {{e.jobData.doj}}</span></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="col-12 col-md-6 col-lg-8">-->
+<!--      <div class="card-2">-->
+<!--        <div class="d-flex align-items-center justify-content-around">-->
+<!--          <div class="posting-item" (click)="openVideoDialog()">-->
+<!--            <span><i class="fa fa-file-video-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Video</span>-->
+<!--          </div>-->
+<!--          <div class="vr"></div>-->
+<!--          <div class="posting-item">-->
+<!--            <span><i class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Image</span>-->
+<!--          </div>-->
+<!--          <div class="d-none d-lg-flex" style="width: 100%">-->
+<!--            <div class="vr"></div>-->
+<!--            <div class="posting-item">-->
+<!--              <span><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Text</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 </div>
