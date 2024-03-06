@@ -1,12 +1,13 @@
 /* Mobile-first approach */
 .login_container {
-  margin: 20px;
+  margin: 0 20px 0 20px;
   padding: 8%;
   border-radius: 20px;
   background-color: whitesmoke;
   opacity: 0.9;
   font-family: "Roboto", sans-serif;
-  font-size: smaller;
+  font-size: clamp( 14px, 2vw, 20px)
+ 
 }
 
 .container {
@@ -16,51 +17,54 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url(../../assets/Images/Background.jpg);
+ // background-image: url(../../assets/Images/Background.jpg);
   background-repeat: no-repeat;
   background-size: cover;
-  font-family: Roboto;
+
+ 
+
 }
 
 img {
   
   width: 100%;
-  max-width: 500px;
+  max-width: clamp(200px, 45vw , 500px);
   height: auto;
   margin-bottom: 20px;
+  
 }
 
 .login_container .text {
-  font-size: 30px;
+  font-size: clamp( 20px, 8vw, 30px);
   font-weight: 600;
   text-align: center;
 }
 
 .login_container .text1 {
-  font-size: 18px;
+  font-size: clamp( 14px, 2vw, 20px);
   text-align: center;
 }
 
 .login_container .text2 {
-  font-size: 15px;
+  font-size: clamp( 14px, 2vw, 20px);
   text-align: center;
 }
 
 .login_container form .data {
   height: 45px;
   width: 100%;
-  margin: 20px 0;
+  margin: 30px 0;
 }
 
 form .data label {
-  font-size: 18px;
+  font-size: clamp( 14px, 2vw, 20px);
 }
 
 form .data input {
   height: 100%;
   width: 100%;
   padding-left: 10px;
-  font-size: 17px;
+  font-size: clamp( 14px, 2vw, 20px);
   border: 1px solid silver;
   border-radius: 10px;
 }
@@ -89,7 +93,7 @@ form .forgot-password {
   border: none;
   border-radius: 20px;
   outline: none;
-  font-size: 20px;
+  font-size: clamp( 14px, 2vw, 20px);
   font-weight: bold;
   margin: 20px 0; 
   background-color: #4285f4;
@@ -117,11 +121,15 @@ form .signup-link {
 }
 
 .error-message {
-  font-size: small;
+  font-size: clamp( 14px, 2vw, 16px);
+}
+br{
+  box-sizing: border-box;
+  padding: 40px;
 }
 
 /* Desktop responsiveness */
-@media only screen and (min-width: 773px) {
+@media only screen and (min-width: 768px) {
   .container {
     height: 100vh;
     max-width: 100%;
@@ -132,31 +140,30 @@ form .signup-link {
   }
 
   img {
-    width: 500px;
-    height: 400px;
+    max-width: clamp(200px, 45vw , 500px);
+    height: auto;
     box-sizing: border-box;
-    margin-right: 20px;
-    margin-bottom: 0; 
+    margin: 0 20px;
+    
   }
 
   .login_container {
     margin: 0;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: 0 20px 0 20px;
     padding: 40px;
     width: 400px; 
   }
 
   .login_container .text {
-    font-size: 40px;
+    font-size: clamp( 20px, 8vw, 47px);
   }
 
   .login_container .text1 {
-    font-size: 18px;
+    font-size: clamp( 14px, 2vw, 20px);
   }
 
   .login_container .text2 {
-    font-size: 15px;
+    font-size: clamp( 14px, 2vw, 20px);
   }
 
   form .data {
