@@ -15,14 +15,14 @@
             <div class="data">
               <label for="password">Password</label>
               <input type="password" id="password" name="password" [(ngModel)]="password"  placeholder="enter your password" required>
-              <div *ngIf="password.length < 4 "   class="error-message">Password must be at least 8 characters long
+              <div *ngIf="password.length < 8 "   class="error-message">Password must be at least 8 characters long
               </div>
-            </div><br/><br/>
+            </div><br/>
             <div class="forgot-password">
               <a href="#">Forgot Password?</a>
             </div>
             <div class="box05">
-              <button class="button" type="submit" (onclick)="login()">LogIn</button>
+              <button class="button" type="submit" (click)="login()">LogIn</button>
             </div>
 
 
@@ -36,5 +36,3 @@
         </form>
   </div>
 </div>
-
-<!-- thawa monawd aul -->
