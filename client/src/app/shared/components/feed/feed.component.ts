@@ -11,6 +11,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {Subscription} from "rxjs";
 import {ThemeService} from "../../../services/theme.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-feed',
@@ -30,6 +32,7 @@ export class FeedComponent implements OnInit {
     {
       id: '',
       user: '',
+      userId: '',
       userPosition: '',
       userPhoto: '',
       time: '',
@@ -48,6 +51,7 @@ export class FeedComponent implements OnInit {
     {
       id: '',
       user: '',
+      userId: '',
       userProfile: '',
       comment: '',
       time: '',
@@ -59,7 +63,7 @@ export class FeedComponent implements OnInit {
 
   userId:string = "3";
 
-  constructor(private themeService: ThemeService, private dialog: MatDialog,) {
+  constructor(private themeService: ThemeService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute, private logger: NGXLogger) {
   }
 
   ngOnInit(): void {
@@ -89,6 +93,7 @@ export class FeedComponent implements OnInit {
           this.feedPost.push({
             id: feed.id,
             user: emp.name,
+            userId: emp.id,
             userPosition: emp.jobData.position,
             userPhoto: emp.photo,
             time: feed.timestamp,
@@ -117,6 +122,7 @@ export class FeedComponent implements OnInit {
       return {
         id: comment.id,
         user: user ? user.name : '',
+        userId: user ? user.id : '',
         userProfile: user ? user.photo : '',
         comment: comment.comment,
         time: comment.timestamp,
@@ -172,6 +178,9 @@ export class FeedComponent implements OnInit {
     })
   }
 
+  navigateUrl(id:any) {
+    this.router.navigate([`/profile/${id}/about/${id}`]);
+  }
 }
 
 

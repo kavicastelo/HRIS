@@ -21,8 +21,8 @@ const routes: Routes = [
   ]},
   { path: 'chat-list', component: ChatListComponent },
   { path: 'news', component: AnnouncementAreaComponent },
-  { path: 'profile', component: ProfileComponent, children: [
-    { path: '', redirectTo: '/profile/about', pathMatch: 'full' },
+  { path: 'profile/:id', component: ProfileComponent, children: [
+    { path: '', redirectTo: '/profile/:id/about/:id', pathMatch: 'full' },
     { path: 'about/:id', component: ProfileAboutComponent },
     { path: 'posts/:id', component: ProfilePostsComponent },
     { path: 'activity/:id', component: ProfileActivityComponent },
