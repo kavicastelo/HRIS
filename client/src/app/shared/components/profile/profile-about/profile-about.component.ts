@@ -28,7 +28,6 @@ export class ProfileAboutComponent implements OnInit {
 
         if (emp.id == this.userId) {
           this.employee = [emp];
-          this.logger.info(emp)
         }
       })
     })

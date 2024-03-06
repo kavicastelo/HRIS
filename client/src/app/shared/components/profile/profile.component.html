@@ -1,7 +1,7 @@
 <div class="row card mt-0">
   <div class="col" style="position: relative">
     <div class="w-100 d-flex flex-column align-items-center justify-content-center profile-cover">
-      <img src="https://visualwilderness.com/wp-content/uploads/2013/11/canada_3081-710x270.jpg" alt="profile cover">
+      <img [src]="randomCoverImage()" alt="profile cover">
     </div>
 
     <div class="container">
@@ -28,13 +28,13 @@
 
   <ul class="nav nav-pills my-3">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" routerLink="/profile/about"><mat-icon>face</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Overview</span></a>
+      <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('about')"><mat-icon>face</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Overview</span></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/profile/posts"><mat-icon>share</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Posts</span></a>
+      <a class="nav-link" (click)="navigateBetweenTabs('posts')"><mat-icon>share</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Posts</span></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/profile/activity"><mat-icon>favorite_border</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Activity</span></a>
+      <a class="nav-link" (click)="navigateBetweenTabs('activity')"><mat-icon>favorite_border</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-block">Activity</span></a>
     </li>
     <li class="nav-item">
       <a class="nav-link disabled" aria-disabled="true">menu 4</a>
