@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {channelsDataStore} from "../../data-stores/channels-data-store";
+import {MultimediaService} from "../../../services/multimedia.service";
 
 @Component({
   selector: 'app-chat-list',
@@ -12,7 +13,13 @@ export class ChatListComponent implements OnInit {
   employeeDataStore = employeeDataStore;
   channelsDataStore = channelsDataStore;
 
+  constructor(private multimediaService: MultimediaService) {
+  }
   ngOnInit(): void {
+    // convert base64 images to safe urls
+    // this.employeeDataStore.forEach(emp => {
+    //   emp.photo = this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg');
+    // })
   }
 
 }

@@ -18,7 +18,7 @@
       <div class="direct-messages-chat-area">
         <div class="chat-wrapper" *ngFor="let e of employeeDataStore">
           <div class="chat-icon">
-            <img src="{{e.photo}}" alt="profile">
+            <img [src]="e.photo" alt="profile">
           </div>
           <div class="chat-content">
             <h6>{{e.name}}</h6>
