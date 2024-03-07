@@ -72,7 +72,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/overtime-payment")
+    @PostMapping("/{email}/overtime-payment")
     public ResponseEntity<ApiResponse> addOvertimePayments(@PathVariable String email, @RequestBody String requestBody) {
         
         ObjectMapper objectMapper = new ObjectMapper();
@@ -143,7 +143,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/late-min-deduction")
+    @PostMapping("/{email}/late-min-deduction")
     public ResponseEntity<ApiResponse> addLateMinuteDeductions(@PathVariable String email, @RequestBody String requestBody) {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -210,7 +210,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/nopay-hours-deduction")
+    @PostMapping("/{email}/nopay-hours-deduction")
     public ResponseEntity<ApiResponse> addNoPayHoursDeductions(@PathVariable String email, @RequestBody String requestBody) {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -284,7 +284,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/EPFdeductions")
+    @PostMapping("/{email}/EPFdeductions")
     public ResponseEntity<ApiResponse> addEPFDeductions(@PathVariable String email) {
 
         String returnMsg;
@@ -350,7 +350,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/ETFdeductions")
+    @PostMapping("/{email}/ETFdeductions")
     public ResponseEntity<ApiResponse> addETFDeductions(@PathVariable String email) {
 
         String returnMsg;
