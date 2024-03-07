@@ -1,5 +1,10 @@
 package com.hris.HRIS.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,7 +23,7 @@ public class QuizModel {
     private String moduleId;
     private String quizName;
     private String quizDescription;
-    private Object questions;
+    private List<String> questions;
     private String noOfAttempts;
     private Double maximumGradeAllowed; // 20% etc...
     private Boolean isRandomized;

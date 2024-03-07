@@ -44,6 +44,9 @@ public class PayrollReportsGenerationService {
         double amount = 0.0;
         double deductedAmount = 0.0;
 
+        employeePayItemController.addEPFDeductions(email);
+        employeePayItemController.addETFDeductions(email);
+
         // Calculate earnings for the pay items.
         for(int i = 0; i < employeePayItemsList.size(); i++){
             PayItemModel payItemModel = payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody();

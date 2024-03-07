@@ -28,13 +28,13 @@ public class PayrollModuleCalculationService {
 
     public Double calculateEPF(double basicSalary, double EPF_rate){
 
-        return basicSalary * EPF_rate;
+        return basicSalary * (EPF_rate/100);
 
     }
 
     public Double calculateETF(double basicSalary, double ETF_rate){
 
-        return basicSalary * ETF_rate;
+        return basicSalary * (ETF_rate/100);
         
     }
 }

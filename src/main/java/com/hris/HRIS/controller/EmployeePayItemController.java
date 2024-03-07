@@ -5,13 +5,14 @@ import com.hris.HRIS.model.EmployeePayItemModel;
 import com.hris.HRIS.model.PayItemModel;
 import com.hris.HRIS.repository.EmployeePayItemRepository;
 import com.hris.HRIS.service.PayrollModuleCalculationService;
-import com.hris.HRIS.service.PayrollReportsGenerationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -71,7 +72,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/overtime-payment")
+    @PostMapping("/{email}/overtime-payment")
     public ResponseEntity<ApiResponse> addOvertimePayments(@PathVariable String email, @RequestBody String requestBody) {
         
         ObjectMapper objectMapper = new ObjectMapper();
@@ -142,7 +143,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/late-min-deduction")
+    @PostMapping("/{email}/late-min-deduction")
     public ResponseEntity<ApiResponse> addLateMinuteDeductions(@PathVariable String email, @RequestBody String requestBody) {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -209,7 +210,7 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("{email}/nopay-hours-deduction")
+    @PostMapping("/{email}/nopay-hours-deduction")
     public ResponseEntity<ApiResponse> addNoPayHoursDeductions(@PathVariable String email, @RequestBody String requestBody) {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -276,6 +277,132 @@ public class EmployeePayItemController {
 
         } catch (Exception e) {
             
+            returnMsg = "Failed to process the received parameters.";
+        }
+
+        ApiResponse apiResponse = new ApiResponse(returnMsg);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/{email}/EPFdeductions")
+    public ResponseEntity<ApiResponse> addEPFDeductions(@PathVariable String email) {
+
+        String returnMsg;
+
+        Map<String, Double> payitemNamesList = new HashMap<>();
+        payitemNamesList.put("E.P.F. 10.0%", 10.00);
+        payitemNamesList.put("E.P.F. 15.0%", 15.00);
+
+        try{
+            for(Map.Entry<String, Double> payitemNameEntry : payitemNamesList.entrySet()){
+
+                String payitemName = payitemNameEntry.getKey();
+
+                List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
+
+                Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+                Double EPFDeductionAmount = 0.0;
+
+                EPFDeductionAmount = payrollModuleCalculationService.calculateEPF(basicSalary, payitemNameEntry.getValue());
+
+                ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
+
+                if(!payItemModalOptional.hasBody()){
+                    PayItemModel payItemModel = new PayItemModel();
+
+                    payItemModel.setItemName(payitemName);
+                    payItemModel.setDescription("");
+                    payItemModel.setItemType("Deletion");
+                    payItemModel.setPaymentType("Variable");
+                    payItemModel.setStatus("Available");
+
+                    payItemController.savePayItem(payItemModel);
+                }
+
+                EmployeePayItemModel employeePayItemModel = new EmployeePayItemModel();
+
+                employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
+                employeePayItemModel.setEmail(email);
+                employeePayItemModel.setAmount(EPFDeductionAmount);
+
+                boolean isPayItemFound = false;
+
+                for(int i = 0; i < employeePayItemsList.size(); i++){
+                    if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+                        isPayItemFound = true;
+                        updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
+                        break;
+                    }
+                }
+
+                if(!isPayItemFound){
+                    assignPayItem(employeePayItemModel);
+                }
+            }
+
+            returnMsg = "EPF deductions updated successfully.";
+
+        }catch(Exception e){
+            returnMsg = "Failed to process the received parameters.";
+        }
+
+        ApiResponse apiResponse = new ApiResponse(returnMsg);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/{email}/ETFdeductions")
+    public ResponseEntity<ApiResponse> addETFDeductions(@PathVariable String email) {
+
+        String returnMsg;
+
+        try{
+
+            String payitemName = "E.T.F. 3.0%";
+
+            List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
+
+            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double EPFDeductionAmount = 0.0;
+
+            EPFDeductionAmount = payrollModuleCalculationService.calculateEPF(basicSalary, 3.0);
+
+            ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
+
+            if(!payItemModalOptional.hasBody()){
+                PayItemModel payItemModel = new PayItemModel();
+
+                payItemModel.setItemName(payitemName);
+                payItemModel.setDescription("");
+                payItemModel.setItemType("Deletion");
+                payItemModel.setPaymentType("Variable");
+                payItemModel.setStatus("Available");
+
+                payItemController.savePayItem(payItemModel);
+            }
+
+            EmployeePayItemModel employeePayItemModel = new EmployeePayItemModel();
+
+            employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
+            employeePayItemModel.setEmail(email);
+            employeePayItemModel.setAmount(EPFDeductionAmount);
+
+            boolean isPayItemFound = false;
+
+            for(int i = 0; i < employeePayItemsList.size(); i++){
+                if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+                    isPayItemFound = true;
+                    updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
+                    break;
+                }
+            }
+
+            if(!isPayItemFound){
+                assignPayItem(employeePayItemModel);
+            }
+
+            returnMsg = "ETF deductions updated successfully.";
+
+        }catch(Exception e){
             returnMsg = "Failed to process the received parameters.";
         }
 
