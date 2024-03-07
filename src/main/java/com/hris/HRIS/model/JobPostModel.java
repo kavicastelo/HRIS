@@ -22,5 +22,15 @@ public class JobPostModel {
 
     private String technical_requirements;
 
+    private String education_requirements;
+
+    private String responsibilities;
+
+    private String experience_level;
+
+    private String end_date;
+
+    private String contact_email;
+    
     private String description;
 }
