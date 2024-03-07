@@ -13,6 +13,7 @@ import {Subscription} from "rxjs";
 import {ThemeService} from "../../../services/theme.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
+import {MultimediaService} from "../../../services/multimedia.service";
 
 @Component({
   selector: 'app-feed',
@@ -38,6 +39,7 @@ export class FeedComponent implements OnInit {
       time: '',
       message: '',
       file: '',
+      type: '',
       likes: '',
       likers: '',
       comments: '',
@@ -63,7 +65,12 @@ export class FeedComponent implements OnInit {
 
   userId:string = "3";
 
-  constructor(private themeService: ThemeService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute, private logger: NGXLogger) {
+  constructor(private themeService: ThemeService,
+              private dialog: MatDialog,
+              private router: Router,
+              private multimediaService: MultimediaService,
+              private route: ActivatedRoute,
+              private logger: NGXLogger) {
   }
 
   ngOnInit(): void {
@@ -98,7 +105,8 @@ export class FeedComponent implements OnInit {
             userPhoto: emp.photo,
             time: feed.timestamp,
             message: feed.title,
-            file: feed.file,
+            file: this.multimediaService.convertToSafeUrl(feed.file, feed.contentType),
+            type: feed.contentType,
             likes: feed.likes.length,
             likers: feed.likes,
             comments: feed.comments.length,

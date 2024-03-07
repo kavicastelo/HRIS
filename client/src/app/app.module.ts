@@ -26,6 +26,7 @@ import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
 import { ProfileAboutComponent } from './shared/components/profile/profile-about/profile-about.component';
 import { ProfileActivityComponent } from './shared/components/profile/profile-activity/profile-activity.component';
 import { ProfilePostsComponent } from './shared/components/profile/profile-posts/profile-posts.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ProfilePostsComponent } from './shared/components/profile/profile-posts
     MatIconModule,
     MatSidenavModule,
     MatExpansionModule,
+    HttpClientModule,
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG})
   ],
   providers: [],

@@ -44,7 +44,10 @@
       </div>
 
       <div class="posted-content">
-        <img src="{{post.file}}" alt="post">
+        <img [src]="post.file" alt="post" *ngIf="post.type == 'image/jpeg'">
+        <video [src]="post.file" controls *ngIf="post.type == 'video/mp4'" style="width: 100%">
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       <div class="my-3 d-flex align-items-center justify-content-between" *ngIf="commentSection">

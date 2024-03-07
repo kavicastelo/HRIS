@@ -3,6 +3,7 @@ import {environment} from "../../environments/environment.development";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {MultimediaModel} from "../shared/data-models/Multimedia.model";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,12 @@ export class MultimediaService {
 
   baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) { }
+
+  convertToSafeUrl(base64: string, contentType: string): SafeResourceUrl {
+    const dataUrl = `data:${contentType};base64,${base64}`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(dataUrl);
+  }
 
   public addMultimediaPhoto(title: string, file: File): Observable<any> {
     const formData: FormData = new FormData();
