@@ -23,6 +23,9 @@ import {AnnouncementAreaComponent} from './shared/components/announcement-area/a
 import {MatExpansionModule} from "@angular/material/expansion";
 import {LogInComponent} from './components/login/login.component';
 import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
+import { ProfileAboutComponent } from './shared/components/profile/profile-about/profile-about.component';
+import { ProfileActivityComponent } from './shared/components/profile/profile-activity/profile-activity.component';
+import { ProfilePostsComponent } from './shared/components/profile/profile-posts/profile-posts.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
     FeedComponent,
     ChatListComponent,
     AnnouncementAreaComponent,
-    LogInComponent
+    LogInComponent,
+    ProfileAboutComponent,
+    ProfileActivityComponent,
+    ProfilePostsComponent
   ],
   imports: [
     BrowserModule,

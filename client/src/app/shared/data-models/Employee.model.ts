@@ -10,6 +10,7 @@ export interface EmployeeModel {
   jobData: any;
   gender: any;
   dob: any;
+  nic: any;
   photo?: any;
   status?: any;
   level: any;

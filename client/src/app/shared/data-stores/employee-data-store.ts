@@ -24,6 +24,7 @@ export var employeeDataStore: EmployeeModel[] = [
     },
     gender: 'male',
     dob: '1994-02-20',
+    nic: '123456789V',
     photo: 'https://pics.craiyon.com/2023-06-29/ad19251966494bf6831d73b890882855.webp',
     status: 'onboarding',
     level: '1'
@@ -51,6 +52,7 @@ export var employeeDataStore: EmployeeModel[] = [
     },
     gender: 'male',
     dob: '1994-02-20',
+    nic: '123456789V',
     photo: 'https://wallpaperswide.com/download/sad_anime_girl-wallpaper-1280x1280.jpg',
     status: 'onboarding',
     level: '1'
@@ -78,6 +80,7 @@ export var employeeDataStore: EmployeeModel[] = [
     },
     gender: 'male',
     dob: '1994-02-20',
+    nic: '123456789V',
     photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk7Q9BvQTrqeJfFg9BRWZhrhCBNpWIEGfcoVsk2FXNRw&s',
     status: 'onboarding',
     level: '1'
@@ -105,6 +108,7 @@ export var employeeDataStore: EmployeeModel[] = [
     },
     gender: 'male',
     dob: '1994-02-20',
+    nic: '123456789V',
     photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF4CB0Yn2Y5wkvTEgTYOEtLCVmh_SAV07n2rf3vayJPTeyqzfcUv8GrmFptUk9f5GfTsM&usqp=CAU',
     status: 'onboarding',
     level: '1'
@@ -132,6 +136,7 @@ export var employeeDataStore: EmployeeModel[] = [
     },
     gender: 'male',
     dob: '1994-02-20',
+    nic: '123456789V',
     photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScfQGTeS_ttOzRdLUnY503fVHSq7Nez3E7ViQo0ltg6k7aodMVer1qRKSuErMlU5rvlRc&usqp=CAU',
     status: 'onboarding',
     level: '1'
@@ -159,6 +164,7 @@ export var employeeDataStore: EmployeeModel[] = [
     },
     gender: 'male',
     dob: '1994-02-20',
+    nic: '123456789V',
     photo: 'https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/fca4c23e-d87b-465b-842e-a636e2bb0a01/width=450/58870-595611325-_lora_yangmi2_0.92_lbw=1,0,0,0,1,1,0,0,1,1,1,1,1,1,1,1,1_yangmi%20face,yangmi%20body,good%20hands,perfect%20hands,_1girl,%20earrings,%20long.jpeg',
     status: 'onboarding',
     level: '1'

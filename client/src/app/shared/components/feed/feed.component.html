@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="share-post d-flex w-100">
         <div class="profile-pic">
-          <img [src]="employee[0].photo" alt="profile image">
+          <img [src]="employee[0].photo" alt="profile image" (click)="navigateUrl(employee[0].id)">
         </div>
         <div class="form-floating w-100">
           <textarea class="form-control" placeholder="" id="share-post" style="height: 80px; width: 100%"></textarea>
@@ -29,11 +29,11 @@
     <div class="card-body">
       <div class="author-wrapper d-flex align-items-center justify-content-start">
         <div class="profile-pic">
-          <img src="{{post.userPhoto}}" alt="profile image">
+          <img src="{{post.userPhoto}}" alt="profile image" (click)="navigateUrl(post.userId)">
         </div>
         <div class="author-name d-flex flex-column">
           <div class="d-flex align-items-center">
-            <h6>{{post.user}}</h6> &nbsp;&dot;&nbsp; <p>{{post.time}}</p>
+            <h6 (click)="navigateUrl(post.userId)">{{post.user}}</h6> &nbsp;&dot;&nbsp; <p>{{post.time}}</p>
           </div>
           <p>{{post.userPosition}}</p>
         </div>
@@ -88,11 +88,11 @@
       <div class="my-2" *ngIf="commentSection">
         <div class="my-2 d-flex align-items-start justify-content-between" *ngFor="let c of commentsForPost(post.id)">
           <div class="profile-pic">
-            <img src="{{c.userProfile}}" alt="profile image">
+            <img src="{{c.userProfile}}" alt="profile image" (click)="navigateUrl(c.userId)">
           </div>
           <div class="comment w-100">
             <div class="d-flex justify-content-between align-items-center">
-              <h6>{{c.user}}</h6>
+              <h6 (click)="c.userId">{{c.user}}</h6>
               <p>{{c.time}}</p>
             </div>
             <p>{{c.comment}}</p>

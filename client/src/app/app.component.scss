@@ -40,7 +40,7 @@
       border-radius: 30%;
       background-color: white;
       cursor: pointer;
-      margin-right: 10px;
+      //margin-right: 10px;
       margin-left: 10px;
       border: 2px solid var(--color-primary-500);
       outline: none;
@@ -110,7 +110,7 @@
 
   mat-drawer-content {
     width: 100%;
-    min-height: 88vh;
+    min-height: calc(100vh - 70px);
   }
 
 }
