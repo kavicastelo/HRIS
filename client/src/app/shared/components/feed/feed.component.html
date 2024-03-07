@@ -51,17 +51,17 @@
         <div class="d-flex align-items-center">
           <div class="post-reaction d-flex align-items-center">
             <span class="clickable-span">Like</span>
-            <span class="clickable-span" (click)="openLikes(post.likers)">({{post.likes}})</span>
+            <span class="clickable-span" (click)="openLikes(post.likers)">&nbsp;({{post.likes}})</span>
           </div>
           <div class="post-reaction d-flex align-items-center mx-3">
             <span class="clickable-span">Comment</span>
-            <span class="clickable-span" (click)="openComments(post.commenters)">({{post.comments}})</span>
+            <span class="clickable-span" (click)="openComments(post.commenters)">&nbsp;({{post.comments}})</span>
           </div>
         </div>
         <div>
           <div class="post-reaction d-flex align-items-center">
             <span class="clickable-span">Share</span>
-            <span class="clickable-span" (click)="openShares(post.sharing)">({{post.shares}})</span>
+            <span class="clickable-span" (click)="openShares(post.sharing)">&nbsp;({{post.shares}})</span>
           </div>
         </div>
       </div>
@@ -71,10 +71,10 @@
           <img [src]="employee[0].photo" alt="profile image">
         </div>
         <div class="d-flex flex-column w-100">
-          <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="commentAreaLink">
             <div class="form-floating w-100">
-              <textarea class="form-control" placeholder="" id="comment-post" style="height: 60px; width: 100%"></textarea>
-              <label for="comment-post">Add a Comment...</label>
+              <textarea class="form-control" placeholder="Add a Comment..." id="comment-post" style="height: 60px; width: 100%"></textarea>
+              <label for="comment-post"></label>
             </div>
           </a>
           <div class="collapse" id="collapseExample">

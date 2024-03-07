@@ -1,15 +1,22 @@
-.profile-image{
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 10px;
+.user{
+  .profile-image{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
 
-  img{
-    width: 100%;
+    img{
+      width: 100%;
+    }
+  }
+
+  p{
+    margin: 0;
   }
 
   &:hover{
     cursor: pointer;
   }
 }
+
