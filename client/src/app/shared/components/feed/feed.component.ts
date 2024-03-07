@@ -196,9 +196,14 @@ export class PopingListComponent {
   isDarkMode: boolean | undefined;
 
 
-  constructor(private themeService: ThemeService, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {data: any[]}) {
+  constructor(private themeService: ThemeService, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {data: any[]}, public router: Router) {
     this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
     });
+  }
+
+  navigateToProfile(id:any) {
+    this.dialog.closeAll();
+    this.router.navigate([`/profile/${id}/about/${id}`]);
   }
 }

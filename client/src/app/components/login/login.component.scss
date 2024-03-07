@@ -23,7 +23,7 @@
   overflow-y: auto;
 
   .text {
-    font-size: clamp( 20px, 8vw, 30px);
+    font-size: clamp( 20px, 5vw, 26px);
     font-weight: 600;
     text-align: center;
   }
@@ -149,7 +149,7 @@ br{
     width: 400px;
 
     .text {
-      font-size: clamp( 20px, 8vw, 47px);
+      font-size: clamp( 20px, 5vw, 36px);
     }
     .text1, .text2 {
       font-size: clamp( 14px, 2vw, 20px);
