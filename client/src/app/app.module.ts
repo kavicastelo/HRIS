@@ -13,7 +13,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FeedWrapperComponent} from './components/feed-wrapper/feed-wrapper.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatSidenavModule} from "@angular/material/sidenav";
@@ -27,6 +27,7 @@ import { ProfileAboutComponent } from './shared/components/profile/profile-about
 import { ProfileActivityComponent } from './shared/components/profile/profile-activity/profile-activity.component';
 import { ProfilePostsComponent } from './shared/components/profile/profile-posts/profile-posts.component';
 import {HttpClientModule} from "@angular/common/http";
+import { EmployeeRegisterComponent } from './shared/components/employee-register/employee-register.component';
 
 @NgModule({
   declarations: [
@@ -43,23 +44,25 @@ import {HttpClientModule} from "@angular/common/http";
     LogInComponent,
     ProfileAboutComponent,
     ProfileActivityComponent,
-    ProfilePostsComponent
+    ProfilePostsComponent,
+    EmployeeRegisterComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    HttpClientModule,
-    LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG})
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        HttpClientModule,
+        LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
+        ReactiveFormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

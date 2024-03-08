@@ -11,6 +11,7 @@ import {AnnouncementAreaComponent} from "./shared/components/announcement-area/a
 import {ProfileAboutComponent} from "./shared/components/profile/profile-about/profile-about.component";
 import {ProfilePostsComponent} from "./shared/components/profile/profile-posts/profile-posts.component";
 import {ProfileActivityComponent} from "./shared/components/profile/profile-activity/profile-activity.component";
+import {EmployeeRegisterComponent} from "./shared/components/employee-register/employee-register.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
     { path: 'activity/:id', component: ProfileActivityComponent },
   ]},
   { path: 'login', component: LogInComponent},
+  { path: 'emp-register', component:EmployeeRegisterComponent },
   { path: '**', component:NotFoundComponent },
 
 ];
