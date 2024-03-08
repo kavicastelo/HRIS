@@ -28,11 +28,8 @@ public class EmployeeModel {
     private Object jobData;
     private String gender;
     private String dob;
+    private String nic;
     private String photo;
     private String status;
     private Integer level;
-    private String token;
-    private String refreshToken;
-    private String otp;
-    private String otpExpiry;
 }

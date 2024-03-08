@@ -7,6 +7,8 @@ import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -21,6 +23,9 @@ public class MultimediaModel {
     private Binary file;
     private String title;
     private String status;
+    private List<String> likes;
+    private List<String> comments;
+    private List<String> shares;
     private String timestamp;
     private String contentType;
 }
