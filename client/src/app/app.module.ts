@@ -28,6 +28,7 @@ import { ProfileActivityComponent } from './shared/components/profile/profile-ac
 import { ProfilePostsComponent } from './shared/components/profile/profile-posts/profile-posts.component';
 import {HttpClientModule} from "@angular/common/http";
 import { EmployeeRegisterComponent } from './shared/components/employee-register/employee-register.component';
+import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { EmployeeRegisterComponent } from './shared/components/employee-register
     ProfileAboutComponent,
     ProfileActivityComponent,
     ProfilePostsComponent,
-    EmployeeRegisterComponent
+    EmployeeRegisterComponent,
+    ResetPasswordComponent
   ],
     imports: [
         BrowserModule,
