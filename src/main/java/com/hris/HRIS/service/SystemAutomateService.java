@@ -271,6 +271,7 @@ public class SystemAutomateService {
             existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
             existingEmployee.setChannels(updatedEmployee.getChannels());
             existingEmployee.setDob(updatedEmployee.getDob());
+            existingEmployee.setNic(updatedEmployee.getNic());
             existingEmployee.setGender(updatedEmployee.getGender());
             existingEmployee.setPhoto(updatedEmployee.getPhoto());
             existingEmployee.setStatus(updatedEmployee.getStatus());
@@ -311,6 +312,7 @@ public class SystemAutomateService {
             existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
             existingEmployee.setChannels(updatedEmployee.getChannels());
             existingEmployee.setDob(updatedEmployee.getDob());
+            existingEmployee.setNic(updatedEmployee.getNic());
             existingEmployee.setGender(updatedEmployee.getGender());
             existingEmployee.setPhoto(updatedEmployee.getPhoto());
             existingEmployee.setStatus(updatedEmployee.getStatus());
