@@ -12,6 +12,7 @@ import {ProfileAboutComponent} from "./shared/components/profile/profile-about/p
 import {ProfilePostsComponent} from "./shared/components/profile/profile-posts/profile-posts.component";
 import {ProfileActivityComponent} from "./shared/components/profile/profile-activity/profile-activity.component";
 import {EmployeeRegisterComponent} from "./shared/components/employee-register/employee-register.component";
+import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -30,6 +31,7 @@ const routes: Routes = [
   ]},
   { path: 'login', component: LogInComponent},
   { path: 'emp-register', component:EmployeeRegisterComponent },
+  {path:'reset-password', component:ResetPasswordComponent},
   { path: '**', component:NotFoundComponent },
 
 ];
