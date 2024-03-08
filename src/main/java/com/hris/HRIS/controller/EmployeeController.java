@@ -1,5 +1,7 @@
 package com.hris.HRIS.controller;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.repository.EmployeeRepository;
@@ -7,7 +9,9 @@ import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,10 +25,43 @@ public class EmployeeController {
     SystemAutomateService systemAutomateService;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveEmployee(@RequestBody EmployeeModel employeeModel){
-        employeeRepository.save(employeeModel);
+    public ResponseEntity<ApiResponse> saveEmployee(@RequestPart("photo") MultipartFile photo,
+                                                    @RequestParam("name") String name,
+                                                    @RequestParam("email") String email,
+                                                    @RequestParam("phone") String phone,
+                                                    @RequestParam("address") String address,
+                                                    @RequestParam("organizationId") String organizationId,
+                                                    @RequestParam("departmentId") String departmentId,
+                                                    @RequestParam("jobData") String jobData,
+                                                    @RequestParam("gender") String gender,
+                                                    @RequestParam("dob") String dob,
+                                                    @RequestParam("nic") String nic,
+                                                    @RequestParam("status") String status,
+                                                    @RequestParam("level") String level
+                                                    ) throws IOException {
 
-        systemAutomateService.updateOrganizationEmployees(employeeModel);
+//        Integer.parseInt(jobData);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Object fixedJobData = objectMapper.readValue(jobData, Object.class);
+
+        EmployeeModel newEmployee = new EmployeeModel();
+        newEmployee.setName(name);
+        newEmployee.setEmail(email);
+        newEmployee.setPhone(phone);
+        newEmployee.setAddress(address);
+        newEmployee.setOrganizationId(organizationId);
+        newEmployee.setDepartmentId(departmentId);
+        newEmployee.setJobData(fixedJobData);
+        newEmployee.setGender(gender);
+        newEmployee.setDob(dob);
+        newEmployee.setNic(nic);
+        newEmployee.setPhoto(photo.getBytes());
+        newEmployee.setStatus(status);
+        newEmployee.setLevel(Integer.parseInt(level));
+
+        employeeRepository.save(newEmployee);
+
+        systemAutomateService.updateOrganizationEmployees(newEmployee);
 
         ApiResponse apiResponse = new ApiResponse("Employee saved successfully");
         return ResponseEntity.ok(apiResponse);

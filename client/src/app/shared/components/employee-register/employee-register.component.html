@@ -1,0 +1,70 @@
+<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name">
+  </div>
+
+  <div>
+    <label for="email">Email:</label>
+    <input type="text" id="email" formControlName="email">
+  </div>
+
+  <div>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" formControlName="phone">
+  </div>
+
+  <div>
+    <label for="address">Address:</label>
+    <input type="text" id="address" formControlName="address">
+  </div>
+
+  <div>
+    <label for="organizationId">Organization ID:</label>
+    <input type="text" id="organizationId" formControlName="organizationId">
+  </div>
+
+  <div>
+    <label for="departmentId">Department ID:</label>
+    <input type="text" id="departmentId" formControlName="departmentId">
+  </div>
+
+  <div formGroupName="jobData">
+    <input formControlName="position" type="text" placeholder="Position" />
+    <input formControlName="department" type="text" placeholder="Department" />
+    <input formControlName="salary" type="text" placeholder="Salary" />
+    <input formControlName="doj" type="text" placeholder="Date of Joining" />
+  </div>
+
+  <div>
+    <label for="gender">Gender:</label>
+    <input type="text" id="gender" formControlName="gender">
+  </div>
+
+  <div>
+    <label for="dob">Date of Birth:</label>
+    <input type="text" id="dob" formControlName="dob">
+  </div>
+
+  <div>
+    <label for="nic">NIC:</label>
+    <input type="text" id="nic" formControlName="nic">
+  </div>
+
+  <div>
+    <label for="photo">Photo:</label>
+    <input type="file" name="photo" id="photo" (change)="handleFileInput($event)" accept="image/*" />
+  </div>
+
+  <div>
+    <label for="status">Status:</label>
+    <input type="text" id="status" formControlName="status">
+  </div>
+
+  <div>
+    <label for="level">Level:</label>
+    <input type="text" id="level" formControlName="level">
+  </div>
+
+  <button type="submit">Submit</button>
+</form>

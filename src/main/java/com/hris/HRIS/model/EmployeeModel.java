@@ -29,7 +29,7 @@ public class EmployeeModel {
     private String gender;
     private String dob;
     private String nic;
-    private String photo;
+    private byte[] photo;
     private String status;
     private Integer level;
 }
