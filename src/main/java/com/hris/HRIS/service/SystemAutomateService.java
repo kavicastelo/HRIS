@@ -352,4 +352,17 @@ public class SystemAutomateService {
 
         channelModel.ifPresent(channelModels -> channelRepository.deleteAll(channelModels));
     }
+
+    public void assignChannelsToEmployee(String employeeId) {
+        Optional<EmployeeModel> employee = employeeRepository.findById(employeeId);
+        if (employee.isPresent()) {
+            EmployeeModel employeeModel = employee.get();
+
+            Optional<List<ChannelModel>> channelModel = channelRepository.findAllByDepartmentId(employeeModel.getDepartmentId());
+
+            employeeModel.setChannels(channelModel.get());
+
+            employeeRepository.save(employeeModel);
+        }
+    }
 }

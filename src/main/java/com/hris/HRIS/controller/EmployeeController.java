@@ -59,9 +59,10 @@ public class EmployeeController {
         newEmployee.setStatus(status);
         newEmployee.setLevel(Integer.parseInt(level));
 
-        employeeRepository.save(newEmployee);
+        EmployeeModel emp = employeeRepository.save(newEmployee);
 
         systemAutomateService.updateOrganizationEmployees(newEmployee);
+        systemAutomateService.assignChannelsToEmployee(emp.getId());
 
         ApiResponse apiResponse = new ApiResponse("Employee saved successfully");
         return ResponseEntity.ok(apiResponse);
