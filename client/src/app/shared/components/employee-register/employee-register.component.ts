@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EmployeesService} from "../../../services/employees.service";
 import {NGXLogger} from "ngx-logger";
+import {DepartmentService} from "../../../services/department.service";
 
 @Component({
   selector: 'app-employee-register',
@@ -11,7 +12,19 @@ import {NGXLogger} from "ngx-logger";
 export class EmployeeRegisterComponent {
   employeeForm: FormGroup | any;
 
-  constructor(private formBuilder: FormBuilder, private employeeService: EmployeesService, private logger: NGXLogger) { }
+  departmentForm = new FormGroup({
+    name: new FormControl(null,[
+      Validators.required
+    ]),
+    description: new FormControl(null,[
+      Validators.required
+    ]),
+    organizationId: new FormControl(null,[
+      Validators.required
+    ])
+  })
+
+  constructor(private formBuilder: FormBuilder, private employeeService: EmployeesService, private logger: NGXLogger, private departmentService:DepartmentService) { }
 
   ngOnInit(): void {
     this.employeeForm = this.formBuilder.group({
@@ -63,5 +76,20 @@ export class EmployeeRegisterComponent {
   handleFileInput(event: any): void {
     const file = event.target.files[0];
     this.employeeForm.patchValue({ photo: file });
+  }
+
+  addDepartment() {
+    if (this.departmentForm.valid) {
+      this.departmentService.addDepartment({
+        name: this.departmentForm.value.name,
+        description: this.departmentForm.value.description,
+        organizationId: this.departmentForm.value.organizationId
+      }).subscribe(() => {
+        this.departmentForm.reset();
+        this.logger.info('Department added successfully');
+      }, error => {
+        this.logger.error(error);
+      })
+    }
   }
 }
