@@ -1,1 +1,35 @@
-<p>post-image works!</p>
+<div class="container">
+  <form [formGroup]="multimediaForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="d-userId">Name:</label>
+      <input type="text" id="d-userId" formControlName="userId">
+    </div>
+
+    <div>
+      <label for="d-channelId">Description</label>
+      <input type="text" id="d-channelId" formControlName="channelId">
+    </div>
+
+    <div>
+      <label for="photo">Photo:</label>
+      <input type="file" name="photo" id="photo" (change)="handleFileInput($event)" accept="image/*" />
+    </div>
+
+    <div>
+      <label for="d-title">OrganizationId</label>
+      <input type="text" id="d-title" formControlName="title">
+    </div>
+
+    <div>
+      <label for="d-timestamp">OrganizationId</label>
+      <input type="text" id="d-timestamp" formControlName="timestamp">
+    </div>
+
+    <div>
+      <label for="d-contentType">OrganizationId</label>
+      <input type="text" id="d-contentType" formControlName="contentType">
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
