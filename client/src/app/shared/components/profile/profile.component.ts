@@ -9,7 +9,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {NgClass, NgFor, NgIf} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
 
 export interface DialogData {
@@ -60,6 +60,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Logic to update active class based on the current route
+        this.updateActiveClass();
+      }
+    });
+
     this.getUser();
   }
 
@@ -91,6 +98,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   navigateBetweenTabs(path: string) {
     this.router.navigate([`/profile/${this.userId}/${path}/${this.userId}`]);
+  }
+
+  updateActiveClass() {
+    const currentRoute = this.router.url;
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+
+    const activeLink = document.querySelector(`.nav-link[href="${currentRoute}"]`);
+    if (activeLink) {
+      activeLink.classList.add('active');
+    }
+  }
+  isActive(path: string) {
+    return this.router.url === `/profile/${this.userId}/${path}/${this.userId}`;
   }
 }
 
