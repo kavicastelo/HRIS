@@ -29,6 +29,9 @@ import { ProfilePostsComponent } from './shared/components/profile/profile-posts
 import {HttpClientModule} from "@angular/common/http";
 import { EmployeeRegisterComponent } from './shared/components/employee-register/employee-register.component';
 import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
+import { EditProfileComponent } from './shared/components/profile/edit-profile/edit-profile.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -47,7 +50,8 @@ import {ResetPasswordComponent} from "./components/reset-password/reset-password
     ProfileActivityComponent,
     ProfilePostsComponent,
     EmployeeRegisterComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    EditProfileComponent
   ],
     imports: [
         BrowserModule,
@@ -63,7 +67,9 @@ import {ResetPasswordComponent} from "./components/reset-password/reset-password
         MatExpansionModule,
         HttpClientModule,
         LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatDatepickerModule,
+      MatNativeDateModule
     ],
   providers: [],
   bootstrap: [AppComponent]

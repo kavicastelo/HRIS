@@ -32,4 +32,8 @@ export class ProfileAboutComponent implements OnInit {
       })
     })
   }
+
+  navigateBetweenTabs(path: string) {
+    this.router.navigate([`/profile/${this.userId}/${path}/${this.userId}`]);
+  }
 }
