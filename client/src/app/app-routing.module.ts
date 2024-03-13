@@ -13,6 +13,7 @@ import {ProfilePostsComponent} from "./shared/components/profile/profile-posts/p
 import {ProfileActivityComponent} from "./shared/components/profile/profile-activity/profile-activity.component";
 import {EmployeeRegisterComponent} from "./shared/components/employee-register/employee-register.component";
 import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
+import {EditProfileComponent} from "./shared/components/profile/edit-profile/edit-profile.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'profile/:id', component: ProfileComponent, children: [
     { path: '', redirectTo: '/profile/:id/about/:id', pathMatch: 'full' },
     { path: 'about/:id', component: ProfileAboutComponent },
+    { path: 'edit/:id', component: EditProfileComponent },
     { path: 'posts/:id', component: ProfilePostsComponent },
     { path: 'activity/:id', component: ProfileActivityComponent },
   ]},
