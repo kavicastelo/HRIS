@@ -32,6 +32,7 @@ import {ResetPasswordComponent} from "./components/reset-password/reset-password
 import { EditProfileComponent } from './shared/components/profile/edit-profile/edit-profile.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import { FeedPostsComponent } from './shared/components/feed-posts/feed-posts.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {MatNativeDateModule} from "@angular/material/core";
     ProfilePostsComponent,
     EmployeeRegisterComponent,
     ResetPasswordComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    FeedPostsComponent
   ],
     imports: [
         BrowserModule,
