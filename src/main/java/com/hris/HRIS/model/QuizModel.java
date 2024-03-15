@@ -23,8 +23,8 @@ public class QuizModel {
     private String moduleId;
     private String quizName;
     private String quizDescription;
-    private List<String> questions;
-    private String noOfAttempts;
+    // private List<String> questions;
+    private Integer noOfAttempts;
     private Double maximumGradeAllowed; // 20% etc...
     private Boolean isRandomized;
     private String startDate;
