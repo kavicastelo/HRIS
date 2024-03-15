@@ -18,7 +18,6 @@ public class EmployeeQuizModel {
     private String employeeEmail;
     private String quizId;
     private Object answers; // [{questionId:"{questionId}", answer: {string}}]
-    private Integer attempt;
     private String attemptDateTime;
     private String submittedDateTime;
     private Integer score;
