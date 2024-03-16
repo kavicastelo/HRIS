@@ -27,13 +27,13 @@ public class QuizQuestionModel {
 
 Sample imput format:
 {
-    "quizId" : "65e802711ca37a6261b4b7a3",
-    "question" : "Find the value of x, x = 2 + 4",
+    "quizId" : "65f50b65cc752c3fca3f6e50",
+    "question" : "What is a typical method used to assess the effectiveness of an Employee Skills Improvement Program?",
     "options" : [
-        {"optionText" : "x = 5", "isCorrect" : false},
-        {"optionText" : "x = 3", "isCorrect" : false},
-        {"optionText" : "x = 6", "isCorrect" : true},
-        {"optionText" : "x = 0", "isCorrect" : false}
+        {"optionText" : "Conducting weekly team meetings", "isCorrect" : false},
+        {"optionText" : "Administering pre- and post-training evaluations", "isCorrect" : true},
+        {"optionText" : "Issuing quarterly performance bonuses", "isCorrect" : false},
+        {"optionText" : "Implementing mandatory overtime schedules", "isCorrect" : false}
     ],
     "questionType" : "multiple choice",
     "isMultipleAnswersAllowed" : false
