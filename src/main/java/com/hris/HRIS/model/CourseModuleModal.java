@@ -25,3 +25,17 @@ public class CourseModuleModal {
     private String createdDate;
     private String status; // Available, unpublished, Archived.
 }
+
+/*
+Sample input:
+{
+    "moduleId" : "65f509dccc752c3fca3f6e4f",
+    "moduleTitle" : "Week 1",
+    "moduleDescription" : "",
+    "estimatedMinutesToComplete" : 20,
+    "preLinkedModuleId" : "",
+    "startDate" : "2024-03-16 08:11:35",
+    "endDate" : "2024-03-28 08:11:35",
+    "status" : "Available"
+}
+ */

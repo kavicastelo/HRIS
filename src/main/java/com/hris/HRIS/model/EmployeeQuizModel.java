@@ -21,4 +21,5 @@ public class EmployeeQuizModel {
     private String attemptDateTime;
     private String submittedDateTime;
     private Integer score;
+    private String status; // Inprogress, submitted, evaluated
 }

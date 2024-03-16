@@ -212,6 +212,24 @@ public class CourseController {
         return ResponseEntity.ok(usersList.toList());
     }
 
+    @GetMapping("/{courseId}/user/{email}/check")
+    public Boolean checkIsCourseUsersExists(@PathVariable String courseId, @PathVariable String email){
+        Optional<CourseModel> courseModelOptional = courseRepository.findById(courseId);
+        JSONArray usersList = new JSONArray();
+
+        if (courseModelOptional.isPresent()){
+            List<Context> users = (List<Context>) courseModelOptional.get().getUsers();
+
+            for(int i = 0; i < users.size(); i++){
+                if(users.get(i).getVariable("email").equals(email)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteCourse(@PathVariable String id){
         courseRepository.deleteById(id);
