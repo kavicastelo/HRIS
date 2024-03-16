@@ -82,16 +82,21 @@ public class EmployeeQuizController {
 
                     // Create a new attempt.
                     if(!isAttemptInProgress){
-                        EmployeeQuizModel employeeQuizModel = new EmployeeQuizModel();
+                        if(totalAttemptsTaken < quizModalOptional.get().getNoOfAttempts()){
+                            EmployeeQuizModel employeeQuizModel = new EmployeeQuizModel();
 
-                        employeeQuizModel.setEmployeeEmail(employeeEmail);
-                        employeeQuizModel.setQuizId(quizId);
-                        // employeeQuizModel.setAttempt(1);
-                        employeeQuizModel.setAttemptDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                        employeeQuizModel.setSubmittedDateTime("0000-00-00 00:00:00");
-                        employeeQuizModel.setStatus("Inprogress");
+                            employeeQuizModel.setEmployeeEmail(employeeEmail);
+                            employeeQuizModel.setQuizId(quizId);
+                            // employeeQuizModel.setAttempt(1);
+                            employeeQuizModel.setAttemptDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                            employeeQuizModel.setSubmittedDateTime("0000-00-00 00:00:00");
+                            employeeQuizModel.setStatus("Inprogress");
 
-                        returnMsg = employeeQuizRepository.save(employeeQuizModel).getId();
+                            returnMsg = employeeQuizRepository.save(employeeQuizModel).getId();
+                        }else{
+                            returnMsg = "You have reached the maximum number of attempts allowed for this quiz.";
+                            questionsList.clear();
+                        }
                     }else{
                         returnMsg = existingInprogressAttemptId;
                     }
@@ -116,7 +121,7 @@ public class EmployeeQuizController {
         ObjectMapper objectMapper = new ObjectMapper();
 
         List<EmployeeQuizModel> attempsList = new ArrayList<>();
-        
+
         try {
             JsonNode requestBodyJson = objectMapper.readTree(requestBody);
             String quizId = requestBodyJson.get("quizId").asText();
