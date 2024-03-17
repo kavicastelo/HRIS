@@ -143,10 +143,40 @@ public class EmployeeQuizController {
 
     @PostMapping("/submit")
     public ResponseEntity<ApiResponse> submitQuiz(@RequestBody String requestBody) {
-        //TODO: process POST request
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<EmployeeQuizModel> attempsList = new ArrayList<>();
+        String returnMsg = "";
+
+        try {
+            JsonNode requestBodyJson = objectMapper.readTree(requestBody);
+            String quizId = requestBodyJson.get("quizId").asText();
+            String employeeEmail = requestBodyJson.get("employeeEmail").asText();
+            Object answers = requestBodyJson.get("answers");
+
+            Boolean isQuizSubmitted = false;
+
+            // TODO: avoid submissions after the due date/time.
+
+            for(EmployeeQuizModel existingAttempt : getAllQuizAttemptsById(requestBody)){
+                if(existingAttempt.getStatus().equals("Inprogress")){
+                    existingAttempt.setAnswers(answers);
+                    existingAttempt.setSubmittedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    existingAttempt.setStatus("Submitted");
+
+                    employeeQuizRepository.save(existingAttempt);
+                    isQuizSubmitted = true;
+                    break;
+                }
+            }
+
+            returnMsg = isQuizSubmitted ? "Quiz submitted successfully." : "Inprogress attempt not found.";
+            
+        } catch (Exception e) {
+            returnMsg = "Failed to submit the quiz.";
+        }
         
-        ApiResponse apiResponse = new ApiResponse("Quiz submitted successfully");
+        ApiResponse apiResponse = new ApiResponse(returnMsg);
         return ResponseEntity.ok(apiResponse);
     }
-    
 }
