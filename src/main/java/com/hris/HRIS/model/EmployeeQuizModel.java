@@ -21,5 +21,16 @@ public class EmployeeQuizModel {
     private String attemptDateTime;
     private String submittedDateTime;
     private Integer score;
-    private String status; // Inprogress, submitted, evaluated
+    private String status; // Inprogress, Submitted, Evaluated
 }
+
+
+/*
+Submit quiz (sample format):
+{
+    "quizId" : "65f50b65cc752c3fca3f6e50",
+    "employeeEmail" : "test2@gmail.com",
+    "answers" : [{"questionId" : "65f510259ec43d367b5fa4cd", "answersGiven":["Fostering career development"]},
+                {"questionId" : "65f510829ec43d367b5fa4ce", "answersGiven":["Administering pre- and post-training evaluations"]}]
+}
+ */
