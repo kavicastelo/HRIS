@@ -10,7 +10,9 @@ import { authDataStore } from "../../shared/data-stores/auth-data-store";
 export class LogInComponent {
   email: string='';
   password: string='';
- 
+  errorMassage:string='';
+  
+  
  
   
   constructor(private router: Router) { }
@@ -18,12 +20,15 @@ export class LogInComponent {
 login() {
   const foundUser = authDataStore.find(user => user.email === this.email && user.password === this.password);
   if (foundUser) {
-    alert('Login successful!');
-    this.router.navigate(['/home']);
+        this.router.navigate(['/home']);
   } else {
-    alert('Invalid username or password');
+    this.errorMassage='Invalid username or password';
   }
 }
 
 
+  
 }
+
+
+

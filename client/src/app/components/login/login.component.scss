@@ -137,13 +137,17 @@ br{
     align-items: center;
     justify-content: center;
   }
+  .logo_container{
+    margin: 20px;
+    width: 400px;
+    height: auto;
 
   img {
-    max-width: clamp(200px, 45vw , 500px);
+    max-width: clamp(200px, 45vw , 400px);
     height: auto;
     box-sizing: border-box;
     margin: 0 20px;
-  }
+  }}
 
   .login_container {
     margin: 0 20px;
