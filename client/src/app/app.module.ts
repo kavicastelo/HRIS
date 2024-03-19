@@ -33,6 +33,7 @@ import { EditProfileComponent } from './shared/components/profile/edit-profile/e
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import { FeedPostsComponent } from './shared/components/feed-posts/feed-posts.component';
+import { ChatAreaComponent } from './shared/components/chat-area/chat-area.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { FeedPostsComponent } from './shared/components/feed-posts/feed-posts.co
     EmployeeRegisterComponent,
     ResetPasswordComponent,
     EditProfileComponent,
-    FeedPostsComponent
+    FeedPostsComponent,
+    ChatAreaComponent
   ],
     imports: [
         BrowserModule,

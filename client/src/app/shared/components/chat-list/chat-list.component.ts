@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {channelsDataStore} from "../../data-stores/channels-data-store";
 import {MultimediaService} from "../../../services/multimedia.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-chat-list',
@@ -13,7 +14,7 @@ export class ChatListComponent implements OnInit {
   employeeDataStore = employeeDataStore;
   channelsDataStore = channelsDataStore;
 
-  constructor(private multimediaService: MultimediaService) {
+  constructor(private multimediaService: MultimediaService, private router: Router) {
   }
   ngOnInit(): void {
     // convert base64 images to safe urls
@@ -22,4 +23,7 @@ export class ChatListComponent implements OnInit {
     // })
   }
 
+  navigateUrl(id: any) {
+    this.router.navigate([`/feed/chat/${id}`]);
+  }
 }
