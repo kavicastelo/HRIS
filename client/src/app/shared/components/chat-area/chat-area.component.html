@@ -1,0 +1,27 @@
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item" *ngFor="let r of receiver">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex flex-column align-items-start">
+          <h5>{{r.name}}</h5>
+          <small>Active</small>
+        </div>
+        <button class="btn-3"><mat-icon>more_horiz</mat-icon></button>
+      </div>
+    </li>
+    <li class="list-group-item" style="max-height: 80vh; overflow-y: auto">
+<!--      implement chat area-->
+    </li>
+    <li class="list-group-item">
+      <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+        <div>
+          <textarea class="form-control w-100" placeholder="Type your message here..." id="message" formControlName="message"></textarea>
+        </div>
+      </form>
+      <div class="d-flex align-items-center justify-content-between mt-2">
+        <div class="d-flex"></div>
+        <button class="btn-1" [disabled]="isDisabled"><mat-icon>send</mat-icon></button>
+      </div>
+    </li>
+  </ul>
+</div>

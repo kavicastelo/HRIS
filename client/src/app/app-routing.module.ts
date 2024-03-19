@@ -14,13 +14,15 @@ import {ProfileActivityComponent} from "./shared/components/profile/profile-acti
 import {EmployeeRegisterComponent} from "./shared/components/employee-register/employee-register.component";
 import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
 import {EditProfileComponent} from "./shared/components/profile/edit-profile/edit-profile.component";
+import {ChatAreaComponent} from "./shared/components/chat-area/chat-area.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'feed', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'feed', component: FeedWrapperComponent,children: [
     { path: '', redirectTo: '/feed/area', pathMatch: 'full' },
-    { path: 'area', component: FeedComponent }
+    { path: 'area', component: FeedComponent },
+    { path: 'chat/:id', component: ChatAreaComponent },
   ]},
   { path: 'chat-list', component: ChatListComponent },
   { path: 'news', component: AnnouncementAreaComponent },

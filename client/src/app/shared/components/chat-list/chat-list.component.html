@@ -15,8 +15,8 @@
           Direct Messages
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div class="direct-messages-chat-area">
-        <div class="chat-wrapper" *ngFor="let e of employeeDataStore">
+      <div class="direct-messages-chat-area" *ngFor="let e of employeeDataStore">
+        <div class="chat-wrapper" (click)="navigateUrl(e.id)">
           <div class="chat-icon">
             <img [src]="e.photo" alt="profile">
           </div>
