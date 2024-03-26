@@ -31,6 +31,6 @@ public class JobPostModel {
     private String end_date;
 
     private String contact_email;
-    
+
     private String description;
 }
