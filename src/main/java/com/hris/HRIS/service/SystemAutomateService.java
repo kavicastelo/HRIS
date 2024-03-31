@@ -32,6 +32,9 @@ public class SystemAutomateService {
     ChannelRepository channelRepository;
 
     @Autowired
+    ChatRepository chatRepository;
+
+    @Autowired
     EmailService emailService;
 
     public void UpdateEmployeeJobDataExit(ExitListModel exitListModel) {
@@ -363,6 +366,27 @@ public class SystemAutomateService {
             employeeModel.setChannels(channelModel.get());
 
             employeeRepository.save(employeeModel);
+        }
+    }
+
+    public void addMessagesToChat(MessageModel messages) {
+        Optional<ChatModel> chat =  chatRepository.findById(messages.getChatId());
+
+        if (chat.isPresent()) {
+            ChatModel existingChat = chat.get();
+
+            if (existingChat.getMessages() == null) {
+                existingChat.setMessages(new ArrayList<>());
+            }
+
+            existingChat.getMessages().add(messages);
+
+            chatRepository.save(existingChat);
+        } else {
+            ChatModel chatModel = new ChatModel();
+            chatModel.setId(messages.getChatId());
+            chatModel.setMessages(List.of(messages));
+            chatRepository.save(chatModel);
         }
     }
 }
