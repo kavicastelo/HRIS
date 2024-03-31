@@ -1,5 +1,5 @@
 export interface MessageModel {
-  id: any,
+  id?: any,
   userId: any,
   channelId?: any,
   chatId?: any,

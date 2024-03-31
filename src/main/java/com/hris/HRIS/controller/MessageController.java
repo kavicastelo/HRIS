@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.MessageModel;
 import com.hris.HRIS.repository.MessageRepository;
+import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,14 @@ public class MessageController {
     @Autowired
     MessageRepository messageRepository;
 
+    @Autowired
+    SystemAutomateService systemAutomateService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveMessage(@RequestBody MessageModel messageModel) {
         messageRepository.save(messageModel);
+
+        systemAutomateService.addMessagesToChat(messageModel);
 
         ApiResponse apiResponse = new ApiResponse("Message saved successfully");
         return ResponseEntity.ok(apiResponse);

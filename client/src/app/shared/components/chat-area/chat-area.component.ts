@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {employeeDataStore} from "../../data-stores/employee-data-store";
-import {messageDataStore} from "../../data-stores/message-data-store";
-import {chatDataStore} from "../../data-stores/chat-data-store";
+import {ChatService} from "../../../services/chat.service";
+import {Parser} from "@angular/compiler";
 
 @Component({
   selector: 'app-chat-area',
@@ -12,10 +12,8 @@ import {chatDataStore} from "../../data-stores/chat-data-store";
 })
 export class ChatAreaComponent implements OnInit {
 
-  isDisabled = true;
   employeeDataStore = employeeDataStore
-  messagesDataStore = messageDataStore
-  chatDataStore = chatDataStore
+  chatDataStore: any
   sender: any
   receiver: any
   chat: any
@@ -30,7 +28,7 @@ export class ChatAreaComponent implements OnInit {
     ])
   });
 
-  constructor(private route:ActivatedRoute) {
+  constructor(private route:ActivatedRoute, private chatService: ChatService) {
   }
 
   ngOnInit(): void {
@@ -60,21 +58,25 @@ export class ChatAreaComponent implements OnInit {
 
   loadChat() {
     this.chatMessages = []
-    this.chatDataStore.forEach(chat => {
-      if (chat.id == (this.receiverId+"")+(this.senderId+"")) {
-        this.chat = [chat];
-        this.loadMessages(chat.messages)
-      }
+    this.chatService.getAllChats().subscribe(data => {
+      data.forEach((chat:any) => {
+        if (chat.id == (this.receiverId+"")+(this.senderId+"")) {
+          this.chat = [chat];
+          this.loadMessages(chat.messages)
+        }
+      })
+    }, error => {
+      console.log(error)
     })
   }
 
   loadMessages(messages: any) {
     let sender:boolean = false
     messages.forEach((message: any) => {
-      if (message.userId == this.receiverId) {
+      if (message.userId === this.receiverId.toString()) {
         sender = false
       }
-      else if (message.userId == this.senderId) {
+      else if (message.userId === this.senderId.toString()) {
         sender = true
       }
       this.chatMessages = [...this.chatMessages, message];
@@ -83,9 +85,24 @@ export class ChatAreaComponent implements OnInit {
   }
 
   isMessageFrom(message: any): boolean {
-    return message.userId === this.senderId;
+    return message.userId === this.senderId.toString();
   }
 
   sendMessage() {
+    if (this.messageForm.valid) {
+      this.chatService.addMessage({
+        id: null,
+        userId: this.senderId,
+        chatId: (this.receiverId+"")+(this.senderId+""),
+        content: this.messageForm.value.message,
+        status: 'sent',
+        timestamp: new Date()
+      }).subscribe(() => {
+        this.loadChat()
+        this.messageForm.reset()
+      }, error => {
+        console.log(error)
+      })
+    }
   }
 }

@@ -13,23 +13,23 @@
       <div class="receiver-message" *ngFor="let m of chatMessages" [ngClass]="isMessageFrom(m) ? 'sender' : 'receiver'">
         <div class="profile-wrapper">
           <div class="pro-pic">
-            <img [src]="(m.userId === sender[0].id) ? sender[0].photo : receiver[0].photo" [alt]="(m.userId === sender[0].id) ? sender[0].name : receiver[0].name">
+            <img [src]="(m.userId == sender[0].id) ? sender[0].photo : receiver[0].photo" [alt]="(m.userId === sender[0].id) ? sender[0].name : receiver[0].name">
           </div>
-          <h6>{{ (m.userId === sender[0].id) ? 'you' : receiver[0].name }}</h6>
+          <h6>{{ (m.userId == sender[0].id) ? 'you' : receiver[0].name }}</h6>
           <small>{{ m.timestamp }}</small>
         </div>
         <p class="message-content">{{ m.content }}</p>
       </div>
     </li>
     <li class="list-group-item">
-      <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+      <form [formGroup]="messageForm">
         <div>
           <textarea class="form-control w-100" placeholder="Type your message here..." id="message" formControlName="message"></textarea>
         </div>
       </form>
       <div class="d-flex align-items-center justify-content-between mt-2">
         <div class="d-flex"></div>
-        <button class="btn-1" [disabled]="isDisabled"><mat-icon>send</mat-icon></button>
+        <button class="btn-1" [disabled]="messageForm.invalid" (click)="sendMessage()"><mat-icon>send</mat-icon></button>
       </div>
     </li>
   </ul>
