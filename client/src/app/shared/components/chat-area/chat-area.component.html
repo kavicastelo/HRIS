@@ -1,6 +1,6 @@
 <div class="card">
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item" *ngFor="let r of receiver">
+  <ul class="list-group list-group-flush" *ngFor="let r of receiver">
+    <li class="list-group-item">
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex flex-column align-items-start">
           <h5>{{r.name}}</h5>
@@ -10,7 +10,16 @@
       </div>
     </li>
     <li class="list-group-item" style="max-height: 80vh; overflow-y: auto">
-<!--      implement chat area-->
+      <div class="receiver-message" *ngFor="let m of chatMessages" [ngClass]="isMessageFrom(m) ? 'sender' : 'receiver'">
+        <div class="profile-wrapper">
+          <div class="pro-pic">
+            <img [src]="(m.userId === sender[0].id) ? sender[0].photo : receiver[0].photo" [alt]="(m.userId === sender[0].id) ? sender[0].name : receiver[0].name">
+          </div>
+          <h6>{{ (m.userId === sender[0].id) ? 'you' : receiver[0].name }}</h6>
+          <small>{{ m.timestamp }}</small>
+        </div>
+        <p class="message-content">{{ m.content }}</p>
+      </div>
     </li>
     <li class="list-group-item">
       <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
