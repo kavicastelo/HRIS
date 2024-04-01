@@ -34,6 +34,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import { FeedPostsComponent } from './shared/components/feed-posts/feed-posts.component';
 import { ChatAreaComponent } from './shared/components/chat-area/chat-area.component';
+import {TimeAgoPipe} from "./DTO/TimeAgoPipe";
+import {TruncatePipe} from "./DTO/TruncatePipe";
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { ChatAreaComponent } from './shared/components/chat-area/chat-area.compo
     ResetPasswordComponent,
     EditProfileComponent,
     FeedPostsComponent,
-    ChatAreaComponent
+    ChatAreaComponent,
+    TimeAgoPipe,
+    TruncatePipe
   ],
     imports: [
         BrowserModule,
