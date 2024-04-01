@@ -61,4 +61,19 @@ public class MessageController {
         ApiResponse apiResponse = new ApiResponse("Message deleted successfully");
         return ResponseEntity.ok(apiResponse);
     }
+
+    @PutMapping("/update/status/{id}")
+    public ResponseEntity<ApiResponse> updateStatus(@PathVariable String id, @RequestBody MessageModel messageModel) {
+        Optional<MessageModel> messageModelOptional = messageRepository.findById(id);
+        if (messageModelOptional.isPresent()) {
+            MessageModel message = messageModelOptional.get();
+            message.setStatus(messageModel.getStatus());
+            messageRepository.save(message);
+        }
+
+        systemAutomateService.updateMessageStatus(messageModel.getChatId(), messageModel.getId(), messageModel.getStatus());
+
+        ApiResponse apiResponse = new ApiResponse("Message status updated successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
 }

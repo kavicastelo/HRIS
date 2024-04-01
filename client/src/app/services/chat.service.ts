@@ -26,4 +26,12 @@ export class ChatService {
   public getAllChats(): Observable<any> {
     return this.http.get(this.baseUrl + 'chat/get/all');
   }
+
+  public updateStatus(id: string, status: string, chatId: string): Observable<any> {
+    return this.http.put(this.baseUrl + 'message/update/status/' + id, {
+      id: id,
+      chatId: chatId,
+      status: status
+    });
+  }
 }

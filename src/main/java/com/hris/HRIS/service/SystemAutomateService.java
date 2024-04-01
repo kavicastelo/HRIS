@@ -389,4 +389,16 @@ public class SystemAutomateService {
             chatRepository.save(chatModel);
         }
     }
+
+    public void updateMessageStatus(String chatId, String messageId, String status) {
+        Optional<ChatModel> chat = chatRepository.findById(chatId);
+        if (chat.isPresent()) {
+            ChatModel existingChat = chat.get();
+            Optional<MessageModel> message = existingChat.getMessages().stream().filter(m -> m.getId().equals(messageId)).findFirst();
+            if (message.isPresent()) {
+                message.get().setStatus(status);
+                chatRepository.save(existingChat);
+            }
+        }
+    }
 }
