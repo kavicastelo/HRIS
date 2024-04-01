@@ -9,7 +9,7 @@
         <button class="btn-3"><mat-icon>more_horiz</mat-icon></button>
       </div>
     </li>
-    <li class="list-group-item" style="max-height: 80vh; overflow-y: auto">
+    <li class="list-group-item" style="max-height: calc(100vh - 260px); overflow-y: auto">
       <div class="receiver-message" *ngFor="let m of chatMessages" [ngClass]="isMessageFrom(m) ? 'sender' : 'receiver'">
         <div class="profile-wrapper">
           <div class="pro-pic">

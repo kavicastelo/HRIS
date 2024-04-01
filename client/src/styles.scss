@@ -158,6 +158,15 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 
+// mat-drawer
+.mat-drawer-container {
+  background: var(--color-surface-200) !important;
+}
+.mat-drawer-inner-container {
+  background: var(--color-surface-200) !important;
+}
+
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 0;

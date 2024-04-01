@@ -1,52 +1,70 @@
-<div class="w-100" style="max-height: 100vh; overflow-y: auto">
+<div class="w-100" style="max-height: calc(100vh - 80px); overflow-y: auto">
   <div class="card">
     <div class="card-body">
       <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
-        <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+        <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1"  (click)="drawer.toggle()">
       </div>
     </div>
   </div>
 
-  <mat-accordion>
-    <mat-expansion-panel expanded>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Direct Messages
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="direct-messages-chat-area" *ngFor="let e of availableChats">
-        <div class="chat-wrapper" (click)="navigateUrl(e.id)">
-          <div class="chat-icon">
-            <img [src]="e.photo" alt="profile">
-          </div>
-          <div class="chat-content">
-            <h6>{{e.name}}</h6>
-            <p [ngStyle]="{'font-weight':isOpen?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
+  <div class="w-100">
+    <mat-drawer-container class="drawer-container">
+      <mat-drawer #drawer mode="over" class="drawer" style="width: 100%;">
+        <div class="direct-messages-chat-area all-contacts" *ngFor="let e of employeeDataStore">
+          <div class="chat-wrapper" (click)="navigateUrl(e.id)">
+            <div class="chat-icon">
+              <img [src]="e.photo" alt="profile">
+            </div>
+            <div class="chat-content">
+              <h6>{{e.name}}</h6>
+            </div>
           </div>
         </div>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+      </mat-drawer>
+      <mat-drawer-content style="min-height: calc(100vh - 185px); max-height: calc(100vh - 185px); overflow-y: auto;">
+        <mat-accordion>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Direct Messages
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="direct-messages-chat-area" *ngFor="let e of availableChats">
+              <div class="chat-wrapper" (click)="navigateUrl(e.id)">
+                <div class="chat-icon">
+                  <img [src]="e.photo" alt="profile">
+                </div>
+                <div class="chat-content">
+                  <h6>{{e.name}}</h6>
+                  <p [ngStyle]="{'font-weight':isOpen?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
 
-  <mat-accordion>
-    <mat-expansion-panel style="margin-top: 10px">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Channels
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="direct-messages-chat-area">
-        <div class="chat-wrapper" *ngFor="let c of channelsDataStore">
-          <div class="chat-icon">
-            <img src="{{c.photo}}" alt="{{c.name}}">
-          </div>
-          <div class="chat-content">
-            <h6>{{c.name}}</h6>
-            <p>Lorem ipsum dolor sit</p>
-          </div>
-        </div>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+        <mat-accordion>
+          <mat-expansion-panel style="margin-top: 10px">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Channels
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="direct-messages-chat-area">
+              <div class="chat-wrapper" *ngFor="let c of channelsDataStore">
+                <div class="chat-icon">
+                  <img src="{{c.photo}}" alt="{{c.name}}">
+                </div>
+                <div class="chat-content">
+                  <h6>{{c.name}}</h6>
+                  <p>Lorem ipsum dolor sit</p>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
 </div>
