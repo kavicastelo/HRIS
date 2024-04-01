@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {channelsDataStore} from "../../data-stores/channels-data-store";
 import {MultimediaService} from "../../../services/multimedia.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ChatService} from "../../../services/chat.service";
 
 @Component({
@@ -16,15 +16,15 @@ export class ChatListComponent implements OnInit {
   channelsDataStore = channelsDataStore;
   chatsDataStore: any
   senderId = 3
+  receiverId: any
   isOpen = false
 
   availableChats: any[] = [];
 
-  constructor(private multimediaService: MultimediaService, private router: Router, private chatService: ChatService) {
+  constructor(private multimediaService: MultimediaService, private router: Router, private chatService: ChatService, private route: ActivatedRoute) {
   }
   ngOnInit(): void {
     this.loadChats()
-    console.log(this.availableChats)
     // convert base64 images to safe urls
     // this.employeeDataStore.forEach(emp => {
     //   emp.photo = this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg');
@@ -32,6 +32,7 @@ export class ChatListComponent implements OnInit {
   }
 
   navigateUrl(id: any) {
+    this.receiverId = id
     this.availableChats = [];
     this.router.navigate([`/feed/chat/${id}`]);
     this.loadChats()
@@ -49,23 +50,36 @@ export class ChatListComponent implements OnInit {
               id: emp.id,
               photo: emp.photo,
               name: emp.name,
+              chatId: chats.id,
               messageSenderId: lastMessage.userId,
               status: lastMessage.status,
-              lastMessage: lastMessage.content
+              lastMessage: lastMessage.content,
+              lastMessageId: lastMessage.id
             });
-
-            this.changeStatus()
           }
+          this.changeStatus(chats.id)
         })
       })
     });
   }
 
-  changeStatus() {
+  changeStatus(id: any) {
     this.availableChats.forEach((chat) => {
-      console.log(chat.messageSenderId , this.senderId.toString())
       if (chat)
         this.isOpen = (chat.messageSenderId !== this.senderId.toString() && chat.status == 'sent');
+    })
+    this.setStatus(id)
+  }
+
+  setStatus(chatId: any) {
+    this.availableChats.forEach((chat) => {
+      if(this.receiverId == chat.id && chat.chatId == chatId) {
+        this.chatService.updateStatus(chat.lastMessageId, 'read', chat.chatId).subscribe(data => {
+          this.isOpen = false
+        }, error => {
+          console.log(error)
+        })
+      }
     })
   }
 }
