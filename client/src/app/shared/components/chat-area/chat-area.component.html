@@ -16,7 +16,7 @@
             <img [src]="(m.userId == sender[0].id) ? sender[0].photo : receiver[0].photo" [alt]="(m.userId === sender[0].id) ? sender[0].name : receiver[0].name">
           </div>
           <h6>{{ (m.userId == sender[0].id) ? 'you' : receiver[0].name }}</h6>
-          <small>{{ m.timestamp }}</small>
+          <small>{{ m.timestamp | timeAgo }}</small>
         </div>
         <p class="message-content">{{ m.content }}</p>
       </div>

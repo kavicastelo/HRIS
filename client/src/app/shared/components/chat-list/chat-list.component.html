@@ -22,7 +22,7 @@
           </div>
           <div class="chat-content">
             <h6>{{e.name}}</h6>
-            <p [ngStyle]="{'font-weight':isOpen?'700':'normal'}">{{e.lastMessage}}</p>
+            <p [ngStyle]="{'font-weight':isOpen?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
           </div>
         </div>
       </div>
