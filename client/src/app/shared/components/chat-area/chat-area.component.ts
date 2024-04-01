@@ -60,7 +60,7 @@ export class ChatAreaComponent implements OnInit {
     this.chatMessages = []
     this.chatService.getAllChats().subscribe(data => {
       data.forEach((chat:any) => {
-        if (chat.id == (this.receiverId+"")+(this.senderId+"")) {
+        if (chat.id == (this.receiverId+"")+(this.senderId+"") || chat.id == (this.senderId+"")+(this.receiverId+"")) {
           this.chat = [chat];
           this.loadMessages(chat.messages)
         }
