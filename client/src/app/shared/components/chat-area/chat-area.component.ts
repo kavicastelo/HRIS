@@ -6,6 +6,7 @@ import {ChatService} from "../../../services/chat.service";
 import {Parser} from "@angular/compiler";
 import {WebSocketService} from "../../../services/web-socket.service";
 import {Subscription} from "rxjs";
+import {MessageModel} from "../../data-models/Message.model";
 
 @Component({
   selector: 'app-chat-area',
@@ -19,7 +20,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   sender: any
   receiver: any
   chat: any
-  senderId: any = 3
+  senderId: any;
   receiverId: any
   chatMessages: any[] = []
   isMessageFromSender: boolean = false;
@@ -38,21 +39,34 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    localStorage.setItem('sender','1')
+    this.senderId = localStorage.getItem('sender')
     this.loadReceiver()
     this.loadSender()
 
-    // Establish WebSocket connection
-    this.webSocketService.connect('ws://localhost:3269/ws');
+    try {
+      // Establish WebSocket connection
+      this.webSocketService.connect('ws://localhost:4200/ws');
 
-    // Subscribe to incoming messages
-    this.messageSubscription = this.webSocketService.onMessage().subscribe((message: string) => {
-      this.messages.push(message);
-    });
+      this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
+        console.log('WebSocket connection status:', status);
+      });
+
+      // Subscribe to incoming messages
+      this.messageSubscription = this.webSocketService.onMessage().subscribe((message: string) => {
+        console.log('Received message:', message);
+        this.handleIncomingMessage(message);
+      });
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from message subscription and close WebSocket connection
-    this.messageSubscription.unsubscribe();
+    if (this.messageSubscription) {
+      this.messageSubscription.unsubscribe();
+    }
     this.webSocketService.disconnect();
   }
 
@@ -104,13 +118,23 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.isMessageFromSender = sender
   }
 
+  handleIncomingMessage(message: string): void {
+    const parsedMessage: MessageModel = JSON.parse(message);
+    console.log(message)
+    if (parsedMessage.chatId === (this.receiverId + this.senderId) || parsedMessage.chatId === (this.senderId + this.receiverId)) {
+      this.chatMessages.push(parsedMessage);
+
+      // Optionally, you can scroll to the bottom of the chat window to show the latest message
+      // this.scrollToBottom();
+    }
+  }
+
   isMessageFrom(message: any): boolean {
     return message.userId === this.senderId.toString();
   }
 
   sendMessage() {
-    this.webSocketService.sendMessage(this.message);
-    this.message = ''; // Clear input field
+    this.webSocketService.sendMessage(this.messageForm.value.message);
 
     if (this.messageForm.valid) {
       this.chatService.addMessage({
