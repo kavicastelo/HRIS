@@ -1,34 +1,60 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {channelsDataStore} from "../../data-stores/channels-data-store";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChatService} from "../../../services/chat.service";
+import {WebSocketService} from "../../../services/web-socket.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chat-list',
   templateUrl: './chat-list.component.html',
   styleUrls: ['./chat-list.component.scss']
 })
-export class ChatListComponent implements OnInit {
+export class ChatListComponent implements OnInit, OnDestroy {
 
   employeeDataStore = employeeDataStore;
   channelsDataStore = channelsDataStore;
   chatsDataStore: any
-  senderId = 3
+  senderId: any;
   receiverId: any
   isOpen = false
 
   availableChats: any[] = [];
 
-  constructor(private multimediaService: MultimediaService, private router: Router, private chatService: ChatService, private route: ActivatedRoute) {
+  message: string = '';
+  messages: string[] = [];
+  messageSubscription: Subscription | any;
+
+  constructor(private multimediaService: MultimediaService, private router: Router, private chatService: ChatService, private route: ActivatedRoute, private webSocketService: WebSocketService) {
   }
   ngOnInit(): void {
+    localStorage.setItem('sender','1')
+    this.senderId = localStorage.getItem('sender')
     this.loadChats()
     // convert base64 images to safe urls
     // this.employeeDataStore.forEach(emp => {
     //   emp.photo = this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg');
     // })
+    try {
+      // Establish WebSocket connection
+      this.webSocketService.connect('ws://localhost:4200/ws');
+
+      // Subscribe to incoming messages
+      this.messageSubscription = this.webSocketService.onMessage().subscribe((message: string) => {
+        this.messages.push(message);
+      });
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from message subscription and close WebSocket connection
+    this.messageSubscription.unsubscribe();
+    this.webSocketService.disconnect();
   }
 
   navigateUrl(id: any) {

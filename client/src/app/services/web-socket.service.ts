@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -8,22 +8,49 @@ import {Observable} from "rxjs";
 export class WebSocketService {
 
   private socket$: WebSocketSubject<any> | any;
+  private websocket: WebSocket | any;
+  private connectionStatusSubject: Subject<boolean> = new Subject<boolean>();
+  private messageSubject: Subject<any> = new Subject<any>();
 
   constructor() { }
 
-  public connect(url: string): void {
-    this.socket$ = webSocket(url);
+  connect(url: string): void {
+    this.websocket = new WebSocket(url);
+
+    this.websocket.onmessage = (event:any) => {
+      this.messageSubject.next(event.data);
+    };
+
+    this.websocket.onopen = (event:any) => {
+      this.connectionStatusSubject.next(true);
+    };
+
+    this.websocket.onclose = (event:any) => {
+      this.connectionStatusSubject.next(false);
+    };
+
+    this.websocket.onerror = (error:any) => {
+      this.connectionStatusSubject.next(false);
+    };
+  }
+
+  disconnect(): void {
+    if (this.websocket) {
+      this.websocket.close();
+    }
+  }
+
+  getConnectionStatus(): Observable<boolean> {
+    return this.connectionStatusSubject.asObservable();
   }
 
   public sendMessage(message: any): void {
-    this.socket$.next(message);
+    if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
+      this.websocket.send(message);
+    }
   }
 
-  public onMessage(): Observable<any> {
-    return this.socket$.asObservable();
-  }
-
-  public disconnect(): void {
-    this.socket$.complete(); // Close the WebSocket connection
+  onMessage(): Observable<any> {
+    return this.messageSubject.asObservable();
   }
 }
