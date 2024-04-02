@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {ChatService} from "../../../services/chat.service";
 import {Parser} from "@angular/compiler";
+import {WebSocketService} from "../../../services/web-socket.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chat-area',
   templateUrl: './chat-area.component.html',
   styleUrls: ['./chat-area.component.scss']
 })
-export class ChatAreaComponent implements OnInit {
+export class ChatAreaComponent implements OnInit, OnDestroy {
 
   employeeDataStore = employeeDataStore
   chatDataStore: any
@@ -22,18 +24,36 @@ export class ChatAreaComponent implements OnInit {
   chatMessages: any[] = []
   isMessageFromSender: boolean = false;
 
+  message: string = '';
+  messages: string[] = [];
+  messageSubscription: Subscription | any;
+
   messageForm = new FormGroup({
     message: new FormControl(null, [
       Validators.required
     ])
   });
 
-  constructor(private route:ActivatedRoute, private chatService: ChatService) {
+  constructor(private route:ActivatedRoute, private chatService: ChatService, private webSocketService: WebSocketService) {
   }
 
   ngOnInit(): void {
     this.loadReceiver()
     this.loadSender()
+
+    // Establish WebSocket connection
+    this.webSocketService.connect('ws://localhost:3269/ws');
+
+    // Subscribe to incoming messages
+    this.messageSubscription = this.webSocketService.onMessage().subscribe((message: string) => {
+      this.messages.push(message);
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from message subscription and close WebSocket connection
+    this.messageSubscription.unsubscribe();
+    this.webSocketService.disconnect();
   }
 
   loadReceiver() {
@@ -89,6 +109,9 @@ export class ChatAreaComponent implements OnInit {
   }
 
   sendMessage() {
+    this.webSocketService.sendMessage(this.message);
+    this.message = ''; // Clear input field
+
     if (this.messageForm.valid) {
       this.chatService.addMessage({
         id: null,
