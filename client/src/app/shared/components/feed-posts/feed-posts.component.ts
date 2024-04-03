@@ -57,7 +57,7 @@ export class FeedPostsComponent implements OnInit{
   channelId:string = "65dcf6ea090f1d3b06e84806";
   feed:any;
 
-  userId:string = "3";
+  userId:any;
 
   constructor(private themeService: ThemeService,
               private dialog: MatDialog,
@@ -87,6 +87,7 @@ export class FeedPostsComponent implements OnInit{
   }
 
   getUser() {
+    this.userId = localStorage.getItem('sender');
     employeeDataStore.forEach((emp) => {
       if (emp.id == this.userId) {
         this.employee = [emp];

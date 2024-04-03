@@ -12,13 +12,15 @@ export class AppComponent implements OnInit {
   title = 'client';
   employeeDataStore = employeeDataStore;
   employee: any;
-  userId:string = "3";
+  userId:any;
 
   constructor(public themeService: ThemeService, private webSocketService: WebSocketService) {
 
   }
 
   ngOnInit(): void {
+    localStorage.setItem('sender','1')
+    this.userId = localStorage.getItem('sender')
     this.getUser()
 
     // Establish WebSocket connection

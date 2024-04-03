@@ -26,7 +26,7 @@ export class FeedComponent implements OnInit {
 
   commentSection: boolean = true;
 
-  userId:string = "3";
+  userId:any;
 
   constructor(private themeService: ThemeService,
               private dialog: MatDialog,
@@ -45,6 +45,7 @@ export class FeedComponent implements OnInit {
   }
 
   getUser() {
+    this.userId = localStorage.getItem('sender')
     employeeDataStore.forEach((emp) => {
       if (emp.id == this.userId) {
         this.employee = [emp];

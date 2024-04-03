@@ -11,7 +11,7 @@ export var multimediaDataStore: MultimediaModel[] = [
     title: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad delectus deleniti ducimus eaque eum odio quaerat quo recusandae, suscipit. Blanditiis iure quidem quis sunt ullam.',
     status: 'sent',
     likes: ['1', '2', '3'],
-    comments: ['1', '2', '3'],
+    comments: ['1','3'],
     shares: ['1', '2', '3'],
     timestamp: '2024-02-22 13:27:45',
     contentType: 'image/jpeg'
@@ -26,7 +26,7 @@ export var multimediaDataStore: MultimediaModel[] = [
     title: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, aut dolore eius est eveniet unde.',
     status: 'sent',
     likes: ['1', '2', '3', '4', '5', '6'],
-    comments: ['1', '2', '3'],
+    comments: ['2', '4', '5'],
     shares: ['1', '2', '3'],
     timestamp: '2024-02-22 13:27:45',
     // contentType: 'image/jpeg'
@@ -41,7 +41,7 @@ export var multimediaDataStore: MultimediaModel[] = [
     title: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, aut dolore eius est eveniet unde.',
     status: 'sent',
     likes: ['1', '2', '3'],
-    comments: ['1', '2', '3'],
+    comments: ['6', '2'],
     shares: ['1', '2', '3'],
     timestamp: '2024-02-22 13:27:45',
     contentType: 'image/jpeg'
