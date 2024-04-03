@@ -30,7 +30,6 @@ export class ChatListComponent implements OnInit, OnDestroy {
   constructor(private multimediaService: MultimediaService, private router: Router, private chatService: ChatService, private route: ActivatedRoute, private webSocketService: WebSocketService) {
   }
   ngOnInit(): void {
-    localStorage.setItem('sender','1')
     this.senderId = localStorage.getItem('sender')
     this.loadChats()
     // convert base64 images to safe urls
