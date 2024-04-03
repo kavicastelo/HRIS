@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ThemeService} from "./services/theme.service";
 import {employeeDataStore} from "./shared/data-stores/employee-data-store";
+import {WebSocketService} from "./services/web-socket.service";
 
 @Component({
   selector: 'app-root',
@@ -13,12 +14,25 @@ export class AppComponent implements OnInit {
   employee: any;
   userId:string = "3";
 
-  constructor(public themeService: ThemeService) {
+  constructor(public themeService: ThemeService, private webSocketService: WebSocketService) {
 
   }
 
   ngOnInit(): void {
     this.getUser()
+
+    // Establish WebSocket connection
+    this.webSocketService.connect('ws://localhost:4200/ws');
+
+    this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
+      console.log('WebSocket connection status:', status);
+    }, (error: any) => {
+      console.error('WebSocket connection error:', error);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect();
   }
 
   getUser() {

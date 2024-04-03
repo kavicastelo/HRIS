@@ -39,7 +39,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
     // })
     try {
       // Establish WebSocket connection
-      this.webSocketService.connect('ws://localhost:4200/ws');
+      // this.webSocketService.connect('ws://localhost:4200/ws');
 
       // Subscribe to incoming messages
       this.messageSubscription = this.webSocketService.onMessage().subscribe((message: string) => {
@@ -52,9 +52,9 @@ export class ChatListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from message subscription and close WebSocket connection
-    this.messageSubscription.unsubscribe();
-    this.webSocketService.disconnect();
+    if (this.messageSubscription) {
+      this.messageSubscription.unsubscribe();
+    }
   }
 
   navigateUrl(id: any) {
@@ -62,6 +62,12 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.availableChats = [];
     this.router.navigate([`/feed/chat/${id}`]);
     this.loadChats()
+
+    this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
+      console.log('WebSocket connection status:', status);
+    }, (error: any) => {
+      console.error('WebSocket connection error:', error);
+    });
   }
 
   loadChats() {

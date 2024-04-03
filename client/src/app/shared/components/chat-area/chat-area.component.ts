@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {employeeDataStore} from "../../data-stores/employee-data-store";
@@ -14,6 +14,7 @@ import {MessageModel} from "../../data-models/Message.model";
   styleUrls: ['./chat-area.component.scss']
 })
 export class ChatAreaComponent implements OnInit, OnDestroy {
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef | any;
 
   employeeDataStore = employeeDataStore
   chatDataStore: any
@@ -46,11 +47,11 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
 
     try {
       // Establish WebSocket connection
-      this.webSocketService.connect('ws://localhost:4200/ws');
+      // this.webSocketService.connect('ws://localhost:4200/ws');
 
-      this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
-        console.log('WebSocket connection status:', status);
-      });
+      // this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
+      //   console.log('WebSocket connection status:', status);
+      // });
 
       // Subscribe to incoming messages
       this.messageSubscription = this.webSocketService.onMessage().subscribe((message: string) => {
@@ -67,7 +68,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe();
     }
-    this.webSocketService.disconnect();
+    // this.webSocketService.disconnect();
   }
 
   loadReceiver() {
@@ -125,7 +126,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
       this.chatMessages.push(parsedMessage);
 
       // Optionally, you can scroll to the bottom of the chat window to show the latest message
-      // this.scrollToBottom();
+      this.scrollToBottom();
     }
   }
 
@@ -151,5 +152,11 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         console.log(error)
       })
     }
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 }

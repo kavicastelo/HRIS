@@ -12,22 +12,11 @@ export class FeedWrapperComponent implements OnInit {
   employee: any
   userId:any;
 
-  constructor(private webSocketService: WebSocketService) {
+  constructor() {
   }
 
   ngOnInit(): void {
     this.getUser();
-    try {
-      // Establish WebSocket connection
-      this.webSocketService.connect('ws://localhost:4200/ws');
-
-      this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
-        console.log('WebSocket connection status:', status);
-      });
-    }
-    catch (e) {
-      console.log(e);
-    }
   }
 
   getUser() {
