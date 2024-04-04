@@ -6,6 +6,10 @@ import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +22,8 @@ import org.springframework.data.mongodb.MongoDatabaseFactory;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSFile;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @Service
 public class LearningMaterialsManagementService {
@@ -47,5 +53,31 @@ public class LearningMaterialsManagementService {
 
         courseLearningMaterialRepository.save(newCourseLearningMaterialModal);
 
+    }
+
+    public ResponseEntity<byte[]> getLearningMaterial(CourseLearningMaterialModal courseLearningMaterialModal) throws IOException {
+
+        GridFSBucket gridFSBucket = GridFSBuckets.create(mongoDbFactory.getMongoDatabase());
+        GridFSFile gridFSFile = gridFSBucket.find(eq("_id", new ObjectId(courseLearningMaterialModal.getContentId()))).first();
+
+        if(gridFSFile != null){
+            try (InputStream inputStream = gridFSBucket.openDownloadStream(gridFSFile.getObjectId())){
+                byte[] fileBytes = inputStream.readAllBytes();
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                headers.setContentDispositionFormData("filename", courseLearningMaterialModal.getLearningMaterialTitle());
+                headers.setContentLength(fileBytes.length);
+
+                return new ResponseEntity<>(fileBytes, headers, HttpStatus.OK);
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public void deleteLearningMaterial(String contentId){
+        GridFSBucket gridFSBucket = GridFSBuckets.create(mongoDbFactory.getMongoDatabase());
+        gridFSBucket.delete(new ObjectId(contentId));
     }
 }

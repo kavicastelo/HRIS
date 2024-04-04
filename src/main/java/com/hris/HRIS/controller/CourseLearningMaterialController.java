@@ -73,25 +73,10 @@ public class CourseLearningMaterialController {
         Optional<CourseLearningMaterialModal> courseLearningMaterialModalOptional = courseLearningMaterialRepository.findById(id);
 
         if(courseLearningMaterialModalOptional.isPresent()){
+
             CourseLearningMaterialModal existingCourseLearningMaterial = courseLearningMaterialModalOptional.get();
+            return learningMaterialsManagementService.getLearningMaterial(existingCourseLearningMaterial);
 
-            GridFSBucket gridFSBucket = GridFSBuckets.create(mongoDbFactory.getMongoDatabase());
-            GridFSFile gridFSFile = gridFSBucket.find(eq("_id", new ObjectId(existingCourseLearningMaterial.getContentId()))).first();
-
-            if(gridFSFile != null){
-                try (InputStream inputStream = gridFSBucket.openDownloadStream(gridFSFile.getObjectId())){
-                    byte[] fileBytes = inputStream.readAllBytes();
-
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-                    headers.setContentDispositionFormData("filename", existingCourseLearningMaterial.getLearningMaterialTitle());
-                    headers.setContentLength(fileBytes.length);
-
-                    return new ResponseEntity<>(fileBytes, headers, HttpStatus.OK);
-                }
-            } else {
-                return ResponseEntity.notFound().build();
-            }
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -130,9 +115,7 @@ public class CourseLearningMaterialController {
         if(courseLearningMaterialModalOptional.isPresent()){
 
             // Delete the file from GridFS.
-            String contentId = courseLearningMaterialModalOptional.get().getContentId();
-            GridFSBucket gridFSBucket = GridFSBuckets.create(mongoDbFactory.getMongoDatabase());
-            gridFSBucket.delete(new ObjectId(contentId));
+            learningMaterialsManagementService.deleteLearningMaterial(courseLearningMaterialModalOptional.get().getContentId());
 
             // Remove the learning material record.
             courseLearningMaterialRepository.deleteById(id);
