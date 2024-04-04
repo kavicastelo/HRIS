@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.CourseLearningMaterialModal;
 import com.hris.HRIS.repository.CourseLearningMaterialRepository;
+import com.hris.HRIS.service.LearningMaterialsManagementService;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSFile;
@@ -39,30 +40,18 @@ public class CourseLearningMaterialController {
     
     @Autowired
     CourseLearningMaterialRepository courseLearningMaterialRepository;
-    
+
+    @Autowired
+    LearningMaterialsManagementService learningMaterialsManagementService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLearningMaterial(@RequestParam("moduleId") String moduleId, 
                                                             @RequestParam("status") String status,
                                                             @RequestParam("file") MultipartFile file
                                                             ) throws IOException {
-        String fileName = file.getOriginalFilename();
-        String contentType = file.getContentType();
-        InputStream inputStream = file.getInputStream();
 
-        GridFSBucket gridFSBucket = GridFSBuckets.create(mongoDbFactory.getMongoDatabase());
-        ObjectId contentId = gridFSBucket.uploadFromStream(fileName, inputStream);
+        learningMaterialsManagementService.saveLearningMaterial(moduleId, "", status, file);
 
-        CourseLearningMaterialModal newCourseLearningMaterialModal = new CourseLearningMaterialModal();
-        newCourseLearningMaterialModal.setLearningMaterialTitle(fileName);
-        newCourseLearningMaterialModal.setContentId(contentId.toString());
-        newCourseLearningMaterialModal.setContentType(contentType);
-        newCourseLearningMaterialModal.setModuleId(moduleId);
-        newCourseLearningMaterialModal.setAssignmentId("");
-        newCourseLearningMaterialModal.setCreatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        newCourseLearningMaterialModal.setStatus(status);
-
-        courseLearningMaterialRepository.save(newCourseLearningMaterialModal);
-        
         ApiResponse apiResponse = new ApiResponse("Course learning material saved successfully.");
         return ResponseEntity.ok(apiResponse);
     }
