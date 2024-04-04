@@ -145,7 +145,6 @@ public class EmployeeQuizController {
     public ResponseEntity<ApiResponse> submitQuiz(@RequestBody String requestBody) {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<EmployeeQuizModel> attempsList = new ArrayList<>();
         String returnMsg = "";
 
         try {
