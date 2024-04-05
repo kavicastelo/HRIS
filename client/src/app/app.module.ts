@@ -23,44 +23,46 @@ import {AnnouncementAreaComponent} from './shared/components/announcement-area/a
 import {MatExpansionModule} from "@angular/material/expansion";
 import {LogInComponent} from './components/login/login.component';
 import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
-import { ProfileAboutComponent } from './shared/components/profile/profile-about/profile-about.component';
-import { ProfileActivityComponent } from './shared/components/profile/profile-activity/profile-activity.component';
-import { ProfilePostsComponent } from './shared/components/profile/profile-posts/profile-posts.component';
+import {ProfileAboutComponent} from './shared/components/profile/profile-about/profile-about.component';
+import {ProfileActivityComponent} from './shared/components/profile/profile-activity/profile-activity.component';
+import {ProfilePostsComponent} from './shared/components/profile/profile-posts/profile-posts.component';
 import {HttpClientModule} from "@angular/common/http";
-import { EmployeeRegisterComponent } from './shared/components/employee-register/employee-register.component';
+import {EmployeeRegisterComponent} from './shared/components/employee-register/employee-register.component';
 import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
-import { EditProfileComponent } from './shared/components/profile/edit-profile/edit-profile.component';
+import {EditProfileComponent} from './shared/components/profile/edit-profile/edit-profile.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
-import { FeedPostsComponent } from './shared/components/feed-posts/feed-posts.component';
-import { ChatAreaComponent } from './shared/components/chat-area/chat-area.component';
+import {FeedPostsComponent} from './shared/components/feed-posts/feed-posts.component';
+import {ChatAreaComponent} from './shared/components/chat-area/chat-area.component';
 import {TimeAgoPipe} from "./DTO/TimeAgoPipe";
 import {TruncatePipe} from "./DTO/TruncatePipe";
+import {TruncateCommentsPipe} from "./DTO/TruncateCommentsPipe";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    NotFoundComponent,
-    ProfileComponent,
-    PostImageComponent,
-    PostTextComponent,
-    FeedWrapperComponent,
-    FeedComponent,
-    ChatListComponent,
-    AnnouncementAreaComponent,
-    LogInComponent,
-    ProfileAboutComponent,
-    ProfileActivityComponent,
-    ProfilePostsComponent,
-    EmployeeRegisterComponent,
-    ResetPasswordComponent,
-    EditProfileComponent,
-    FeedPostsComponent,
-    ChatAreaComponent,
-    TimeAgoPipe,
-    TruncatePipe
-  ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        NotFoundComponent,
+        ProfileComponent,
+        PostImageComponent,
+        PostTextComponent,
+        FeedWrapperComponent,
+        FeedComponent,
+        ChatListComponent,
+        AnnouncementAreaComponent,
+        LogInComponent,
+        ProfileAboutComponent,
+        ProfileActivityComponent,
+        ProfilePostsComponent,
+        EmployeeRegisterComponent,
+        ResetPasswordComponent,
+        EditProfileComponent,
+        FeedPostsComponent,
+        ChatAreaComponent,
+        TimeAgoPipe,
+        TruncatePipe,
+        TruncateCommentsPipe
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -77,10 +79,10 @@ import {TruncatePipe} from "./DTO/TruncatePipe";
         LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
         ReactiveFormsModule,
         MatDatepickerModule,
-      MatNativeDateModule
+        MatNativeDateModule
     ],
-  providers: [],
-  bootstrap: [AppComponent]
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

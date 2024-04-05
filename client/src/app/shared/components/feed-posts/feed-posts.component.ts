@@ -59,9 +59,13 @@ export class FeedPostsComponent implements OnInit{
 
   userId:any;
 
+  maxCommentsDisplayed: number = 2; // maximum number of comment displayed as normal
+  showAllComments: boolean = false; // see more and see less handling boolean variable
+
   commentForm = new FormGroup({
     comment: new FormControl(null, [
-        Validators.required
+        Validators.required,
+        Validators.maxLength(300)
     ])
   })
 
@@ -125,7 +129,6 @@ export class FeedPostsComponent implements OnInit{
   loadFeed(data:any) {
     if (this.router.url == '/feed/area') {
       this.feed = data.filter((feed: any) => this.channelId.includes(feed.channelId)); // handle multiple channels
-      this.logger.log(this.feed)
     }
     else{
       const id = this.router.url.split('/')[2];
@@ -236,10 +239,20 @@ export class FeedPostsComponent implements OnInit{
         comment: this.commentForm.value.comment,
         timestamp: new Date()
       }).subscribe((data)=>{
-        console.log(data)
+        this.loadComments()
+        this.commentForm.reset();
       }, err =>{
         console.log(err)
       })
+    }
+  }
+
+  toggleComments() {
+    this.showAllComments = !this.showAllComments;
+    if (this.showAllComments) {
+      this.maxCommentsDisplayed = Infinity; // Show all comments
+    } else {
+      this.maxCommentsDisplayed = 2; // Show limited number of comments
     }
   }
 }
