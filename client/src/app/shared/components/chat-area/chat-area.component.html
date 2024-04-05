@@ -9,16 +9,16 @@
         <button class="btn-3"><mat-icon>more_horiz</mat-icon></button>
       </div>
     </li>
-    <li id="#scrollMe" class="list-group-item" style="max-height: calc(100vh - 260px); overflow-y: auto">
-      <div class="receiver-message" *ngFor="let m of chatMessages" [ngClass]="isMessageFrom(m) ? 'sender' : 'receiver'">
+    <li class="list-group-item" style="max-height: calc(100vh - 260px); overflow-y: auto" #scrollMe>
+      <div class="receiver-message" *ngFor="let message of chatMessages" [ngClass]="isMessageFrom(message) ? 'sender' : 'receiver'">
         <div class="profile-wrapper">
           <div class="pro-pic">
-            <img [src]="(m.userId == sender[0].id) ? sender[0].photo : receiver[0].photo" [alt]="(m.userId === sender[0].id) ? sender[0].name : receiver[0].name">
+            <img [src]="isMessageFrom(message) ? sender[0].photo : receiver[0].photo" [alt]="isMessageFrom(message) ? 'You' : receiver[0].name">
           </div>
-          <h6>{{ (m.userId == sender[0].id) ? 'you' : receiver[0].name }}</h6>
-          <small>{{ m.timestamp | timeAgo }}</small>
+          <h6>{{ isMessageFrom(message) ? 'You' : receiver[0].name }}</h6>
+          <small>{{ message.timestamp | timeAgo }}</small>
         </div>
-        <p class="message-content">{{ m.content }}</p>
+        <p class="message-content">{{ message.content }}</p>
       </div>
     </li>
     <li class="list-group-item">

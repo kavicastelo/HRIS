@@ -20,7 +20,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   chatDataStore: any
   sender: any
   receiver: any
-  chat: any
+  chat: any[] = []
   senderId: any;
   receiverId: any
   chatMessages: any[] = []
@@ -91,22 +91,26 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     })
   }
 
-  loadChat() {
-    this.chatMessages = []
-    this.chatService.getAllChats().subscribe(data => {
-      data.forEach((chat:any) => {
-        if (chat.id == (this.receiverId+"")+(this.senderId+"") || chat.id == (this.senderId+"")+(this.receiverId+"")) {
-          this.chat = [chat];
-          this.loadMessages(chat.messages)
-        }
-      })
-    }, error => {
-      console.log(error)
-    })
+  async loadChat() {
+    this.chatMessages = [];
+    this.chat = [];
+    const data = await this.chatService.getAllChats().toPromise();
+    for (const chat of data) {
+      if (chat.id === `${this.receiverId}${this.senderId}` || chat.id === `${this.senderId}${this.receiverId}`) {
+        this.chat.push(...chat.messages); // Concatenate messages from both chats
+      }
+    }
+    this.loadMessages(this.chat); // Pass concatenated messages to loadMessages
   }
 
   loadMessages(messages: any) {
     let sender:boolean = false
+
+    // Sort messages by timestamp
+    messages.sort((a: any, b: any) => {
+      return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    });
+
     messages.forEach((message: any) => {
       if (message.userId === this.receiverId.toString()) {
         sender = false
@@ -114,7 +118,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
       else if (message.userId === this.senderId.toString()) {
         sender = true
       }
-      this.chatMessages = [...this.chatMessages, message];
+      this.chatMessages.push(message); // Push each message into chatMessages array
     })
     this.isMessageFromSender = sender
   }

@@ -178,7 +178,9 @@ export class FeedPostsComponent implements OnInit{
       };
     });
 
-    return this.comments;
+    return this.comments.sort((a: any, b: any) => {
+      return new Date(b.time).getTime() - new Date(a.time).getTime(); // Reversed comparison logic
+    });
   }
 
   openLikes(likers: any) {
