@@ -5,7 +5,9 @@ import com.hris.HRIS.repository.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MultimediaService {
@@ -35,7 +37,14 @@ public class MultimediaService {
 
         List<String> comments = multimedia.getComments();
 
+        if (comments == null) {
+            comments = new ArrayList<>();
+            multimedia.setComments(comments);
+        }
+
         comments.add(commentId);
+
+        multimediaRepository.save(multimedia);
     }
 
     public void deleteComment(String multimediaId, String commentId) {

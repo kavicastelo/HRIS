@@ -49,13 +49,15 @@
       <div class="d-flex flex-column w-100">
         <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="commentAreaLink">
           <div class="form-floating w-100">
-            <textarea role="textbox" class="form-control" placeholder="Add a Comment..." id="comment-post{{i}}" style="height: 60px; width: 100%"></textarea>
-            <label for="comment-post{{i}}"></label>
+            <form [formGroup]="commentForm">
+              <textarea role="textbox" formControlName="comment" class="form-control" placeholder="Add a Comment..." id="comment-post{{i}}" style="height: 60px; width: 100%"></textarea>
+              <label for="comment-post{{i}}"></label>
+            </form>
           </div>
         </a>
         <div class="collapse" id="collapseExample">
           <div class="d-flex justify-content-end my-2">
-            <button class="btn-1">Comment</button>
+            <button class="btn-1" [disabled]="commentForm.invalid" (click)="addComment(post.id)">Comment</button>
           </div>
         </div>
       </div>

@@ -6,8 +6,9 @@ import {MultimediaService} from "../../../services/multimedia.service";
 import {NGXLogger} from "ngx-logger";
 import {PopingListComponent} from "../feed/feed.component";
 import {employeeDataStore} from "../../data-stores/employee-data-store";
-import {multimediaDataStore} from "../../data-stores/multimedia-data-store";
-import {commentDataStore} from "../../data-stores/comment-data-store";
+// import {commentDataStore} from "../../data-stores/comment-data-store";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {CommentsService} from "../../../services/comments.service";
 
 @Component({
   selector: 'app-feed-posts',
@@ -16,8 +17,8 @@ import {commentDataStore} from "../../data-stores/comment-data-store";
 })
 export class FeedPostsComponent implements OnInit{
   employeeDataStore = employeeDataStore;
-  multimediaDataStore = multimediaDataStore;
-  commentDataStore = commentDataStore;
+  multimediaDataStore:any;
+  commentDataStore:any[]=[];
   employee: any;
   comments: any[] = [];
 
@@ -54,28 +55,49 @@ export class FeedPostsComponent implements OnInit{
     }
   ];
 
-  channelId:string = "65dcf6ea090f1d3b06e84806";
+  // channelId:string = "65dcf6ea090f1d3b06e84806";
+  channelId:string = "12345678";
   feed:any;
 
   userId:any;
+
+  commentForm = new FormGroup({
+    comment: new FormControl(null, [
+        Validators.required
+    ])
+  })
 
   constructor(private themeService: ThemeService,
               private dialog: MatDialog,
               private router: Router,
               private multimediaService: MultimediaService,
               private route: ActivatedRoute,
+              private commentsService: CommentsService,
               private logger: NGXLogger) {
   }
 
   ngOnInit(): void {
     this.getUser();
-    this.loadFeed();
-    this.loadUsers();
+    this.loadMultimedia();
+    this.loadComments();
     this.hideCommentSection();
   }
 
-  loadUsers() {
-    //  create service
+  loadMultimedia() {
+    this.multimediaService.getAllMultimedia().subscribe(data=>{
+      this.multimediaDataStore = data;
+      this.loadFeed(this.multimediaDataStore)
+    }, err =>{
+      return console.log(err)
+    })
+  }
+
+  loadComments(){
+    this.commentsService.getAllComments().subscribe(data =>{
+      this.commentDataStore = data
+    }, error => {
+      console.log(error)
+    })
   }
 
   hideCommentSection() {
@@ -95,13 +117,13 @@ export class FeedPostsComponent implements OnInit{
     })
   }
 
-  loadFeed() {
+  loadFeed(data:any) {
     if (this.router.url == '/feed/area') {
-      this.feed = multimediaDataStore.filter(feed => (feed.channelId == this.channelId) ? this.feed = [feed] : null )
+      this.feed = data.filter((feed:any) => (feed.channelId == this.channelId) ? this.feed = [feed] : null )
     }
     else{
       const id = this.router.url.split('/')[2];
-      this.feed = multimediaDataStore.filter(feed => (feed.userId == id) ? this.feed = [feed] : null )
+      this.feed = data.filter((feed:any) => (feed.userId == id) ? this.feed = [feed] : null )
     }
 
     this.feed.forEach((feed:any) => {
@@ -115,13 +137,13 @@ export class FeedPostsComponent implements OnInit{
             userPhoto: emp.photo,
             time: feed.timestamp,
             message: feed.title,
-            file: this.multimediaService.convertToSafeUrl(feed.file, feed.contentType),
+            file: this.multimediaService.convertToSafeUrl(feed.file.data, feed.contentType),
             type: feed.contentType,
-            likes: feed.likes.length,
+            likes: feed.likes?.length,
             likers: feed.likes,
-            comments: feed.comments.length,
+            comments: feed.comments?.length,
             commenters: feed.comments,
-            shares: feed.shares.length,
+            shares: feed.shares?.length,
             sharing: feed.shares
           })
         }
@@ -129,13 +151,12 @@ export class FeedPostsComponent implements OnInit{
     })
 
     this.feedPost = this.feedPost.filter(time => (time.time != '') ? this.commentSection = true : false )
-
   }
 
   commentsForPost(id: any): any[] {
-    const filteredComments = commentDataStore.filter(comment => comment.multimediaId == id);
+    const filteredComments = this.commentDataStore.filter((comment:any) => comment.multimediaId == id);
 
-    this.comments = filteredComments.map(comment => {
+    this.comments = filteredComments.map((comment:any) => {
       const user = employeeDataStore.find(emp => emp.id.toString() === comment.userId);
 
       return {
@@ -199,5 +220,20 @@ export class FeedPostsComponent implements OnInit{
 
   navigateUrl(id:any) {
     this.router.navigate([`/profile/${id}/about/${id}`]);
+  }
+
+  addComment(postId: any) {
+    if(this.commentForm.valid){
+      this.commentsService.saveComment({
+        userId: this.userId,
+        multimediaId: postId,
+        comment: this.commentForm.value.comment,
+        timestamp: new Date()
+      }).subscribe((data)=>{
+        console.log(data)
+      }, err =>{
+        console.log(err)
+      })
+    }
   }
 }
