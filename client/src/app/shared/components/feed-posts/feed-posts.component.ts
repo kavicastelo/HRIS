@@ -6,7 +6,6 @@ import {MultimediaService} from "../../../services/multimedia.service";
 import {NGXLogger} from "ngx-logger";
 import {PopingListComponent} from "../feed/feed.component";
 import {employeeDataStore} from "../../data-stores/employee-data-store";
-// import {commentDataStore} from "../../data-stores/comment-data-store";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CommentsService} from "../../../services/comments.service";
 
@@ -55,8 +54,7 @@ export class FeedPostsComponent implements OnInit{
     }
   ];
 
-  // channelId:string = "65dcf6ea090f1d3b06e84806";
-  channelId:string = "12345678";
+  channelId:any[] = [];
   feed:any;
 
   userId:any;
@@ -113,13 +111,21 @@ export class FeedPostsComponent implements OnInit{
     employeeDataStore.forEach((emp) => {
       if (emp.id == this.userId) {
         this.employee = [emp];
+        this.loadChannelIds();
       }
+    })
+  }
+
+  loadChannelIds(){
+    this.employee[0].channels.forEach((id:any)=>{
+      this.channelId.push(id.id)
     })
   }
 
   loadFeed(data:any) {
     if (this.router.url == '/feed/area') {
-      this.feed = data.filter((feed:any) => (feed.channelId == this.channelId) ? this.feed = [feed] : null )
+      this.feed = data.filter((feed: any) => this.channelId.includes(feed.channelId)); // handle multiple channels
+      this.logger.log(this.feed)
     }
     else{
       const id = this.router.url.split('/')[2];

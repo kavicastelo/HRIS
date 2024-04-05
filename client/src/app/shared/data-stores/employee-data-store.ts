@@ -15,6 +15,12 @@ export var employeeDataStore: EmployeeModel[] = [
       description: "This is official channel for HR Department. Please do not try to edit",
       departmentId: "65dcf6ea090f1d3b06e84805",
       photo: "https://pics.craiyon.com/2023-10-02/a06269bd31604629aa3657be39ff663a.webp"
+    }, {
+      id: '123456',
+      name: 'IT DepartmentOfficial Channel',
+      description: "This is official channel for IT Department. Please do not try to edit",
+      departmentId: "65dcf69ffc3e7c696d16aa57",
+      photo: "https://pics.craiyon.com/2023-10-02/a06269bd31604629aa3657be39ff663a.webp"
     }],
     jobData: {
       position: 'Manager',
