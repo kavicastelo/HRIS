@@ -1,11 +1,24 @@
 <div [ngClass]="{'theme-light': !isDarkMode, 'theme-dark': isDarkMode}">
   <div class="main-body" style="min-height:300px; min-width: 300px; max-height: 350px">
     <mat-dialog-content class="mat-typography" style="max-height: 70%; overflow-y: auto; overflow-x: hidden">
-      <div class="d-flex align-items-center my-2 user" *ngFor="let e of data.data" (click)="navigateToProfile(e.id)">
-        <div class="profile-image">
-          <img [src]="e.photo" alt="profile image">
+      <div *ngFor="let e of data.data">
+        <div class="d-flex align-items-center my-2 user" (click)="navigateToProfile(e.id)">
+          <div class="profile-image">
+            <img [src]="convertToSafeUrl(e.photo)" alt="profile image">
+          </div>
+          <p>{{e.name}}</p>
         </div>
-        <p>{{e.name}}</p>
+        <div *ngIf="selfUser()">
+          <div style="width: 100%;" *ngFor="let channel of e.channels">
+            <p style="margin: 20px 0 10px 0">Select the channel you need to share by...</p>
+            <mat-select [(value)]="selectedChannel">
+              <mat-option [value]="channel.id">{{channel.name}}</mat-option>
+            </mat-select>
+            <div class="d-flex mt-2 align-items-center justify-content-end">
+              <button class="btn-1 my-2" (click)="selectChannel()">OK</button>
+            </div>
+          </div>
+        </div>
       </div>
     </mat-dialog-content>
   </div>

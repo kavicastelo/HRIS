@@ -8,7 +8,7 @@ import {PopingListComponent} from "../feed/feed.component";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CommentsService} from "../../../services/comments.service";
 import {EmployeesService} from "../../../services/employees.service";
-import {Observable, tap} from "rxjs";
+import {forkJoin, map, mergeMap, Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
@@ -221,16 +221,61 @@ export class FeedPostsComponent implements OnInit{
 
   openComments(commenters: any) {
     let whoComments:any[] = [];
+    let filteredComments:any[] = [];
+
     commenters.forEach((commenter: any) => {
-      this.employeesDataStore.forEach((emp:any) => {
-        if (emp.id == commenter) {
-          whoComments.push(emp);
-        }
+      this.commentsService.getAllComments().subscribe(comments=>{
+        comments.forEach((comment:any) =>{
+          if (comment.id == commenter){
+            filteredComments.push(comment)
+          }
+        })
+        this.employeesDataStore.forEach((emp:any) => {
+          filteredComments.forEach(fc => {
+            if (emp.id == fc.userId) {
+              whoComments.push(emp);
+            }
+          })
+        })
       })
     })
-    const dialogRef = this.dialog.open(PopingListComponent, {
-      data: {data:whoComments}
-    })
+
+    // Collect all observables for fetching comments
+    const commentObservables = commenters.map((commenter: any) => {
+      return this.commentsService.getAllComments().pipe(
+          map(comments => comments.filter((comment: any) => comment.id == commenter)),
+          mergeMap(filteredComments =>
+              this.employeesDataStore.filter((emp: any) => filteredComments.some((fc: any) => emp.id == fc.userId))
+          )
+      );
+    });
+
+    // Wait for all observables to complete
+    forkJoin(commentObservables).subscribe((results:any) => {
+      // Flatten the results array
+      whoComments = results.flat();
+
+      // Remove duplicates
+      whoComments = this.removeDuplicates(whoComments, 'id');
+
+      // Open the dialog with filtered comments
+      const dialogRef = this.dialog.open(PopingListComponent, {
+        data: { data: whoComments }
+      });
+    });
+  }
+
+  // Function to remove duplicates from array of objects
+  removeDuplicates(array: any[], key: string): any[] {
+    const seen = new Set();
+    return array.filter((item) => {
+      const value = item[key];
+      if (seen.has(value)) {
+        return false;
+      }
+      seen.add(value);
+      return true;
+    });
   }
 
   openShares(sharing: any) {

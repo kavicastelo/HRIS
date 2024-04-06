@@ -26,23 +26,23 @@ public class MultimediaController {
     public final AtomicReference<String> receivedID = new AtomicReference<>();
 
     @PostMapping("/photos/add")
-    public String addPhoto(@RequestParam("title") String title,
-                           @RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<ApiResponse> addPhoto(@RequestParam("title") String title,
+                                                @RequestParam("file") MultipartFile file) throws IOException {
         String id = photoService.addMultimedia(title, file, "image/jpeg");
 
         receivedID.set(id);
 
-        return "redirect:/photos/" + id;
+        return ResponseEntity.ok(new ApiResponse(String.valueOf(id)));
     }
 
     @PostMapping("/videos/add")
-    public String addVideo(@RequestParam("title") String title,
+    public ResponseEntity<ApiResponse> addVideo(@RequestParam("title") String title,
                            @RequestParam("file") MultipartFile file) throws IOException {
         String id = photoService.addMultimedia(title, file, "video/mp4");
 
         receivedID.set(id);
 
-        return "redirect:/videos/" + id;
+        return ResponseEntity.ok(new ApiResponse(String.valueOf(id)));
     }
 
     @PutMapping("/save/data")
