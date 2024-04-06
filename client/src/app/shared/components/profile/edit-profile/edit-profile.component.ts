@@ -3,8 +3,11 @@ import {ThemeService} from "../../../../services/theme.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
-import {employeeDataStore} from "../../../data-stores/employee-data-store";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Observable, tap} from "rxjs";
+import {EmployeesService} from "../../../../services/employees.service";
+import {MultimediaService} from "../../../../services/multimedia.service";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-edit-profile',
@@ -12,7 +15,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent {
-  employeeDataStore = employeeDataStore
+  employeeDataStore:any;
   employee: any
   userId: any;
 
@@ -39,16 +42,30 @@ export class EditProfileComponent {
     status: new FormControl({value:null, disabled: true}),
   })
 
-  constructor(private themeService: ThemeService, private dialog: MatDialog, private router: Router, private route: ActivatedRoute, private logger: NGXLogger) {
+  constructor(private themeService: ThemeService,
+              private employeeService: EmployeesService,
+              private multimediaService: MultimediaService,
+              private dialog: MatDialog,
+              private router: Router,
+              private route: ActivatedRoute,
+              private logger: NGXLogger) {
   }
 
-  ngOnInit(): void {
-    this.getUser();
-    this.patchValues();
+  async ngOnInit(): Promise<any> {
+    await this.loadAllUsers().subscribe(()=>{
+      this.getUser();
+      this.patchValues();
+    })
+  }
+
+  loadAllUsers(): Observable<any>{
+    return this.employeeService.getAllEmployees().pipe(
+        tap(data => this.employeeDataStore = data)
+    );
   }
 
   getUser() {
-    employeeDataStore.forEach((emp) => {
+    this.employeeDataStore.forEach((emp:any) => {
       this.route.paramMap.subscribe(params => {
         this.userId = params.get('id');
 
@@ -75,5 +92,9 @@ export class EditProfileComponent {
 
   navigateBetweenTabs(path: string) {
     this.router.navigate([`/profile/${this.userId}/${path}/${this.userId}`]);
+  }
+
+  convertToSafeUrl(url:any):SafeResourceUrl{
+    return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
   }
 }

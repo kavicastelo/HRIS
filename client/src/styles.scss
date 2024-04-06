@@ -109,6 +109,7 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 .card{
   margin: 8px 0;
   background-color: var(--color-surface-mixed-200);
+  border-color: var(--color-surface-mixed-500);
 
   .card-title{
     color: var(--color-text-200);
