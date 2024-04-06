@@ -13,7 +13,7 @@
             <div class="col-8 col-sm-9">
               <div class="d-flex align-items-center">
                 <div class="profile-img me-2">
-                  <img [src]="e.photo" alt="profile image">
+                  <img [src]="convertToSafeUrl(e.photo)" alt="profile image">
                 </div>
                 <div class="profile-img-setting">
                   <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .png</span>
