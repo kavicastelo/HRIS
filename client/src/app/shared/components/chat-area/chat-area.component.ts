@@ -8,6 +8,7 @@ import {MessageModel} from "../../data-models/Message.model";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {MultimediaService} from "../../../services/multimedia.service";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-chat-area',
@@ -41,7 +42,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
               private chatService: ChatService,
               private webSocketService: WebSocketService,
               private multimediaService: MultimediaService,
-              private employeeService: EmployeesService) {
+              private employeeService: EmployeesService, private logger: NGXLogger) {
   }
 
   async ngOnInit(): Promise<any> {
@@ -169,7 +170,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         this.loadChat()
         this.messageForm.reset()
       }, error => {
-        console.log(error)
+        this.logger.error(error)
       })
     }
   }

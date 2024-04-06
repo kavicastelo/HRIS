@@ -7,6 +7,7 @@ import {WebSocketService} from "../../../services/web-socket.service";
 import {Observable, Subscription, tap} from "rxjs";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-chat-list',
@@ -33,7 +34,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
               private router: Router,
               private chatService: ChatService,
               private route: ActivatedRoute,
-              private webSocketService: WebSocketService) {
+              private webSocketService: WebSocketService, private logger: NGXLogger) {
   }
   async ngOnInit(): Promise<any> {
     this.senderId = localStorage.getItem('sender')
@@ -49,7 +50,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
       });
     }
     catch (e) {
-      console.log(e);
+      this.logger.error(e);
     }
   }
 
@@ -104,6 +105,8 @@ export class ChatListComponent implements OnInit, OnDestroy {
           this.changeStatus(chats.id)
         })
       })
+    }, error => {
+      this.logger.error(error)
     });
   }
 

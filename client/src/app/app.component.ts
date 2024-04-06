@@ -3,6 +3,7 @@ import {ThemeService} from "./services/theme.service";
 import {WebSocketService} from "./services/web-socket.service";
 import {MultimediaService} from "./services/multimedia.service";
 import {EmployeesService} from "./services/employees.service";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,10 @@ export class AppComponent implements OnInit {
   employee: any;
   userId:any;
 
-  constructor(public themeService: ThemeService, private webSocketService: WebSocketService, public multimediaService: MultimediaService, private employeeService: EmployeesService) {
+  constructor(public themeService: ThemeService,
+              private webSocketService: WebSocketService,
+              public multimediaService: MultimediaService,
+              private employeeService: EmployeesService, private logger: NGXLogger) {
 
   }
 
@@ -28,9 +32,9 @@ export class AppComponent implements OnInit {
     this.webSocketService.connect('ws://localhost:4200/ws');
 
     this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
-      console.log('WebSocket connection status:', status);
+      this.logger.log('WebSocket connection status:', status);
     }, (error: any) => {
-      console.error('WebSocket connection error:', error);
+      this.logger.error('WebSocket connection error:', error);
     });
   }
 
@@ -47,8 +51,9 @@ export class AppComponent implements OnInit {
       this.employeeDataStore.forEach((emp:any) => {
         emp.photo = this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg');
       })
+
     }, error => {
-      console.log(error)
+      this.logger.error(error);
     })
   }
 
