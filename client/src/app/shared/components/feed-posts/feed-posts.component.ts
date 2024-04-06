@@ -5,9 +5,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {NGXLogger} from "ngx-logger";
 import {PopingListComponent} from "../feed/feed.component";
-import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CommentsService} from "../../../services/comments.service";
+import {EmployeesService} from "../../../services/employees.service";
+import {Observable, tap} from "rxjs";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-feed-posts',
@@ -15,10 +17,12 @@ import {CommentsService} from "../../../services/comments.service";
   styleUrls: ['./feed-posts.component.scss']
 })
 export class FeedPostsComponent implements OnInit{
-  employeeDataStore = employeeDataStore;
+  employeesDataStore:any;
   multimediaDataStore:any;
   commentDataStore:any[]=[];
-  employee: any;
+  employee: any = {
+    photo:''
+  };
   comments: any[] = [];
 
   commentSection: boolean = true;
@@ -73,16 +77,25 @@ export class FeedPostsComponent implements OnInit{
               private dialog: MatDialog,
               private router: Router,
               private multimediaService: MultimediaService,
+              private employeesService: EmployeesService,
               private route: ActivatedRoute,
               private commentsService: CommentsService,
               private logger: NGXLogger) {
   }
 
-  ngOnInit(): void {
-    this.getUser();
-    this.loadMultimedia();
-    this.loadComments();
-    this.hideCommentSection();
+  async ngOnInit(): Promise<void> {
+    await this.loadAllUsers().subscribe(()=>{
+      this.getUser();
+      this.loadMultimedia();
+      this.loadComments();
+      this.hideCommentSection();
+    });
+  }
+
+  loadAllUsers(): Observable<any>{
+    return this.employeesService.getAllEmployees().pipe(
+        tap(data => this.employeesDataStore = data)
+    );
   }
 
   loadMultimedia() {
@@ -112,16 +125,21 @@ export class FeedPostsComponent implements OnInit{
 
   getUser() {
     this.userId = localStorage.getItem('sender');
-    employeeDataStore.forEach((emp) => {
-      if (emp.id == this.userId) {
-        this.employee = [emp];
+    if (this.employeesDataStore) { // Check if employeesDataStore is populated
+      const foundEmployee = this.employeesDataStore.find((emp: any) => emp.id === this.userId);
+      if (foundEmployee) {
+        this.employee = foundEmployee;
         this.loadChannelIds();
       }
-    })
+    }
+  }
+
+  convertToSafeUrl(url:any):SafeResourceUrl{
+    return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
   }
 
   loadChannelIds(){
-    this.employee[0].channels.forEach((id:any)=>{
+    this.employee.channels.forEach((id:any)=>{
       this.channelId.push(id.id)
     })
   }
@@ -136,14 +154,14 @@ export class FeedPostsComponent implements OnInit{
     }
 
     this.feed.forEach((feed:any) => {
-      this.employeeDataStore.forEach((emp) => {
+      this.employeesDataStore.forEach((emp:any) => {
         if (emp.id == feed.userId) {
           this.feedPost.push({
             id: feed.id,
             user: emp.name,
             userId: emp.id,
             userPosition: emp.jobData.position,
-            userPhoto: emp.photo,
+            userPhoto: this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg'),
             time: feed.timestamp,
             message: feed.title,
             file: this.multimediaService.convertToSafeUrl(feed.file.data, feed.contentType),
@@ -166,13 +184,13 @@ export class FeedPostsComponent implements OnInit{
     const filteredComments = this.commentDataStore.filter((comment:any) => comment.multimediaId == id);
 
     this.comments = filteredComments.map((comment:any) => {
-      const user = employeeDataStore.find(emp => emp.id.toString() === comment.userId);
+      const user = this.employeesDataStore.find((emp:any) => emp.id.toString() === comment.userId);
 
       return {
         id: comment.id,
         user: user ? user.name : '',
         userId: user ? user.id : '',
-        userProfile: user ? user.photo : '',
+        userProfile: user ? this.multimediaService.convertToSafeUrl(user.photo, 'image/jpeg') : '',
         comment: comment.comment,
         time: comment.timestamp,
       };
@@ -186,7 +204,7 @@ export class FeedPostsComponent implements OnInit{
   openLikes(likers: any) {
     let whoLikes:any[] = [];
     likers.forEach((liker: any) => {
-      employeeDataStore.forEach((emp) => {
+      this.employeesDataStore.forEach((emp:any) => {
         if (emp.id == liker) {
           whoLikes.push(emp);
         }
@@ -204,7 +222,7 @@ export class FeedPostsComponent implements OnInit{
   openComments(commenters: any) {
     let whoComments:any[] = [];
     commenters.forEach((commenter: any) => {
-      employeeDataStore.forEach((emp) => {
+      this.employeesDataStore.forEach((emp:any) => {
         if (emp.id == commenter) {
           whoComments.push(emp);
         }
@@ -218,7 +236,7 @@ export class FeedPostsComponent implements OnInit{
   openShares(sharing: any) {
     let whoShares:any[] = [];
     sharing.forEach((share: any) => {
-      employeeDataStore.forEach((emp) => {
+      this.employeesDataStore.forEach((emp:any) => {
         if (emp.id == share) {
           whoShares.push(emp);
         }

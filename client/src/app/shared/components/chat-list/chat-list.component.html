@@ -14,7 +14,7 @@
         <div class="direct-messages-chat-area all-contacts" *ngFor="let e of employeeDataStore">
           <div class="chat-wrapper" (click)="navigateUrl(e.id)">
             <div class="chat-icon">
-              <img [src]="e.photo" alt="profile">
+              <img [src]="convertToSafeUrl(e.photo)" alt="profile">
             </div>
             <div class="chat-content">
               <h6>{{e.name}}</h6>

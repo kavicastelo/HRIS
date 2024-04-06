@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ThemeService} from "./services/theme.service";
-import {employeeDataStore} from "./shared/data-stores/employee-data-store";
 import {WebSocketService} from "./services/web-socket.service";
+import {MultimediaService} from "./services/multimedia.service";
+import {EmployeesService} from "./services/employees.service";
 
 @Component({
   selector: 'app-root',
@@ -10,18 +11,18 @@ import {WebSocketService} from "./services/web-socket.service";
 })
 export class AppComponent implements OnInit {
   title = 'client';
-  employeeDataStore = employeeDataStore;
+  employeeDataStore:any;
   employee: any;
   userId:any;
 
-  constructor(public themeService: ThemeService, private webSocketService: WebSocketService) {
+  constructor(public themeService: ThemeService, private webSocketService: WebSocketService, public multimediaService: MultimediaService, private employeeService: EmployeesService) {
 
   }
 
   ngOnInit(): void {
-    localStorage.setItem('sender','1')
+    this.loadAllUsers();
+    localStorage.setItem('sender','66105c4922d9fd0f2042909f')
     this.userId = localStorage.getItem('sender')
-    this.getUser()
 
     // Establish WebSocket connection
     this.webSocketService.connect('ws://localhost:4200/ws');
@@ -37,8 +38,22 @@ export class AppComponent implements OnInit {
     this.webSocketService.disconnect();
   }
 
-  getUser() {
-    employeeDataStore.forEach((emp) => {
+  loadAllUsers() {
+    this.employeeService.getAllEmployees().subscribe(data =>{
+      this.employeeDataStore = data;
+      this.getUser(this.employeeDataStore);
+
+      // convert base64 images to safe urls
+      this.employeeDataStore.forEach((emp:any) => {
+        emp.photo = this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg');
+      })
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  getUser(data:any) {
+    data.forEach((emp:any) => {
       if (emp.id == this.userId) {
         this.employee = [emp];
       }

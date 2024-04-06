@@ -1,12 +1,13 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
-import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {ChatService} from "../../../services/chat.service";
-import {Parser} from "@angular/compiler";
 import {WebSocketService} from "../../../services/web-socket.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription, tap} from "rxjs";
 import {MessageModel} from "../../data-models/Message.model";
+import {EmployeesService} from "../../../services/employees.service";
+import {SafeResourceUrl} from "@angular/platform-browser";
+import {MultimediaService} from "../../../services/multimedia.service";
 
 @Component({
   selector: 'app-chat-area',
@@ -16,7 +17,7 @@ import {MessageModel} from "../../data-models/Message.model";
 export class ChatAreaComponent implements OnInit, OnDestroy {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef | any;
 
-  employeeDataStore = employeeDataStore
+  employeeDataStore: any
   chatDataStore: any
   sender: any
   receiver: any
@@ -36,14 +37,18 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     ])
   });
 
-  constructor(private route:ActivatedRoute, private chatService: ChatService, private webSocketService: WebSocketService) {
+  constructor(private route:ActivatedRoute,
+              private chatService: ChatService,
+              private webSocketService: WebSocketService,
+              private multimediaService: MultimediaService,
+              private employeeService: EmployeesService) {
   }
 
-  ngOnInit(): void {
-    localStorage.setItem('sender','1')
-    this.senderId = localStorage.getItem('sender')
-    this.loadReceiver()
-    this.loadSender()
+  async ngOnInit(): Promise<any> {
+    await this.loadAllUsers().subscribe(()=>{
+      this.loadSender();
+      this.loadReceiver();
+    })
 
     try {
       // Establish WebSocket connection
@@ -71,24 +76,35 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     // this.webSocketService.disconnect();
   }
 
+  loadAllUsers(): Observable<any>{
+    return this.employeeService.getAllEmployees().pipe(
+        tap(data => this.employeeDataStore = data)
+    );
+  }
+
   loadReceiver() {
     this.route.params.subscribe(params => {
-      employeeDataStore.forEach(emp => {
-        if (emp.id == params['id']) {
-          this.receiver = [emp];
-          this.receiverId = this.receiver[0].id
-          this.loadChat()
+      if (this.employeeDataStore) { // Check if employeesDataStore is populated
+        const foundEmployee = this.employeeDataStore.find((emp: any) => emp.id === params['id']);
+        if (foundEmployee) {
+          this.receiver = [foundEmployee];
+          this.receiverId = foundEmployee.id;
+          this.loadChat().then(()=>{
+            //  implement what happen after chats are loaded
+          })
         }
-      })
+      }
     })
   }
 
   loadSender() {
-    this.employeeDataStore.forEach(emp => {
-      if (emp.id == this.senderId) {
-        this.sender = [emp];
+    this.senderId = localStorage.getItem('sender');
+    if (this.employeeDataStore) { // Check if employeesDataStore is populated
+      const foundEmployee = this.employeeDataStore.find((emp: any) => emp.id === this.senderId);
+      if (foundEmployee) {
+        this.sender = foundEmployee;
       }
-    })
+    }
   }
 
   async loadChat() {
@@ -162,5 +178,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     try {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
     } catch(err) { }
+  }
+
+  convertToSafeUrl(url:any):SafeResourceUrl{
+    return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
   }
 }

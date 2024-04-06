@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {employeeDataStore} from "../../data-stores/employee-data-store";
 import {channelsDataStore} from "../../data-stores/channels-data-store";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChatService} from "../../../services/chat.service";
 import {WebSocketService} from "../../../services/web-socket.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription, tap} from "rxjs";
+import {EmployeesService} from "../../../services/employees.service";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-chat-list',
@@ -14,7 +15,7 @@ import {Subscription} from "rxjs";
 })
 export class ChatListComponent implements OnInit, OnDestroy {
 
-  employeeDataStore = employeeDataStore;
+  employeeDataStore: any[]=[];
   channelsDataStore = channelsDataStore;
   chatsDataStore: any
   senderId: any;
@@ -27,19 +28,21 @@ export class ChatListComponent implements OnInit, OnDestroy {
   messages: string[] = [];
   messageSubscription: Subscription | any;
 
-  constructor(private multimediaService: MultimediaService, private router: Router, private chatService: ChatService, private route: ActivatedRoute, private webSocketService: WebSocketService) {
+  constructor(private multimediaService: MultimediaService,
+              private employeeService: EmployeesService,
+              private router: Router,
+              private chatService: ChatService,
+              private route: ActivatedRoute,
+              private webSocketService: WebSocketService) {
   }
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.senderId = localStorage.getItem('sender')
-    this.loadChats()
-    // convert base64 images to safe urls
-    // this.employeeDataStore.forEach(emp => {
-    //   emp.photo = this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg');
-    // })
-    try {
-      // Establish WebSocket connection
-      // this.webSocketService.connect('ws://localhost:4200/ws');
 
+    this.loadAllUsers().subscribe(()=>{
+      this.loadChats()
+    })
+
+    try {
       // Subscribe to incoming messages
       this.messageSubscription = this.webSocketService.onMessage().subscribe((message: string) => {
         this.messages.push(message);
@@ -54,6 +57,16 @@ export class ChatListComponent implements OnInit, OnDestroy {
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe();
     }
+  }
+
+  loadAllUsers(): Observable<any>{
+    return this.employeeService.getAllEmployees().pipe(
+        tap(data => this.employeeDataStore = data)
+    );
+  }
+
+  convertToSafeUrl(url:any):SafeResourceUrl{
+    return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
   }
 
   navigateUrl(id: any) {
@@ -73,13 +86,13 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.chatService.getAllChats().subscribe(chats => {
       this.chatsDataStore = chats;
 
-      employeeDataStore.forEach((emp) => {
+      this.employeeDataStore.forEach((emp:any) => {
         this.chatsDataStore.forEach((chats:any) => {
-          if (chats.id == (this.senderId.toString()+emp.id.toString())) {
+          if (chats.id == (this.senderId.toString()+emp.id)) {
             let lastMessage = chats.messages.pop();
             this.availableChats.push({
               id: emp.id,
-              photo: emp.photo,
+              photo: this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg'),
               name: emp.name,
               chatId: chats.id,
               messageSenderId: lastMessage.userId,
