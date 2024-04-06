@@ -1,27 +1,29 @@
 <div style="max-height: calc(100vh - 80px); overflow-y: auto">
   <div class="card">
     <div class="card-body">
-      <div class="share-post d-flex w-100">
-        <div class="profile-pic">
-          <img [src]="convertToSafeUrl(employee.photo)" alt="profile image" (click)="navigateUrl(employee.id)">
+      <form [formGroup]="postForm">
+        <div class="share-post d-flex w-100">
+          <div class="profile-pic">
+            <img [src]="convertToSafeUrl(employee.photo)" alt="profile image" (click)="navigateUrl(employee.id)">
+          </div>
+          <div class="form-floating w-100">
+            <textarea class="form-control" formControlName="caption" placeholder="" id="share-post" style="height: 80px; width: 100%"></textarea>
+            <label for="share-post">Share Your Thought</label>
+          </div>
         </div>
-        <div class="form-floating w-100">
-          <textarea class="form-control" placeholder="" id="share-post" style="height: 80px; width: 100%"></textarea>
-          <label for="share-post">Share Your Thought</label>
+        <div class="d-flex align-items-center justify-content-between mt-3">
+          <div class="d-flex">
+            <button class="btn-3" (click)="choosePhoto()">
+              <mat-icon>{{ chosenPhoto ? 'check' : 'add_photo_alternate' }}</mat-icon>&nbsp;&nbsp;{{ chosenPhoto ? 'Selected' : 'Image' }}
+            </button>
+            <button class="btn-3" (click)="chooseVideo()">
+              <mat-icon>{{ chosenVideo ? 'check' : 'video_library' }}</mat-icon>&nbsp;&nbsp;{{ chosenVideo ? 'Selected' : 'Video' }}
+            </button>
+            <button class="btn-3" (click)="openOptions(employee.id)">...</button>
+          </div>
+          <button class="btn-1 px-3" (click)="onSubmit()" [disabled]="postForm.invalid">Post</button>
         </div>
-      </div>
-      <div class="d-flex align-items-center justify-content-between mt-3">
-        <div class="d-flex">
-          <button class="btn-3">
-            <mat-icon>add_photo_alternate</mat-icon>&nbsp;&nbsp;photo
-          </button>
-          <button class="btn-3">
-            <mat-icon>video_library</mat-icon>&nbsp;&nbsp;video
-          </button>
-          <button class="btn-3">...</button>
-        </div>
-        <button class="btn-1 px-3">Post</button>
-      </div>
+      </form>
     </div>
   </div>
 
