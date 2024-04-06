@@ -89,9 +89,6 @@ export class FeedPostsComponent implements OnInit{
       this.loadMultimedia();
       this.loadComments();
       this.hideCommentSection();
-      this.logger.log("fetched current user into the feed post component", this.employee)
-      this.logger.log("filtered and loaded multimedia")
-      this.logger.log("filtered and loaded comments")
     });
   }
 

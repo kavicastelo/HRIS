@@ -41,8 +41,6 @@ export class FeedComponent implements OnInit {
     async ngOnInit(): Promise<any> {
         this.loadAllUsers().subscribe(()=>{
             this.getUser();
-            this.logger.log("all users are loaded to the feed")
-            this.logger.log("current user fetched", this.employee)
         })
     }
 
