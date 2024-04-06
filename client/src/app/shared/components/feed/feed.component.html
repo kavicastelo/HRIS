@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="share-post d-flex w-100">
         <div class="profile-pic">
-          <img [src]="employee[0].photo" alt="profile image" (click)="navigateUrl(employee[0].id)">
+          <img [src]="convertToSafeUrl(employee.photo)" alt="profile image" (click)="navigateUrl(employee.id)">
         </div>
         <div class="form-floating w-100">
           <textarea class="form-control" placeholder="" id="share-post" style="height: 80px; width: 100%"></textarea>

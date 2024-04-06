@@ -13,9 +13,9 @@
       <div class="receiver-message" *ngFor="let message of chatMessages" [ngClass]="isMessageFrom(message) ? 'sender' : 'receiver'">
         <div class="profile-wrapper">
           <div class="pro-pic">
-            <img [src]="isMessageFrom(message) ? sender[0].photo : receiver[0].photo" [alt]="isMessageFrom(message) ? 'You' : receiver[0].name">
+            <img [src]="isMessageFrom(message) ? convertToSafeUrl(sender.photo) : convertToSafeUrl(r.photo)" [alt]="isMessageFrom(message) ? 'You' : r.name">
           </div>
-          <h6>{{ isMessageFrom(message) ? 'You' : receiver[0].name }}</h6>
+          <h6>{{ isMessageFrom(message) ? 'You' : r.name }}</h6>
           <small>{{ message.timestamp | timeAgo }}</small>
         </div>
         <p class="message-content">{{ message.content }}</p>

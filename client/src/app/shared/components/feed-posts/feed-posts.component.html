@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="author-wrapper d-flex align-items-center justify-content-start">
             <div class="profile-pic">
-                <img src="{{post.userPhoto}}" alt="profile image" (click)="navigateUrl(post.userId)">
+                <img [src]="post.userPhoto" alt="profile image" (click)="navigateUrl(post.userId)">
             </div>
             <div class="author-name d-flex flex-column">
                 <div class="d-flex align-items-center">
@@ -48,7 +48,7 @@
 
         <div class="d-flex align-items-start" *ngIf="commentSection">
             <div class="profile-pic">
-                <img [src]="employee[0].photo" alt="profile image">
+                <img [src]="convertToSafeUrl(employee.photo)" alt="profile image">
             </div>
             <div class="d-flex flex-column w-100">
                 <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
@@ -75,7 +75,7 @@
             <div class="my-2 d-flex align-items-start justify-content-between"
                  *ngFor="let c of commentsForPost(post.id) | truncateComments: maxCommentsDisplayed">
                 <div class="profile-pic">
-                    <img src="{{c.userProfile}}" alt="profile image" (click)="navigateUrl(c.userId)">
+                    <img [src]="c.userProfile" alt="profile image" (click)="navigateUrl(c.userId)">
                 </div>
                 <div class="comment w-100">
                     <div class="d-flex justify-content-between align-items-center">
