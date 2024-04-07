@@ -45,6 +45,14 @@ public class MultimediaController {
         return ResponseEntity.ok(new ApiResponse(String.valueOf(id)));
     }
 
+    @PostMapping("/save/data/text")
+    public ResponseEntity<ApiResponse> saveTextPost(@RequestBody MultimediaModel multimediaModel) {
+        multimediaRepository.save(multimediaModel);
+
+        ApiResponse response = new ApiResponse("post saved");
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/save/data")
     public ResponseEntity<ApiResponse> saveData(@RequestBody MultimediaModel multimediaModel) {
         Optional<MultimediaModel> optionalMultimediaModel = multimediaRepository.findById(receivedID.get());

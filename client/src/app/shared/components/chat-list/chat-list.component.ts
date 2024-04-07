@@ -89,8 +89,9 @@ export class ChatListComponent implements OnInit, OnDestroy {
 
       this.employeeDataStore.forEach((emp:any) => {
         this.chatsDataStore.forEach((chats:any) => {
-          if (chats.id == (this.senderId.toString()+emp.id)) {
+          if (chats.id == (this.senderId.toString()+emp.id) || chats.id == (emp.id+this.senderId.toString())) {
             let lastMessage = chats.messages.pop();
+            let time = new Date(lastMessage.timestamp).getTime(); // Assuming timestamp is the property indicating the time of the message
             this.availableChats.push({
               id: emp.id,
               photo: this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg'),
@@ -99,14 +100,35 @@ export class ChatListComponent implements OnInit, OnDestroy {
               messageSenderId: lastMessage.userId,
               status: lastMessage.status,
               lastMessage: lastMessage.content,
-              lastMessageId: lastMessage.id
+              lastMessageId: lastMessage.id,
+              time: time // Add the time property
             });
           }
           this.changeStatus(chats.id)
         })
       })
+
+      // Sort availableChats based on time property in descending order
+      this.availableChats.sort((a: any, b: any) => {
+        return b.time - a.time;
+      });
+
+      this.availableChats = this.removeDuplicates(this.availableChats, 'id');
+
     }, error => {
       this.logger.error(error)
+    });
+  }
+
+  removeDuplicates(array: any[], key: string): any[] {
+    const seen = new Set();
+    return array.filter((item) => {
+      const value = item[key];
+      if (seen.has(value)) {
+        return false;
+      }
+      seen.add(value);
+      return true;
     });
   }
 

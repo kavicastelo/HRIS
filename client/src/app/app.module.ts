@@ -37,6 +37,7 @@ import {ChatAreaComponent} from './shared/components/chat-area/chat-area.compone
 import {TimeAgoPipe} from "./DTO/TimeAgoPipe";
 import {TruncatePipe} from "./DTO/TruncatePipe";
 import {TruncateCommentsPipe} from "./DTO/TruncateCommentsPipe";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
     declarations: [
@@ -79,7 +80,8 @@ import {TruncateCommentsPipe} from "./DTO/TruncateCommentsPipe";
         LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
         ReactiveFormsModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatSnackBarModule
     ],
     providers: [],
     bootstrap: [AppComponent]

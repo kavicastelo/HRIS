@@ -21,7 +21,7 @@
         <button class="d-flex d-md-none btn-1" routerLink="/news">
           <mat-icon>chrome_reader_mode</mat-icon>
         </button>
-        <button class="btn-1">
+        <button class="btn-1" (click)="navigateUrl('edit')">
           <mat-icon>settings</mat-icon>
         </button>
         <button class="btn-1">
@@ -29,11 +29,11 @@
         </button>
         <div class="main-bar-profile-tag" *ngFor="let e of employee">
           <div class="d-flex align-items-center">
-            <div class="profile-pic me-md-3">
+            <div class="profile-pic me-md-3" (click)="navigateUrl('about')">
               <img [src]="e.photo" alt="profile">
             </div>
             <div class="d-none d-md-flex flex-column justify-content-between profile-tag">
-              <h6>{{e.name}}</h6>
+              <h6 (click)="navigateUrl('about')">{{e.name}}</h6>
               <span>Sign out</span>
             </div>
           </div>

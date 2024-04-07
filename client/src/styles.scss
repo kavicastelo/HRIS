@@ -167,6 +167,17 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   background: var(--color-surface-200) !important;
 }
 
+// mat form field
+.mat-mdc-form-field{
+  background-color: var(--color-surface-mixed-200);
+}
+.mdc-text-field--filled:not(.mdc-text-field--disabled){
+  background-color: unset!important;
+}
+.mat-form-field-hide-placeholder .mat-mdc-select-placeholder{
+  color: var(--color-text-200) !important;
+}
+
 
 ::-webkit-scrollbar {
   width: 5px;

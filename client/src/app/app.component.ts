@@ -4,6 +4,7 @@ import {WebSocketService} from "./services/web-socket.service";
 import {MultimediaService} from "./services/multimedia.service";
 import {EmployeesService} from "./services/employees.service";
 import {NGXLogger} from "ngx-logger";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -19,13 +20,14 @@ export class AppComponent implements OnInit {
   constructor(public themeService: ThemeService,
               private webSocketService: WebSocketService,
               public multimediaService: MultimediaService,
+              public router: Router,
               private employeeService: EmployeesService, private logger: NGXLogger) {
 
   }
 
   ngOnInit(): void {
     this.loadAllUsers();
-    localStorage.setItem('sender','66105c4922d9fd0f2042909f')
+    localStorage.setItem('sender','66105b9c22d9fd0f2042909e')
     this.userId = localStorage.getItem('sender')
 
     // Establish WebSocket connection
@@ -63,6 +65,10 @@ export class AppComponent implements OnInit {
         this.employee = [emp];
       }
     })
+  }
+
+  navigateUrl(location:any) {
+    this.router.navigate([`/profile/${this.userId}/${location}/${this.userId}`]);
   }
 
   toggleTheme() {
