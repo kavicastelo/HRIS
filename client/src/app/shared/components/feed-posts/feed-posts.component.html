@@ -14,7 +14,7 @@
         </div>
 
         <div class="my-3">
-            <p class="post-description">{{post.message}}</p>
+            <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.message}}</p>
         </div>
 
         <div class="posted-content">

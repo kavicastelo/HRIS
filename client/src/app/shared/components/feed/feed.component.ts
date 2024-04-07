@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {NgClass, NgFor, NgForOf, NgIf} from "@angular/common";
@@ -13,7 +13,9 @@ import {NGXLogger} from "ngx-logger";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
-import {MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarRef} from "@angular/material/snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
+import {PostingOptionsComponent} from "../../dialogs/posting-options/posting-options.component";
 
 @Component({
     selector: 'app-feed',
@@ -204,9 +206,7 @@ export class FeedComponent implements OnInit {
 
     openOptions(id:any){
         this.employeesService.getEmployeeById(id).subscribe(data =>{
-            const dialogRef = this.dialog.open(PopingListComponent, {
-                data: {data:[data]}
-            })
+            this.toggleDialog('⚙ Post Options', 'Select correct options and click OK.', data.channels, PostingOptionsComponent)
         })
     }
 
@@ -221,13 +221,34 @@ export class FeedComponent implements OnInit {
             // horizontalPosition: 'right' // Possible values: 'start' | 'center' | 'end' | 'left' | 'right'.
         });
     }
+
+    discardChanges() {
+        this.toggleDialog('Are you sure?', 'You will not be able to recover this content!', this.postForm, ConfirmDialogComponent)
+    }
+
+    toggleDialog(title:any, msg:any, data: any, component:any) {
+        const _popup = this.dialog.open(component, {
+            width: '350px',
+            enterAnimationDuration: '500ms',
+            exitAnimationDuration: '500ms',
+            data: {
+                data: data,
+                title: title,
+                msg: msg
+            }
+        });
+        _popup.afterClosed().subscribe(item => {
+            this.chosenVideo = undefined;
+            this.chosenPhoto = undefined;
+        })
+    }
 }
 
 
 @Component({
     selector: 'app-post-video',
-    templateUrl: '../poping-list/poping-list.component.html',
-    styleUrls: ['../poping-list/poping-list.component.scss'],
+    templateUrl: '../../dialogs/poping-list/poping-list.component.html',
+    styleUrls: ['../../dialogs/poping-list/poping-list.component.scss'],
     standalone: true,
     imports: [MatDialogModule, MatButtonModule, NgClass, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatSelectModule, NgFor, NgIf, NgForOf],
 })
@@ -255,20 +276,5 @@ export class PopingListComponent {
 
     convertToSafeUrl(url:any):SafeResourceUrl{
         return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
-    }
-
-    selfUser(): boolean{
-        let val:any[] = [];
-        this.data.data.forEach(d => {
-            if(d.id == localStorage.getItem('sender')){
-                val = d.id;
-            }
-        })
-        return val.length != 0;
-    }
-
-    selectChannel(){
-        sessionStorage.setItem('posting-channel',this.selectedChannel);
-        this.selectedChannel = '';
     }
 }
