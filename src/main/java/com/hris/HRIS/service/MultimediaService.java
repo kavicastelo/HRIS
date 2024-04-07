@@ -20,6 +20,11 @@ public class MultimediaService {
 
         List<String> likes = multimedia.getLikes();
 
+        if (likes == null) {
+            likes = new ArrayList<>();
+            multimedia.setLikes(likes);
+        }
+
         if (likes.contains(likeId)) {
             // Like ID already in likes array, remove it
             likes.remove(likeId);

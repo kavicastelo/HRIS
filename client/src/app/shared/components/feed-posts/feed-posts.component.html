@@ -27,7 +27,7 @@
         <div class="my-3 d-flex align-items-center justify-content-between" *ngIf="commentSection">
             <div class="d-flex align-items-center">
                 <div class="post-reaction d-flex align-items-center">
-                    <span class="clickable-span">Like</span>
+                    <span class="clickable-span" (click)="likePost(post.id)" [ngStyle]="{'color':post.isLiked?'var(--color-primary-300)':''}">{{post.isLiked?'Liked':'Like'}}</span>
                     <span class="clickable-span" (click)="openLikes(post.likers)">&nbsp;<span
                             *ngIf="post.likes != null">({{post.likes}})</span></span>
                 </div>

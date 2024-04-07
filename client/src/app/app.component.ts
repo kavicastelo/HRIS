@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAllUsers();
-    localStorage.setItem('sender','66105b9c22d9fd0f2042909e')
+    localStorage.setItem('sender','66105c8b22d9fd0f204290a0')
     this.userId = localStorage.getItem('sender')
 
     // Establish WebSocket connection

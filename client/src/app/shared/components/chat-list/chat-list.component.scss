@@ -35,6 +35,8 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
+    position: relative;
+
     .chat-icon{
       width: 35px;
       height: 35px;
@@ -63,6 +65,16 @@
         font-size: 12px;
         margin-bottom: 0;
       }
+    }
+
+    .active-chat-count{
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      top: calc(50% - 7px);
+      right: 10px;
+      background-color: var(--color-primary-300);
     }
 
     &:hover{

@@ -10,6 +10,7 @@ import {CommentsService} from "../../../services/comments.service";
 import {EmployeesService} from "../../../services/employees.service";
 import {forkJoin, map, mergeMap, Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
+import {LikesService} from "../../../services/likes.service";
 
 @Component({
   selector: 'app-feed-posts',
@@ -19,6 +20,7 @@ import {SafeResourceUrl} from "@angular/platform-browser";
 export class FeedPostsComponent implements OnInit{
   employeesDataStore:any;
   multimediaDataStore:any;
+  likedDataStore:any[]=[];
   commentDataStore:any[]=[];
   employee: any = {
     photo:''
@@ -44,6 +46,7 @@ export class FeedPostsComponent implements OnInit{
       commenters: '',
       shares: '',
       sharing: '',
+      isLiked: false
     }
   ];
 
@@ -79,6 +82,7 @@ export class FeedPostsComponent implements OnInit{
               private multimediaService: MultimediaService,
               private employeesService: EmployeesService,
               private route: ActivatedRoute,
+              private likesService: LikesService,
               private commentsService: CommentsService,
               private logger: NGXLogger) {
   }
@@ -89,7 +93,11 @@ export class FeedPostsComponent implements OnInit{
       this.loadMultimedia();
       this.loadComments();
       this.hideCommentSection();
+      this.loadLikes();
     });
+    await this.loadLikes().subscribe(()=>{
+      // this.checkLikesWithUser();
+    })
   }
 
   loadAllUsers(): Observable<any>{
@@ -115,11 +123,27 @@ export class FeedPostsComponent implements OnInit{
     })
   }
 
+  loadLikes(): Observable<any>{
+    return this.likesService.getAllLikes().pipe(
+        tap(data => this.likedDataStore = data)
+    );
+  }
+
   hideCommentSection() {
     this.route.paramMap.subscribe(params => {
       if(params.get('id')) {
         this.commentSection = false;
       }
+    })
+  }
+
+  async checkLikesWithUser(feedPost:any){
+    feedPost.forEach((post:any) => {
+      this.likedDataStore.forEach((like:any) => {
+        if (post.id == like.multimediaId && like.userId == this.userId){
+          post.isLiked = true;
+        }
+      })
     })
   }
 
@@ -144,7 +168,7 @@ export class FeedPostsComponent implements OnInit{
     })
   }
 
-  loadFeed(data:any) {
+  async loadFeed(data:any) {
     if (this.router.url == '/feed/area') {
       this.feed = data.filter((feed: any) => this.channelId.includes(feed.channelId)); // handle multiple channels
     }
@@ -172,7 +196,8 @@ export class FeedPostsComponent implements OnInit{
               comments: feed.comments?.length,
               commenters: feed.comments,
               shares: feed.shares?.length,
-              sharing: feed.shares
+              sharing: feed.shares,
+              isLiked: false,
             })
           }
           else {
@@ -189,12 +214,15 @@ export class FeedPostsComponent implements OnInit{
               comments: feed.comments?.length,
               commenters: feed.comments,
               shares: feed.shares?.length,
-              sharing: feed.shares
+              sharing: feed.shares,
+              isLiked: false
             })
           }
         }
       })
     })
+
+    this.checkLikesWithUser(this.feedPost)
 
     this.feedPost = this.feedPost.filter(time => (time.time != '') ? this.commentSection = true : false )
     this.feedPost.sort((a: any, b: any) => {
@@ -223,21 +251,83 @@ export class FeedPostsComponent implements OnInit{
     });
   }
 
+  async likePost(postId: any) {
+    // Toggle the like status locally
+    const likedPostIndex = this.feedPost.findIndex(post => post.id === postId);
+    if (likedPostIndex !== -1 || likedPostIndex !== null) {
+      const likedPost = this.feedPost[likedPostIndex];
+      likedPost.isLiked = !likedPost.isLiked;
+      likedPost.likes += likedPost.isLiked ? 1 : -1;
+      // Update the local data store
+      this.feedPost[likedPostIndex] = likedPost;
+    }
+
+    // Make the API call to update the likes
+    this.likesService.toggleLike({
+      id: postId + this.userId,
+      userId: this.userId,
+      multimediaId: postId,
+      timestamp: new Date()
+    }).subscribe((data) => {
+      this.logger.info(data);
+      // TODO: add error handlers
+    }, error => {
+      this.logger.error(error);
+      // Roll back the local changes if the API call fails
+      if (likedPostIndex !== -1) {
+        const likedPost = this.feedPost[likedPostIndex];
+        likedPost.isLiked = !likedPost.isLiked;
+        likedPost.likes += likedPost.isLiked ? 1 : -1;
+        // Update the local data store
+        this.feedPost[likedPostIndex] = likedPost;
+      }
+    });
+  }
+
   openLikes(likers: any) {
     let whoLikes:any[] = [];
+    let filteredLikes:any[] = [];
+
     likers.forEach((liker: any) => {
+      this.likedDataStore.forEach((likes:any) => {
+
+        [likes].forEach((like:any) => {
+          if (like.id == liker){
+            filteredLikes.push(like);
+          }
+        })
+      })
       this.employeesDataStore.forEach((emp:any) => {
-        if (emp.id == liker) {
-          whoLikes.push(emp);
-        }
+        filteredLikes.forEach(fl => {
+          if (emp.id == fl.userId){
+            whoLikes.push(emp);
+          }
+        })
       })
     })
-    const dialogRef = this.dialog.open(PopingListComponent, {
-      data: {data:whoLikes}
+
+    // Collect all observables for fetching likes
+    const likeObservables = likers.map((liker: any) => {
+      return this.likesService.getAllLikes().pipe(
+          map(likes => likes.filter((like: any) => like.id == liker)),
+          mergeMap(filteredLikes =>
+              this.employeesDataStore.filter((emp: any) => filteredLikes.some((fl: any) => emp.id == fl.userId))
+          )
+      );
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // this.animal = result;
+    // Wait for all observables to complete
+    forkJoin(likeObservables).subscribe((results:any) => {
+      // Flatten the results array
+      whoLikes = results.flat();
+
+      // Remove duplicates
+      whoLikes = this.removeDuplicates(whoLikes, 'id');
+
+      // Open the dialog with filtered likes
+      const dialogRef = this.dialog.open(PopingListComponent, {
+        data: { data: whoLikes }
+      });
     });
   }
 
