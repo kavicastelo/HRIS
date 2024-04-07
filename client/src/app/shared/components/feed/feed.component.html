@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <form [formGroup]="postForm">
-        <div class="share-post d-flex w-100">
+        <div class="share-post d-flex w-100" style="position: relative">
           <div class="profile-pic">
             <img [src]="convertToSafeUrl(employee.photo)" alt="profile image" (click)="navigateUrl(employee.id)">
           </div>
@@ -10,6 +10,7 @@
             <textarea class="form-control" formControlName="caption" placeholder="" id="share-post" style="height: 80px; width: 100%"></textarea>
             <label for="share-post">Share Your Thought</label>
           </div>
+          <button class="btn-2" matTooltip="Discard Changes" [disabled]="postForm.invalid" (click)="discardChanges()"><mat-icon>delete_outline</mat-icon></button>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-3">
           <div class="d-flex">
@@ -21,7 +22,7 @@
             </button>
             <button class="btn-3" (click)="openOptions(employee.id)">...</button>
           </div>
-          <button class="btn-1 px-3" (click)="onSubmit()">Post</button>
+          <button class="btn-1 px-3" (click)="onSubmit()" [disabled]="postForm.invalid">Post</button>
         </div>
       </form>
     </div>

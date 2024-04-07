@@ -38,6 +38,10 @@ import {TimeAgoPipe} from "./DTO/TimeAgoPipe";
 import {TruncatePipe} from "./DTO/TruncatePipe";
 import {TruncateCommentsPipe} from "./DTO/TruncateCommentsPipe";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { PostingOptionsComponent } from './shared/dialogs/posting-options/posting-options.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
     declarations: [
@@ -62,7 +66,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
         ChatAreaComponent,
         TimeAgoPipe,
         TruncatePipe,
-        TruncateCommentsPipe
+        TruncateCommentsPipe,
+        ConfirmDialogComponent,
+        PostingOptionsComponent
     ],
     imports: [
         BrowserModule,
@@ -81,7 +87,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
         ReactiveFormsModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatTooltipModule,
+        MatSelectModule
     ],
     providers: [],
     bootstrap: [AppComponent]
