@@ -13,6 +13,7 @@ import {NGXLogger} from "ngx-logger";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
+import {MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarRef} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-feed',
@@ -37,6 +38,9 @@ export class FeedComponent implements OnInit {
     })
     chosenPhoto: File | undefined; // Store the chosen photo file
     chosenVideo: File | undefined; // Store the chosen video file
+    chosenChannel: any; // channel for share post
+
+    snackBarRef: any; // for actionable snack bars
 
     constructor(private themeService: ThemeService,
                 private dialog: MatDialog,
@@ -44,6 +48,7 @@ export class FeedComponent implements OnInit {
                 private multimediaService: MultimediaService,
                 private employeesService: EmployeesService,
                 private route: ActivatedRoute,
+                private snackBar: MatSnackBar,
                 private logger: NGXLogger) {
     }
 
@@ -111,9 +116,30 @@ export class FeedComponent implements OnInit {
     }
 
     async onSubmit(): Promise<void> {
+        this.chosenChannel = sessionStorage.getItem('posting-channel')
         if (!this.chosenPhoto && !this.chosenVideo) {
-            // TODO: Neither photo nor video is selected, handle this case
-            return;
+            const metadata: any = {
+                userId: this.userId,
+                channelId: this.chosenChannel,
+                title: this.postForm.value.caption,
+                timestamp: new Date()
+            };
+
+            this.multimediaService.addMultimediaTextPost(metadata)
+                .subscribe(() => {
+                    // Text post saved successfully
+                    this.postForm.reset();
+
+                    this.openActionSnackBar('Post Published', 'CHECK');
+                    this.snackBarRef.afterDismissed().subscribe(() => {
+                        this.router.navigate([`/profile/${this.userId}/posts/${this.userId}`])
+                    }, (error:any) => {
+                        // do nothing
+                    });
+                }, (error) => {
+                    // Handle error
+                    this.openSnackBar('Failed publish your post. Try again in few seconds!', 'OK')
+                });
         }
 
         const caption: any = this.postForm.get('caption')?.value;
@@ -141,7 +167,9 @@ export class FeedComponent implements OnInit {
                     this.logger.error('Error uploading video:', error);
                 });
         } else if (this.chosenVideo && this.chosenPhoto){
-            console.log("please choose one") // TODO: handle if user selected both media
+            this.chosenPhoto = undefined;
+            this.chosenVideo = undefined;
+            this.openSnackBar('Please select one at once', 'OK')
             return
         }
     }
@@ -151,21 +179,26 @@ export class FeedComponent implements OnInit {
         const metadata: any = {
             id: id,
             userId: this.userId,
-            channelId: sessionStorage.getItem('posting-channel'),
+            channelId: this.chosenChannel,
             timestamp: new Date()
         };
 
         this.multimediaService.addMultimediaMeta(metadata)
             .subscribe(() => {
                 // Metadata saved successfully
-                this.logger.log('Metadata saved successfully');
                 this.postForm.reset();
                 this.chosenPhoto = undefined;
                 this.chosenVideo = undefined;
-                // TODO: add alert or toggle to navigate user's profile posts
+
+                this.openActionSnackBar('Post Published', 'CHECK');
+                this.snackBarRef.afterDismissed().subscribe(() => {
+                    this.router.navigate([`/profile/${this.userId}/posts/${this.userId}`])
+                }, (error:any) => {
+                    // do nothing
+                });
             }, (error) => {
                 // Handle error
-                this.logger.error('Error saving metadata:', error);
+                this.openSnackBar('Failed publish your post. Try again in few seconds!', 'OK')
             });
     }
 
@@ -175,6 +208,18 @@ export class FeedComponent implements OnInit {
                 data: {data:[data]}
             })
         })
+    }
+
+    openSnackBar(message: any, action: any){
+        this.snackBar.open(message, action, {duration:3000})
+    }
+
+    openActionSnackBar(message: string, action: string){
+        this.snackBarRef = this.snackBar.open(message, action, {
+            duration: 3000, // Time in milliseconds.
+            // verticalPosition: 'top', // Possible values: 'top' | 'bottom'.
+            // horizontalPosition: 'right' // Possible values: 'start' | 'center' | 'end' | 'left' | 'right'.
+        });
     }
 }
 
@@ -223,6 +268,7 @@ export class PopingListComponent {
     }
 
     selectChannel(){
-        sessionStorage.setItem('posting-channel',this.selectedChannel)
+        sessionStorage.setItem('posting-channel',this.selectedChannel);
+        this.selectedChannel = '';
     }
 }

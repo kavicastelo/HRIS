@@ -11,9 +11,12 @@
         <div *ngIf="selfUser()">
           <div style="width: 100%;" *ngFor="let channel of e.channels">
             <p style="margin: 20px 0 10px 0">Select the channel you need to share by...</p>
-            <mat-select [(value)]="selectedChannel">
-              <mat-option [value]="channel.id">{{channel.name}}</mat-option>
-            </mat-select>
+            <mat-form-field class="form-control">
+              <mat-label>Select Channel</mat-label>
+              <mat-select [(value)]="selectedChannel">
+                <mat-option [value]="channel.id">{{channel.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
             <div class="d-flex mt-2 align-items-center justify-content-end">
               <button class="btn-1 my-2" (click)="selectChannel()">OK</button>
             </div>

@@ -42,6 +42,10 @@ export class MultimediaService {
         return this.http.post(`${this.baseUrl}multimedia/videos/add`, formData, {headers});
     }
 
+    public addMultimediaTextPost(multimedia: MultimediaModel):Observable<any> {
+        return this.http.post(this.baseUrl + 'multimedia/save/data/text', multimedia)
+    }
+
     public addMultimediaMeta(multimedia: MultimediaModel): Observable<any> {
         return this.http.put(this.baseUrl + 'multimedia/save/data', multimedia);
     }
