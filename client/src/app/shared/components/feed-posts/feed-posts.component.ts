@@ -270,9 +270,10 @@ export class FeedPostsComponent implements OnInit{
       timestamp: new Date()
     }).subscribe((data) => {
       this.logger.info(data);
-      // TODO: add error handlers
+      // TODO: add event handlers
     }, error => {
       this.logger.error(error);
+      // TODO: add error handlers
       // Roll back the local changes if the API call fails
       if (likedPostIndex !== -1) {
         const likedPost = this.feedPost[likedPostIndex];
