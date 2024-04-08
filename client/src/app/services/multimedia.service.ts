@@ -55,7 +55,7 @@ export class MultimediaService {
     }
 
     public getMultimediaById(id: string): Observable<any> {
-        return this.http.get(this.baseUrl + 'multimedia/get/' + id);
+        return this.http.get(this.baseUrl + 'multimedia/get/id/' + id);
     }
 
     public getMultimediaMetaById(id: string): Observable<any> {

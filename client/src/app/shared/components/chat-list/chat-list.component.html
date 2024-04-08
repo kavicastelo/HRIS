@@ -39,6 +39,8 @@
                   <h6>{{e.name}}</h6>
                   <p [ngStyle]="{'font-weight':isOpen?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
                 </div>
+
+                <div class="active-chat-count" [ngStyle]="{'display':isOpen?'block':'none'}"></div>
               </div>
             </div>
           </mat-expansion-panel>

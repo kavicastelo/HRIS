@@ -151,4 +151,6 @@ export class ChatListComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  //TODO: Need to upgrade status changing methods
 }

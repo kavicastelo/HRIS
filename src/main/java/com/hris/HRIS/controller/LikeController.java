@@ -39,6 +39,11 @@ public class LikeController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("get/all")
+    public List<LikeModel> getAllLikes() {
+        return likeRepository.findAll();
+    }
+
     @GetMapping("/get/message/{id}")
     public ResponseEntity<List<LikeModel>> getAllLikesByMessage(@PathVariable String id) {
         Optional<List<LikeModel>> likeModelOptional = likeRepository.findAllByMessageId(id);
