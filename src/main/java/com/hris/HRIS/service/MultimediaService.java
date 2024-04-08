@@ -67,7 +67,14 @@ public class MultimediaService {
 
         List<String> shares = multimedia.getShares();
 
+        if (shares == null){
+            shares = new ArrayList<>();
+            multimedia.setShares(shares);
+        }
+
         shares.add(shareId);
+
+        multimediaRepository.save(multimedia);
     }
 
     public void deleteShare(String multimediaId, String shareId) {

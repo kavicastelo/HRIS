@@ -20,6 +20,15 @@ export class MultimediaService {
         return this.sanitizer.bypassSecurityTrustResourceUrl(dataUrl);
     }
 
+    convertSafeUrlToBase64(safeUrl: SafeResourceUrl): string | null {
+        const url = safeUrl.toString();
+        const base64StartIndex = url.indexOf(';base64,');
+        if (base64StartIndex !== -1) {
+            return url.slice(base64StartIndex + ';base64,'.length);
+        }
+        return null;
+    }
+
     public addMultimediaPhoto(title: string, file: File): Observable<any> {
         const formData: FormData = new FormData();
         formData.append('title', title);
@@ -44,6 +53,10 @@ export class MultimediaService {
 
     public addMultimediaTextPost(multimedia: MultimediaModel):Observable<any> {
         return this.http.post(this.baseUrl + 'multimedia/save/data/text', multimedia)
+    }
+
+    public addMultimediaSharedPost(multimedia: MultimediaModel): Observable<any> {
+        return this.http.post(this.baseUrl + 'multimedia/save/data/shared', multimedia)
     }
 
     public addMultimediaMeta(multimedia: MultimediaModel): Observable<any> {

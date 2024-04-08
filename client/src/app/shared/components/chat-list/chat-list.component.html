@@ -37,10 +37,10 @@
                 </div>
                 <div class="chat-content">
                   <h6>{{e.name}}</h6>
-                  <p [ngStyle]="{'font-weight':isOpen?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
+                  <p [ngStyle]="{'font-weight':e.status=='sent'?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
                 </div>
 
-                <div class="active-chat-count" [ngStyle]="{'display':isOpen?'block':'none'}"></div>
+                <div class="active-chat-count" [ngStyle]="{'display':e.status=='sent'?'block':'none'}"></div>
               </div>
             </div>
           </mat-expansion-panel>

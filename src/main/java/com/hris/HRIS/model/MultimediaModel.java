@@ -28,4 +28,7 @@ public class MultimediaModel {
     private List<String> shares;
     private String timestamp;
     private String contentType;
+    private String sharedUserId;
+    private String sharedUserCaption;
+    private String sharedUserTimestamp;
 }

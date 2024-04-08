@@ -1,27 +1,50 @@
 <div class="card" *ngFor="let post of feedPost; index as i">
     <div class="card-body">
-        <div class="author-wrapper d-flex align-items-center justify-content-start">
-            <div class="profile-pic">
-                <img [src]="post.userPhoto" alt="profile image" (click)="navigateUrl(post.userId)">
-            </div>
-            <div class="author-name d-flex flex-column">
-                <div class="d-flex align-items-center">
-                    <h6 (click)="navigateUrl(post.userId)">{{post.user}}</h6> &nbsp;&dot;&nbsp;
-                    <p>{{post.time | timeAgo}}</p>
+        <div *ngIf="post.sharedUserCaption != null && post.sharedUserTimestamp != null">
+            <div class="author-wrapper d-flex align-items-center justify-content-start">
+                <div class="profile-pic">
+                    <img [src]="post.sharedUserImage" alt="profile image" (click)="navigateUrl(post.sharedUserId)">
                 </div>
-                <p>{{post.userPosition}}</p>
+                <div class="author-name d-flex flex-column">
+                    <div class="d-flex align-items-center">
+                        <h6 (click)="navigateUrl(post.sharedUserId)">{{post.sharedUser}}</h6> &nbsp;&dot;&nbsp;
+                        <p>{{post.sharedUserTimestamp | timeAgo}}</p>
+                    </div>
+                    <p>{{post.sharedUserPosition}}</p>
+                </div>
             </div>
+            <div class="my-3">
+                <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.message}}</p>
+            </div>
+            <hr style="color: var(--color-primary-400)" class="mb-3">
         </div>
 
-        <div class="my-3">
-            <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.message}}</p>
-        </div>
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <div [ngStyle]="{'width':post.sharedUser != null && post.sharedUser != ''?'90%':'100%'}">
+                <div class="author-wrapper d-flex align-items-center justify-content-start">
+                    <div class="profile-pic">
+                        <img [src]="post.userPhoto" alt="profile image" (click)="navigateUrl(post.userId)">
+                    </div>
+                    <div class="author-name d-flex flex-column">
+                        <div class="d-flex align-items-center">
+                            <h6 (click)="navigateUrl(post.userId)">{{post.user}}</h6> &nbsp;&dot;&nbsp;
+                            <p>{{post.time | timeAgo}}</p>
+                        </div>
+                        <p>{{post.userPosition}}</p>
+                    </div>
+                </div>
 
-        <div class="posted-content">
-            <img [src]="post.file" alt="post" *ngIf="post.type == 'image/jpeg'">
-            <video [src]="post.file" controls *ngIf="post.type == 'video/mp4'" style="width: 100%">
-                Your browser does not support the video tag.
-            </video>
+                <div class="my-3">
+                    <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.message}}</p>
+                </div>
+
+                <div class="posted-content">
+                    <img [src]="post.file" alt="post" *ngIf="post.type == 'image/jpeg'">
+                    <video [src]="post.file" controls *ngIf="post.type == 'video/mp4'" style="width: 100%">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
         </div>
 
         <div class="my-3 d-flex align-items-center justify-content-between" *ngIf="commentSection">
@@ -29,19 +52,19 @@
                 <div class="post-reaction d-flex align-items-center">
                     <span class="clickable-span" (click)="likePost(post.id)" [ngStyle]="{'color':post.isLiked?'var(--color-primary-300)':''}">{{post.isLiked?'Liked':'Like'}}</span>
                     <span class="clickable-span" (click)="openLikes(post.likers)">&nbsp;<span
-                            *ngIf="post.likes != null">({{post.likes}})</span></span>
+                            *ngIf="post.likes != null && post.likes != 0">({{post.likes}})</span></span>
                 </div>
                 <div class="post-reaction d-flex align-items-center mx-3">
                     <span class="clickable-span">Comment</span>
                     <span class="clickable-span" (click)="openComments(post.commenters)">&nbsp;<span
-                            *ngIf="post.comments != null">({{post.comments}})</span></span>
+                            *ngIf="post.comments != null && post.comments != 0">({{post.comments}})</span></span>
                 </div>
             </div>
             <div>
                 <div class="post-reaction d-flex align-items-center">
-                    <span class="clickable-span">Share</span>
+                    <span class="clickable-span" (click)="sharePost(post)">Share</span>
                     <span class="clickable-span" (click)="openShares(post.sharing)">&nbsp;<span
-                            *ngIf="post.shares != null">({{post.shares}})</span></span>
+                            *ngIf="post.shares != null && post.shares != 0">({{post.shares}})</span></span>
                 </div>
             </div>
         </div>

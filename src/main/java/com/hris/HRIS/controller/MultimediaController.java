@@ -53,6 +53,14 @@ public class MultimediaController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/save/data/shared")
+    public ResponseEntity<ApiResponse> saveSharedPost(@RequestBody MultimediaModel multimediaModel) {
+        multimediaRepository.save(multimediaModel);
+
+        ApiResponse response = new ApiResponse("Shared Post Saved Successfully");
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/save/data")
     public ResponseEntity<ApiResponse> saveData(@RequestBody MultimediaModel multimediaModel) {
         Optional<MultimediaModel> optionalMultimediaModel = multimediaRepository.findById(receivedID.get());

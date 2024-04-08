@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>{{receivedData.title}}</h1>
+<div mat-dialog-content>
+    <p>{{receivedData.msg}}</p>
+
+    <div class="my-3">
+        <p class="post-description" [ngStyle]="{'font-size':receivedData.data.file != null?'normal':'18px'}">{{receivedData.data.title}}</p>
+    </div>
+
+    <div class="posted-content">
+        <img [src]="receivedData.data.file" alt="post" *ngIf="receivedData.data.contentType == 'image/jpeg'">
+        <video [src]="receivedData.data.file" controls *ngIf="receivedData.data.contentType == 'video/mp4'" style="width: 100%">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <form [formGroup]="sharePostForm">
+        <div class="form-floating w-100 my-3">
+            <textarea class="form-control" formControlName="caption" placeholder="" id="share-post" style="height: 80px; width: 100%"></textarea>
+            <label for="share-post">Share Your Thought</label>
+        </div>
+    </form>
+
+    <div class="d-flex align-items-center justify-content-end">
+        <button mat-raised-button color="secondary" class="me-3" (click)="closePopup()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="sharePost()">Share</button>
+    </div>
+</div>
