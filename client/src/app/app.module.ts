@@ -42,6 +42,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { PostingOptionsComponent } from './shared/dialogs/posting-options/posting-options.component';
 import {MatSelectModule} from "@angular/material/select";
+import { PostShareDialogComponent } from './shared/dialogs/post-share-dialog/post-share-dialog.component';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import {MatSelectModule} from "@angular/material/select";
         TruncatePipe,
         TruncateCommentsPipe,
         ConfirmDialogComponent,
-        PostingOptionsComponent
+        PostingOptionsComponent,
+        PostShareDialogComponent
     ],
     imports: [
         BrowserModule,

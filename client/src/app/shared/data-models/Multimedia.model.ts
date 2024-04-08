@@ -1,5 +1,5 @@
 export interface MultimediaModel {
-  id:any,
+  id?:any,
   userId:any,
   channelId?:any,
   chatId?:any,
@@ -10,5 +10,8 @@ export interface MultimediaModel {
   comments?:any,
   shares?:any,
   timestamp:any,
-  contentType:any
+  contentType:any,
+  sharedUserId?:any, // this line added for implement shares
+  sharedUserCaption?:any, // this line added for implement shares
+  sharedUserTimestamp?:any // this line added for implement shares
 }
