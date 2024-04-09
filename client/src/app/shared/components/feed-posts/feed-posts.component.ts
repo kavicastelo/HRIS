@@ -207,56 +207,14 @@ export class FeedPostsComponent implements OnInit{
       this.processSharedPost(sharedPost);
     });
 
-    // this.feed.forEach((feed:any) => {
-    //   this.employeesDataStore.forEach((emp:any) => {
-    //     if (emp.id == feed.userId) {
-    //       if(feed.file != null) {
-    //         this.feedPost.push({
-    //           id: feed.id,
-    //           user: emp.name,
-    //           userId: emp.id,
-    //           userPosition: emp.jobData.position,
-    //           userPhoto: this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg'),
-    //           time: feed.timestamp,
-    //           message: feed.title,
-    //           file: this.multimediaService.convertToSafeUrl(feed.file.data, feed.contentType),
-    //           type: feed.contentType,
-    //           likes: feed.likes?.length,
-    //           likers: feed.likes,
-    //           comments: feed.comments?.length,
-    //           commenters: feed.comments,
-    //           shares: feed.shares?.length,
-    //           sharing: feed.shares,
-    //           isLiked: false,
-    //         })
-    //       }
-    //       else {
-    //         this.feedPost.push({
-    //           id: feed.id,
-    //           user: emp.name,
-    //           userId: emp.id,
-    //           userPosition: emp.jobData.position,
-    //           userPhoto: this.multimediaService.convertToSafeUrl(emp.photo, 'image/jpeg'),
-    //           time: feed.timestamp,
-    //           message: feed.title,
-    //           likes: feed.likes?.length,
-    //           likers: feed.likes,
-    //           comments: feed.comments?.length,
-    //           commenters: feed.comments,
-    //           shares: feed.shares?.length,
-    //           sharing: feed.shares,
-    //           isLiked: false
-    //         })
-    //       }
-    //     }
-    //   })
-    // })
-
     await this.checkLikesWithUser(this.feedPost)
 
     this.feedPost = this.feedPost.filter(time => (time.time != '') ? this.commentSection = true : false )
     this.feedPost.sort((a: any, b: any) => {
       return new Date(b.time).getTime() - new Date(a.time).getTime(); // Reversed comparison logic
+    })
+    this.feedPost.sort((a: any, b: any) => {
+      return new Date(b.sharedUserTimestamp).getTime() - new Date(a.sharedUserTimestamp).getTime(); // Reversed comparison logic
     })
   }
 
@@ -308,7 +266,7 @@ export class FeedPostsComponent implements OnInit{
       userPhoto: this.multimediaService.convertToSafeUrl('',''), // Set shared user photo below
       channelId: sharedPost.channelId,
       time: sharedPost.timestamp,
-      message: sharedPost.sharedUserCaption,
+      message: sharedPost.title,
       file: sharedPost.file ? this.multimediaService.convertToSafeUrl(sharedPost.file.data, sharedPost.contentType) : '',
       type: sharedPost.contentType,
       likes: sharedPost.likes?.length || 0,
@@ -575,7 +533,7 @@ export class FeedPostsComponent implements OnInit{
       }
     });
     _popup.afterClosed().subscribe(item => {
-    //  TODO: do something
+      this.loadMultimedia();
     })
   }
 }

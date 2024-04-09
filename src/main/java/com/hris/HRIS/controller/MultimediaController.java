@@ -4,6 +4,8 @@ import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.MultimediaModel;
 import com.hris.HRIS.repository.MultimediaRepository;
 import com.hris.HRIS.service.PhotoService;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +57,19 @@ public class MultimediaController {
 
     @PostMapping("/save/data/shared")
     public ResponseEntity<ApiResponse> saveSharedPost(@RequestBody MultimediaModel multimediaModel) {
-        multimediaRepository.save(multimediaModel);
+
+        MultimediaModel newModel = new MultimediaModel();
+        newModel.setUserId(multimediaModel.getUserId());
+        newModel.setChannelId(multimediaModel.getChannelId());
+        newModel.setFile(new Binary(BsonBinarySubType.BINARY, multimediaModel.getFile().getData()));
+        newModel.setTitle(multimediaModel.getTitle());
+        newModel.setTimestamp(multimediaModel.getTimestamp());
+        newModel.setContentType(multimediaModel.getContentType());
+        newModel.setSharedUserId(multimediaModel.getSharedUserId());
+        newModel.setSharedUserCaption(multimediaModel.getSharedUserCaption());
+        newModel.setSharedUserTimestamp(multimediaModel.getSharedUserTimestamp());
+
+        multimediaRepository.save(newModel);
 
         ApiResponse response = new ApiResponse("Shared Post Saved Successfully");
         return ResponseEntity.ok(response);
@@ -72,6 +86,9 @@ public class MultimediaController {
             existingMultimediaModel.setChatId(multimediaModel.getChatId());
             existingMultimediaModel.setStatus(multimediaModel.getStatus());
             existingMultimediaModel.setTimestamp(multimediaModel.getTimestamp());
+            existingMultimediaModel.setSharedUserId(multimediaModel.getSharedUserId());
+            existingMultimediaModel.setSharedUserCaption(multimediaModel.getSharedUserCaption());
+            existingMultimediaModel.setSharedUserTimestamp(multimediaModel.getSharedUserTimestamp());
 
             multimediaRepository.save(existingMultimediaModel);
 
