@@ -184,7 +184,7 @@ export class FeedPostsComponent implements OnInit{
     }
     else{
       const id = this.router.url.split('/')[2];
-      this.feed = data.filter((feed:any) => (feed.userId == id) ? this.feed = [feed] : null )
+      this.feed = data.filter((feed:any) => (feed.userId == id || feed.sharedUserId == id) ? this.feed = [feed] : null )
     }
 
     // Clear existing feed posts and shared posts array
