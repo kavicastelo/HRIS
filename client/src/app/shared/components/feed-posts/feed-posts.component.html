@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="my-3">
-                <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.sharedUserCaption}}</p>
+                <p class="post-description">{{post.sharedUserCaption}}</p>
             </div>
             <hr style="color: var(--color-primary-400)" class="mb-3">
         </div>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="my-3">
-                    <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.message}}</p>
+                    <p class="post-description" [ngStyle]="{'font-size':post.file != null && post.file != ''?'normal':'18px'}">{{post.message}}</p>
                 </div>
 
                 <div class="posted-content">

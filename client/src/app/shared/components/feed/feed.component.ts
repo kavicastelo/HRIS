@@ -119,61 +119,67 @@ export class FeedComponent implements OnInit {
 
     async onSubmit(): Promise<void> {
         this.chosenChannel = sessionStorage.getItem('posting-channel')
-        if (!this.chosenPhoto && !this.chosenVideo) {
-            const metadata: any = {
-                userId: this.userId,
-                channelId: this.chosenChannel,
-                title: this.postForm.value.caption,
-                timestamp: new Date()
-            };
+        if (this.chosenChannel != null && this.chosenChannel != ''){
+            if (!this.chosenPhoto && !this.chosenVideo) {
+                const metadata: any = {
+                    userId: this.userId,
+                    channelId: this.chosenChannel,
+                    title: this.postForm.value.caption,
+                    timestamp: new Date()
+                };
 
-            this.multimediaService.addMultimediaTextPost(metadata)
-                .subscribe(() => {
-                    // Text post saved successfully
-                    this.postForm.reset();
+                this.multimediaService.addMultimediaTextPost(metadata)
+                    .subscribe(() => {
+                        // Text post saved successfully
+                        this.postForm.reset();
 
-                    this.openActionSnackBar('Post Published', 'CHECK');
-                    this.snackBarRef.afterDismissed().subscribe(() => {
-                        this.router.navigate([`/profile/${this.userId}/posts/${this.userId}`])
-                    }, (error:any) => {
-                        // do nothing
+                        this.openActionSnackBar('Post Published', 'CHECK');
+                        this.snackBarRef.afterDismissed().subscribe(() => {
+                            this.router.navigate([`/profile/${this.userId}/posts/${this.userId}`])
+                        }, (error:any) => {
+                            // do nothing
+                        });
+                    }, (error) => {
+                        // Handle error
+                        this.openSnackBar('Failed publish your post. Try again in few seconds!', 'OK')
                     });
-                }, (error) => {
-                    // Handle error
-                    this.openSnackBar('Failed publish your post. Try again in few seconds!', 'OK')
-                });
+            }
+
+            const caption: any = this.postForm.get('caption')?.value;
+
+            if (this.chosenPhoto) {
+                // Photo is selected
+                this.multimediaService.addMultimediaPhoto(caption, this.chosenPhoto)
+                    .subscribe((response) => {
+                        // Photo uploaded successfully
+                        const id = response.id; // Assuming the response contains the ID of the uploaded multimedia
+                        this.saveMetadata(id); // Save metadata
+                    }, (error) => {
+                        // Handle error
+                        this.logger.error('Error uploading photo:', error);
+                    });
+            } else if (this.chosenVideo) {
+                // Video is selected
+                this.multimediaService.addMultimediaVideo(caption, this.chosenVideo)
+                    .subscribe((response) => {
+                        // Video uploaded successfully
+                        const id = response.id; // Assuming the response contains the ID of the uploaded multimedia
+                        this.saveMetadata(id); // Save metadata
+                    }, (error) => {
+                        // Handle error
+                        this.logger.error('Error uploading video:', error);
+                    });
+            } else if (this.chosenVideo && this.chosenPhoto){
+                this.chosenPhoto = undefined;
+                this.chosenVideo = undefined;
+                this.openSnackBar('Please select one at once', 'OK')
+                return
+            }
+        } else {
+            this.openOptions(this.userId);
+            this.openSnackBar('You need to choose a channel first', '');
         }
 
-        const caption: any = this.postForm.get('caption')?.value;
-
-        if (this.chosenPhoto) {
-            // Photo is selected
-            this.multimediaService.addMultimediaPhoto(caption, this.chosenPhoto)
-                .subscribe((response) => {
-                    // Photo uploaded successfully
-                    const id = response.id; // Assuming the response contains the ID of the uploaded multimedia
-                    this.saveMetadata(id); // Save metadata
-                }, (error) => {
-                    // Handle error
-                    this.logger.error('Error uploading photo:', error);
-                });
-        } else if (this.chosenVideo) {
-            // Video is selected
-            this.multimediaService.addMultimediaVideo(caption, this.chosenVideo)
-                .subscribe((response) => {
-                    // Video uploaded successfully
-                    const id = response.id; // Assuming the response contains the ID of the uploaded multimedia
-                    this.saveMetadata(id); // Save metadata
-                }, (error) => {
-                    // Handle error
-                    this.logger.error('Error uploading video:', error);
-                });
-        } else if (this.chosenVideo && this.chosenPhoto){
-            this.chosenPhoto = undefined;
-            this.chosenVideo = undefined;
-            this.openSnackBar('Please select one at once', 'OK')
-            return
-        }
     }
 
     private saveMetadata(id: any): void {
