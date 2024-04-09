@@ -12,6 +12,7 @@ import {forkJoin, map, mergeMap, Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {LikesService} from "../../../services/likes.service";
 import {PostShareDialogComponent} from "../../dialogs/post-share-dialog/post-share-dialog.component";
+import {ActivitiesService} from "../../../services/activities.service";
 
 @Component({
   selector: 'app-feed-posts',
@@ -94,6 +95,7 @@ export class FeedPostsComponent implements OnInit{
               private route: ActivatedRoute,
               private likesService: LikesService,
               private commentsService: CommentsService,
+              private activitiesService: ActivitiesService,
               private logger: NGXLogger) {
   }
 
@@ -179,10 +181,15 @@ export class FeedPostsComponent implements OnInit{
   }
 
   async loadFeed(data:any) {
-    if (this.router.url == '/feed/area') {
-      this.feed = data.filter((feed: any) => this.channelId.includes(feed.channelId)); // handle multiple channels
-    }
-    else{
+    if (this.router.url === '/feed/area' || this.router.url.startsWith('/feed/post/')) {
+      if (this.router.url === '/feed/area') {
+        // Handle '/feed/area' case
+        this.feed = data.filter((feed: any) => this.channelId.includes(feed.channelId)); // handle multiple channels
+      } else {
+        const postId = this.router.url.split('/').pop(); // Extract postId from URL
+        this.feed = data.filter((feed:any) => feed.id === postId);
+      }
+    } else {
       const id = this.router.url.split('/')[2];
       this.feed = data.filter((feed:any) => (feed.userId == id || feed.sharedUserId == id) ? this.feed = [feed] : null )
     }
@@ -321,7 +328,7 @@ export class FeedPostsComponent implements OnInit{
     });
   }
 
-  async likePost(postId: any) {
+  async likePost(postId: any, posterName: any, caption: any) {
     // Toggle the like status locally
     const likedPostIndex = this.feedPost.findIndex(post => post.id === postId);
     if (likedPostIndex !== -1 || likedPostIndex !== null) {
@@ -339,7 +346,21 @@ export class FeedPostsComponent implements OnInit{
       multimediaId: postId,
       timestamp: new Date()
     }).subscribe((data) => {
-      this.logger.info(data);
+      // send activities with static id
+      this.activitiesService.toggleActivity({
+        id: this.userId+postId,
+        userId:this.userId,
+        userName:this.employee.name.split(' ')[0],
+        postId:postId,
+        posterName:posterName,
+        postCaption:caption,
+        action:'Liked',
+        timestamp:new Date()
+      }).subscribe( data => {
+        // TODO: do something
+      }, error => {
+        // TODO: do something
+      })
       // TODO: add event handlers
     }, error => {
       this.logger.error(error);
@@ -452,7 +473,7 @@ export class FeedPostsComponent implements OnInit{
     this.router.navigate([`/profile/${id}/about/${id}`]);
   }
 
-  addComment(postId: any) {
+  addComment(postId: any, posterName: any, caption: any) {
     if(this.commentForm.valid){
       this.commentsService.saveComment({
         userId: this.userId,
@@ -462,6 +483,14 @@ export class FeedPostsComponent implements OnInit{
       }).subscribe((data)=>{
         this.loadComments()
         this.commentForm.reset();
+
+        const postData = {
+          postId:postId,
+          posterName:posterName,
+          postCaption:caption,
+          action:'Commented',
+        }
+        this.addActivities(postData);
       }, err =>{
         console.log(err)
       })
@@ -486,7 +515,9 @@ export class FeedPostsComponent implements OnInit{
       title:post.message,
       timestamp:post.time,
       contentType:post.type,
-      sharedUserId:this.userId
+      sharedUserId:this.userId,
+      posterName:post.user,
+      user:this.employee.name.split(' ')[0]
     }
     this.toggleDialog('Share this post', '', data, PostShareDialogComponent)
   }
@@ -502,6 +533,22 @@ export class FeedPostsComponent implements OnInit{
     })
     const dialogRef = this.dialog.open(PopingListComponent, {
       data: {data:whoShares}
+    })
+  }
+
+  addActivities(data:any){
+    this.activitiesService.addActivity({
+      userId:this.userId,
+      userName:this.employee.name.split(' ')[0],
+      postId:data.postId,
+      posterName:data.posterName,
+      postCaption:data.postCaption,
+      action:data.action,
+      timestamp:new Date()
+    }).subscribe( data => {
+      // TODO: do something
+    }, error => {
+      // TODO: do something
     })
   }
 

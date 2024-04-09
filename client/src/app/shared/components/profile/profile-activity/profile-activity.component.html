@@ -9,7 +9,7 @@
       <ol class="style_1">
         <li *ngFor="let activity of activityDataStore">
           <small>{{activity.timestamp | timeAgo}}</small><br>
-          <span>{{activity.userId == userId?'You':activity.userName}} {{activity.action}} <a href="#">{{activity.posterName}}'s Post</a></span><br>
+          <span>{{activity.userId == userId?'You':activity.userName}} {{activity.action}} <a routerLink="/feed/post/{{activity.postId}}">{{activity.posterName}}'s Post</a></span><br>
           <small>{{activity.postCaption}}</small>
         </li>
       </ol>

@@ -54,7 +54,7 @@
             <li routerLink="/feed">Feed</li>
           </ul>
         </mat-drawer>
-        <mat-drawer-content>
+        <mat-drawer-content style="max-height: calc(100vh - 70px); overflow-y: auto">
           <router-outlet></router-outlet>
         </mat-drawer-content>
       </mat-drawer-container>

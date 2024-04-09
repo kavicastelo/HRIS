@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: 'feed', component: FeedWrapperComponent,children: [
     { path: '', redirectTo: '/feed/area', pathMatch: 'full' },
     { path: 'area', component: FeedComponent },
+    { path: 'post/:postId', component: FeedComponent },
     { path: 'chat/:id', component: ChatAreaComponent },
   ]},
   { path: 'chat-list', component: ChatListComponent },

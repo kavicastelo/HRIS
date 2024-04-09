@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {activityDataStore} from "../../../data-stores/activity-data-store";
 import {ActivatedRoute} from "@angular/router";
+import {Observable, tap} from "rxjs";
+import {ActivitiesService} from "../../../../services/activities.service";
 
 @Component({
   selector: 'app-profile-activity',
@@ -9,18 +11,26 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ProfileActivityComponent implements OnInit{
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private activitiesService: ActivitiesService) {
   }
 
-  activityDataStore: any = activityDataStore;
+  activityDataStore: any;
 
   userId: any;
   profileId:any;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.userId = localStorage.getItem('sender')
-    this.loadProfileId()
-    this.loadActivities()
+    await this.loadAllActivities().subscribe(()=>{
+      this.loadProfileId()
+      this.loadActivities()
+    })
+  }
+
+  loadAllActivities(): Observable<any>{
+    return this.activitiesService.getAllActivities().pipe(
+        tap(data => this.activityDataStore = data)
+    );
   }
 
   loadProfileId(){
