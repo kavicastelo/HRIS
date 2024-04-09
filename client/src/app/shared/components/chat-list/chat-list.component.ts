@@ -73,8 +73,10 @@ export class ChatListComponent implements OnInit, OnDestroy {
   navigateUrl(id: any) {
     this.receiverId = id
     this.availableChats = [];
-    this.router.navigate([`/feed/chat/${id}`]);
-    this.loadChats()
+
+    this.router.navigate([`/feed/chat/${id}`]).then(r => {
+      this.loadChats();
+    });
 
     this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
       console.log('WebSocket connection status:', status);
@@ -104,7 +106,8 @@ export class ChatListComponent implements OnInit, OnDestroy {
               time: time // Add the time property
             });
           }
-          this.changeStatus(chats.id)
+          this.setStatus(chats.id);
+          chats.status = 'read'
         })
       })
 
@@ -132,19 +135,11 @@ export class ChatListComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeStatus(id: any) {
-    this.availableChats.forEach((chat) => {
-      if (chat)
-        this.isOpen = (chat.messageSenderId !== this.senderId.toString() && chat.status == 'sent');
-    })
-    this.setStatus(id)
-  }
-
   setStatus(chatId: any) {
     this.availableChats.forEach((chat) => {
-      if(this.receiverId == chat.id && chat.chatId == chatId) {
+      if(this.receiverId == chat.id && chat.chatId == chatId && chat.status == 'sent') {
         this.chatService.updateStatus(chat.lastMessageId, 'read', chat.chatId).subscribe(data => {
-          this.isOpen = false
+          chat.status = 'read';
         }, error => {
           console.log(error)
         })

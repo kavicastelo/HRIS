@@ -211,10 +211,7 @@ export class FeedPostsComponent implements OnInit{
 
     this.feedPost = this.feedPost.filter(time => (time.time != '') ? this.commentSection = true : false )
     this.feedPost.sort((a: any, b: any) => {
-      return new Date(b.time).getTime() - new Date(a.time).getTime(); // Reversed comparison logic
-    })
-    this.feedPost.sort((a: any, b: any) => {
-      return new Date(b.sharedUserTimestamp).getTime() - new Date(a.sharedUserTimestamp).getTime(); // Reversed comparison logic
+      return new Date(b.sharedUserTimestamp?b.sharedUserTimestamp:b.time).getTime() - new Date(a.sharedUserTimestamp?a.sharedUserTimestamp:a.time).getTime(); // Reversed comparison logic
     })
   }
 
@@ -261,7 +258,7 @@ export class FeedPostsComponent implements OnInit{
     const post = {
       id: sharedPost.id,
       user: '', // Set shared user name below
-      userId: sharedPost.sharedUserId,
+      userId: sharedPost.userId,
       userPosition: '', // Set shared user position below
       userPhoto: this.multimediaService.convertToSafeUrl('',''), // Set shared user photo below
       channelId: sharedPost.channelId,

@@ -72,9 +72,14 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      top: calc(50% - 7px);
+      top: 50%;
       right: 10px;
       background-color: var(--color-primary-300);
+    }
+    .chat-time{
+      position: absolute;
+      bottom: 50%;
+      right: 10px;
     }
 
     &:hover{

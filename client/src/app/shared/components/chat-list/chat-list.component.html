@@ -1,4 +1,4 @@
-<div class="w-100" style="max-height: calc(100vh - 80px); overflow-y: auto">
+<div class="w-100" style="max-height: calc(100vh - 70px); overflow-y: auto">
   <div class="card">
     <div class="card-body">
       <div class="input-group mb-3">
@@ -22,7 +22,7 @@
           </div>
         </div>
       </mat-drawer>
-      <mat-drawer-content style="min-height: calc(100vh - 185px); max-height: calc(100vh - 185px); overflow-y: auto;">
+      <mat-drawer-content style="min-height: calc(100vh - 175px); max-height: calc(100vh - 175px); overflow-y: auto;">
         <mat-accordion>
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header>
@@ -37,10 +37,14 @@
                 </div>
                 <div class="chat-content">
                   <h6>{{e.name}}</h6>
-                  <p [ngStyle]="{'font-weight':e.status=='sent'?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
+                  <p [ngStyle]="{'font-weight':e.status=='sent'&&e.messageSenderId!=senderId?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
                 </div>
 
-                <div class="active-chat-count" [ngStyle]="{'display':e.status=='sent'?'block':'none'}"></div>
+                <div class="d-flex flex-column align-items-center justify-content-end">
+                  <small class="chat-time" [ngStyle]="{'color':e.status=='sent'&&e.messageSenderId!=senderId?'var(--color-primary-300)':'var(--color-text-300)'}">{{e.time | timeAgo}}</small>
+                  <div class="active-chat-count" [ngStyle]="{'display':e.status=='sent'&&e.messageSenderId!=senderId?'block':'none'}"></div>
+                </div>
+
               </div>
             </div>
           </mat-expansion-panel>
