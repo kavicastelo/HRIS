@@ -14,13 +14,13 @@
                 </div>
             </div>
             <div class="my-3">
-                <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.message}}</p>
+                <p class="post-description" [ngStyle]="{'font-size':post.file != null?'normal':'18px'}">{{post.sharedUserCaption}}</p>
             </div>
             <hr style="color: var(--color-primary-400)" class="mb-3">
         </div>
 
         <div class="d-flex flex-column align-items-center justify-content-center">
-            <div [ngStyle]="{'width':post.sharedUser != null && post.sharedUser != ''?'90%':'100%'}">
+            <div class="w-100" [ngClass]="post.sharedUser?'shared-post':''">
                 <div class="author-wrapper d-flex align-items-center justify-content-start">
                     <div class="profile-pic">
                         <img [src]="post.userPhoto" alt="profile image" (click)="navigateUrl(post.userId)">

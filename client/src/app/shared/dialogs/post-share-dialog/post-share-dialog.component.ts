@@ -36,7 +36,6 @@ export class PostShareDialogComponent implements OnInit{
 
   ngOnInit() {
     this.receivedData = this.data;
-    console.log(this.receivedData.data.file)
   }
 
   sharePost(){
@@ -51,22 +50,112 @@ export class PostShareDialogComponent implements OnInit{
     })
   }
 
-  saveMultimedia(){
-    this.multimediaService.addMultimediaSharedPost({
+  saveMultimedia() {
+    // Extract base64 content from SafeValue
+    const safeValue = this.receivedData.data.file.toString();
+
+    // Use regular expression to extract base64 content and detect whether it's an image or a video
+    const matchesImage = safeValue.match(/data:image\/(jpeg|png|gif);base64,([^"]*)/);
+    const matchesVideo = safeValue.match(/data:video\/\w+;base64,([^"]*)/);
+
+    if (matchesImage && matchesImage.length > 2) {
+      // Image detected
+      const base64Content = matchesImage[2];
+      const fileType = matchesImage[1];
+
+      this.saveImage(base64Content, fileType);
+    } else if (matchesVideo && matchesVideo.length > 1) {
+      // Video detected
+      const base64Content = matchesVideo[1];
+
+      this.saveVideo(base64Content);
+    } else {
+      console.error('Base64 content not found in the SafeValue or unsupported file type.');
+    }
+  }
+
+  private saveImage(base64Content: string, fileType: string) {
+    // Decode the base64 string
+    const decodedString = atob(base64Content.split(' ')[0]);
+
+    // Convert the decoded string to Uint8Array
+    const uint8Array = new Uint8Array(decodedString.length);
+    for (let i = 0; i < decodedString.length; ++i) {
+      uint8Array[i] = decodedString.charCodeAt(i);
+    }
+
+    // Create a Blob from Uint8Array
+    const blob = new Blob([uint8Array], { type: `image/${fileType}` });
+
+    // Create a File object from the Blob
+    const file = new File([blob], `shared.${fileType}`);
+
+    // Perform further operations with the image file...
+    if (file) {
+      this.multimediaService.addMultimediaPhoto(this.receivedData.data.title, file).subscribe((d) => {
+        this.saveMultimediaMeta(d.id);
+        this.closePopup();
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
+
+  private saveVideo(base64Content: string) {
+    // Decode the base64 string
+    const decodedString = atob(base64Content.split(' ')[0]);
+
+    // Convert the decoded string to Uint8Array
+    const uint8Array = new Uint8Array(decodedString.length);
+    for (let i = 0; i < decodedString.length; ++i) {
+      uint8Array[i] = decodedString.charCodeAt(i);
+    }
+
+    // Create a Blob from Uint8Array
+    const blob = new Blob([uint8Array], { type: 'video/mp4' });
+
+    // Create a File object from the Blob
+    const file = new File([blob], 'shared.mp4');
+
+    // Perform further operations with the video file...
+    if (file) {
+      this.multimediaService.addMultimediaVideo(this.receivedData.data.title, file).subscribe((d) => {
+        this.saveMultimediaMeta(d.id);
+        this.closePopup();
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
+
+  saveMultimediaMeta(id: any){
+    const metaData: any = {
+      id: id,
       userId:this.receivedData.data.userId,
       channelId:this.receivedData.data.channelId,
-      file:this.multimediaService.convertSafeUrlToBase64(this.receivedData.data.file),
-      title:this.receivedData.data.title,
       timestamp:this.receivedData.data.timestamp,
       contentType:this.receivedData.data.contentType,
       sharedUserId:this.receivedData.data.sharedUserId,
       sharedUserCaption:this.sharePostForm.value.caption,
       sharedUserTimestamp:new Date()
-    }).subscribe((data: any) => {
+    }
+
+    this.multimediaService.addMultimediaMeta(metaData).subscribe((data: any) => {
       // TODO: do something when success
     }, error => {
       console.log(error)
     })
+  }
+
+  // Function to convert data URI to Blob
+  dataURItoBlob(dataURI: string): Blob {
+    const byteString = atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([arrayBuffer]);
   }
 
   closePopup(){
