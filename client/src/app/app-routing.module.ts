@@ -15,6 +15,7 @@ import {EmployeeRegisterComponent} from "./shared/components/employee-register/e
 import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
 import {EditProfileComponent} from "./shared/components/profile/edit-profile/edit-profile.component";
 import {ChatAreaComponent} from "./shared/components/chat-area/chat-area.component";
+import {PostComponent} from "./shared/components/post/post.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -22,7 +23,7 @@ const routes: Routes = [
   { path: 'feed', component: FeedWrapperComponent,children: [
     { path: '', redirectTo: '/feed/area', pathMatch: 'full' },
     { path: 'area', component: FeedComponent },
-    { path: 'post/:postId', component: FeedComponent },
+    { path: 'post/:postId', component: PostComponent },
     { path: 'chat/:id', component: ChatAreaComponent },
   ]},
   { path: 'chat-list', component: ChatListComponent },

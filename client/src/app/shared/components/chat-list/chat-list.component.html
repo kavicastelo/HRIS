@@ -12,7 +12,7 @@
     <mat-drawer-container class="drawer-container">
       <mat-drawer #drawer mode="over" class="drawer" style="width: 100%;">
         <div class="direct-messages-chat-area all-contacts" *ngFor="let e of employeeDataStore">
-          <div class="chat-wrapper" (click)="navigateUrl(e.id)">
+          <div class="chat-wrapper" (click)="navigateUrl(e.id); drawer.toggle()">
             <div class="chat-icon">
               <img [src]="convertToSafeUrl(e.photo)" alt="profile">
             </div>

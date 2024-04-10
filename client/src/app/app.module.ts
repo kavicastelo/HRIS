@@ -8,7 +8,7 @@ import {NotFoundComponent} from './shared/components/not-found/not-found.compone
 import {ProfileComponent} from './shared/components/profile/profile.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PostImageComponent} from './shared/components/post-image/post-image.component';
-import {PostTextComponent} from './shared/components/post-text/post-text.component';
+import {PostComponent} from './shared/components/post/post.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -51,7 +51,7 @@ import { PostShareDialogComponent } from './shared/dialogs/post-share-dialog/pos
         NotFoundComponent,
         ProfileComponent,
         PostImageComponent,
-        PostTextComponent,
+        PostComponent,
         FeedWrapperComponent,
         FeedComponent,
         ChatListComponent,
