@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PostTextComponent } from './post-text.component';
+import { PostComponent } from './post.component';
 
 describe('PostTextComponent', () => {
-  let component: PostTextComponent;
-  let fixture: ComponentFixture<PostTextComponent>;
+  let component: PostComponent;
+  let fixture: ComponentFixture<PostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PostTextComponent ]
+      declarations: [ PostComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PostTextComponent);
+    fixture = TestBed.createComponent(PostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

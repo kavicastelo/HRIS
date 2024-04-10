@@ -11,8 +11,11 @@
   <div class="w-100">
     <mat-drawer-container class="drawer-container">
       <mat-drawer #drawer mode="over" class="drawer" style="width: 100%;">
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="lnr lnr-cross" (click)="drawer.toggle()"></span>
+        </div>
         <div class="direct-messages-chat-area all-contacts" *ngFor="let e of employeeDataStore">
-          <div class="chat-wrapper" (click)="navigateUrl(e.id)">
+          <div class="chat-wrapper" (click)="navigateUrl(e.id); drawer.toggle()">
             <div class="chat-icon">
               <img [src]="convertToSafeUrl(e.photo)" alt="profile">
             </div>
@@ -30,6 +33,13 @@
                 Direct Messages
               </mat-panel-title>
             </mat-expansion-panel-header>
+            <div class="d-flex align-items-center justify-content-start mt-2" style="cursor: pointer" *ngIf="availableChats.length == 0" (click)="drawer.toggle()">
+              <span class="lnr lnr-plus-circle"></span>
+              <div>
+                <h6 style="margin: 0">Welcome {{employee.name.split(' ')[0]}}!</h6>
+                <p style="margin: 0">Click to start a new chat</p>
+              </div>
+            </div>
             <div class="direct-messages-chat-area" *ngFor="let e of availableChats">
               <div class="chat-wrapper" (click)="navigateUrl(e.id)">
                 <div class="chat-icon">

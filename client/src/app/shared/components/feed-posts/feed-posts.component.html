@@ -1,18 +1,30 @@
 <div class="card" *ngFor="let post of feedPost; index as i">
     <div class="card-body">
         <div *ngIf="post.sharedUserCaption != null && post.sharedUserTimestamp != null">
-            <div class="author-wrapper d-flex align-items-center justify-content-start">
-                <div class="profile-pic">
-                    <img [src]="post.sharedUserImage" alt="profile image" (click)="navigateUrl(post.sharedUserId)">
-                </div>
-                <div class="author-name d-flex flex-column">
-                    <div class="d-flex align-items-center">
-                        <h6 (click)="navigateUrl(post.sharedUserId)">{{post.sharedUser}}</h6> &nbsp;&dot;&nbsp;
-                        <p>{{post.sharedUserTimestamp | timeAgo}}</p>
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="author-wrapper d-flex align-items-center justify-content-start">
+                    <div class="profile-pic">
+                        <img [src]="post.sharedUserImage" alt="profile image" (click)="navigateUrl(post.sharedUserId)">
                     </div>
-                    <p>{{post.sharedUserPosition}}</p>
+                    <div class="author-name d-flex flex-column">
+                        <div class="d-flex align-items-center">
+                            <h6 (click)="navigateUrl(post.sharedUserId)">{{post.sharedUser}}</h6> &nbsp;&dot;&nbsp;
+                            <p>{{post.sharedUserTimestamp | timeAgo}}</p>
+                        </div>
+                        <p>{{post.sharedUserPosition}}</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn-2" type="button" matTooltip="Options" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="post.sharedUserId==userId">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" (click)="editPost(post.id)">Edit</button></li>
+                        <li><button class="dropdown-item" (click)="deletePost(post.id)">Delete</button></li>
+                    </ul>
                 </div>
             </div>
+
             <div class="my-3">
                 <p class="post-description">{{post.sharedUserCaption}}</p>
             </div>
@@ -21,16 +33,27 @@
 
         <div class="d-flex flex-column align-items-center justify-content-center">
             <div class="w-100" [ngClass]="post.sharedUser?'shared-post':''">
-                <div class="author-wrapper d-flex align-items-center justify-content-start">
-                    <div class="profile-pic">
-                        <img [src]="post.userPhoto" alt="profile image" (click)="navigateUrl(post.userId)">
-                    </div>
-                    <div class="author-name d-flex flex-column">
-                        <div class="d-flex align-items-center">
-                            <h6 (click)="navigateUrl(post.userId)">{{post.user}}</h6> &nbsp;&dot;&nbsp;
-                            <p>{{post.time | timeAgo}}</p>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="author-wrapper d-flex align-items-center justify-content-start">
+                        <div class="profile-pic">
+                            <img [src]="post.userPhoto" alt="profile image" (click)="navigateUrl(post.userId)">
                         </div>
-                        <p>{{post.userPosition}}</p>
+                        <div class="author-name d-flex flex-column">
+                            <div class="d-flex align-items-center">
+                                <h6 (click)="navigateUrl(post.userId)">{{post.user}}</h6> &nbsp;&dot;&nbsp;
+                                <p>{{post.time | timeAgo}}</p>
+                            </div>
+                            <p>{{post.userPosition}}</p>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn-2" type="button" matTooltip="Options" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="post.sharedUserId?false:post.userId==userId">
+                            <mat-icon>more_horiz</mat-icon>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><button class="dropdown-item" (click)="editPost(post.id)">Edit</button></li>
+                            <li><button class="dropdown-item" (click)="deletePost(post.id)">Delete</button></li>
+                        </ul>
                     </div>
                 </div>
 

@@ -20,7 +20,7 @@
             <button class="btn-3" (click)="chooseVideo()">
               <mat-icon>{{ chosenVideo ? 'check' : 'video_library' }}</mat-icon>&nbsp;&nbsp;{{ chosenVideo ? 'Selected' : 'Video' }}
             </button>
-            <button class="btn-3" (click)="openOptions(employee.id)">...</button>
+            <button class="btn-3" (click)="openOptions(employee.id)"><mat-icon>more_horiz</mat-icon></button>
           </div>
           <button class="btn-1 px-3" (click)="onSubmit()" [disabled]="postForm.invalid">Post</button>
         </div>

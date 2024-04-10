@@ -13,6 +13,7 @@ import {SafeResourceUrl} from "@angular/platform-browser";
 import {LikesService} from "../../../services/likes.service";
 import {PostShareDialogComponent} from "../../dialogs/post-share-dialog/post-share-dialog.component";
 import {ActivitiesService} from "../../../services/activities.service";
+import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-feed-posts',
@@ -579,5 +580,18 @@ export class FeedPostsComponent implements OnInit{
     _popup.afterClosed().subscribe(item => {
       this.loadMultimedia();
     })
+  }
+
+  deletePost(id:any) {
+    if (id){
+      const data={
+        id:id
+      }
+      this.toggleDialog('Are you sure?','This perform cannot undone! Do you need to proceed?',data,ConfirmDialogComponent)
+    }
+  }
+
+  editPost(id: any) {
+
   }
 }
