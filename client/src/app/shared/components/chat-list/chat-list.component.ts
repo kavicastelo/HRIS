@@ -23,6 +23,10 @@ export class ChatListComponent implements OnInit, OnDestroy {
   receiverId: any
   isOpen = false
 
+  employee:any = {
+    name:''
+  }
+
   availableChats: any[] = [];
 
   message: string = '';
@@ -37,10 +41,10 @@ export class ChatListComponent implements OnInit, OnDestroy {
               private webSocketService: WebSocketService, private logger: NGXLogger) {
   }
   async ngOnInit(): Promise<any> {
-    this.senderId = localStorage.getItem('sender')
-
     this.loadAllUsers().subscribe(()=>{
+      this.getUser()
       this.loadChats()
+      console.log(this.employee.name)
     })
 
     try {
@@ -64,6 +68,16 @@ export class ChatListComponent implements OnInit, OnDestroy {
     return this.employeeService.getAllEmployees().pipe(
         tap(data => this.employeeDataStore = data)
     );
+  }
+
+  getUser() {
+    this.senderId = localStorage.getItem('sender');
+    if (this.employeeDataStore) { // Check if employeesDataStore is populated
+      const foundEmployee = this.employeeDataStore.find((emp: any) => emp.id === this.senderId);
+      if (foundEmployee) {
+        this.employee = foundEmployee;
+      }
+    }
   }
 
   convertToSafeUrl(url:any):SafeResourceUrl{
