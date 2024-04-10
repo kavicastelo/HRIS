@@ -1,4 +1,5 @@
 export interface ActivityModel{
+    id?:any,
     userId:any,
     userName:any,
     postId:any,

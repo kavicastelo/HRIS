@@ -5,6 +5,7 @@ import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {SharesService} from "../../../services/shares.service";
+import {ActivitiesService} from "../../../services/activities.service";
 
 @Component({
   selector: 'app-post-share-dialog',
@@ -26,6 +27,7 @@ export class PostShareDialogComponent implements OnInit{
 
   constructor(private themeService: ThemeService,
               private multimediaService: MultimediaService,
+              private activitiesService: ActivitiesService,
               private shareService: SharesService,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -45,6 +47,14 @@ export class PostShareDialogComponent implements OnInit{
       timestamp:new Date()
     }).subscribe((data: any) => {
       this.saveMultimedia();
+
+      const postData = {
+        postId:this.receivedData.data.multimediaId,
+        posterName:this.receivedData.data.posterName,
+        postCaption:this.receivedData.data.title,
+        action:'Shared',
+      }
+      this.addActivities(postData);
     }, error => {
       console.log(error)
     })
@@ -70,7 +80,23 @@ export class PostShareDialogComponent implements OnInit{
 
       this.saveVideo(base64Content);
     } else {
-      console.error('Base64 content not found in the SafeValue or unsupported file type.');
+      const metaData: any = {
+        userId:this.receivedData.data.userId,
+        channelId:this.receivedData.data.channelId,
+        title: this.receivedData.data.title,
+        timestamp:this.receivedData.data.timestamp,
+        sharedUserId:this.receivedData.data.sharedUserId,
+        sharedUserCaption:this.sharePostForm.value.caption,
+        sharedUserTimestamp:new Date()
+      }
+
+      this.multimediaService.addMultimediaTextPost(metaData)
+          .subscribe(() => {
+            this.closePopup();
+            // TODO: do something
+          }, (error) => {
+            // TODO: Handle error
+          });
     }
   }
 
@@ -156,6 +182,22 @@ export class PostShareDialogComponent implements OnInit{
       int8Array[i] = byteString.charCodeAt(i);
     }
     return new Blob([arrayBuffer]);
+  }
+
+  addActivities(data:any){
+    this.activitiesService.addActivity({
+      userId:this.receivedData.data.sharedUserId,
+      userName:this.receivedData.data.user,
+      postId:data.postId,
+      posterName:data.posterName,
+      postCaption:data.postCaption,
+      action:data.action,
+      timestamp:new Date()
+    }).subscribe( data => {
+      // TODO: do something
+    }, error => {
+      // TODO: do something
+    })
   }
 
   closePopup(){

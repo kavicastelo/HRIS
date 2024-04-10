@@ -20,6 +20,10 @@
           list-style: none;
           color: var(--color-text-200);
 
+          a{
+            color: var(--color-primary-200);
+          }
+
           &::before,
           &::after {
             position: absolute;
