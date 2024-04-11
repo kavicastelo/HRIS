@@ -14,6 +14,8 @@ import {LikesService} from "../../../services/likes.service";
 import {PostShareDialogComponent} from "../../dialogs/post-share-dialog/post-share-dialog.component";
 import {ActivitiesService} from "../../../services/activities.service";
 import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
+import {SharesService} from "../../../services/shares.service";
+import {EditTextDialogComponent} from "../../dialogs/edit-text-dialog/edit-text-dialog.component";
 
 @Component({
   selector: 'app-feed-posts',
@@ -82,7 +84,7 @@ export class FeedPostsComponent implements OnInit{
   commentForm = new FormGroup({
     comment: new FormControl(null, [
         Validators.required,
-        Validators.maxLength(300)
+        Validators.maxLength(400)
     ])
   })
 
@@ -96,6 +98,7 @@ export class FeedPostsComponent implements OnInit{
               private route: ActivatedRoute,
               private likesService: LikesService,
               private commentsService: CommentsService,
+              private shareService: SharesService,
               private activitiesService: ActivitiesService,
               private logger: NGXLogger) {
   }
@@ -524,17 +527,49 @@ export class FeedPostsComponent implements OnInit{
   }
 
   openShares(sharing: any) {
-    let whoShares:any[] = [];
+    let whoShared:any[] = [];
+    let filteredShares:any[] = [];
+
     sharing.forEach((share: any) => {
-      this.employeesDataStore.forEach((emp:any) => {
-        if (emp.id == share) {
-          whoShares.push(emp);
-        }
+      this.shareService.getAllShares().subscribe(shares=>{
+        shares.forEach((s:any) =>{
+          if (s.id == share){
+            filteredShares.push(s)
+          }
+        })
+        this.employeesDataStore.forEach((emp:any) => {
+          filteredShares.forEach(fs => {
+            if (emp.id == fs.userId) {
+              whoShared.push(emp);
+            }
+          })
+        })
       })
     })
-    const dialogRef = this.dialog.open(PopingListComponent, {
-      data: {data:whoShares}
-    })
+
+    // Collect all observables for fetching comments
+    const shareObservables = sharing.map((share: any) => {
+      return this.shareService.getAllShares().pipe(
+          map(shares => shares.filter((s: any) => s.id == share)),
+          mergeMap(filteredShares =>
+              this.employeesDataStore.filter((emp: any) => filteredShares.some((fc: any) => emp.id == fc.userId))
+          )
+      );
+    });
+
+    // Wait for all observables to complete
+    forkJoin(shareObservables).subscribe((results:any) => {
+      // Flatten the results array
+      whoShared = results.flat();
+
+      // Remove duplicates
+      whoShared = this.removeDuplicates(whoShared, 'id');
+
+      // Open the dialog with filtered comments
+      const dialogRef = this.dialog.open(PopingListComponent, {
+        data: { data: whoShared }
+      });
+    });
   }
 
   addActivities(data:any){
@@ -591,7 +626,12 @@ export class FeedPostsComponent implements OnInit{
     }
   }
 
-  editPost(id: any) {
+  editPost(id: any, isShared: boolean) {
+    const data ={
+      id: id,
+      isShared: isShared
+    }
 
+    this.toggleDialog('Edit Caption', 'Please enter your new caption to update', data, EditTextDialogComponent)
   }
 }

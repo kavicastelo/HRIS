@@ -63,6 +63,13 @@ export class MultimediaService {
         return this.http.put(this.baseUrl + 'multimedia/save/data', multimedia);
     }
 
+    public updatePostCaption(id: any, data: any): Observable<any> {
+        return this.http.put(this.baseUrl + 'multimedia/update/caption/'+id, {
+            title: data.title,
+            sharedUserCaption: data.sharedUserCaption
+        });
+    }
+
     public getAllMultimedia(): Observable<any> {
         return this.http.get(this.baseUrl + 'multimedia/get/all');
     }

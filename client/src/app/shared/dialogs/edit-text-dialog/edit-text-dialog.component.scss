@@ -1,0 +1,7 @@
+button{
+  &:disabled{
+    background-color: #8b8b8b;
+    cursor: unset;
+    color: white;
+  }
+}

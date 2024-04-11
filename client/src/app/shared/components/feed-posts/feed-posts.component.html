@@ -19,14 +19,14 @@
                         <mat-icon>more_horiz</mat-icon>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><button class="dropdown-item" (click)="editPost(post.id)">Edit</button></li>
+                        <li><button class="dropdown-item" (click)="editPost(post.id, true)">Edit</button></li>
                         <li><button class="dropdown-item" (click)="deletePost(post.id)">Delete</button></li>
                     </ul>
                 </div>
             </div>
 
             <div class="my-3">
-                <p class="post-description">{{post.sharedUserCaption}}</p>
+                <p class="post-description">{{post.sharedUserCaption.split('⚬')[0]}} <small>{{post.sharedUserCaption.split('⚬')[1]}}</small></p>
             </div>
             <hr style="color: var(--color-primary-400)" class="mb-3">
         </div>
@@ -51,14 +51,14 @@
                             <mat-icon>more_horiz</mat-icon>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><button class="dropdown-item" (click)="editPost(post.id)">Edit</button></li>
+                            <li><button class="dropdown-item" (click)="editPost(post.id, false)">Edit</button></li>
                             <li><button class="dropdown-item" (click)="deletePost(post.id)">Delete</button></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="my-3">
-                    <p class="post-description" [ngStyle]="{'font-size':post.file != null && post.file != ''?'normal':'18px'}">{{post.message}}</p>
+                    <p class="post-description" [ngStyle]="{'font-size':post.file != null && post.file != ''?'normal':'18px'}">{{post.message.split('⚬')[0]}} <small style="font-size: 11px">{{post.message.split('⚬')[1]}}</small></p>
                 </div>
 
                 <div class="posted-content">
