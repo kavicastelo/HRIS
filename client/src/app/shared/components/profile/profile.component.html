@@ -15,7 +15,7 @@
             <h3>{{e.name}}</h3>
             <h6>{{e.jobData.position}}</h6>
           </div>
-          <button class="btn-1 px-3 py-2"><mat-icon>exit_to_app</mat-icon><span class="d-none d-md-flex" style="color: white">&nbsp;&nbsp;Sign out</span></button>
+          <button class="btn-1 px-3 py-2" (click)="userId!=loggedUserId?navigateChat():logOut()" [matTooltip]="userId!=loggedUserId?'Open Chat':'Sign out from the application'"><mat-icon>{{userId!=loggedUserId?'sms':'exit_to_app'}}</mat-icon><span class="d-none d-md-flex" style="color: white">&nbsp;&nbsp;{{userId!=loggedUserId?'Message':'Sign Out'}}</span></button>
         </div>
 
       </div>
