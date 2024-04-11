@@ -60,7 +60,8 @@ export class AppComponent implements OnInit {
     const userId = this.userId;
     this.employeeService.setActivityStatus(userId, timestamp).subscribe(
         (data: any) => {
-          console.log(data);
+          // TODO: do something
+          // console.log(data);
         },
         (error) => {
           console.error(error);

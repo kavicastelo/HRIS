@@ -35,7 +35,7 @@ export class FeedComponent implements OnInit {
     postForm = new FormGroup({
         caption: new FormControl(null, [
             Validators.required,
-            Validators.maxLength(500)
+            Validators.maxLength(1000)
         ])
     })
     chosenPhoto: File | undefined; // Store the chosen photo file
@@ -102,18 +102,30 @@ export class FeedComponent implements OnInit {
     }
 
     handleFileInput(event: any): void {
+        const maxSize = 5 * 1024 * 1024;
         // Extract the chosen image file
         const files = event.target.files;
         if (files.length > 0) {
-            this.chosenPhoto = files[0];
+            if (files[0].size <= maxSize){
+                this.chosenPhoto = files[0];
+            }
+            else{
+                alert("Your Image is too large. Select under 5MB")
+            }
         }
     }
 
     handleVideoFileInput(event: any): void {
+        const maxSize = 15 * 1024 * 1024;
         // Extract the chosen video file
         const files = event.target.files;
         if (files.length > 0) {
-            this.chosenVideo = files[0];
+            if (files[0].size <= maxSize){
+                this.chosenVideo = files[0];
+            }
+            else {
+                alert("Your Video is too large. Select under 15MB")
+            }
         }
     }
 

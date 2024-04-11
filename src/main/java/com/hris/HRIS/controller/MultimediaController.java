@@ -98,6 +98,25 @@ public class MultimediaController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/update/caption/{id}")
+    public ResponseEntity<ApiResponse> updateCaptionById(@PathVariable String id, @RequestBody MultimediaModel multimediaModel){
+        Optional<MultimediaModel> optionalMultimediaModel = multimediaRepository.findById(id);
+
+        if (optionalMultimediaModel.isPresent()){
+            MultimediaModel existingMultimediaModel = optionalMultimediaModel.get();
+            if (multimediaModel.getSharedUserCaption() != null && multimediaModel.getTitle() == null){
+                existingMultimediaModel.setSharedUserCaption(multimediaModel.getSharedUserCaption());
+            }
+            else if (multimediaModel.getSharedUserCaption() == null && multimediaModel.getTitle() != null){
+                existingMultimediaModel.setTitle(multimediaModel.getTitle());
+            }
+
+            multimediaRepository.save(existingMultimediaModel);
+        }
+
+        return ResponseEntity.ok(new ApiResponse("Data updated successfully"));
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<byte[]> getMultimedia(@PathVariable String id) {
         MultimediaModel multimedia = photoService.getMultimedia(id);

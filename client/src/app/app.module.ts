@@ -43,6 +43,7 @@ import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-
 import { PostingOptionsComponent } from './shared/dialogs/posting-options/posting-options.component';
 import {MatSelectModule} from "@angular/material/select";
 import { PostShareDialogComponent } from './shared/dialogs/post-share-dialog/post-share-dialog.component';
+import { EditTextDialogComponent } from './shared/dialogs/edit-text-dialog/edit-text-dialog.component';
 
 @NgModule({
     declarations: [
@@ -70,7 +71,8 @@ import { PostShareDialogComponent } from './shared/dialogs/post-share-dialog/pos
         TruncateCommentsPipe,
         ConfirmDialogComponent,
         PostingOptionsComponent,
-        PostShareDialogComponent
+        PostShareDialogComponent,
+        EditTextDialogComponent
     ],
     imports: [
         BrowserModule,
