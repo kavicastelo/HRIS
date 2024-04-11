@@ -32,4 +32,6 @@ public class EmployeeModel {
     private byte[] photo;
     private String status;
     private Integer level;
+    private Boolean activityStatus;
+    private String lastSeen;
 }

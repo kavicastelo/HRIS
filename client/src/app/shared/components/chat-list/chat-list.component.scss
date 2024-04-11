@@ -47,9 +47,21 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      position: relative;
 
       img{
         width: 100%;
+      }
+
+      .active-btn{
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 10px;
+        height: 10px;
+        background-color: chartreuse;
+        border: 2px solid var(--color-surface-mixed-200);
+        border-radius: 50%;
       }
     }
 

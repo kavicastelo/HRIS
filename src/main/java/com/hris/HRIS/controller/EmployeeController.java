@@ -1,6 +1,5 @@
 package com.hris.HRIS.controller;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.EmployeeModel;
@@ -66,6 +65,29 @@ public class EmployeeController {
 
         ApiResponse apiResponse = new ApiResponse("Employee saved successfully");
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/active/set-status/{id}")
+    public ResponseEntity<ApiResponse> setActivityStatus(@PathVariable String id, @RequestBody EmployeeModel employeeModel){
+        Optional<EmployeeModel> optionalEmployee = employeeRepository.findById(id);
+
+        if(optionalEmployee.isPresent()){
+            EmployeeModel existsEmployeeModel = optionalEmployee.get();
+
+            Boolean status = existsEmployeeModel.getActivityStatus();
+            if (status != null){
+                existsEmployeeModel.setActivityStatus(!status);
+                existsEmployeeModel.setLastSeen(employeeModel.getLastSeen());
+            }
+            else {
+                existsEmployeeModel.setActivityStatus(true);
+                existsEmployeeModel.setLastSeen(employeeModel.getLastSeen());
+            }
+            employeeRepository.save(existsEmployeeModel);
+        }
+
+        ApiResponse response = new ApiResponse("Set active status successfully");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/all")

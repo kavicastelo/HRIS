@@ -44,7 +44,6 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.loadAllUsers().subscribe(()=>{
       this.getUser()
       this.loadChats()
-      console.log(this.employee.name)
     })
 
     try {
