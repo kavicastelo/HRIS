@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {ThemeService} from "./services/theme.service";
 import {WebSocketService} from "./services/web-socket.service";
 import {MultimediaService} from "./services/multimedia.service";
@@ -38,10 +38,34 @@ export class AppComponent implements OnInit {
     }, (error: any) => {
       this.logger.error('WebSocket connection error:', error);
     });
+
+    this.updateLastSeen();
   }
 
   ngOnDestroy(): void {
     this.webSocketService.disconnect();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event: Event) {
+    // Update last seen status before closing the application
+    this.updateLastSeen();
+  }
+
+  updateLastSeen() {
+    const timestamp = new Date().toISOString();
+    sessionStorage.setItem('lastSeen', timestamp);
+
+    // Update last seen status on the server
+    const userId = this.userId;
+    this.employeeService.setActivityStatus(userId, timestamp).subscribe(
+        (data: any) => {
+          console.log(data);
+        },
+        (error) => {
+          console.error(error);
+        }
+    );
   }
 
   loadAllUsers() {

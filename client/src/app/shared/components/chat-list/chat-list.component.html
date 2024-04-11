@@ -18,6 +18,7 @@
           <div class="chat-wrapper" (click)="navigateUrl(e.id); drawer.toggle()">
             <div class="chat-icon">
               <img [src]="convertToSafeUrl(e.photo)" alt="profile">
+              <div class="active-btn" *ngIf="e.activityStatus"></div>
             </div>
             <div class="chat-content">
               <h6>{{e.name}}</h6>

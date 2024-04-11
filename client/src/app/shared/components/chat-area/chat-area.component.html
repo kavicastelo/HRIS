@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex flex-column align-items-start">
           <h5>{{r.name}}</h5>
-          <small>Active</small>
+          <small *ngIf="r.activityStatus != null">{{r.activityStatus?'Active now':'Last Seen '+(r.lastSeen | timeAgo)}}</small>
         </div>
         <button class="btn-3"><mat-icon>more_horiz</mat-icon></button>
       </div>

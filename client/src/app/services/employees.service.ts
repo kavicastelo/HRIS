@@ -26,6 +26,12 @@ export class EmployeesService {
     );
   }
 
+  public setActivityStatus(id: any, timestamp:any): Observable<any> {
+    return this.http.put(this.baseUrl + 'employee/active/set-status/'+id,{
+      lastSeen:timestamp
+    });
+  }
+
   public getAllEmployees(): Observable<any> {
     return this.http.get(this.baseUrl + 'employee/get/all');
   }
