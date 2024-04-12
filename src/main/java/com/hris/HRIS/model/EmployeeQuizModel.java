@@ -1,11 +1,14 @@
 package com.hris.HRIS.model;
 
+import com.hris.HRIS.dto.QuizAnswer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +20,7 @@ public class EmployeeQuizModel {
     private String id;
     private String employeeEmail;
     private String quizId;
-    private Object answers; // [{questionId:"{questionId}", answer: {string}}]
+    private List<QuizAnswer> answers; // [{questionId:"{questionId}", answer: {string}}]
     private String attemptDateTime;
     private String submittedDateTime;
     private Integer score;

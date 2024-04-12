@@ -9,5 +9,5 @@ import com.hris.HRIS.model.CourseLearningMaterialModal;
 public interface CourseLearningMaterialRepository extends MongoRepository<CourseLearningMaterialModal, String> {
     
     List<CourseLearningMaterialModal> findAllByModuleId(String moduleId);
-    
+    List<CourseLearningMaterialModal> findAllByAssignmentId(String assignmentId);
 }

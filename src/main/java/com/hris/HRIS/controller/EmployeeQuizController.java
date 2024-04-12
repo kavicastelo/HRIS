@@ -1,14 +1,17 @@
 package com.hris.HRIS.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.dto.QuizAnswer;
 import com.hris.HRIS.model.EmployeeQuizModel;
 import com.hris.HRIS.model.QuizModel;
 import com.hris.HRIS.model.QuizQuestionModel;
 import com.hris.HRIS.repository.EmployeeQuizRepository;
 import com.hris.HRIS.repository.QuizRepository;
 
+import com.hris.HRIS.service.LmsModuleMarksEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +44,10 @@ public class EmployeeQuizController {
 
     @Autowired
     CourseModuleController courseModuleController;
+    @Autowired
+    private LmsModuleMarksEvaluationService lmsModuleMarksEvaluationService;
 
-    @GetMapping("/attempt")
+    @PostMapping("/attempt")
     public ArrayList<Object> attemptQuiz(@RequestBody String requestBody){
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -126,7 +131,7 @@ public class EmployeeQuizController {
             JsonNode requestBodyJson = objectMapper.readTree(requestBody);
             String quizId = requestBodyJson.get("quizId").asText();
             String employeeEmail = requestBodyJson.get("employeeEmail").asText();
-            
+
 
             for(EmployeeQuizModel attempt : employeeQuizRepository.findAllByEmployeeEmail(employeeEmail)){
                 if (attempt.getQuizId().equals(quizId)){
@@ -136,6 +141,7 @@ public class EmployeeQuizController {
 
         } catch (Exception e) {
             // No action to take.
+            System.out.println(e);
         }
 
         return attempsList;
@@ -151,7 +157,7 @@ public class EmployeeQuizController {
             JsonNode requestBodyJson = objectMapper.readTree(requestBody);
             String quizId = requestBodyJson.get("quizId").asText();
             String employeeEmail = requestBodyJson.get("employeeEmail").asText();
-            Object answers = requestBodyJson.get("answers");
+            List<QuizAnswer> answers = objectMapper.convertValue(requestBodyJson.get("answers"), new TypeReference<List<QuizAnswer>>() {});
 
             Boolean isQuizSubmitted = false;
 
@@ -161,10 +167,13 @@ public class EmployeeQuizController {
                 if(existingAttempt.getStatus().equals("Inprogress")){
                     existingAttempt.setAnswers(answers);
                     existingAttempt.setSubmittedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                    existingAttempt.setStatus("Submitted");
+//                    existingAttempt.setStatus("Submitted");
 
                     employeeQuizRepository.save(existingAttempt);
                     isQuizSubmitted = true;
+
+                    lmsModuleMarksEvaluationService.evaluateQuizAnswers(existingAttempt);
+
                     break;
                 }
             }
