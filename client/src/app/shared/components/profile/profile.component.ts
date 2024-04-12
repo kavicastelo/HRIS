@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   name: string | undefined;
 
   userId: any;
+  loggedUserId: any;
 
   private themeSubscription: Subscription;
   isDarkMode: boolean | undefined;
@@ -69,6 +70,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<any> {
+    this.loggedUserId = localStorage.getItem('sender')
     this.selectedCoverImage = this.randomCoverImage(); // choose random image and assigned it
 
     await this.loadAllUsers().subscribe(()=>{
@@ -137,6 +139,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   isActive(path: string) {
     return this.router.url === `/profile/${this.userId}/${path}/${this.userId}`;
+  }
+
+  navigateChat() {
+    this.router.navigate([`/feed/chat/${this.userId}`]);
+  }
+
+  logOut() {
+
   }
 }
 

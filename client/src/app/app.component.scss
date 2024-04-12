@@ -123,3 +123,36 @@
 .p-1{
   color: white;
 }
+
+.notifications{
+  .notification{
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: background-color .3s ease-in;
+
+    p, span{
+      margin: 0;
+    }
+
+    &:hover{
+      background-color: var(--color-surface-mixed-300);
+    }
+  }
+}
+
+.see-more{
+  hr{
+    color: var(--color-surface-mixed-600);
+  }
+  .see-more-btn{
+    margin: 0 20px;
+    border: none;
+    outline: none;
+    white-space: nowrap;
+    background: transparent;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-500);
+  }
+}

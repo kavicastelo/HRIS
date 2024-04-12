@@ -5,6 +5,7 @@ import {MultimediaService} from "./services/multimedia.service";
 import {EmployeesService} from "./services/employees.service";
 import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
+import {notificationsDataStore} from "./shared/data-stores/notifications-data-store";
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,12 @@ export class AppComponent implements OnInit {
   employeeDataStore:any;
   employee: any;
   userId:any;
+
+  showAllNotifications: boolean = false;
+  maxNotificationsDisplayed: number = 5;
+
+  notifyDataStore: any = notificationsDataStore
+  notifications:any[] = []
 
   constructor(public themeService: ThemeService,
               private webSocketService: WebSocketService,
@@ -40,6 +47,12 @@ export class AppComponent implements OnInit {
     });
 
     this.updateLastSeen();
+    this.loadAllNotifications();
+
+    setInterval(()=> {
+      this.loadAllNotifications();
+      console.log(this.notifications)
+    },1000*60*2)
   }
 
   ngOnDestroy(): void {
@@ -92,11 +105,27 @@ export class AppComponent implements OnInit {
     })
   }
 
+  loadAllNotifications(){
+    this.notifications = this.notifyDataStore.filter((notification:any) => notification.userId == this.userId)
+    this.notifications.sort((a:any, b:any) => {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    })
+  }
+
   navigateUrl(location:any) {
     this.router.navigate([`/profile/${this.userId}/${location}/${this.userId}`]);
   }
 
   toggleTheme() {
     this.themeService.toggleTheme();
+  }
+
+  toggleNotifications() {
+    this.showAllNotifications = !this.showAllNotifications;
+    if (this.showAllNotifications) {
+      this.maxNotificationsDisplayed = Infinity; // Show all notifications
+    } else {
+      this.maxNotificationsDisplayed = 5; // Show limited number of notifications
+    }
   }
 }
