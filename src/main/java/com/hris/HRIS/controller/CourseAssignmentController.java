@@ -1,24 +1,21 @@
 package com.hris.HRIS.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import com.hris.HRIS.model.CourseLearningMaterialModal;
+import com.hris.HRIS.service.LearningMaterialsManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.CourseAssignmentModel;
 import com.hris.HRIS.repository.CourseAssignmentRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/lms/course/assignment")
@@ -26,6 +23,12 @@ public class CourseAssignmentController {
     
     @Autowired
     CourseAssignmentRepository courseAssignmentRepository;
+
+    @Autowired
+    LearningMaterialsManagementService learningMaterialsManagementService;
+
+    @Autowired
+    CourseLearningMaterialController courseLearningMaterialController;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveAssignment(@RequestBody CourseAssignmentModel courseAssignmentModel) {
@@ -36,7 +39,17 @@ public class CourseAssignmentController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    // TODO: Upload files related to the assignments (assignment instructions, etc...).
+    @PostMapping("/savefile")
+    public ResponseEntity<ApiResponse> saveAssignmentFile(@RequestParam("assignmentId") String assignmentId,
+                                                          @RequestParam("file") MultipartFile file
+                                                            ) throws IOException {
+
+        learningMaterialsManagementService.saveLearningMaterial("", assignmentId, "Published", file);
+
+        ApiResponse apiResponse = new ApiResponse("File saved successfully.");
+        return ResponseEntity.ok(apiResponse);
+    }
+
     // TODO: Assignment marking rubric.
 
     @GetMapping("/get/id/{id}")
@@ -49,9 +62,8 @@ public class CourseAssignmentController {
     @GetMapping("/get/all/moduleId/{moduleId}")
     public List<CourseAssignmentModel> getAllAssignmentsByModuleId(@PathVariable String moduleId){
 
-        List<CourseAssignmentModel> quizesList = courseAssignmentRepository.findAllByModuleId(moduleId);
+        return courseAssignmentRepository.findAllByModuleId(moduleId);
 
-        return quizesList;
     }
 
     @PutMapping("/update/id/{id}")
@@ -85,6 +97,12 @@ public class CourseAssignmentController {
 
         if(courseAssignmentModelOptional.isPresent()){
             courseAssignmentRepository.deleteById(id);
+
+            List<CourseLearningMaterialModal> assignmentFilesList = courseLearningMaterialController.getAllLearningMaterialsByAssignmentId(id);
+
+            for (CourseLearningMaterialModal courseLearningMaterialModal : assignmentFilesList) {
+                courseLearningMaterialController.deleteLearningMaterialById(courseLearningMaterialModal.getId());
+            }
 
             ApiResponse apiResponse = new ApiResponse("Assignment deleted successfully");
             return ResponseEntity.ok(apiResponse);
