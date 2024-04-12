@@ -68,6 +68,7 @@ public class QuizQuestionController {
             existingQuizQuestion.setQuestion(quizQuestionModel.getQuestion());
             existingQuizQuestion.setOptions(quizQuestionModel.getOptions());
             existingQuizQuestion.setIsMultipleAnswersAllowed(quizQuestionModel.getIsMultipleAnswersAllowed());
+            existingQuizQuestion.setScoreAllowed(quizQuestionModel.getScoreAllowed());
             existingQuizQuestion.setPreLinkedQuizQuestionId(quizQuestionModel.getPreLinkedQuizQuestionId());
 
             quizQuestionRepository.save(existingQuizQuestion);

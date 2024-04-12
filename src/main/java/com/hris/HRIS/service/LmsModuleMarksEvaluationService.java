@@ -32,12 +32,33 @@ public class LmsModuleMarksEvaluationService {
         try {
             for (QuizAnswer quizAnswer : employeeQuizModel.getAnswers()) {
                 Optional<QuizQuestionModel> originalQuestionOptional = quizQuestionRepository.findById(quizAnswer.getQuestionId());
+
+                // Set default values.
                 quizAnswer.setIsCorrect(false);
+                quizAnswer.setScore(0.0);
+                int noOfCorrectAnsweredAllowed = 0;
+                double scorePerCorrectOption = 0; //For the questions that allowed multiple answers.
 
                 if (originalQuestionOptional.isPresent()) {
                     QuizQuestionModel originalQuestion = originalQuestionOptional.get();
 
                     ArrayList<Object> options = (ArrayList<Object>) originalQuestion.getOptions();
+
+                    if(originalQuestion.getIsMultipleAnswersAllowed()){
+                        for (Object option : options){
+                            Map<String, Object> optionMap = (Map<String, Object>) option;
+
+                            if((Boolean) optionMap.get("isCorrect")){
+                                noOfCorrectAnsweredAllowed++;
+                            }
+                        }
+
+                        scorePerCorrectOption = originalQuestion.getScoreAllowed()/noOfCorrectAnsweredAllowed;
+
+                    }else{
+                        noOfCorrectAnsweredAllowed = 1;
+                        scorePerCorrectOption = originalQuestion.getScoreAllowed();
+                    }
 
                     for(String answerGiven : quizAnswer.getAnswersGiven()){
                         for (Object option : options){
@@ -46,7 +67,9 @@ public class LmsModuleMarksEvaluationService {
                             if(answerGiven.equals(optionMap.get("optionText").toString())){
                                 if((Boolean) optionMap.get("isCorrect")){
                                     quizAnswer.setIsCorrect(true);
+                                    quizAnswer.setScore(quizAnswer.getScore() + scorePerCorrectOption);
                                 }
+                                break;
                             }
                         }
                     }

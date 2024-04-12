@@ -14,4 +14,5 @@ public class QuizAnswer {
     private String questionId;
     private List<String> answersGiven;
     private Boolean isCorrect;
+    private Double score;
 }

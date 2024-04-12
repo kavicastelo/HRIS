@@ -20,6 +20,7 @@ public class QuizQuestionModel {
     private Object options; // [{optionText:"{string}", isCorrect: {bool}}]
     private String questionType;
     private Boolean isMultipleAnswersAllowed;
+    private Integer scoreAllowed;
     private String preLinkedQuizQuestionId; // This is helps to arrange the already created questions of a quiz according to a order.
 }
 
@@ -36,7 +37,8 @@ Sample imput format:
         {"optionText" : "Implementing mandatory overtime schedules", "isCorrect" : false}
     ],
     "questionType" : "multiple choice",
-    "isMultipleAnswersAllowed" : false
+    "isMultipleAnswersAllowed" : false,
+    "scoreAllowed" : 2
 }
 
 */
