@@ -120,7 +120,7 @@ export class AppComponent implements OnInit {
     this.themeService.toggleTheme();
   }
 
-  toggleComments() {
+  toggleNotifications() {
     this.showAllNotifications = !this.showAllNotifications;
     if (this.showAllNotifications) {
       this.maxNotificationsDisplayed = Infinity; // Show all notifications
