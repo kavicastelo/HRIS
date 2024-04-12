@@ -7,6 +7,7 @@ import com.hris.HRIS.model.EmployeeQuizModel;
 @Service
 public class LmsModuleMarksEvaluationService {
     public EmployeeQuizModel evaluateQuizAnswers(EmployeeQuizModel employeeQuizModel){
+
         return employeeQuizModel;
     }
 
