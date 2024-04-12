@@ -11,6 +11,7 @@ import com.hris.HRIS.model.QuizQuestionModel;
 import com.hris.HRIS.repository.EmployeeQuizRepository;
 import com.hris.HRIS.repository.QuizRepository;
 
+import com.hris.HRIS.service.LmsModuleMarksEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,8 @@ public class EmployeeQuizController {
 
     @Autowired
     CourseModuleController courseModuleController;
+    @Autowired
+    private LmsModuleMarksEvaluationService lmsModuleMarksEvaluationService;
 
     @PostMapping("/attempt")
     public ArrayList<Object> attemptQuiz(@RequestBody String requestBody){
@@ -168,6 +171,9 @@ public class EmployeeQuizController {
 
                     employeeQuizRepository.save(existingAttempt);
                     isQuizSubmitted = true;
+
+                    lmsModuleMarksEvaluationService.evaluateQuizAnswers(existingAttempt);
+
                     break;
                 }
             }
