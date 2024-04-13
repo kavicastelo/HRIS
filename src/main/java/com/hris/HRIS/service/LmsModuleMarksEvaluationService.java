@@ -35,7 +35,7 @@ public class LmsModuleMarksEvaluationService {
     public void evaluateQuizAnswers(EmployeeQuizModel employeeQuizModel){
 
         try {
-            for (QuizAnswer quizAnswer : employeeQuizModel.getAnswers()) {
+            for (QuizAnswer quizAnswer : employeeQuizModel.getAnswers()) { // Loop through each answered questions
                 Optional<QuizQuestionModel> originalQuestionOptional = quizQuestionRepository.findById(quizAnswer.getQuestionId());
 
                 // Set default values.
@@ -50,7 +50,8 @@ public class LmsModuleMarksEvaluationService {
                     ArrayList<Object> options = (ArrayList<Object>) originalQuestion.getOptions();
 
                     if(originalQuestion.getIsMultipleAnswersAllowed()){
-                        for (Object option : options){
+
+                        for (Object option : options){ // Loop though the options in the original question to identify the number of correct answers allowed for the specific question if it is allows multiple answers.
                             Map<String, Object> optionMap = (Map<String, Object>) option;
 
                             if((Boolean) optionMap.get("isCorrect")){
@@ -58,6 +59,7 @@ public class LmsModuleMarksEvaluationService {
                             }
                         }
 
+                        // Equally, divide the marks between each correct option
                         scorePerCorrectOption = originalQuestion.getScoreAllowed()/noOfCorrectAnsweredAllowed;
 
                     }else{
@@ -65,6 +67,7 @@ public class LmsModuleMarksEvaluationService {
                         scorePerCorrectOption = originalQuestion.getScoreAllowed();
                     }
 
+                    // Loop through the answers provided for the specific question and evaluate them with the options in the original question.
                     for(String answerGiven : quizAnswer.getAnswersGiven()){
                         for (Object option : options){
                             Map<String, Object> optionMap = (Map<String, Object>) option;
@@ -115,6 +118,7 @@ public class LmsModuleMarksEvaluationService {
                         )
                 );
 
+                employeeQuizModel.setStatus("Evaluated");
                 employeeQuizRepository.save(employeeQuizModel);
             }
 
