@@ -12,16 +12,15 @@ import com.hris.HRIS.repository.EmployeeQuizRepository;
 import com.hris.HRIS.repository.QuizRepository;
 
 import com.hris.HRIS.service.LmsModuleMarksEvaluationService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -68,6 +67,15 @@ public class EmployeeQuizController {
 
                 if(courseController.checkIsCourseUsersExists(courseId, employeeEmail)){
                     questionsList = quizQuestionController.getAllQuizQuestionsByQuizId(quizId);
+
+                    // Remove the key "isCorrect" from the response to make sure that the correct answers are not sent to the frontend during a attempt.
+                    for (QuizQuestionModel questionObj : questionsList){
+                        ArrayList<HashMap<String, Object>> options = (ArrayList<HashMap<String, Object>>) questionObj.getOptions();
+
+                        for (HashMap<String, Object> option : options) {
+                            option.remove("isCorrect");
+                        }
+                    }
 
                     if(quizModalOptional.get().getIsRandomized()){
                         Collections.shuffle(questionsList);
@@ -167,7 +175,7 @@ public class EmployeeQuizController {
                 if(existingAttempt.getStatus().equals("Inprogress")){
                     existingAttempt.setAnswers(answers);
                     existingAttempt.setSubmittedDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-//                    existingAttempt.setStatus("Submitted");
+                    existingAttempt.setStatus("Submitted");
 
                     employeeQuizRepository.save(existingAttempt);
                     isQuizSubmitted = true;
