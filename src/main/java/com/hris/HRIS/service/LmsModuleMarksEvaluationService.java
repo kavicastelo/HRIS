@@ -5,9 +5,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.QuizAnswer;
+import com.hris.HRIS.model.QuizModel;
 import com.hris.HRIS.model.QuizQuestionModel;
 import com.hris.HRIS.repository.EmployeeQuizRepository;
 import com.hris.HRIS.repository.QuizQuestionRepository;
+import com.hris.HRIS.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,9 @@ public class LmsModuleMarksEvaluationService {
 
     @Autowired
     EmployeeQuizRepository employeeQuizRepository;
+
+    @Autowired
+    QuizRepository quizRepository;
 
     public void evaluateQuizAnswers(EmployeeQuizModel employeeQuizModel){
 
@@ -74,6 +79,8 @@ public class LmsModuleMarksEvaluationService {
                         }
                     }
                 }
+
+                quizAnswer.setScore(Double.valueOf(String.format("%.2f", quizAnswer.getScore())));
             }
 
         }catch (Exception e){
@@ -84,7 +91,36 @@ public class LmsModuleMarksEvaluationService {
         calculateQuizMarks(employeeQuizModel);
     }
 
-    public Double calculateQuizMarks(EmployeeQuizModel employeeQuizModel){
-        return 0.0;
+    public void calculateQuizMarks(EmployeeQuizModel employeeQuizModel){
+
+        try {
+
+            employeeQuizModel.setScore(0.0);
+            int totalScoreAllowedForAllQuestions = 0;
+
+            for (QuizAnswer quizAnswer : employeeQuizModel.getAnswers()){
+                employeeQuizModel.setScore(employeeQuizModel.getScore() + quizAnswer.getScore());
+            }
+
+            for(QuizQuestionModel quizQuestionModel: quizQuestionRepository.findAllByQuizId(employeeQuizModel.getQuizId())){
+                totalScoreAllowedForAllQuestions += quizQuestionModel.getScoreAllowed();
+            }
+
+            Optional<QuizModel> quizModelOptional = quizRepository.findById(employeeQuizModel.getQuizId());
+
+            if(quizModelOptional.isPresent()) {
+                employeeQuizModel.setScore(
+                        Double.valueOf(
+                                String.format("%.2f", (employeeQuizModel.getScore() / totalScoreAllowedForAllQuestions) * quizModelOptional.get().getMaximumGradeAllowed())
+                        )
+                );
+
+                employeeQuizRepository.save(employeeQuizModel);
+            }
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
     }
 }
