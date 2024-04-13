@@ -20,7 +20,7 @@ public class QuizQuestionModel {
     private Object options; // [{optionText:"{string}", isCorrect: {bool}}]
     private String questionType;
     private Boolean isMultipleAnswersAllowed;
-    private Integer scoreAllowed;
+    private Double scoreAllowed;
     private String preLinkedQuizQuestionId; // This is helps to arrange the already created questions of a quiz according to a order.
 }
 

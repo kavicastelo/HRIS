@@ -23,7 +23,7 @@ public class EmployeeQuizModel {
     private List<QuizAnswer> answers; // [{questionId:"{questionId}", answer: {string}}]
     private String attemptDateTime;
     private String submittedDateTime;
-    private Integer score;
+    private Double score;
     private String status; // Inprogress, Submitted, Evaluated
 }
 
