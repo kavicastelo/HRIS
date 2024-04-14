@@ -5,7 +5,8 @@ import {MultimediaService} from "./services/multimedia.service";
 import {EmployeesService} from "./services/employees.service";
 import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
-import {notificationsDataStore} from "./shared/data-stores/notifications-data-store";
+import {NotificationsService} from "./services/notifications.service";
+import {Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -21,18 +22,19 @@ export class AppComponent implements OnInit {
   showAllNotifications: boolean = false;
   maxNotificationsDisplayed: number = 5;
 
-  notifyDataStore: any = notificationsDataStore
+  notifyDataStore: any[] = [];
   notifications:any[] = []
 
   constructor(public themeService: ThemeService,
               private webSocketService: WebSocketService,
               public multimediaService: MultimediaService,
+              public notificationsService: NotificationsService,
               public router: Router,
               private employeeService: EmployeesService, private logger: NGXLogger) {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.loadAllUsers();
     localStorage.setItem('sender','66105b9c22d9fd0f2042909e')
     this.userId = localStorage.getItem('sender')
@@ -47,11 +49,12 @@ export class AppComponent implements OnInit {
     });
 
     this.updateLastSeen();
-    this.loadAllNotifications();
+    await this.loadAllNotifications().subscribe(()=>{
+      this.loadFilteredNotifications();
+    })
 
     setInterval(()=> {
-      this.loadAllNotifications();
-      console.log(this.notifications)
+      this.loadFilteredNotifications();
     },1000*60*2)
   }
 
@@ -105,7 +108,13 @@ export class AppComponent implements OnInit {
     })
   }
 
-  loadAllNotifications(){
+  loadAllNotifications(): Observable<any>{
+    return this.notificationsService.getAllNotifications().pipe(
+        tap(data => this.notifyDataStore = data)
+    )
+  }
+
+  loadFilteredNotifications(){
     this.notifications = this.notifyDataStore.filter((notification:any) => notification.userId == this.userId)
     this.notifications.sort((a:any, b:any) => {
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
@@ -127,5 +136,25 @@ export class AppComponent implements OnInit {
     } else {
       this.maxNotificationsDisplayed = 5; // Show limited number of notifications
     }
+  }
+
+  readNotification(id:any) {
+    this.notificationsService.updateStatus(id).subscribe(data=>{
+      this.loadAllNotifications().subscribe(()=>{
+        this.loadFilteredNotifications();
+      });
+    }, error => {
+      this.logger.error(error)
+    })
+  }
+
+  deleteNotification(id:any) {
+    this.notificationsService.deleteNotification(id).subscribe(()=>{
+      this.loadAllNotifications().subscribe(()=>{
+        this.loadFilteredNotifications();
+      });
+    }, error => {
+      this.logger.error(error)
+    })
   }
 }

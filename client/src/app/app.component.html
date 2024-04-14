@@ -27,7 +27,7 @@
                 <button class="btn-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                     <mat-icon class="position-relative" style="overflow: visible">
                         notifications
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border-light rounded-circle">
+                        <span *ngIf="notifications.length !=0" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span></span>
                     </mat-icon>
                 </button>
@@ -71,11 +71,14 @@
             </div>
             <div class="offcanvas-body">
                 <div class="notifications" *ngFor="let n of notifications | truncateComments: maxNotificationsDisplayed">
-                    <div class="w-100 notification" [routerLink]=n.router.toString()  data-bs-dismiss="offcanvas" aria-label="Close">
+                    <div class="w-100 notification" [routerLink]=n.router.toString() (click)="readNotification(n.id)" data-bs-dismiss="offcanvas" aria-label="Close">
                         <p [ngStyle]="{'font-weight': n.status?'700':'normal'}">{{n.notification}}</p>
                         <span><small>{{n.timestamp | timeAgo}}</small></span>
                     </div>
-                    <hr style="color: var(--color-primary-300)">
+                    <div class="d-flex align-items-center">
+                        <button class="btn-2 me-1" [matTooltip]="n.status?'Mark as read':'Mark as unread'" (click)="readNotification(n.id)"><mat-icon>{{n.status?'visibility_off':'visibility'}}</mat-icon></button>
+                        <button class="btn-2" matTooltip="Delete" (click)="deleteNotification(n.id)"><mat-icon>delete_forever</mat-icon></button>
+                    </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-between see-more"
                      *ngIf="notifications.length>5">

@@ -6,6 +6,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {SharesService} from "../../../services/shares.service";
 import {ActivitiesService} from "../../../services/activities.service";
+import {NotificationsService} from "../../../services/notifications.service";
 
 @Component({
   selector: 'app-post-share-dialog',
@@ -29,6 +30,7 @@ export class PostShareDialogComponent implements OnInit{
               private multimediaService: MultimediaService,
               private activitiesService: ActivitiesService,
               private shareService: SharesService,
+              private notificationsService: NotificationsService,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
@@ -55,6 +57,16 @@ export class PostShareDialogComponent implements OnInit{
         action:'Shared',
       }
       this.addActivities(postData);
+
+      const notificationData = {
+        userId: this.receivedData.data.userId,
+        notification: this.receivedData.data.user + ' shared your post',
+        timestamp: new Date(),
+        router: '/feed/post/'+this.receivedData.data.multimediaId,
+        status: true
+      }
+
+      this.pushNotification(notificationData);
     }, error => {
       console.log(error)
     })
@@ -198,6 +210,16 @@ export class PostShareDialogComponent implements OnInit{
     }, error => {
       // TODO: do something
     })
+  }
+
+  pushNotification(data:any){
+    if (data){
+      this.notificationsService.saveNotification(data).subscribe(data=>{
+        console.log(data)
+      }, error => {
+        console.log(error)
+      })
+    }
   }
 
   closePopup(){

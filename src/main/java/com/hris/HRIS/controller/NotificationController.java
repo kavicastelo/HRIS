@@ -39,8 +39,6 @@ public class NotificationController {
             existModel.setStatus(!existModel.getStatus());
 
             notificationRepository.save(existModel);
-        } else {
-            notificationRepository.save(notificationModel);
         }
 
         ApiResponse response = new ApiResponse("status changed");
