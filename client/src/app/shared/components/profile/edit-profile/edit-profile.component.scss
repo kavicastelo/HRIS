@@ -37,3 +37,10 @@
     }
   }
 }
+
+.btn-1{
+  &:disabled{
+    color: var(--color-text-300);
+    background-color: var(--color-surface-mixed-600);
+  }
+}

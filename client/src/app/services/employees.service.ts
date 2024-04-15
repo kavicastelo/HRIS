@@ -62,22 +62,65 @@ export class EmployeesService {
     });
   }
 
-  public updateEmployeeById(id: string, employeeModel: EmployeeModel): Observable<any> {
-    return this.http.put(this.baseUrl + 'employee/update/id/' + id, {
-      name: employeeModel.name,
-      email: employeeModel.email,
-      phone: employeeModel.phone,
-      address: employeeModel.address,
-      organizationId: employeeModel.organizationId,
-      departmentId: employeeModel.departmentId,
-      channels: employeeModel.channels,
-      jobData: employeeModel.jobData,
-      gender: employeeModel.gender,
-      dob: employeeModel.dob,
-      photo: employeeModel.photo,
-      status: employeeModel.status,
-      level: employeeModel.level
-    });
+  public updateEmployeeById(id: string, form:FormData): void {
+    const fileInput = form.get('photo') as File;
+
+    if (fileInput) {
+
+      const requestBody:any = {
+        id: form.get('id') as string,
+        name: form.get('name') as string,
+        email: form.get('email') as string,
+        phone: form.get('phone') as string,
+        address: form.get('address') as string,
+        organizationId: form.get('organizationId') as string,
+        departmentId: form.get('departmentId') as string,
+        jobData: form.get('jobData'),
+        gender: form.get('gender') as string,
+        dob: form.get('dob') as string,
+        nic: form.get('nic') as string,
+        photo: fileInput,
+        status: form.get('status') as string,
+        level: form.get('level') as string,
+      };
+
+      this.logger.info(requestBody.jobData);
+
+      // Set Content-Type header to multipart/form-data
+      const headers = new HttpHeaders();
+      headers.set('Content-Type', 'multipart/form-data');
+
+      // Call backend API to save employee data
+      this.sendToBackendUpdate(form, headers);
+    }
+
+    // return this.http.put(this.baseUrl + 'employee/update/id/' + id, {
+    //   name: employeeModel.name,
+    //   email: employeeModel.email,
+    //   phone: employeeModel.phone,
+    //   address: employeeModel.address,
+    //   organizationId: employeeModel.organizationId,
+    //   departmentId: employeeModel.departmentId,
+    //   channels: employeeModel.channels,
+    //   jobData: employeeModel.jobData,
+    //   gender: employeeModel.gender,
+    //   dob: employeeModel.dob,
+    //   photo: employeeModel.photo,
+    //   status: employeeModel.status,
+    //   level: employeeModel.level
+    // });
+  }
+
+  private sendToBackendUpdate(formData: FormData, headers: HttpHeaders): void {
+
+    this.http.put(this.baseUrl + 'employee/update/id/'+formData.get('id'), formData, {headers}).subscribe(
+        response => {
+          console.log('Employee data updated successfully:', response);
+        },
+        error => {
+          console.error('Error updated employee data:', error);
+        }
+    );
   }
 
   public updateEmployeeByEmail(email: string, employeeModel: EmployeeModel): Observable<any> {
@@ -105,37 +148,6 @@ export class EmployeesService {
   public deleteEmployeeByEmail(email: string): Observable<any> {
     return this.http.delete(this.baseUrl + 'employee/delete/email/' + email);
   }
-
-  // uploadEmployeeData(form: FormData): void {
-  //   const fileInput = form.get('photo') as File;
-  //   const jobData = form.get('jobData') as Object;
-  //
-  //   if (fileInput) {
-  //     const formData = new FormData();
-  //
-  //     formData.append('name', form.get('name') as string);
-  //     formData.append('email', form.get('email') as string);
-  //     formData.append('phone', form.get('phone') as string);
-  //     formData.append('address', form.get('address') as string);
-  //     formData.append('organizationId', form.get('organizationId') as string);
-  //     formData.append('departmentId', form.get('departmentId') as string);
-  //     if (jobData instanceof Object) {
-  //       formData.append('jobData', JSON.stringify(jobData));
-  //     } else {
-  //       formData.append('jobData', jobData);
-  //     }
-  //     console.log('jobData after stringify:', form.get('jobData'));
-  //     formData.append('gender', form.get('gender') as string);
-  //     formData.append('dob', form.get('dob') as string);
-  //     formData.append('nic', form.get('nic') as string);
-  //     formData.append('photo', fileInput);
-  //     formData.append('status', form.get('status') as string);
-  //     formData.append('level', form.get('level') as string);
-  //
-  //     // Call backend API to save employee data
-  //     this.sendToBackend(formData);
-  //   }
-  // }
 
   uploadEmployeeData(form: FormData): void {
     const fileInput = form.get('photo') as File;

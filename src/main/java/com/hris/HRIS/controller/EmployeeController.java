@@ -2,6 +2,7 @@ package com.hris.HRIS.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.model.ChannelModel;
 import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.service.SystemAutomateService;
@@ -110,8 +111,42 @@ public class EmployeeController {
     }
 
     @PutMapping("/update/id/{id}")
-    public ResponseEntity<ApiResponse> updateEmployee(@PathVariable String id, @RequestBody EmployeeModel employeeModel){
-        systemAutomateService.updateEmployeeAndUpdateOrganization(id, employeeModel);
+    public ResponseEntity<ApiResponse> updateEmployee(@PathVariable String id,
+                                                      @RequestPart("photo") MultipartFile photo,
+                                                      @RequestParam("name") String name,
+                                                      @RequestParam("email") String email,
+                                                      @RequestParam("phone") String phone,
+                                                      @RequestParam("address") String address,
+                                                      @RequestParam("organizationId") String organizationId,
+                                                      @RequestParam("departmentId") String departmentId,
+                                                      @RequestParam("gender") String gender,
+                                                      @RequestParam("dob") String dob,
+                                                      @RequestParam("nic") String nic,
+                                                      @RequestParam("status") String status,
+                                                      @RequestParam("level") String level) throws IOException {
+
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel existModel = optionalEmployeeModel.get();
+
+            EmployeeModel employeeModel = new EmployeeModel();
+            employeeModel.setName(name);
+            employeeModel.setEmail(email);
+            employeeModel.setPhone(phone);
+            employeeModel.setAddress(address);
+            employeeModel.setOrganizationId(organizationId);
+            employeeModel.setDepartmentId(departmentId);
+            employeeModel.setChannels(existModel.getChannels());
+            employeeModel.setJobData(existModel.getJobData());
+            employeeModel.setGender(gender);
+            employeeModel.setPhoto(photo.getBytes());
+            employeeModel.setDob(dob);
+            employeeModel.setNic(nic);
+            employeeModel.setStatus(status);
+            employeeModel.setLevel(Integer.parseInt(level));
+            systemAutomateService.updateEmployeeAndUpdateOrganization(id, employeeModel);
+        }
 
         ApiResponse apiResponse = new ApiResponse("Employee updated successfully");
         return ResponseEntity.ok(apiResponse);

@@ -18,6 +18,7 @@ export class EditProfileComponent {
   employeeDataStore:any;
   employee: any
   userId: any;
+  chosenPhoto: File | any;
 
   editProfileForm = new FormGroup({
     avatar: new FormControl(null),
@@ -96,5 +97,89 @@ export class EditProfileComponent {
 
   convertToSafeUrl(url:any):SafeResourceUrl{
     return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
+  }
+
+  updateEmployee() {
+    const formData: any = new FormData();
+    formData.append('id', this.employee[0].id)
+    formData.append('name', this.editProfileForm.value.firstname+" "+this.editProfileForm.value.lastname)
+    formData.append('email', this.editProfileForm.value.email)
+    formData.append('phone', this.editProfileForm.value.phone)
+    formData.append('address', this.editProfileForm.value.address)
+    formData.append('organizationId', this.employee[0].organizationId)
+    formData.append('departmentId', this.employee[0].departmentId)
+    formData.append('channels', this.employee[0].channels)
+    formData.append('jobData', this.employee[0].jobData)
+    formData.append('gender', this.employee[0].gender)
+    formData.append('dob', this.employee[0].dob)
+    formData.append('nic', this.employee[0].nic)
+    formData.append('photo', this.chosenPhoto)
+    formData.append('status', this.employee[0].status)
+    formData.append('level', this.employee[0].level)
+    this.employeeService.updateEmployeeById(this.employee[0].id,formData)
+
+    location.reload();
+  }
+
+  choosePhoto(): void {
+    this.chosenPhoto = null // clear the photo input field before assign a value
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/jpeg';
+    input.onchange = (event: any) => {
+      this.handleFileInput(event);
+    };
+    input.click();
+  }
+
+  handleFileInput(event: any): void {
+    const maxSize = 5 * 1024 * 1024;
+    // Extract the chosen image file
+    const files = event.target.files;
+    if (files.length > 0) {
+      if (files[0].size <= maxSize){
+        this.chosenPhoto = files[0];
+        this.onFileSelected()
+      }
+      else{
+        alert("Your Image is too large. Select under 5MB")
+      }
+    }
+  }
+
+  onFileSelected() {
+    const reader = new FileReader();
+
+    const imgtag: any = document.getElementById("empProfile");
+    imgtag.title = this.chosenPhoto?.name;
+
+    reader.onload = function(event) {
+      imgtag.src = event.target?.result;
+    };
+
+    reader.readAsDataURL(this.chosenPhoto);
+  }
+
+  removePhoto() {
+    // Create a path to the default image file in the assets folder
+    const defaultImagePath = 'assets/imgs/shared/default_profile.jpg';
+
+    // Load the default image file
+    fetch(defaultImagePath)
+        .then(response => response.blob())
+        .then(blob => {
+          // Create a File object from the blob
+          const defaultImageFile = new File([blob], 'default_profile.jpg', { type: 'image/jpeg' });
+
+          // Assign the default image file to the chosenPhoto variable
+          this.chosenPhoto = defaultImageFile;
+
+          // Display the default image in the UI
+          const imgtag: any = document.getElementById("empProfile");
+          imgtag.src = URL.createObjectURL(defaultImageFile);
+        })
+        .catch(error => {
+          console.error('Failed to load default image:', error);
+        });
   }
 }
