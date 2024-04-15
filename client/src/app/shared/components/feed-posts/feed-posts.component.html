@@ -73,7 +73,7 @@
         <div class="my-3 d-flex align-items-center justify-content-between" *ngIf="commentSection">
             <div class="d-flex align-items-center">
                 <div class="post-reaction d-flex align-items-center">
-                    <span class="clickable-span" (click)="likePost(post.id, post.user, post.sharedUserCaption?post.sharedUserCaption:post.message)" [ngStyle]="{'color':post.isLiked?'var(--color-primary-300)':''}">{{post.isLiked?'Liked':'Like'}}</span>
+                    <span class="clickable-span" (click)="likePost(post.id, post.user, post.sharedUserCaption?post.sharedUserCaption:post.message, post.userId)" [ngStyle]="{'color':post.isLiked?'var(--color-primary-300)':''}">{{post.isLiked?'Liked':'Like'}}</span>
                     <span class="clickable-span" (click)="openLikes(post.likers)">&nbsp;<span
                             *ngIf="post.likes != null && post.likes != 0">({{post.likes}})</span></span>
                 </div>
@@ -110,7 +110,7 @@
                 </a>
                 <div class="collapse" id="collapseExample">
                     <div class="d-flex justify-content-end my-2">
-                        <button class="btn-1" [disabled]="commentForm.invalid" (click)="addComment(post.id, post.user, post.sharedUserCaption?post.sharedUserCaption:post.message)">Comment
+                        <button class="btn-1" [disabled]="commentForm.invalid" (click)="addComment(post.id, post.user, post.sharedUserCaption?post.sharedUserCaption:post.message, post.userId)">Comment
                         </button>
                     </div>
                 </div>

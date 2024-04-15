@@ -16,6 +16,7 @@ import {ActivitiesService} from "../../../services/activities.service";
 import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {SharesService} from "../../../services/shares.service";
 import {EditTextDialogComponent} from "../../dialogs/edit-text-dialog/edit-text-dialog.component";
+import {NotificationsService} from "../../../services/notifications.service";
 
 @Component({
   selector: 'app-feed-posts',
@@ -100,6 +101,7 @@ export class FeedPostsComponent implements OnInit{
               private commentsService: CommentsService,
               private shareService: SharesService,
               private activitiesService: ActivitiesService,
+              private notificationsService: NotificationsService,
               private logger: NGXLogger) {
   }
 
@@ -332,7 +334,7 @@ export class FeedPostsComponent implements OnInit{
     });
   }
 
-  async likePost(postId: any, posterName: any, caption: any) {
+  async likePost(postId: any, posterName: any, caption: any, userId: any) {
     // Toggle the like status locally
     const likedPostIndex = this.feedPost.findIndex(post => post.id === postId);
     if (likedPostIndex !== -1 || likedPostIndex !== null) {
@@ -365,7 +367,17 @@ export class FeedPostsComponent implements OnInit{
       }, error => {
         // TODO: do something
       })
-      // TODO: add event handlers
+
+
+      const notificationData = {
+        userId: userId,
+        notification: this.employee.name + ' comments your post',
+        timestamp: new Date(),
+        router: '/feed/post/'+postId,
+        status: false
+      }
+
+      this.pushNotification(notificationData);
     }, error => {
       this.logger.error(error);
       // TODO: add error handlers
@@ -477,7 +489,7 @@ export class FeedPostsComponent implements OnInit{
     this.router.navigate([`/profile/${id}/about/${id}`]);
   }
 
-  addComment(postId: any, posterName: any, caption: any) {
+  addComment(postId: any, posterName: any, caption: any, userId: any) {
     if(this.commentForm.valid){
       this.commentsService.saveComment({
         userId: this.userId,
@@ -495,6 +507,16 @@ export class FeedPostsComponent implements OnInit{
           action:'Commented',
         }
         this.addActivities(postData);
+
+        const notificationData = {
+          userId: userId,
+          notification: this.employee.name + ' commented your post',
+          timestamp: new Date(),
+          router: '/feed/post/'+postId,
+          status: true
+        }
+
+        this.pushNotification(notificationData);
       }, err =>{
         console.log(err)
       })
@@ -633,5 +655,15 @@ export class FeedPostsComponent implements OnInit{
     }
 
     this.toggleDialog('Edit Caption', 'Please enter your new caption to update', data, EditTextDialogComponent)
+  }
+
+  pushNotification(data:any){
+    if (data){
+      this.notificationsService.saveNotification(data).subscribe(data=>{
+        this.logger.info(data);
+      }, error => {
+        this.logger.error(error)
+      })
+    }
   }
 }
