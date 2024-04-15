@@ -13,13 +13,13 @@
             <div class="col-8 col-sm-9">
               <div class="d-flex align-items-center">
                 <div class="profile-img me-2">
-                  <img [src]="convertToSafeUrl(e.photo)" alt="profile image">
+                  <img id="empProfile" [src]="chosenPhoto==null?convertToSafeUrl(e.photo):onFileSelected()" alt="profile image">
                 </div>
                 <div class="profile-img-setting">
-                  <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .png</span>
+                  <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .pjp</span>
                   <div class="d-flex">
-                    <button class="btn-1 me-2 px-2"><mat-icon class="d-flex d-md-none">add</mat-icon><span class="d-none d-md-flex w-col">Upload Image</span></button>
-                    <button class="btn-3 px-2"><mat-icon class="d-flex d-md-none">delete_sweep</mat-icon><span class="d-none d-md-flex">Remove</span></button>
+                    <button class="btn-1 me-2 px-2"><mat-icon class="d-flex d-md-none">add</mat-icon><span class="d-none d-md-flex w-col" (click)="choosePhoto()">Upload Image</span></button>
+                    <button class="btn-3 px-2"><mat-icon class="d-flex d-md-none">delete_sweep</mat-icon><span class="d-none d-md-flex" (click)="removePhoto()">Remove</span></button>
                   </div>
                 </div>
               </div>
@@ -134,7 +134,7 @@
     <li class="list-group-item">
       <div class="d-flex align-items-center justify-content-end">
         <button class="btn-3 px-3 py-2" (click)="navigateBetweenTabs('about')">Discard</button>
-        <button class="btn-1 px-3 py-2">Save Changes</button>
+        <button class="btn-1 px-3 py-2" [disabled]="editProfileForm.invalid" (click)="updateEmployee()">Save Changes</button>
       </div>
     </li>
   </ul>
