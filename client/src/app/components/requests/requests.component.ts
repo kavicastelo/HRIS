@@ -80,7 +80,7 @@ export class RequestsComponent {
   }
 
   navigateBetweenTabs(path: string) {
-    this.router.navigate([`/requests/${this.userId}/${path}/${this.userId}`]);
+    this.router.navigate([`/requests/${this.loggedUserId}/${path}/${this.loggedUserId}`]);
   }
 
   updateActiveClass() {
@@ -96,6 +96,6 @@ export class RequestsComponent {
     }
   }
   isActive(path: string) {
-    return this.router.url === `/requests/${this.userId}/${path}/${this.userId}`;
+    return this.router.url === `/requests/${this.loggedUserId}/${path}/${this.loggedUserId}`;
   }
 }
