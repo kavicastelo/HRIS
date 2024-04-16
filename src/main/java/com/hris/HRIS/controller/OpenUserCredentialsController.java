@@ -25,7 +25,7 @@ public class OpenUserCredentialsController {
 
         openUserCredentialsRepository.save(openUserCredentialsModel);
 
-            ApiResponse apiResponse = new ApiResponse("Credentials saved successfully");
+        ApiResponse apiResponse = new ApiResponse("Credentials saved successfully");
         return ResponseEntity.ok(apiResponse);
     }
 
