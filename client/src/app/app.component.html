@@ -1,6 +1,6 @@
 <div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}">
 
-    <div class="w-100 main-body">
+    <div class="w-100 main-body"  *ngFor="let e of employee">
         <button class="theme-btn" (click)="toggleTheme()" title="Theme">
             <img [src]="themeService.isDarkMode()?'./assets/imgs/icons/light.png':'./assets/imgs/icons/dark.png'"
                  alt="theme" height="40" width="40">
@@ -47,12 +47,24 @@
         <div class="w-100">
             <mat-drawer-container class="drawer-container main-body">
                 <mat-drawer #drawer mode="over" class="drawer">
-                    <span>MENU</span>
+                    <div class="profile-div">
+                        <div class="d-flex align-items-center">
+                            <div class="profile-pic">
+                                <img [src]="e.photo" alt="{{e.name}}">
+                            </div>
+                            <div>
+                                <h6>{{e.name}}</h6>
+                                <small>{{e.jobData.position}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="color: var(--color-primary-400)">
+                    <span>YOU</span>
                     <ul>
                         <li routerLink="/home">Home</li>
                         <li routerLink="/login">Login</li>
                         <li routerLink="/feed">Feed</li>
-                        <li routerLink="/feed">Feed</li>
+                        <li routerLink="/requests/{{employee[0].id}}">Requests</li>
                         <li routerLink="/feed">Feed</li>
                         <li routerLink="/feed">Feed</li>
                         <li routerLink="/feed">Feed</li>
