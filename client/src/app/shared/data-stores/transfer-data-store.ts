@@ -3,6 +3,8 @@ import {TransferModel} from "../data-models/Transfer.model";
 export var transferDataStore: TransferModel[] = [
     {
         id: "1",
+        userId: "66105b9c22d9fd0f2042909e",
+        timestamp: "2024-04-11T18:15:54.821Z",
         name: "name 1",
         email: "email 1",
         phone: "phone 1",
@@ -16,11 +18,13 @@ export var transferDataStore: TransferModel[] = [
         date: "date 1",
         doj: "date 1",
         photo: "photo 1",
-        reason: "reason 1",
+        reason: "reason 1 reason 1 reason 1 reason 1 reason 1 reason 1",
         approved: "pending"
     },
     {
         id: "2",
+        userId: "66105b9c22d9fd0f2042909e",
+        timestamp: "2024-04-11T18:15:54.821Z",
         name: "name 2",
         email: "email 2",
         phone: "phone 2",
@@ -39,6 +43,8 @@ export var transferDataStore: TransferModel[] = [
     },
     {
         id: "3",
+        userId: "66105b9c22d9fd0f2042909e",
+        timestamp: "2024-04-11T18:15:54.821Z",
         name: "name 3",
         email: "email 3",
         phone: "phone 3",
@@ -53,10 +59,12 @@ export var transferDataStore: TransferModel[] = [
         doj: "date 3",
         photo: "photo 3",
         reason: "reason 3",
-        approved: "pending"
+        approved: "approved"
     },
     {
         id: "4",
+        userId: "66105b9c22d9fd0f2042909e",
+        timestamp: "2024-04-11T18:15:54.821Z",
         name: "name 4",
         email: "email 4",
         phone: "phone 4",
@@ -71,10 +79,12 @@ export var transferDataStore: TransferModel[] = [
         doj: "date 4",
         photo: "photo 4",
         reason: "reason 4",
-        approved: "pending"
+        approved: "declined"
     },
     {
         id: "5",
+        userId: "66105b9c22d9fd0f2042909e",
+        timestamp: "2024-04-11T18:15:54.821Z",
         name: "name 5",
         email: "email 5",
         phone: "phone 5",
@@ -93,6 +103,8 @@ export var transferDataStore: TransferModel[] = [
     },
     {
         id: "6",
+        userId: "66105b9c22d9fd0f2042909e",
+        timestamp: "2024-04-11T18:15:54.821Z",
         name: "name 6",
         email: "email 6",
         phone: "phone 6",
