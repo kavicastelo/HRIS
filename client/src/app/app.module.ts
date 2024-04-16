@@ -39,11 +39,14 @@ import {TruncatePipe} from "./DTO/TruncatePipe";
 import {TruncateCommentsPipe} from "./DTO/TruncateCommentsPipe";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import { ConfirmDialogComponent } from './shared/dialogs/confirm-dialog/confirm-dialog.component';
-import { PostingOptionsComponent } from './shared/dialogs/posting-options/posting-options.component';
+import {ConfirmDialogComponent} from './shared/dialogs/confirm-dialog/confirm-dialog.component';
+import {PostingOptionsComponent} from './shared/dialogs/posting-options/posting-options.component';
 import {MatSelectModule} from "@angular/material/select";
-import { PostShareDialogComponent } from './shared/dialogs/post-share-dialog/post-share-dialog.component';
-import { EditTextDialogComponent } from './shared/dialogs/edit-text-dialog/edit-text-dialog.component';
+import {PostShareDialogComponent} from './shared/dialogs/post-share-dialog/post-share-dialog.component';
+import {EditTextDialogComponent} from './shared/dialogs/edit-text-dialog/edit-text-dialog.component';
+import {RequestsComponent} from './components/requests/requests.component';
+import {TransferRequestComponent} from './components/requests/transfer-request/transfer-request.component';
+import {PromotionRequestComponent} from './components/requests/promotion-request/promotion-request.component';
 
 @NgModule({
     declarations: [
@@ -72,7 +75,10 @@ import { EditTextDialogComponent } from './shared/dialogs/edit-text-dialog/edit-
         ConfirmDialogComponent,
         PostingOptionsComponent,
         PostShareDialogComponent,
-        EditTextDialogComponent
+        EditTextDialogComponent,
+        RequestsComponent,
+        TransferRequestComponent,
+        PromotionRequestComponent
     ],
     imports: [
         BrowserModule,

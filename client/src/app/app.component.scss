@@ -89,6 +89,28 @@
     height: 100%;
     background-color: #fff;
 
+    .profile-div{
+      width: 100%;
+      padding: 15px 30px;
+      margin-bottom: 10px;
+
+      .profile-pic{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 10px;
+
+        img{
+          width: 100%;
+        }
+      }
+
+      h6, small{
+        margin: 0;
+      }
+    }
+
     ul{
       list-style: none;
       li{

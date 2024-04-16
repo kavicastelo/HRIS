@@ -7,6 +7,7 @@ import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
 import {NotificationsService} from "./services/notifications.service";
 import {Observable, tap} from "rxjs";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ import {Observable, tap} from "rxjs";
 export class AppComponent implements OnInit {
   title = 'client';
   employeeDataStore:any;
-  employee: any;
+  employee: any[]=[];
   userId:any;
 
   showAllNotifications: boolean = false;

@@ -5,7 +5,7 @@ import {NotFoundComponent} from "./shared/components/not-found/not-found.compone
 import {ProfileComponent} from "./shared/components/profile/profile.component";
 import {FeedWrapperComponent} from "./components/feed-wrapper/feed-wrapper.component";
 import {FeedComponent} from "./shared/components/feed/feed.component";
-import { LogInComponent } from './components/login/login.component';
+import {LogInComponent} from './components/login/login.component';
 import {ChatListComponent} from "./shared/components/chat-list/chat-list.component";
 import {AnnouncementAreaComponent} from "./shared/components/announcement-area/announcement-area.component";
 import {ProfileAboutComponent} from "./shared/components/profile/profile-about/profile-about.component";
@@ -16,35 +16,49 @@ import {ResetPasswordComponent} from "./components/reset-password/reset-password
 import {EditProfileComponent} from "./shared/components/profile/edit-profile/edit-profile.component";
 import {ChatAreaComponent} from "./shared/components/chat-area/chat-area.component";
 import {PostComponent} from "./shared/components/post/post.component";
+import {RequestsComponent} from "./components/requests/requests.component";
+import {TransferRequestComponent} from "./components/requests/transfer-request/transfer-request.component";
+import {PromotionRequestComponent} from "./components/requests/promotion-request/promotion-request.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'feed', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'feed', component: FeedWrapperComponent,children: [
-    { path: '', redirectTo: '/feed/area', pathMatch: 'full' },
-    { path: 'area', component: FeedComponent },
-    { path: 'post/:postId', component: PostComponent },
-    { path: 'chat/:id', component: ChatAreaComponent },
-  ]},
-  { path: 'chat-list', component: ChatListComponent },
-  { path: 'news', component: AnnouncementAreaComponent },
-  { path: 'profile/:id', component: ProfileComponent, children: [
-    { path: '', redirectTo: '/profile/:id/about/:id', pathMatch: 'full' },
-    { path: 'about/:id', component: ProfileAboutComponent },
-    { path: 'edit/:id', component: EditProfileComponent },
-    { path: 'posts/:id', component: ProfilePostsComponent },
-    { path: 'activity/:id', component: ProfileActivityComponent },
-  ]},
-  { path: 'login', component: LogInComponent},
-  { path: 'emp-register', component:EmployeeRegisterComponent },
-  {path:'reset-password', component:ResetPasswordComponent},
-  { path: '**', component:NotFoundComponent },
+    {path: '', redirectTo: 'feed', pathMatch: 'full'},
+    {path: 'home', component: HomeComponent},
+    {
+        path: 'feed', component: FeedWrapperComponent, children: [
+            {path: '', redirectTo: '/feed/area', pathMatch: 'full'},
+            {path: 'area', component: FeedComponent},
+            {path: 'post/:postId', component: PostComponent},
+            {path: 'chat/:id', component: ChatAreaComponent},
+        ]
+    },
+    {path: 'chat-list', component: ChatListComponent},
+    {path: 'news', component: AnnouncementAreaComponent},
+    {
+        path: 'profile/:id', component: ProfileComponent, children: [
+            {path: '', redirectTo: '/profile/:id/about/:id', pathMatch: 'full'},
+            {path: 'about/:id', component: ProfileAboutComponent},
+            {path: 'edit/:id', component: EditProfileComponent},
+            {path: 'posts/:id', component: ProfilePostsComponent},
+            {path: 'activity/:id', component: ProfileActivityComponent},
+        ]
+    },
+    {path: 'login', component: LogInComponent},
+    {path: 'emp-register', component: EmployeeRegisterComponent},
+    {path: 'reset-password', component: ResetPasswordComponent},
+    {
+        path: 'requests/:id', component: RequestsComponent, children: [
+            {path: '', redirectTo: '/requests/:id/transfer/:id', pathMatch: 'full'},
+            {path: 'transfer/:id', component: TransferRequestComponent},
+            {path: 'promotion/:id', component: PromotionRequestComponent}
+        ]
+    },
+    {path: '**', component: NotFoundComponent},
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes, {useHash: true})],
+    exports: [RouterModule]
 })
 export class AppRoutingModule {
 }
