@@ -1,7 +1,9 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.model.TransferModel;
+import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.TransferRepository;
 import com.hris.HRIS.service.EmailService;
 import com.hris.HRIS.service.LettersGenerationService;
@@ -22,6 +24,9 @@ public class TransferController {
     TransferRepository transferRepository;
 
     @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
     LettersGenerationService lettersGenerationService;
 
     @Autowired
@@ -32,10 +37,27 @@ public class TransferController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody TransferModel transferModel) {
-        transferRepository.save(transferModel);
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(transferModel.getUserId());
+
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel employeeModel = optionalEmployeeModel.get();
+
+            TransferModel newTransferModel = new TransferModel();
+            newTransferModel.setUserId(employeeModel.getId());
+            newTransferModel.setTimestamp(transferModel.getTimestamp());
+            newTransferModel.setName(employeeModel.getName());
+            newTransferModel.setEmail(employeeModel.getEmail());
+            newTransferModel.setPhone(employeeModel.getPhone());
+            newTransferModel.setJobData(employeeModel.getJobData());
+            newTransferModel.setPhoto(employeeModel.getPhoto());
+            newTransferModel.setReason(transferModel.getReason());
+            newTransferModel.setApproved("pending");
+
+            transferRepository.save(newTransferModel);
+        }
 
         String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(transferModel);
-        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
+        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in the platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -82,13 +104,12 @@ public class TransferController {
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
+            existingLetter.setUserId(transferModel.getUserId());
+            existingLetter.setTimestamp(transferModel.getTimestamp());
             existingLetter.setName(transferModel.getName());
             existingLetter.setEmail(transferModel.getEmail());
             existingLetter.setPhone(transferModel.getPhone());
-            existingLetter.setAddress(transferModel.getAddress());
             existingLetter.setJobData(transferModel.getJobData());
-            existingLetter.setDate(transferModel.getDate());
-            existingLetter.setDoj(transferModel.getDoj());
             existingLetter.setPhoto(transferModel.getPhoto());
             existingLetter.setReason(transferModel.getReason());
             existingLetter.setApproved(transferModel.getApproved());
@@ -106,13 +127,12 @@ public class TransferController {
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
+            existingLetter.setUserId(transferModel.getUserId());
+            existingLetter.setTimestamp(transferModel.getTimestamp());
             existingLetter.setName(transferModel.getName());
             existingLetter.setEmail(transferModel.getEmail());
             existingLetter.setPhone(transferModel.getPhone());
-            existingLetter.setAddress(transferModel.getAddress());
             existingLetter.setJobData(transferModel.getJobData());
-            existingLetter.setDate(transferModel.getDate());
-            existingLetter.setDoj(transferModel.getDoj());
             existingLetter.setPhoto(transferModel.getPhoto());
             existingLetter.setReason(transferModel.getReason());
             existingLetter.setApproved(transferModel.getApproved());
@@ -130,7 +150,7 @@ public class TransferController {
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
-            existingLetter.setApproved(true);
+            existingLetter.setApproved("");
 
             transferRepository.save(existingLetter);
 
@@ -150,7 +170,7 @@ public class TransferController {
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
-            existingLetter.setApproved(true);
+            existingLetter.setApproved("");
 
             transferRepository.save(existingLetter);
 
