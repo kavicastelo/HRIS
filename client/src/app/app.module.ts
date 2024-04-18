@@ -48,6 +48,7 @@ import {RequestsComponent} from './components/requests/requests.component';
 import {TransferRequestComponent} from './components/requests/transfer-request/transfer-request.component';
 import {PromotionRequestComponent} from './components/requests/promotion-request/promotion-request.component';
 import {RequestTransferDialogComponent} from './shared/dialogs/request-transfer-dialog/request-transfer-dialog.component';
+import {LetterDataDialogComponent} from './shared/dialogs/letter-data-dialog/letter-data-dialog.component';
 
 @NgModule({
     declarations: [
@@ -80,7 +81,8 @@ import {RequestTransferDialogComponent} from './shared/dialogs/request-transfer-
         RequestsComponent,
         TransferRequestComponent,
         PromotionRequestComponent,
-        RequestTransferDialogComponent
+        RequestTransferDialogComponent,
+        LetterDataDialogComponent
     ],
     imports: [
         BrowserModule,

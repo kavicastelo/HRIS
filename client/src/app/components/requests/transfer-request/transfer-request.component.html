@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let t of filterLetters()">
+        <tr *ngFor="let t of filterLetters()" (click)="popupData(t.id)">
             <td>
                 <div>
                     <p>{{t.reason | truncate: 20}}</p>
