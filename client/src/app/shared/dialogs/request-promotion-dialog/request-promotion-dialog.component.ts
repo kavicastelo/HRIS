@@ -1,15 +1,15 @@
 import {Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {TransferRequestService} from "../../../services/transfer-request.service";
 import {EmptyDialogComponent} from "../empty-dialog/empty-dialog.component";
+import {PromotionRequestService} from "../../../services/promotion-request.service";
 
 @Component({
-  selector: 'app-request-transfer-model',
-  templateUrl: './request-transfer-dialog.component.html',
-  styleUrls: ['./request-transfer-dialog.component.scss']
+  selector: 'app-request-promotion-dialog',
+  templateUrl: './request-promotion-dialog.component.html',
+  styleUrls: ['./request-promotion-dialog.component.scss']
 })
-export class RequestTransferDialogComponent {
+export class RequestPromotionDialogComponent {
 
   receivedData:any;
   buttonDisabled: boolean = true;
@@ -21,7 +21,7 @@ export class RequestTransferDialogComponent {
     ])
   })
 
-  constructor(private transferService: TransferRequestService, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<RequestTransferDialogComponent>) {
+  constructor(private promotionService: PromotionRequestService, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<RequestPromotionDialogComponent>) {
   }
   ngOnInit(): void {
     this.receivedData = this.data
@@ -38,7 +38,7 @@ export class RequestTransferDialogComponent {
 
   saveRequest() {
     if (this.receivedData){
-      this.transferService.saveTransfer({
+      this.promotionService.savePromotion({
         userId: this.receivedData.data.userId,
         timestamp: new Date(),
         reason: this.textAreaForm.value.text
@@ -52,7 +52,7 @@ export class RequestTransferDialogComponent {
   }
 
   editRequest() {
-    this.transferService.editTransfer(this.receivedData.data.id, this.textAreaForm.value.text).subscribe(()=>{
+    this.promotionService.editPromotion(this.receivedData.data.id, this.textAreaForm.value.text).subscribe(()=>{
       this.closePopup();
     }, error => {
       console.log(error)

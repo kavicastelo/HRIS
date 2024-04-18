@@ -1,7 +1,10 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.model.PromotionModel;
+import com.hris.HRIS.model.TransferModel;
+import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.PromotionRepository;
 import com.hris.HRIS.service.EmailService;
 import com.hris.HRIS.service.LettersGenerationService;
@@ -23,6 +26,9 @@ public class PromotionController {
     PromotionRepository promotionRepository;
 
     @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
     LettersGenerationService lettersGenerationService;
 
     @Autowired
@@ -33,10 +39,28 @@ public class PromotionController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody PromotionModel promotionModel){
-        promotionRepository.save(promotionModel);
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(promotionModel.getUserId());
 
-        String receivedLetter = lettersGenerationService.generateReceivedPromotionLetter(promotionModel);
-        emailService.sendSimpleEmail(promotionModel.getEmail(), "Promotion Request", "We received your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
+        PromotionModel newPromotionModel = new PromotionModel();
+
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel employeeModel = optionalEmployeeModel.get();
+
+            newPromotionModel.setUserId(employeeModel.getId());
+            newPromotionModel.setTimestamp(promotionModel.getTimestamp());
+            newPromotionModel.setName(employeeModel.getName());
+            newPromotionModel.setEmail(employeeModel.getEmail());
+            newPromotionModel.setPhone(employeeModel.getPhone());
+            newPromotionModel.setJobData(employeeModel.getJobData());
+            newPromotionModel.setPhoto(employeeModel.getPhoto());
+            newPromotionModel.setReason(promotionModel.getReason());
+            newPromotionModel.setApproved("pending");
+
+            promotionRepository.save(newPromotionModel);
+        }
+
+        String receivedLetter = lettersGenerationService.generateReceivedPromotionLetter(newPromotionModel);
+//        emailService.sendSimpleEmail(promotionModel.getEmail(), "Promotion Request", "We received your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -77,19 +101,34 @@ public class PromotionController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PutMapping("/update/reason/{id}")
+    public ResponseEntity<ApiResponse> updateReason(@PathVariable String id, @RequestBody PromotionModel promotionModel) {
+        Optional<PromotionModel> promotionModelOptional = promotionRepository.findById(id);
+
+        if (promotionModelOptional.isPresent()){
+            PromotionModel newPromotionModel = promotionModelOptional.get();
+
+            newPromotionModel.setReason(promotionModel.getReason());
+
+            promotionRepository.save(newPromotionModel);
+        }
+
+        ApiResponse response = new ApiResponse("Reason updated");
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updateLetterById(@PathVariable String id, @RequestBody PromotionModel promotionModel){
         Optional<PromotionModel> promotionModelOptional = promotionRepository.findById(id);
 
         if(promotionModelOptional.isPresent()){
             PromotionModel existingLetter = promotionModelOptional.get();
+            existingLetter.setUserId(promotionModel.getUserId());
+            existingLetter.setTimestamp(promotionModel.getTimestamp());
             existingLetter.setName(promotionModel.getName());
             existingLetter.setEmail(promotionModel.getEmail());
             existingLetter.setPhone(promotionModel.getPhone());
-            existingLetter.setAddress(promotionModel.getAddress());
             existingLetter.setJobData(promotionModel.getJobData());
-            existingLetter.setDate(promotionModel.getDate());
-            existingLetter.setDoj(promotionModel.getDoj());
             existingLetter.setPhoto(promotionModel.getPhoto());
             existingLetter.setReason(promotionModel.getReason());
             existingLetter.setApproved(promotionModel.getApproved());
@@ -107,13 +146,12 @@ public class PromotionController {
 
         if(promotionModelOptional.isPresent()){
             PromotionModel existingLetter = promotionModelOptional.get();
+            existingLetter.setUserId(promotionModel.getUserId());
+            existingLetter.setTimestamp(promotionModel.getTimestamp());
             existingLetter.setName(promotionModel.getName());
             existingLetter.setEmail(promotionModel.getEmail());
             existingLetter.setPhone(promotionModel.getPhone());
-            existingLetter.setAddress(promotionModel.getAddress());
             existingLetter.setJobData(promotionModel.getJobData());
-            existingLetter.setDate(promotionModel.getDate());
-            existingLetter.setDoj(promotionModel.getDoj());
             existingLetter.setPhoto(promotionModel.getPhoto());
             existingLetter.setReason(promotionModel.getReason());
             existingLetter.setApproved(promotionModel.getApproved());
@@ -131,7 +169,7 @@ public class PromotionController {
 
         if(promotionModelOptional.isPresent()){
             PromotionModel existingLetter = promotionModelOptional.get();
-            existingLetter.setApproved(true);
+            existingLetter.setApproved("");
 
             promotionRepository.save(existingLetter);
 
@@ -151,7 +189,7 @@ public class PromotionController {
 
         if(promotionModelOptional.isPresent()){
             PromotionModel existingLetter = promotionModelOptional.get();
-            existingLetter.setApproved(true);
+            existingLetter.setApproved("");
 
             promotionRepository.save(existingLetter);
 
