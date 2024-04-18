@@ -39,10 +39,11 @@ public class TransferController {
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody TransferModel transferModel) {
         Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(transferModel.getUserId());
 
+        TransferModel newTransferModel = new TransferModel();
+
         if (optionalEmployeeModel.isPresent()){
             EmployeeModel employeeModel = optionalEmployeeModel.get();
 
-            TransferModel newTransferModel = new TransferModel();
             newTransferModel.setUserId(employeeModel.getId());
             newTransferModel.setTimestamp(transferModel.getTimestamp());
             newTransferModel.setName(employeeModel.getName());
@@ -56,7 +57,7 @@ public class TransferController {
             transferRepository.save(newTransferModel);
         }
 
-        String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(transferModel);
+        String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(newTransferModel);
 //        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in the platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
