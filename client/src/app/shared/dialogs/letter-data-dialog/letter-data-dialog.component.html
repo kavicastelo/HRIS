@@ -1,0 +1,30 @@
+<div class="container" *ngFor="let d of receivedData.data" style="max-height: 75vh; overflow-y: auto; position: relative">
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="profile-pic">
+            <img [src]="convertToSafeUrl(d.photo)" alt="profile">
+        </div>
+    </div>
+    <div class="meta-data">
+        <h5>Employee Details</h5>
+        <ul>
+            <li><span>ႎ Name:</span> {{d.name}}</li>
+            <li><span>ႎ Email:</span> {{d.email}}</li>
+            <li><span>ႎ Phone:</span> {{d.phone}}</li>
+        </ul>
+
+        <h5>Job Details</h5>
+        <ul>
+            <li><span>ႎ Department:</span> {{d.jobData.department}}</li>
+            <li><span>ႎ Position:</span> {{d.jobData.position}}</li>
+            <li><span>ႎ Salary:</span> {{d.jobData.salary}}</li>
+            <li><span>ႎ Joined date:</span> {{d.jobData.doj}}</li>
+        </ul>
+
+        <h5>Request</h5>
+        <p>{{d.reason}}</p>
+    </div>
+    <div class="d-flex align-items-center justify-content-end pb-2 pe-2">
+        <small>{{d.timestamp | timeAgo}}</small>
+    </div>
+    <div class="close-btn" (click)="closePopup()"><mat-icon>close</mat-icon></div>
+</div>

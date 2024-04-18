@@ -8,6 +8,7 @@ import {
 } from "../../../shared/dialogs/request-transfer-dialog/request-transfer-dialog.component";
 import {TransferRequestService} from "../../../services/transfer-request.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {LetterDataDialogComponent} from "../../../shared/dialogs/letter-data-dialog/letter-data-dialog.component";
 
 @Component({
     selector: 'app-transfer-request',
@@ -118,5 +119,11 @@ export class TransferRequestComponent implements OnInit {
             this.toggleDialog('Edit transfer request', 'Are you sure you want to edit this request?'+'\n'+
                 ' You can only perform this for \'PENDING\' requests.', data, RequestTransferDialogComponent)
         }
+    }
+
+    popupData(id: any) {
+        const data = this.filteredRequests.filter((request:any) => request.id == id);
+
+        this.toggleDialog('','', data, LetterDataDialogComponent)
     }
 }
