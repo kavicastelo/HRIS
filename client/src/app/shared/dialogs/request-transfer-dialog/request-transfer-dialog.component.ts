@@ -1,7 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {TransferRequestService} from "../../../services/transfer-request.service";
+import {EmptyDialogComponent} from "../empty-dialog/empty-dialog.component";
 
 @Component({
   selector: 'app-request-transfer-model',
@@ -11,6 +12,7 @@ import {TransferRequestService} from "../../../services/transfer-request.service
 export class RequestTransferDialogComponent {
 
   receivedData:any;
+  buttonDisabled: boolean = true;
 
   textAreaForm = new FormGroup({
     text: new FormControl('',[
@@ -19,10 +21,15 @@ export class RequestTransferDialogComponent {
     ])
   })
 
-  constructor(private transferService: TransferRequestService, @Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<RequestTransferDialogComponent>) {
+  constructor(private transferService: TransferRequestService, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<RequestTransferDialogComponent>) {
   }
   ngOnInit(): void {
     this.receivedData = this.data
+
+    if (this.receivedData.data.approved == 'pending'){
+      this.buttonDisabled = false;
+      this.textAreaForm.get('text')?.patchValue(this.receivedData.data.text)
+    }
   }
 
   closePopup() {
@@ -36,7 +43,9 @@ export class RequestTransferDialogComponent {
         timestamp: new Date(),
         reason: this.textAreaForm.value.text
       }).subscribe((data)=>{
+        console.log(data)
         this.closePopup();
+        this.toggleDialog('','', data, EmptyDialogComponent)
       }, error => {
         console.log(error)
       })
@@ -44,6 +53,26 @@ export class RequestTransferDialogComponent {
   }
 
   editRequest() {
+    this.transferService.editTransfer(this.receivedData.data.id, this.textAreaForm.value.text).subscribe(()=>{
+      this.closePopup();
+    }, error => {
+      console.log(error)
+    })
+  }
 
+  toggleDialog(title: any, msg: any, data: any, component: any) {
+    const _popup = this.dialog.open(component, {
+      width: '350px',
+      enterAnimationDuration: '500ms',
+      exitAnimationDuration: '500ms',
+      data: {
+        data: data,
+        title: title,
+        msg: msg
+      }
+    });
+    _popup.afterClosed().subscribe(item => {
+      //TODO: do something
+    })
   }
 }

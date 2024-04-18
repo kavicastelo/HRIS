@@ -7,6 +7,7 @@ import {
     RequestTransferDialogComponent
 } from "../../../shared/dialogs/request-transfer-dialog/request-transfer-dialog.component";
 import {TransferRequestService} from "../../../services/transfer-request.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-transfer-request',
@@ -17,10 +18,13 @@ export class TransferRequestComponent implements OnInit {
 
     userId: any
     employeeDataStore: any
-    employee: any
-    transferRequestsStore: any;
+    employee: any = {
+        id:''
+    }
+    transferRequestsStore: any[] = [];
+    filteredRequests: any;
 
-    constructor(private route: ActivatedRoute, private dialog: MatDialog, private employeesService: EmployeesService, private transferService: TransferRequestService) {
+    constructor(private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar, private employeesService: EmployeesService, private transferService: TransferRequestService) {
     }
 
     async ngOnInit(): Promise<any> {
@@ -29,7 +33,7 @@ export class TransferRequestComponent implements OnInit {
         })
 
         this.loadAllTransferRequests().subscribe(()=>{
-            //TODO: do something
+            this.filterLetters();
         })
     }
 
@@ -43,6 +47,15 @@ export class TransferRequestComponent implements OnInit {
         return this.transferService.getAllTransfer().pipe(
             tap(data => this.transferRequestsStore = data)
         );
+    }
+
+    filterLetters(): any[]{
+        this.filteredRequests = this.transferRequestsStore.filter((data:any) => data.userId == this.employee.id? this.filteredRequests = [data]: this.filteredRequests = null)
+        this.filteredRequests.sort((a:any, b:any) => {
+            return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        })
+
+        return this.filteredRequests;
     }
 
     getUser() {
@@ -70,7 +83,40 @@ export class TransferRequestComponent implements OnInit {
             }
         });
         _popup.afterClosed().subscribe(item => {
-            //TODO: do something
+            this.loadAllTransferRequests().subscribe(()=>{
+                this.openSnackBar('Requests reloaded!', 'OK')
+            });
         })
+    }
+
+    openSnackBar(message: any, action: any){
+        this.snackBar.open(message, action, {duration:3000})
+    }
+
+    deleteRequest(id: any) {
+        if (id){
+            if (confirm('Are you sure you want to delete this request?')){
+                this.transferService.deleteTransfer(id).subscribe(data => {
+                    this.loadAllTransferRequests().subscribe(()=>{
+                        this.openSnackBar('Request deleted!', 'OK');
+                    });
+                }, error => {
+                    console.log(error)
+                })
+            }
+        }
+    }
+
+    editRequest(id: any, approved: any, reason: any) {
+        if (id){
+            const data = {
+                id: id,
+                text: reason,
+                approved: approved
+            }
+
+            this.toggleDialog('Edit transfer request', 'Are you sure you want to edit this request?'+'\n'+
+                ' You can only perform this for \'PENDING\' requests.', data, RequestTransferDialogComponent)
+        }
     }
 }

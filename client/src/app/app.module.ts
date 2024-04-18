@@ -7,7 +7,7 @@ import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
 import {ProfileComponent} from './shared/components/profile/profile.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {PostImageComponent} from './shared/components/post-image/post-image.component';
+import {EmptyDialogComponent} from './shared/dialogs/empty-dialog/empty-dialog.component';
 import {PostComponent} from './shared/components/post/post.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -55,7 +55,7 @@ import {RequestTransferDialogComponent} from './shared/dialogs/request-transfer-
         HomeComponent,
         NotFoundComponent,
         ProfileComponent,
-        PostImageComponent,
+        EmptyDialogComponent,
         PostComponent,
         FeedWrapperComponent,
         FeedComponent,
