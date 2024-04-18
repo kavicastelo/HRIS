@@ -14,14 +14,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class TransferModel {
     @Id
     private String id;
+    private String userId;
+    private String timestamp;
     private String name;
     private String email;
     private String phone;
-    private String address;
     private Object jobData;
-    private String date;
-    private String doj;
-    private String photo;
+    private byte [] photo;
     private String reason;
-    private Boolean approved;
+    private String approved;
 }

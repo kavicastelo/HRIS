@@ -47,6 +47,7 @@ import {EditTextDialogComponent} from './shared/dialogs/edit-text-dialog/edit-te
 import {RequestsComponent} from './components/requests/requests.component';
 import {TransferRequestComponent} from './components/requests/transfer-request/transfer-request.component';
 import {PromotionRequestComponent} from './components/requests/promotion-request/promotion-request.component';
+import {RequestTransferDialogComponent} from './shared/dialogs/request-transfer-dialog/request-transfer-dialog.component';
 
 @NgModule({
     declarations: [
@@ -78,7 +79,8 @@ import {PromotionRequestComponent} from './components/requests/promotion-request
         EditTextDialogComponent,
         RequestsComponent,
         TransferRequestComponent,
-        PromotionRequestComponent
+        PromotionRequestComponent,
+        RequestTransferDialogComponent
     ],
     imports: [
         BrowserModule,
