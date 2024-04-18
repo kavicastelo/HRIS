@@ -18,6 +18,16 @@ export class TransferRequestService {
   }
 
   getAllTransfer(): Observable<any> {
-    return this.http.get(this.baseUrl+'transfer/get/all')
+    return this.http.get(this.baseUrl+'transfer/get/all');
+  }
+
+  deleteTransfer(id: any): Observable<any> {
+    return this.http.delete(this.baseUrl+'transfer/delete/id/'+id);
+  }
+
+  editTransfer(id: any, reason: any): Observable<any> {
+    return this.http.put(this.baseUrl+'transfer/update/reason/'+id, {
+      reason: reason
+    })
   }
 }

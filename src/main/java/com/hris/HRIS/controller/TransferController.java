@@ -57,7 +57,7 @@ public class TransferController {
         }
 
         String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(transferModel);
-        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in the platform.\n\nBest Regards,\nHR Department");
+//        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in the platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -96,6 +96,22 @@ public class TransferController {
 
         ApiResponse apiResponse = new ApiResponse("Request deleted successfully");
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/update/reason/{id}")
+    public ResponseEntity<ApiResponse> updateReason(@PathVariable String id, @RequestBody TransferModel transferModel) {
+        Optional<TransferModel> transferModelOptional = transferRepository.findById(id);
+
+        if (transferModelOptional.isPresent()){
+            TransferModel newTransfer = transferModelOptional.get();
+
+            newTransfer.setReason(transferModel.getReason());
+
+            transferRepository.save(newTransfer);
+        }
+
+        ApiResponse response = new ApiResponse("Reason updated");
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update/id/{id}")
