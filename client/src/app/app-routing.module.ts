@@ -20,22 +20,26 @@ import {RequestsComponent} from "./components/requests/requests.component";
 import {TransferRequestComponent} from "./components/requests/transfer-request/transfer-request.component";
 import {PromotionRequestComponent} from "./components/requests/promotion-request/promotion-request.component";
 import {AuthGuard} from "./guards/auth.guard";
+import {EmployeeComponent} from "./components/employee/employee.component";
+import {EmpDashboardComponent} from "./components/employee/emp-dashboard/emp-dashboard.component";
+import {EmpTransferComponent} from "./components/employee/emp-transfer/emp-transfer.component";
+import {EmpPromotionComponent} from "./components/employee/emp-promotion/emp-promotion.component";
 
 const routes: Routes = [
     {path: '', redirectTo: 'feed', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
     {
-        path: 'feed', component: FeedWrapperComponent, canActivate:[AuthGuard], children: [
+        path: 'feed', component: FeedWrapperComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/feed/area', pathMatch: 'full'},
             {path: 'area', component: FeedComponent},
             {path: 'post/:postId', component: PostComponent},
             {path: 'chat/:id', component: ChatAreaComponent},
         ]
     },
-    {path: 'chat-list', component: ChatListComponent, canActivate:[AuthGuard]},
-    {path: 'news', component: AnnouncementAreaComponent, canActivate:[AuthGuard]},
+    {path: 'chat-list', component: ChatListComponent, canActivate: [AuthGuard]},
+    {path: 'news', component: AnnouncementAreaComponent, canActivate: [AuthGuard]},
     {
-        path: 'profile/:id', component: ProfileComponent, canActivate:[AuthGuard], children: [
+        path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/profile/:id/about/:id', pathMatch: 'full'},
             {path: 'about/:id', component: ProfileAboutComponent},
             {path: 'edit/:id', component: EditProfileComponent},
@@ -44,13 +48,21 @@ const routes: Routes = [
         ]
     },
     {path: 'login', component: LogInComponent},
-    {path: 'emp-register', component: EmployeeRegisterComponent, canActivate:[AuthGuard]},
+    {path: 'emp-register', component: EmployeeRegisterComponent, canActivate: [AuthGuard]},
     {path: 'reset-password', component: ResetPasswordComponent},
     {
-        path: 'requests/:id', component: RequestsComponent, canActivate:[AuthGuard], children: [
+        path: 'requests/:id', component: RequestsComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/requests/:id/transfer/:id', pathMatch: 'full'},
             {path: 'transfer/:id', component: TransferRequestComponent},
             {path: 'promotion/:id', component: PromotionRequestComponent}
+        ]
+    },
+    {
+        path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard], children: [
+            {path: '', redirectTo: '/employee/dashboard', pathMatch: 'full'},
+            {path: 'dashboard', component: EmpDashboardComponent},
+            {path: 'transfer', component: EmpTransferComponent},
+            {path: 'promotion', component: EmpPromotionComponent},
         ]
     },
     {path: '**', component: NotFoundComponent},

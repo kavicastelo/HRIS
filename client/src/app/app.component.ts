@@ -56,9 +56,6 @@ export class AppComponent implements OnInit {
                 this.loadFilteredNotifications();
             })
 
-            setInterval(() => {
-                this.loadFilteredNotifications();
-            }, 1000 * 60 * 2)
         } else {
             this.employee = [
                 {
@@ -70,6 +67,10 @@ export class AppComponent implements OnInit {
                 }
             ]
         }
+
+        setInterval(() => {
+            this.loadFilteredNotifications();
+        }, 1000 * 60 * 2)
     }
 
     ngOnDestroy(): void {

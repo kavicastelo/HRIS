@@ -13,12 +13,27 @@ export class AuthService {
     this.cookieService.set('user-token-id',token,60*60*24*7);
   }
 
+  public createOrganizationID(token:any){
+    this.cookieService.set('organization',token, 60*60*24*7);
+  }
+
+  public createDepartmentID(token:any){
+    this.cookieService.set('department', token, 60*60*24*7)
+  }
+
+  public createLevel(token:any){
+    this.cookieService.set('level', token, 60*60*24*7)
+  }
+
   public createAdmin(token:string){
     this.cookieService.set('admin-token',token,60*60*24*7);
   }
 
   public logout(){
     this.cookieService.delete('user-token-id');
+    this.cookieService.delete('organization');
+    this.cookieService.delete('department');
+    this.cookieService.delete('level');
   }
 
   public logoutAdmin(){
@@ -35,20 +50,9 @@ export class AuthService {
     return admin.length !== 0;
   }
 
-  public profileName() {
-    return this.cookieService.get('profile-name').toString();
-  }
-
-  public profileEmail() {
-    return this.cookieService.get('profile-email').toString();
-  }
-
-  public profilePicture() {
-    return this.cookieService.get('profile-picture').toString();
-  }
-
-  public profileFamilyName() {
-    return this.cookieService.get('profile-family-name').toString();
+  public isOrganization():boolean{
+    let org = this.cookieService.get('organization');
+    return org.length !== 0;
   }
 
   public userEmail() {
@@ -61,6 +65,18 @@ export class AuthService {
 
   public adminEmail() {
     return this.cookieService.get('admin-token').toString();
+  }
+
+  public organization() {
+    return this.cookieService.get('organization').toString();
+  }
+
+  public department() {
+    return this.cookieService.get('department').toString();
+  }
+
+  public level() {
+    return this.cookieService.get('level').toString();
   }
 
   public userProfile() {

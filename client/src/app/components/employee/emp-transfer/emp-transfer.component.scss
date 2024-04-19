@@ -1,0 +1,58 @@
+.transfer-list{
+  overflow: auto;
+
+  .table{
+    min-width: 350px;
+    margin-top: 15px;
+    background-color: transparent;
+
+    th, td{
+      background-color: transparent;
+      color: var(--color-text-200);
+
+      p, span, small{
+        margin: 0;
+        color: var(--color-text-200);
+      }
+      P{
+        font-weight: 450;
+      }
+    }
+
+    .td-status{
+      text-align: center;
+
+      .status-tag{
+        background-color: orange;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 500;
+        padding: 4px 16px;
+      }
+    }
+    .td-manage{
+      text-align: end;
+    }
+  }
+}
+
+.btn-2{
+  width: fit-content;
+
+  &:nth-child(1){
+    background-color: lime;
+    color: white;
+
+    &:hover{
+      background-color: limegreen;
+    }
+  }
+  &:nth-child(2){
+    background-color: #e74c3c;
+    color: white;
+
+    &:hover{
+      background-color: #c0392b;
+    }
+  }
+}
