@@ -17,6 +17,7 @@ import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialo
 import {SharesService} from "../../../services/shares.service";
 import {EditTextDialogComponent} from "../../dialogs/edit-text-dialog/edit-text-dialog.component";
 import {NotificationsService} from "../../../services/notifications.service";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-feed-posts',
@@ -101,6 +102,7 @@ export class FeedPostsComponent implements OnInit{
               private commentsService: CommentsService,
               private shareService: SharesService,
               private activitiesService: ActivitiesService,
+              private cookieService: AuthService,
               private notificationsService: NotificationsService,
               private logger: NGXLogger) {
   }
@@ -166,7 +168,7 @@ export class FeedPostsComponent implements OnInit{
   }
 
   getUser() {
-    this.userId = localStorage.getItem('sender');
+    this.userId = this.cookieService.userID().toString();
     if (this.employeesDataStore) { // Check if employeesDataStore is populated
       const foundEmployee = this.employeesDataStore.find((emp: any) => emp.id === this.userId);
       if (foundEmployee) {

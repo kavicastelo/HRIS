@@ -60,6 +60,7 @@ public class PromotionController {
         }
 
         String receivedLetter = lettersGenerationService.generateReceivedPromotionLetter(newPromotionModel);
+//        TODO: uncomment in prod mode
 //        emailService.sendSimpleEmail(promotionModel.getEmail(), "Promotion Request", "We received your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);

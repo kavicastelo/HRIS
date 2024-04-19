@@ -8,6 +8,7 @@ import {Observable, Subscription, tap} from "rxjs";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {NGXLogger} from "ngx-logger";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-chat-list',
@@ -38,6 +39,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
               private router: Router,
               private chatService: ChatService,
               private route: ActivatedRoute,
+              private cookieService: AuthService,
               private webSocketService: WebSocketService, private logger: NGXLogger) {
   }
   async ngOnInit(): Promise<any> {
@@ -70,7 +72,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   }
 
   getUser() {
-    this.senderId = localStorage.getItem('sender');
+    this.senderId = this.cookieService.userID().toString();
     if (this.employeeDataStore) { // Check if employeesDataStore is populated
       const foundEmployee = this.employeeDataStore.find((emp: any) => emp.id === this.senderId);
       if (foundEmployee) {

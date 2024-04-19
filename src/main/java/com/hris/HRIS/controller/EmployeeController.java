@@ -63,6 +63,7 @@ public class EmployeeController {
 
         systemAutomateService.updateOrganizationEmployees(newEmployee);
         systemAutomateService.assignChannelsToEmployee(emp.getId());
+        systemAutomateService.CreateCredentials(newEmployee);
 
         ApiResponse apiResponse = new ApiResponse("Employee saved successfully");
         return ResponseEntity.ok(apiResponse);

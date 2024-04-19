@@ -9,6 +9,7 @@ import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {NGXLogger} from "ngx-logger";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
     selector: 'app-chat-area',
@@ -43,6 +44,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
                 private chatService: ChatService,
                 private webSocketService: WebSocketService,
                 private multimediaService: MultimediaService,
+                private cookieService: AuthService,
                 private employeeService: EmployeesService, private logger: NGXLogger) {
     }
 
@@ -99,7 +101,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     }
 
     loadSender() {
-        this.senderId = localStorage.getItem('sender');
+        this.senderId = this.cookieService.userID().toString();
         if (this.employeeDataStore) { // Check if employeesDataStore is populated
             const foundEmployee = this.employeeDataStore.find((emp: any) => emp.id === this.senderId);
             if (foundEmployee) {

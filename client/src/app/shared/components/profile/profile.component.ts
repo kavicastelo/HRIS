@@ -13,6 +13,7 @@ import {NGXLogger} from "ngx-logger";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {MultimediaService} from "../../../services/multimedia.service";
+import {AuthService} from "../../../services/auth.service";
 
 export interface DialogData {
   animal: string;
@@ -59,6 +60,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
+    private cookieService: AuthService,
     private logger: NGXLogger) {
     this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
@@ -70,7 +72,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<any> {
-    this.loggedUserId = localStorage.getItem('sender')
+    this.loggedUserId = this.cookieService.userID().toString();
     this.selectedCoverImage = this.randomCoverImage(); // choose random image and assigned it
 
     await this.loadAllUsers().subscribe(()=>{

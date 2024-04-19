@@ -5,6 +5,7 @@ import {ThemeService} from "../../../../services/theme.service";
 import {NGXLogger} from "ngx-logger";
 import {EmployeesService} from "../../../../services/employees.service";
 import {Observable, tap} from "rxjs";
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-profile-about',
@@ -23,6 +24,7 @@ export class ProfileAboutComponent implements OnInit {
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute,
+              private cookieService: AuthService,
               private logger: NGXLogger) {
   }
   async ngOnInit(): Promise<any> {
@@ -53,7 +55,7 @@ export class ProfileAboutComponent implements OnInit {
   }
 
   setEditButtonVisibility(){
-    const id = localStorage.getItem('sender')
+    const id = this.cookieService.userID().toString();
     if(id === this.employee[0].id){
       this.isVisible = true;
     }

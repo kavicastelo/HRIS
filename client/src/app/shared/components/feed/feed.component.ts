@@ -16,6 +16,7 @@ import {SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ConfirmDialogComponent} from "../../dialogs/confirm-dialog/confirm-dialog.component";
 import {PostingOptionsComponent} from "../../dialogs/posting-options/posting-options.component";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
     selector: 'app-feed',
@@ -51,6 +52,7 @@ export class FeedComponent implements OnInit {
                 private employeesService: EmployeesService,
                 private route: ActivatedRoute,
                 private snackBar: MatSnackBar,
+                private cookieService: AuthService,
                 private logger: NGXLogger) {
     }
 
@@ -67,7 +69,7 @@ export class FeedComponent implements OnInit {
     }
 
     getUser() {
-        this.userId = localStorage.getItem('sender');
+        this.userId = this.cookieService.userID().toString();
         return this.employee = this.employeeDataStore.find((emp: any) => emp.id === this.userId);
     }
 

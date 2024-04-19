@@ -9,6 +9,7 @@ import {
 import {TransferRequestService} from "../../../services/transfer-request.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {LetterDataDialogComponent} from "../../../shared/dialogs/letter-data-dialog/letter-data-dialog.component";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
     selector: 'app-transfer-request',
@@ -25,7 +26,7 @@ export class TransferRequestComponent implements OnInit {
     transferRequestsStore: any[] = [];
     filteredRequests: any;
 
-    constructor(private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar, private employeesService: EmployeesService, private transferService: TransferRequestService) {
+    constructor(private route: ActivatedRoute, private dialog: MatDialog, private cookieService: AuthService, private snackBar: MatSnackBar, private employeesService: EmployeesService, private transferService: TransferRequestService) {
     }
 
     async ngOnInit(): Promise<any> {
@@ -60,7 +61,7 @@ export class TransferRequestComponent implements OnInit {
     }
 
     getUser() {
-        this.userId = localStorage.getItem('sender');
+        this.userId = this.cookieService.userID().toString();
         return this.employee = this.employeeDataStore.find((emp: any) => emp.id === this.userId);
     }
 
