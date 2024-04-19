@@ -50,6 +50,10 @@ import {PromotionRequestComponent} from './components/requests/promotion-request
 import {RequestTransferDialogComponent} from './shared/dialogs/request-transfer-dialog/request-transfer-dialog.component';
 import {LetterDataDialogComponent} from './shared/dialogs/letter-data-dialog/letter-data-dialog.component';
 import {RequestPromotionDialogComponent} from './shared/dialogs/request-promotion-dialog/request-promotion-dialog.component';
+import { EmployeeComponent } from './components/employee/employee.component';
+import { EmpDashboardComponent } from './components/employee/emp-dashboard/emp-dashboard.component';
+import { EmpTransferComponent } from './components/employee/emp-transfer/emp-transfer.component';
+import { EmpPromotionComponent } from './components/employee/emp-promotion/emp-promotion.component';
 
 @NgModule({
     declarations: [
@@ -84,7 +88,11 @@ import {RequestPromotionDialogComponent} from './shared/dialogs/request-promotio
         PromotionRequestComponent,
         RequestTransferDialogComponent,
         LetterDataDialogComponent,
-        RequestPromotionDialogComponent
+        RequestPromotionDialogComponent,
+        EmployeeComponent,
+        EmpDashboardComponent,
+        EmpTransferComponent,
+        EmpPromotionComponent
     ],
     imports: [
         BrowserModule,

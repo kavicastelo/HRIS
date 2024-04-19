@@ -37,6 +37,9 @@ export class LogInComponent implements OnInit{
       this.employeeService.getEmployeeByEmail(foundUser.email).subscribe((data:any)=>{
         console.log(data)
         this.cookieService.createUserID(data.id);
+        this.cookieService.createOrganizationID(data.organizationId);
+        this.cookieService.createDepartmentID(data.departmentId);
+        this.cookieService.createLevel(data.level);
         this.router.navigate(['/feed']).then(()=>{
           location.reload()
         });

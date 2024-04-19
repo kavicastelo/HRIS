@@ -1,0 +1,35 @@
+<div class="transfer-list">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Reason</th>
+            <th class="td-status">Status</th>
+            <th class="td-manage">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let t of filterLetters()" (click)="popupData(t.id)">
+            <td>
+                <div>
+                    <p>{{t.reason | truncate: 20}}</p>
+                    <small>{{t.timestamp | timeAgo}}</small>
+                </div>
+            </td>
+            <td class="td-status">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="status-tag" [ngStyle]="{'background-color':t.approved=='approved'?'green':t.approved=='declined'?'red':'orange'}">
+                        {{t.approved}}
+                    </div>
+                </div>
+            </td>
+            <td class="td-manage">
+                <div class="d-flex align-items-center justify-content-end">
+                    <button class="btn-2 me-1" matTooltip="Approve" (click)="approveRequest(t.id)"><mat-icon>done</mat-icon></button>
+                    <button class="btn-2" matTooltip="Reject" (click)="rejectRequest(t.id)"><mat-icon>clear</mat-icon></button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
