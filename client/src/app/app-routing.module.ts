@@ -19,22 +19,23 @@ import {PostComponent} from "./shared/components/post/post.component";
 import {RequestsComponent} from "./components/requests/requests.component";
 import {TransferRequestComponent} from "./components/requests/transfer-request/transfer-request.component";
 import {PromotionRequestComponent} from "./components/requests/promotion-request/promotion-request.component";
+import {AuthGuard} from "./guards/auth.guard";
 
 const routes: Routes = [
     {path: '', redirectTo: 'feed', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
     {
-        path: 'feed', component: FeedWrapperComponent, children: [
+        path: 'feed', component: FeedWrapperComponent, canActivate:[AuthGuard], children: [
             {path: '', redirectTo: '/feed/area', pathMatch: 'full'},
             {path: 'area', component: FeedComponent},
             {path: 'post/:postId', component: PostComponent},
             {path: 'chat/:id', component: ChatAreaComponent},
         ]
     },
-    {path: 'chat-list', component: ChatListComponent},
-    {path: 'news', component: AnnouncementAreaComponent},
+    {path: 'chat-list', component: ChatListComponent, canActivate:[AuthGuard]},
+    {path: 'news', component: AnnouncementAreaComponent, canActivate:[AuthGuard]},
     {
-        path: 'profile/:id', component: ProfileComponent, children: [
+        path: 'profile/:id', component: ProfileComponent, canActivate:[AuthGuard], children: [
             {path: '', redirectTo: '/profile/:id/about/:id', pathMatch: 'full'},
             {path: 'about/:id', component: ProfileAboutComponent},
             {path: 'edit/:id', component: EditProfileComponent},
@@ -43,10 +44,10 @@ const routes: Routes = [
         ]
     },
     {path: 'login', component: LogInComponent},
-    {path: 'emp-register', component: EmployeeRegisterComponent},
+    {path: 'emp-register', component: EmployeeRegisterComponent, canActivate:[AuthGuard]},
     {path: 'reset-password', component: ResetPasswordComponent},
     {
-        path: 'requests/:id', component: RequestsComponent, children: [
+        path: 'requests/:id', component: RequestsComponent, canActivate:[AuthGuard], children: [
             {path: '', redirectTo: '/requests/:id/transfer/:id', pathMatch: 'full'},
             {path: 'transfer/:id', component: TransferRequestComponent},
             {path: 'promotion/:id', component: PromotionRequestComponent}
