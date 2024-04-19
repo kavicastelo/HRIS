@@ -54,6 +54,7 @@ import { EmployeeComponent } from './components/employee/employee.component';
 import { EmpDashboardComponent } from './components/employee/emp-dashboard/emp-dashboard.component';
 import { EmpTransferComponent } from './components/employee/emp-transfer/emp-transfer.component';
 import { EmpPromotionComponent } from './components/employee/emp-promotion/emp-promotion.component';
+import { ChangeJobDataDialogComponent } from './shared/dialogs/change-job-data-dialog/change-job-data-dialog.component';
 
 @NgModule({
     declarations: [
@@ -92,7 +93,8 @@ import { EmpPromotionComponent } from './components/employee/emp-promotion/emp-p
         EmployeeComponent,
         EmpDashboardComponent,
         EmpTransferComponent,
-        EmpPromotionComponent
+        EmpPromotionComponent,
+        ChangeJobDataDialogComponent
     ],
     imports: [
         BrowserModule,

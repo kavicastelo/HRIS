@@ -86,7 +86,7 @@ export class TransferRequestComponent implements OnInit {
         });
         _popup.afterClosed().subscribe(item => {
             this.loadAllTransferRequests().subscribe(()=>{
-                this.openSnackBar('Requests reloaded!', 'OK')
+                // this.openSnackBar('Requests reloaded!', 'OK')
             });
         })
     }

@@ -2,7 +2,7 @@
 
     <div class="w-100 main-body"  *ngFor="let e of employee">
         <button class="theme-btn" (click)="toggleTheme()" title="Theme">
-            <img [src]="themeService.isDarkMode()?'./assets/imgs/icons/light.png':'./assets/imgs/icons/dark.png'"
+            <img [src]="themeService.isDarkMode()?'https://img.icons8.com/clouds/100/sun.png':'https://img.icons8.com/bubbles/50/moon-satellite.png'"
                  alt="theme" height="40" width="40">
         </button>
 

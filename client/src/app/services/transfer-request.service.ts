@@ -30,4 +30,11 @@ export class TransferRequestService {
       reason: reason
     })
   }
+
+  changeStatus(id:any, data:any): Observable<any> {
+    return this.http.put(this.baseUrl+'transfer/status/id/'+id,{
+      jobData: data.jobData,
+      approved: data.approved
+    })
+  }
 }

@@ -52,7 +52,7 @@ export class EmpPromotionComponent {
   }
 
   filterLetters(): any[]{
-    this.filteredRequests = this.promotionRequestsStore;
+    this.filteredRequests = this.promotionRequestsStore.filter((data:any)=> data.approved == "pending");
     this.filteredRequests.sort((a:any, b:any) => {
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     })
@@ -78,7 +78,7 @@ export class EmpPromotionComponent {
     });
     _popup.afterClosed().subscribe(item => {
       this.loadAllPromotionRequests().subscribe(()=>{
-        this.openSnackBar('Requests reloaded!', 'OK')
+        // this.openSnackBar('Requests reloaded!', 'OK')
       });
     })
   }

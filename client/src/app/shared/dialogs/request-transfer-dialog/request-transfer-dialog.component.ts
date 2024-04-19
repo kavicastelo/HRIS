@@ -12,7 +12,6 @@ import {EmptyDialogComponent} from "../empty-dialog/empty-dialog.component";
 export class RequestTransferDialogComponent {
 
   receivedData:any;
-  buttonDisabled: boolean = true;
 
   textAreaForm = new FormGroup({
     text: new FormControl('',[
@@ -27,7 +26,6 @@ export class RequestTransferDialogComponent {
     this.receivedData = this.data
 
     if (this.receivedData.data.approved == 'pending'){
-      this.buttonDisabled = false;
       this.textAreaForm.get('text')?.patchValue(this.receivedData.data.text)
     }
   }

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -59,7 +60,7 @@ public class TransferController {
 
         String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(newTransferModel);
 //        TODO: uncomment in prod mode
-//        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in the platform.\n\nBest Regards,\nHR Department");
+//        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find more information in the platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -162,20 +163,33 @@ public class TransferController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PutMapping("/approve/id/{id}")
-    public ResponseEntity<ApiResponse> approveLetter(@PathVariable String id) {
+    @PutMapping("/status/id/{id}")
+    public ResponseEntity<ApiResponse> approveLetter(@PathVariable String id, @RequestBody TransferModel transferModel) {
         Optional<TransferModel> transferModelOptional = transferRepository.findById(id);
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
-            existingLetter.setApproved("");
+            existingLetter.setApproved(transferModel.getApproved());
+            if (transferModel.getJobData() != null){
+                existingLetter.setJobData(transferModel.getJobData());
+                transferRepository.save(existingLetter);
+            }
+            else {
+                transferRepository.save(existingLetter);
+            }
 
-            transferRepository.save(existingLetter);
+            if (Objects.equals(transferModel.getApproved(), "approved")){
+                systemAutomateService.UpdateEmployeeJobDataTransfer(existingLetter);
 
-            systemAutomateService.UpdateEmployeeJobDataTransfer(existingLetter);
+                approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
+                //        TODO: uncomment in prod mode
+//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Congratulations!\nWe approved your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+            } else if (Objects.equals(transferModel.getApproved(),"declined")){
+                approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
+                //        TODO: uncomment in prod mode
+//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Our Apologies!\nWe declined your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+            }
 
-            approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
-            emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Congratulations!\nWe approved your transfer request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
         }
 
         ApiResponse apiResponse = new ApiResponse(approvedLetter);
