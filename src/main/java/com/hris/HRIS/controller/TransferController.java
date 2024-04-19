@@ -58,6 +58,7 @@ public class TransferController {
         }
 
         String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(newTransferModel);
+//        TODO: uncomment in prod mode
 //        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in the platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);

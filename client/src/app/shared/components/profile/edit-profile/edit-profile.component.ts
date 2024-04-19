@@ -8,6 +8,7 @@ import {Observable, tap} from "rxjs";
 import {EmployeesService} from "../../../../services/employees.service";
 import {MultimediaService} from "../../../../services/multimedia.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-edit-profile',
@@ -48,6 +49,7 @@ export class EditProfileComponent {
               private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private router: Router,
+              private cookieService: AuthService,
               private route: ActivatedRoute,
               private logger: NGXLogger) {
   }

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {employeeDataStore} from "../../shared/data-stores/employee-data-store";
 import {WebSocketService} from "../../services/web-socket.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-feed-wrapper',
@@ -12,7 +13,7 @@ export class FeedWrapperComponent implements OnInit {
   employee: any
   userId:any;
 
-  constructor() {
+  constructor(private cookieService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -20,7 +21,7 @@ export class FeedWrapperComponent implements OnInit {
   }
 
   getUser() {
-    this.userId = localStorage.getItem('sender');
+    this.userId = this.cookieService.userID().toString();
     employeeDataStore.forEach((emp) => {
       if (emp.id == this.userId) {
         this.employee = [emp];

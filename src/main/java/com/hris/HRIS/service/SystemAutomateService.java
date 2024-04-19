@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SystemAutomateService {
@@ -33,6 +30,9 @@ public class SystemAutomateService {
 
     @Autowired
     ChatRepository chatRepository;
+
+    @Autowired
+    CredentialsRepository credentialsRepository;
 
     @Autowired
     EmailService emailService;
@@ -65,6 +65,52 @@ public class SystemAutomateService {
             existingEmployee.setJobData(transferModel.getJobData());
             employeeRepository.save(existingEmployee);
         }
+    }
+
+    public void CreateCredentials(EmployeeModel employeeModel){
+        Optional<OrganizationModel> optionalOrganizationModel = organizationRepository.findById(employeeModel.getOrganizationId());
+        if (optionalOrganizationModel.isPresent()){
+            OrganizationModel organizationModel = optionalOrganizationModel.get();
+
+            String orgName = organizationModel.getOrganizationName();
+            String email = employeeModel.getEmail();
+            String password = String.valueOf(random_Password(10));
+            String name = employeeModel.getName().split(" ")[0];
+            String para = "Thank you for registering with "+orgName+".\n\nUse following credentials to login to the system at first time.\nEmail: "+email+"\nPassword: "+password+"\n\n";
+            String tag = "Best Regards,\n"+orgName+" Team.\n\n";
+            String footer = "Powered by SparkC";
+
+            CredentialsModel credentialsModel = new CredentialsModel();
+            credentialsModel.setEmail(employeeModel.getEmail());
+            credentialsModel.setPassword(password);
+            credentialsModel.setLevel("1");
+            credentialsRepository.save(credentialsModel);
+            System.out.println("Hello "+name+",\n"+para+tag+footer);
+//            TODO: //uncomment email service in prod mode
+//            emailService.sendSimpleEmail(employeeModel.getEmail(),"Login Credentials","Hello "+name+",\n"+para+tag+footer);
+        }
+    }
+    static char[] random_Password(int len)
+    {
+        String Capital_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String Small_chars = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String symbols = "!@#$%^&*_=+-/.?<>)";
+
+
+        String values = Capital_chars + Small_chars +
+                numbers + symbols;
+
+        // Using random method
+        Random rndm_method = new Random();
+
+        char[] password = new char[len];
+
+        for (int i = 0; i < len; i++)
+        {
+            password[i] = values.charAt(rndm_method.nextInt(values.length()));
+        }
+        return password;
     }
 
     public Float CalculateGratuity(ExitListModel exitListModel) {

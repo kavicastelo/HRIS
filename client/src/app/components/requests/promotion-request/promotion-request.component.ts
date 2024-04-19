@@ -9,6 +9,7 @@ import {PromotionRequestService} from "../../../services/promotion-request.servi
 import {
   RequestPromotionDialogComponent
 } from "../../../shared/dialogs/request-promotion-dialog/request-promotion-dialog.component";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-promotion-request',
@@ -25,7 +26,7 @@ export class PromotionRequestComponent {
   promotionRequestsStore: any[] = [];
   filteredRequests: any;
 
-  constructor(private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar, private employeesService: EmployeesService, private promotionService: PromotionRequestService) {
+  constructor(private route: ActivatedRoute, private dialog: MatDialog, private cookieService: AuthService, private snackBar: MatSnackBar, private employeesService: EmployeesService, private promotionService: PromotionRequestService) {
   }
 
   async ngOnInit(): Promise<any> {
@@ -60,7 +61,7 @@ export class PromotionRequestComponent {
   }
 
   getUser() {
-    this.userId = localStorage.getItem('sender');
+    this.userId = this.cookieService.userID().toString();
     return this.employee = this.employeeDataStore.find((emp: any) => emp.id === this.userId);
   }
 

@@ -8,6 +8,7 @@ import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {PostVideoComponent} from "../../shared/components/profile/profile.component";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-requests',
@@ -32,6 +33,7 @@ export class RequestsComponent {
       private dialog: MatDialog,
       private router: Router,
       private route: ActivatedRoute,
+      private cookieService: AuthService,
       private logger: NGXLogger) {
     this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
@@ -43,7 +45,7 @@ export class RequestsComponent {
   }
 
   async ngOnInit(): Promise<any> {
-    this.loggedUserId = localStorage.getItem('sender')
+    this.loggedUserId = this.cookieService.userID().toString();
 
     await this.loadAllUsers().subscribe(()=>{
       this.getUser();

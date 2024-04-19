@@ -3,6 +3,7 @@ import {activityDataStore} from "../../../data-stores/activity-data-store";
 import {ActivatedRoute} from "@angular/router";
 import {Observable, tap} from "rxjs";
 import {ActivitiesService} from "../../../../services/activities.service";
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-profile-activity',
@@ -11,7 +12,7 @@ import {ActivitiesService} from "../../../../services/activities.service";
 })
 export class ProfileActivityComponent implements OnInit{
 
-  constructor(private route: ActivatedRoute, private activitiesService: ActivitiesService) {
+  constructor(private route: ActivatedRoute, private cookieService: AuthService, private activitiesService: ActivitiesService) {
   }
 
   activityDataStore: any;
@@ -20,7 +21,7 @@ export class ProfileActivityComponent implements OnInit{
   profileId:any;
 
   async ngOnInit(): Promise<any> {
-    this.userId = localStorage.getItem('sender')
+    this.userId = this.cookieService.userID().toString();
     await this.loadAllActivities().subscribe(()=>{
       this.loadProfileId()
       this.loadActivities()
