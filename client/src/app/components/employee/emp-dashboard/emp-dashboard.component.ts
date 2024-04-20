@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../../services/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -25,9 +25,16 @@ export class EmpDashboardComponent implements OnInit{
   employee: any = {
     id:''
   }
-  filteredEmployees: any;
+  filteredEmployees: any[] = [];
+  targetInput:any;
 
-  constructor(private route: ActivatedRoute, private dialog: MatDialog, private cookieService: AuthService, private snackBar: MatSnackBar, private employeesService: EmployeesService, private multimediaService: MultimediaService) {
+  constructor(private route: ActivatedRoute,
+              private dialog: MatDialog,
+              private router: Router,
+              private cookieService: AuthService,
+              private snackBar: MatSnackBar,
+              private employeesService: EmployeesService,
+              private multimediaService: MultimediaService) {
   }
 
   async ngOnInit(): Promise<any> {
@@ -43,7 +50,9 @@ export class EmpDashboardComponent implements OnInit{
   }
 
   filterEmployees(): any[]{
-    this.filteredEmployees = this.employeeDataStore.filter((data:any) => data.organizationId == this.employee.organizationId? this.filteredEmployees = [data]: this.filteredEmployees = null)
+    if (this.targetInput == undefined){
+      this.filteredEmployees = this.employeeDataStore.filter((data:any) => data.organizationId == this.employee.organizationId? this.filteredEmployees = [data]: this.filteredEmployees = [])
+    }
     this.filteredEmployees.sort((a:any, b:any) => {
       return new Date(b.jobData.doj).getTime() - new Date(a.jobData.doj).getTime()
     })
@@ -51,17 +60,21 @@ export class EmpDashboardComponent implements OnInit{
     return this.filteredEmployees;
   }
 
+  handleSearch(data: any): void {
+    this.targetInput = data as HTMLInputElement;
+    const value = this.targetInput.value
+    if (value) {
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) =>
+          data.organizationId === this.employee.organizationId && data.name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.employee.organizationId);
+    }
+  }
+
   getUser() {
     this.userId = this.cookieService.userID().toString();
     return this.employee = this.employeeDataStore.find((emp: any) => emp.id === this.userId);
-  }
-
-  requestLetter() {
-    const data = {
-      userId: this.employee.id,
-    }
-
-    this.toggleDialog('Request Transfer Letter', 'Describe the reason why you need a transfer?', data, RequestTransferDialogComponent)
   }
 
   toggleDialog(title: any, msg: any, data: any, component: any) {
@@ -84,35 +97,28 @@ export class EmpDashboardComponent implements OnInit{
     this.snackBar.open(message, action, {duration:3000})
   }
 
-  deleteRequest(id: any) {
+  deleteEmployee(id: any) {
     if (id){
       if (confirm('Are you sure you want to delete this request?')){
-        // this.transferService.deleteTransfer(id).subscribe(data => {
-        //
-        // }, error => {
-        //   console.log(error)
-        // })
+        this.employeesService.deleteEmployeeById(id).subscribe(data =>{
+          console.log(data)
+          this.loadAllUsers().subscribe(()=>{
+            this.filterEmployees()
+          })
+        }, error => {
+          console.log(error)
+        })
       }
     }
   }
 
-  editRequest(id: any, approved: any, reason: any) {
+  editEmployee(id: any) {
     if (id){
-      const data = {
-        id: id,
-        text: reason,
-        approved: approved
-      }
-
-      this.toggleDialog('Edit transfer request', 'Are you sure you want to edit this request?'+'\n'+
-          ' You can only perform this for \'PENDING\' requests.', data, RequestTransferDialogComponent)
     }
   }
 
-  popupData(id: any) {
-    // const data = this.filteredRequests.filter((request:any) => request.id == id);
-    //
-    // this.toggleDialog('','', data, LetterDataDialogComponent)
+  navigateToProfile(id: any) {
+    this.router.navigate([`/profile/${id}/about/${id}`]);
   }
 
   convertToSafeUrl(url:any):SafeResourceUrl{
