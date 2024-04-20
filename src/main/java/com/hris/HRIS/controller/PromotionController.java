@@ -3,7 +3,6 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.model.PromotionModel;
-import com.hris.HRIS.model.TransferModel;
 import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.PromotionRepository;
 import com.hris.HRIS.service.EmailService;
@@ -14,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -164,20 +164,33 @@ public class PromotionController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PutMapping("/approve/email/{email}")
-    public ResponseEntity<ApiResponse> approveLetterByEmail(@PathVariable String email){
-        Optional<PromotionModel> promotionModelOptional = promotionRepository.findByEmail(email);
+    @PutMapping("/status/id/{id}")
+    public ResponseEntity<ApiResponse> approveLetter(@PathVariable String id, @RequestBody PromotionModel promotionModel){
+        Optional<PromotionModel> promotionModelOptional = promotionRepository.findById(id);
 
         if(promotionModelOptional.isPresent()){
             PromotionModel existingLetter = promotionModelOptional.get();
-            existingLetter.setApproved("");
+            existingLetter.setApproved(promotionModel.getApproved());
 
-            promotionRepository.save(existingLetter);
+            if (promotionModel.getJobData() != null){
+                existingLetter.setJobData(promotionModel.getJobData());
+                promotionRepository.save(existingLetter);
+            }
+            else {
+                promotionRepository.save(existingLetter);
+            }
 
-            systemAutomateService.UpdateEmployeeJobDataPromotion(existingLetter);
+            if (Objects.equals(promotionModel.getApproved(), "approved")){
+                systemAutomateService.UpdateEmployeeJobDataPromotion(existingLetter);
 
-            approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
-            emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
+                approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
+                //        TODO: uncomment in prod mode
+//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+            } else if (Objects.equals(promotionModel.getApproved(),"declined")){
+                approvedLetter = lettersGenerationService.generateRejectedPromotionLetter(existingLetter);
+                //        TODO: uncomment in prod mode
+//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Our Apologies!\nWe declined your promotion request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+            }
         }
 
         ApiResponse apiResponse = new ApiResponse(approvedLetter);

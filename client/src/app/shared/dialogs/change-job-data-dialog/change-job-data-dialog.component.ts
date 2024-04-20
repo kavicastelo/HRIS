@@ -59,5 +59,15 @@ export class ChangeJobDataDialogComponent {
         console.log(error)
       })
     }
+    else if (this.receivedData.data.type == 'promotion'){
+      this.promotionRequestService.changeStatus(this.receivedData.data.id,{
+        jobData: data,
+        approved: "approved"
+      }).subscribe(data => {
+        this.closePopup()
+      }, error => {
+        console.log(error)
+      })
+    }
   }
 }

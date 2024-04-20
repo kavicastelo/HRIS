@@ -185,7 +185,7 @@ public class TransferController {
                 //        TODO: uncomment in prod mode
 //                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Congratulations!\nWe approved your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
             } else if (Objects.equals(transferModel.getApproved(),"declined")){
-                approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
+                approvedLetter = lettersGenerationService.generateRejectedTransferLetter(existingLetter);
                 //        TODO: uncomment in prod mode
 //                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Our Apologies!\nWe declined your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
             }

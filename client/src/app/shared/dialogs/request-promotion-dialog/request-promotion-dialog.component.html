@@ -7,5 +7,5 @@
 </div>
 <div mat-dialog-actions>
     <button (click)="closePopup()" mat-raised-button color="secondary" class="me-2">Cancel</button>
-    <button (click)="receivedData.data.id?editRequest():saveRequest()" mat-raised-button color="primary" [disabled]="textAreaForm.invalid && !buttonDisabled">{{receivedData.data.id?'Edit Request':'Send Request'}}</button>
+    <button (click)="receivedData.data.id?editRequest():saveRequest()" mat-raised-button color="primary" [disabled]="((textAreaForm.invalid) && !(receivedData.data.approved === 'pending'))">{{receivedData.data.id?'Edit Request':'Send Request'}}</button>
 </div>
