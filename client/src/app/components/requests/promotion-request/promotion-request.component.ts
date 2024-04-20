@@ -86,7 +86,7 @@ export class PromotionRequestComponent {
     });
     _popup.afterClosed().subscribe(item => {
       this.loadAllPromotionRequests().subscribe(()=>{
-        this.openSnackBar('Requests reloaded!', 'OK')
+        // this.openSnackBar('Requests reloaded!', 'OK')
       });
     })
   }

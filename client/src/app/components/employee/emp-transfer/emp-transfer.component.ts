@@ -10,6 +10,9 @@ import {
   RequestTransferDialogComponent
 } from "../../../shared/dialogs/request-transfer-dialog/request-transfer-dialog.component";
 import {LetterDataDialogComponent} from "../../../shared/dialogs/letter-data-dialog/letter-data-dialog.component";
+import {
+  ChangeJobDataDialogComponent
+} from "../../../shared/dialogs/change-job-data-dialog/change-job-data-dialog.component";
 
 @Component({
   selector: 'app-emp-transfer',
@@ -52,7 +55,7 @@ export class EmpTransferComponent {
   }
 
   filterLetters(): any[]{
-    this.filteredRequests = this.transferRequestsStore;
+    this.filteredRequests = this.transferRequestsStore.filter((data:any)=> data.approved == "pending");
     this.filteredRequests.sort((a:any, b:any) => {
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     })
@@ -78,7 +81,7 @@ export class EmpTransferComponent {
     });
     _popup.afterClosed().subscribe(item => {
       this.loadAllTransferRequests().subscribe(()=>{
-        this.openSnackBar('Requests reloaded!', 'OK')
+        // this.openSnackBar('Requests reloaded!', 'OK')
       });
     })
   }
@@ -87,13 +90,29 @@ export class EmpTransferComponent {
     this.snackBar.open(message, action, {duration:3000})
   }
 
-  approveRequest(id: any) {
+  approveRequest(id: any, jobData:any) {
     if (id){
+      const data:any = {
+        id:id,
+        type:'transfer',
+        jobData:jobData
+      }
+      this.toggleDialog('Approve Request', 'Change employee\'s job details before confirm the task', data, ChangeJobDataDialogComponent)
     }
   }
 
   rejectRequest(id: any) {
     if (id){
+      if(confirm('Are you sure to decline the request?')){
+        this.transferService.changeStatus(id, {
+          approved: "declined",
+          jobData: null
+        }).subscribe(data => {
+          console.log(data)
+        }, error => {
+          console.log(error)
+        })
+      }
     }
   }
 
