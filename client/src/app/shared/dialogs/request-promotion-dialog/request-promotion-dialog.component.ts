@@ -12,7 +12,6 @@ import {PromotionRequestService} from "../../../services/promotion-request.servi
 export class RequestPromotionDialogComponent {
 
   receivedData:any;
-  buttonDisabled: boolean = true;
 
   textAreaForm = new FormGroup({
     text: new FormControl('',[
@@ -27,7 +26,6 @@ export class RequestPromotionDialogComponent {
     this.receivedData = this.data
 
     if (this.receivedData.data.approved == 'pending'){
-      this.buttonDisabled = false;
       this.textAreaForm.get('text')?.patchValue(this.receivedData.data.text)
     }
   }

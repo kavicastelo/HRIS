@@ -10,6 +10,9 @@ import {
   RequestPromotionDialogComponent
 } from "../../../shared/dialogs/request-promotion-dialog/request-promotion-dialog.component";
 import {LetterDataDialogComponent} from "../../../shared/dialogs/letter-data-dialog/letter-data-dialog.component";
+import {
+  ChangeJobDataDialogComponent
+} from "../../../shared/dialogs/change-job-data-dialog/change-job-data-dialog.component";
 
 @Component({
   selector: 'app-emp-promotion',
@@ -87,13 +90,29 @@ export class EmpPromotionComponent {
     this.snackBar.open(message, action, {duration:3000})
   }
 
-  approveRequest(id: any) {
+  approveRequest(id: any, jobData:any) {
     if (id){
+      const data:any = {
+        id:id,
+        type:'promotion',
+        jobData:jobData
+      }
+      this.toggleDialog('Approve Request', 'Change employee\'s job details before confirm the task', data, ChangeJobDataDialogComponent)
     }
   }
 
   rejectRequest(id: any) {
     if (id){
+      if(confirm('Are you sure to decline the request?')){
+        this.promotionService.changeStatus(id, {
+          approved: "declined",
+          jobData: null
+        }).subscribe(data => {
+          console.log(data)
+        }, error => {
+          console.log(error)
+        })
+      }
     }
   }
 
