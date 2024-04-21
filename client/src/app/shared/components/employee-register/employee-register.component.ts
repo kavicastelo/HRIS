@@ -1,16 +1,21 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EmployeesService} from "../../../services/employees.service";
 import {NGXLogger} from "ngx-logger";
 import {DepartmentService} from "../../../services/department.service";
+import {AuthService} from "../../../services/auth.service";
+import {Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-employee-register',
   templateUrl: './employee-register.component.html',
   styleUrls: ['./employee-register.component.scss']
 })
-export class EmployeeRegisterComponent {
+export class EmployeeRegisterComponent implements OnInit{
   employeeForm: FormGroup | any;
+  organizationId: any;
+  departmentId:any
+  departmentDataStore:any;
 
   departmentForm = new FormGroup({
     name: new FormControl(null,[
@@ -24,15 +29,15 @@ export class EmployeeRegisterComponent {
     ])
   })
 
-  constructor(private formBuilder: FormBuilder, private employeeService: EmployeesService, private logger: NGXLogger, private departmentService:DepartmentService) { }
+  constructor(private formBuilder: FormBuilder, private employeeService: EmployeesService, private logger: NGXLogger, private departmentService:DepartmentService, private cookieService: AuthService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
+    sessionStorage.setItem('orgId', this.cookieService.organization())
     this.employeeForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
       phone: ['', Validators.required],
       address: ['', Validators.required],
-      organizationId: ['', Validators.required],
       departmentId: ['', Validators.required],
       channels: ['', Validators.required],
       jobData: this.formBuilder.group({
@@ -45,9 +50,12 @@ export class EmployeeRegisterComponent {
       dob: ['', Validators.required],
       nic: ['', Validators.required],
       photo: [null, Validators.required],
-      status: ['', Validators.required],
-      level: ['', Validators.required]
+      status: ['', Validators.required]
     });
+
+    this.loadAllDepartments().subscribe(()=>{
+      //TODO: do something
+    })
   }
 
   onSubmit() {
@@ -78,6 +86,12 @@ export class EmployeeRegisterComponent {
     this.employeeForm.patchValue({ photo: file });
   }
 
+  loadAllDepartments(): Observable<any> {
+    return this.departmentService.getAllDepartments().pipe(
+        tap(data => this.departmentDataStore = data)
+    );
+  }
+
   addDepartment() {
     if (this.departmentForm.valid) {
       this.departmentService.addDepartment({
@@ -91,5 +105,9 @@ export class EmployeeRegisterComponent {
         this.logger.error(error);
       })
     }
+  }
+
+  chooseDepartment(employeeRegisterComponent: EmployeeRegisterComponent) {
+
   }
 }

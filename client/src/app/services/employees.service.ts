@@ -160,7 +160,7 @@ export class EmployeesService {
         email: form.get('email') as string,
         phone: form.get('phone') as string,
         address: form.get('address') as string,
-        organizationId: form.get('organizationId') as string,
+        organizationId: sessionStorage.getItem('orgId') as string,
         departmentId: form.get('departmentId') as string,
         jobData: sessionStorage.getItem('jobData'),
         gender: form.get('gender') as string,
@@ -168,7 +168,7 @@ export class EmployeesService {
         nic: form.get('nic') as string,
         photo: fileInput,
         status: form.get('status') as string,
-        level: form.get('level') as string,
+        level: "1" as string,
       };
 
       const formData = new FormData();
