@@ -18,7 +18,7 @@ export class EmployeesService {
 
     this.http.post(this.baseUrl + 'employee/save', formData, {headers}).subscribe(
       response => {
-        console.log('Employee data uploaded successfully:', response);
+        sessionStorage.clear();
       },
       error => {
         console.error('Error uploading employee data:', error);
@@ -156,12 +156,12 @@ export class EmployeesService {
       const jobData = form.get('jobData') as Object;
 
       const requestBody:any = {
-        name: form.get('name') as string,
+        name: form.get('name')+ " "+ form.get('lname') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
-        address: form.get('address') as string,
+        address: form.get('address') + " " + form.get('city') + " " + form.get('state') + " " + form.get('zip') as string,
         organizationId: sessionStorage.getItem('orgId') as string,
-        departmentId: form.get('departmentId') as string,
+        departmentId: sessionStorage.getItem('depId') as string,
         jobData: sessionStorage.getItem('jobData'),
         gender: form.get('gender') as string,
         dob: form.get('dob') as string,

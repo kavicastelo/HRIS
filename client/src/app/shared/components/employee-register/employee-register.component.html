@@ -5,67 +5,106 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam amet doloremque illum impedit in modi
                 nam sequi, tempora unde veritatis!</p>
 
-            <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="employeeForm">
                 <div class="row">
                     <h4 class="my-3">Personal Info</h4>
-                    <div class="col-12 col-md-6">
-                        <label for="name">FIRSTNAME&ast;</label>
-                        <input type="text" id="name" formControlName="name" class="form-control" placeholder="John" >
+
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="profile-img me-2">
+                            <img id="empAddProfile" [src]="chosenPhoto==null?defaultPhoto():onFileSelected()" alt="profile image">
+                        </div>
+                        <div class="profile-img-setting">
+                            <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .pjp</span>
+                            <div class="d-flex">
+                                <button class="btn-1 me-2 px-2"><mat-icon class="d-flex d-md-none">add</mat-icon><span class="d-none d-md-flex w-col" (click)="choosePhoto()">Upload Image</span></button>
+                                <button class="btn-3 px-2"><mat-icon class="d-flex d-md-none">delete_sweep</mat-icon><span class="d-none d-md-flex" (click)="defaultPhoto()">Remove</span></button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label for="lname">LASTNAME&ast;</label>
-                        <input type="text" id="lname" formControlName="name" class="form-control" placeholder="Doe" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>FIRSTNAME</mat-label>
+                            <input matInput id="name" formControlName="name" placeholder="John" >
+                        </mat-form-field>
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label for="phone">PHONE&ast;</label>
-                        <input type="text" id="phone" formControlName="phone" class="form-control" placeholder="+94764534990" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>LASTNAME</mat-label>
+                            <input matInput id="lname" formControlName="lname" placeholder="Doe" >
+                        </mat-form-field>
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label for="email">EMAIL&ast;</label>
-                        <input type="text" id="email" formControlName="email" class="form-control" placeholder="john@gmail.com" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>PHONE</mat-label>
+                            <input matInput id="phone" formControlName="phone" placeholder="+94764534990" >
+                        </mat-form-field>
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label for="gender">GENDER&ast;</label>
-                        <input type="text" id="gender" formControlName="gender" class="form-control" placeholder="Male" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>EMAIL</mat-label>
+                            <input matInput id="email" formControlName="email" placeholder="john@gmail.com" >
+                        </mat-form-field>
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label for="dob">DATE OF BIRTH&ast;</label>
-                        <input type="text" id="dob" formControlName="dob" class="form-control" placeholder="1995/09/18" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>GENDER</mat-label>
+                            <input matInput id="gender" formControlName="gender"  placeholder="Male" >
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>DATE OF BIRTH</mat-label>
+                            <input matInput [matDatepicker]="dob" formControlName="dob">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="dob"></mat-datepicker-toggle>
+                            <mat-datepicker #dob></mat-datepicker>
+                        </mat-form-field>
                     </div>
 
                     <div class="col-12 col-md-6">
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label for="nic">NIC&ast;</label>
-                        <input type="text" id="nic" formControlName="nic" class="form-control" placeholder="9567568909v" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>NIC</mat-label>
+                            <input matInput id="nic" formControlName="nic" placeholder="9567568909v" >
+                        </mat-form-field>
                     </div>
 
                     <h4 class="my-3">Address</h4>
 
                     <div class="col-12">
-                        <label for="address">STREET&ast;</label>
-                        <input type="text" id="address" formControlName="address" class="form-control" placeholder="123 Street" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>STREET</mat-label>
+                            <input matInput id="address" formControlName="address" placeholder="123 Street" >
+                        </mat-form-field>
                     </div>
 
                     <div class="col-4">
-                        <label for="city">CITY&ast;</label>
-                        <input type="text" id="city" formControlName="address" class="form-control" placeholder="Matara" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>CITY</mat-label>
+                            <input matInput id="city" formControlName="city" placeholder="Matara" >
+                        </mat-form-field>
                     </div>
 
                     <div class="col-4">
-                        <label for="state">STATE/PROVINCE</label>
-                        <input type="text" id="state" formControlName="address" class="form-control" placeholder="Southern" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>STATE/PROVINCE</mat-label>
+                            <input matInput id="state" formControlName="state" placeholder="Southern" >
+                        </mat-form-field>
                     </div>
 
                     <div class="col-4">
-                        <label for="zip">POSTAL/ZIP</label>
-                        <input type="text" id="zip" formControlName="address" class="form-control" placeholder="81100" >
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>POSTAL/ZIP</mat-label>
+                            <input matInput id="zip" formControlName="zip" placeholder="81100" >
+                        </mat-form-field>
                     </div>
 
                     <h4 class="my-3">Organization Info</h4>
@@ -73,50 +112,52 @@
                     <div formGroupName="jobData">
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <label for="department">DEPARTMENT&ast;</label>
-                                <select name="department" id="department" formControlName="department" class="form-control" (selectionchange)="chooseDepartment(this)">
-                                    <option *ngFor="let d of departmentDataStore" value="{{d.id}}">{{d.name}}</option>
-                                </select>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>DEPARTMENT</mat-label>
+                                    <mat-select id="department" formControlName="department" [(value)]="selectedDepartment">
+                                        <mat-option *ngFor="let d of departmentDataStore" [value]="d.id">{{d.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label for="dep-btn" class="d-none d-md-block">&nbsp;</label>
                                 <button id="dep-btn" class="btn-1 px-2"><mat-icon>add</mat-icon>Create New Department</button>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label for="position">POSITION&ast;</label>
-                                <input id="position" formControlName="position" type="text" placeholder="Manager" class="form-control"/>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>POSITION</mat-label>
+                                    <input matInput formControlName="position" type="text" placeholder="Manager"/>
+                                </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label for="salary">SALARY&ast;</label>
-                                <input id="salary" formControlName="salary" type="text" placeholder="12000" class="form-control"/>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>SALARY</mat-label>
+                                    <input matInput id="salary" formControlName="salary" type="text" placeholder="12000"/>
+                                </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6">
-                                <label for="doj">JOINING DATE&ast;</label>
-                                <input id="doj" formControlName="doj" type="text" placeholder="2024/03/30" class="form-control"/>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>JOINING DATE</mat-label>
+                                    <input matInput [matDatepicker]="doj" formControlName="doj">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="doj"></mat-datepicker-toggle>
+                                    <mat-datepicker #doj></mat-datepicker>
+                                </mat-form-field>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
-                        <label for="status">STATUS&ast;</label>
-                        <input type="text" id="status" formControlName="status" placeholder="Onboarding" class="form-control">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>STATUS</mat-label>
+                            <input matInput id="status" formControlName="status" placeholder="Onboarding">
+                        </mat-form-field>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <!--                                cancel button-->
                     </div>
                     <div class="col-12 col-md-6">
-                        <button type="submit" class="btn-1 my-4 w-100">Submit</button>
+                        <button type="submit" class="btn-1 my-4 w-100" (click)="onSubmit()">Submit</button>
                     </div>
-                </div>
-
-                <div>
-                    <label for="departmentId">Department ID:</label>
-                    <input type="text" id="departmentId" formControlName="departmentId">
-                </div>
-
-                <div>
-                    <label for="photo">Photo:</label>
-                    <input type="file" name="photo" id="photo" (change)="handleFileInput($event)" accept="image/*"/>
                 </div>
             </form>
         </div>
