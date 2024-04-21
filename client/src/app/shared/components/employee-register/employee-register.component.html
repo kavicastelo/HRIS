@@ -10,32 +10,32 @@
                     <h4 class="my-3">Personal Info</h4>
                     <div class="col-12 col-md-6">
                         <label for="name">FIRSTNAME&ast;</label>
-                        <input type="text" id="name" formControlName="name" class="form-control">
+                        <input type="text" id="name" formControlName="name" class="form-control" placeholder="John" >
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="lname">LASTNAME&ast;</label>
-                        <input type="text" id="lname" formControlName="name" class="form-control">
+                        <input type="text" id="lname" formControlName="name" class="form-control" placeholder="Doe" >
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="phone">PHONE&ast;</label>
-                        <input type="text" id="phone" formControlName="phone" class="form-control">
+                        <input type="text" id="phone" formControlName="phone" class="form-control" placeholder="+94764534990" >
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="email">EMAIL&ast;</label>
-                        <input type="text" id="email" formControlName="email" class="form-control">
+                        <input type="text" id="email" formControlName="email" class="form-control" placeholder="john@gmail.com" >
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="gender">GENDER&ast;</label>
-                        <input type="text" id="gender" formControlName="gender" class="form-control">
+                        <input type="text" id="gender" formControlName="gender" class="form-control" placeholder="Male" >
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="dob">DATE OF BIRTH&ast;</label>
-                        <input type="text" id="dob" formControlName="dob" class="form-control">
+                        <input type="text" id="dob" formControlName="dob" class="form-control" placeholder="1995/09/18" >
                     </div>
 
                     <div class="col-12 col-md-6">
@@ -43,29 +43,29 @@
 
                     <div class="col-12 col-md-6">
                         <label for="nic">NIC&ast;</label>
-                        <input type="text" id="nic" formControlName="nic" class="form-control">
+                        <input type="text" id="nic" formControlName="nic" class="form-control" placeholder="9567568909v" >
                     </div>
 
                     <h4 class="my-3">Address</h4>
 
                     <div class="col-12">
                         <label for="address">STREET&ast;</label>
-                        <input type="text" id="address" formControlName="address" class="form-control">
+                        <input type="text" id="address" formControlName="address" class="form-control" placeholder="123 Street" >
                     </div>
 
                     <div class="col-4">
                         <label for="city">CITY&ast;</label>
-                        <input type="text" id="city" formControlName="address" class="form-control">
+                        <input type="text" id="city" formControlName="address" class="form-control" placeholder="Matara" >
                     </div>
 
                     <div class="col-4">
                         <label for="state">STATE/PROVINCE</label>
-                        <input type="text" id="state" formControlName="address" class="form-control">
+                        <input type="text" id="state" formControlName="address" class="form-control" placeholder="Southern" >
                     </div>
 
                     <div class="col-4">
                         <label for="zip">POSTAL/ZIP</label>
-                        <input type="text" id="zip" formControlName="address" class="form-control">
+                        <input type="text" id="zip" formControlName="address" class="form-control" placeholder="81100" >
                     </div>
 
                     <h4 class="my-3">Organization Info</h4>
@@ -74,40 +74,39 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <label for="department">DEPARTMENT&ast;</label>
-                                <input id="department" formControlName="department" type="text" placeholder="Department" class="form-control"/>
+                                <select name="department" id="department" formControlName="department" class="form-control" (selectionchange)="chooseDepartment(this)">
+                                    <option *ngFor="let d of departmentDataStore" value="{{d.id}}">{{d.name}}</option>
+                                </select>
                             </div>
                             <div class="col-12 col-md-6">
+                                <label for="dep-btn" class="d-none d-md-block">&nbsp;</label>
+                                <button id="dep-btn" class="btn-1 px-2"><mat-icon>add</mat-icon>Create New Department</button>
                             </div>
                             <div class="col-12 col-md-6">
                                 <label for="position">POSITION&ast;</label>
-                                <input id="position" formControlName="position" type="text" placeholder="Position" class="form-control"/>
+                                <input id="position" formControlName="position" type="text" placeholder="Manager" class="form-control"/>
                             </div>
                             <div class="col-12 col-md-6">
                                 <label for="salary">SALARY&ast;</label>
-                                <input id="salary" formControlName="salary" type="text" placeholder="Salary" class="form-control"/>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <label for="status">STATUS&ast;</label>
-                                <input type="text" id="status" formControlName="status" placeholder="Onboarding" class="form-control">
+                                <input id="salary" formControlName="salary" type="text" placeholder="12000" class="form-control"/>
                             </div>
                             <div class="col-12 col-md-6">
                                 <label for="doj">JOINING DATE&ast;</label>
-                                <input id="doj" formControlName="doj" type="text" placeholder="Date of Joining" class="form-control"/>
-                            </div>
-
-                            <div class="col-12 col-md-6">
-<!--                                cancel button-->
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <button type="submit" class="btn-1 my-4 w-100">Submit</button>
+                                <input id="doj" formControlName="doj" type="text" placeholder="2024/03/30" class="form-control"/>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-12 col-md-6">
+                        <label for="status">STATUS&ast;</label>
+                        <input type="text" id="status" formControlName="status" placeholder="Onboarding" class="form-control">
+                    </div>
 
-                <div>
-                    <label for="organizationId">Organization ID:</label>
-                    <input type="text" id="organizationId" formControlName="organizationId">
+                    <div class="col-12 col-md-6">
+                        <!--                                cancel button-->
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <button type="submit" class="btn-1 my-4 w-100">Submit</button>
+                    </div>
                 </div>
 
                 <div>
@@ -118,11 +117,6 @@
                 <div>
                     <label for="photo">Photo:</label>
                     <input type="file" name="photo" id="photo" (change)="handleFileInput($event)" accept="image/*"/>
-                </div>
-
-                <div>
-                    <label for="level">Level:</label>
-                    <input type="text" id="level" formControlName="level">
                 </div>
             </form>
         </div>
