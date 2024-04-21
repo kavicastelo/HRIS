@@ -1,91 +1,151 @@
-<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="name">Name:</label>
-    <input type="text" id="name" formControlName="name">
-  </div>
+<div class="container">
+    <div class="card">
+        <div class="container py-2">
+            <h2>Registration Form</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam amet doloremque illum impedit in modi
+                nam sequi, tempora unde veritatis!</p>
 
-  <div>
-    <label for="email">Email:</label>
-    <input type="text" id="email" formControlName="email">
-  </div>
+            <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <h4 class="my-3">Personal Info</h4>
+                    <div class="col-12 col-md-6">
+                        <label for="name">FIRSTNAME&ast;</label>
+                        <input type="text" id="name" formControlName="name" class="form-control">
+                    </div>
 
-  <div>
-    <label for="phone">Phone:</label>
-    <input type="text" id="phone" formControlName="phone">
-  </div>
+                    <div class="col-12 col-md-6">
+                        <label for="lname">LASTNAME&ast;</label>
+                        <input type="text" id="lname" formControlName="name" class="form-control">
+                    </div>
 
-  <div>
-    <label for="address">Address:</label>
-    <input type="text" id="address" formControlName="address">
-  </div>
+                    <div class="col-12 col-md-6">
+                        <label for="phone">PHONE&ast;</label>
+                        <input type="text" id="phone" formControlName="phone" class="form-control">
+                    </div>
 
-  <div>
-    <label for="organizationId">Organization ID:</label>
-    <input type="text" id="organizationId" formControlName="organizationId">
-  </div>
+                    <div class="col-12 col-md-6">
+                        <label for="email">EMAIL&ast;</label>
+                        <input type="text" id="email" formControlName="email" class="form-control">
+                    </div>
 
-  <div>
-    <label for="departmentId">Department ID:</label>
-    <input type="text" id="departmentId" formControlName="departmentId">
-  </div>
+                    <div class="col-12 col-md-6">
+                        <label for="gender">GENDER&ast;</label>
+                        <input type="text" id="gender" formControlName="gender" class="form-control">
+                    </div>
 
-  <div formGroupName="jobData">
-    <input formControlName="position" type="text" placeholder="Position" />
-    <input formControlName="department" type="text" placeholder="Department" />
-    <input formControlName="salary" type="text" placeholder="Salary" />
-    <input formControlName="doj" type="text" placeholder="Date of Joining" />
-  </div>
+                    <div class="col-12 col-md-6">
+                        <label for="dob">DATE OF BIRTH&ast;</label>
+                        <input type="text" id="dob" formControlName="dob" class="form-control">
+                    </div>
 
-  <div>
-    <label for="gender">Gender:</label>
-    <input type="text" id="gender" formControlName="gender">
-  </div>
+                    <div class="col-12 col-md-6">
+                    </div>
 
-  <div>
-    <label for="dob">Date of Birth:</label>
-    <input type="text" id="dob" formControlName="dob">
-  </div>
+                    <div class="col-12 col-md-6">
+                        <label for="nic">NIC&ast;</label>
+                        <input type="text" id="nic" formControlName="nic" class="form-control">
+                    </div>
 
-  <div>
-    <label for="nic">NIC:</label>
-    <input type="text" id="nic" formControlName="nic">
-  </div>
+                    <h4 class="my-3">Address</h4>
 
-  <div>
-    <label for="photo">Photo:</label>
-    <input type="file" name="photo" id="photo" (change)="handleFileInput($event)" accept="image/*" />
-  </div>
+                    <div class="col-12">
+                        <label for="address">STREET&ast;</label>
+                        <input type="text" id="address" formControlName="address" class="form-control">
+                    </div>
 
-  <div>
-    <label for="status">Status:</label>
-    <input type="text" id="status" formControlName="status">
-  </div>
+                    <div class="col-4">
+                        <label for="city">CITY&ast;</label>
+                        <input type="text" id="city" formControlName="address" class="form-control">
+                    </div>
 
-  <div>
-    <label for="level">Level:</label>
-    <input type="text" id="level" formControlName="level">
-  </div>
+                    <div class="col-4">
+                        <label for="state">STATE/PROVINCE</label>
+                        <input type="text" id="state" formControlName="address" class="form-control">
+                    </div>
 
-  <button type="submit">Submit</button>
-</form>
+                    <div class="col-4">
+                        <label for="zip">POSTAL/ZIP</label>
+                        <input type="text" id="zip" formControlName="address" class="form-control">
+                    </div>
+
+                    <h4 class="my-3">Organization Info</h4>
+
+                    <div formGroupName="jobData">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label for="department">DEPARTMENT&ast;</label>
+                                <input id="department" formControlName="department" type="text" placeholder="Department" class="form-control"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="position">POSITION&ast;</label>
+                                <input id="position" formControlName="position" type="text" placeholder="Position" class="form-control"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="salary">SALARY&ast;</label>
+                                <input id="salary" formControlName="salary" type="text" placeholder="Salary" class="form-control"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="status">STATUS&ast;</label>
+                                <input type="text" id="status" formControlName="status" placeholder="Onboarding" class="form-control">
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="doj">JOINING DATE&ast;</label>
+                                <input id="doj" formControlName="doj" type="text" placeholder="Date of Joining" class="form-control"/>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+<!--                                cancel button-->
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <button type="submit" class="btn-1 my-4 w-100">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="organizationId">Organization ID:</label>
+                    <input type="text" id="organizationId" formControlName="organizationId">
+                </div>
+
+                <div>
+                    <label for="departmentId">Department ID:</label>
+                    <input type="text" id="departmentId" formControlName="departmentId">
+                </div>
+
+                <div>
+                    <label for="photo">Photo:</label>
+                    <input type="file" name="photo" id="photo" (change)="handleFileInput($event)" accept="image/*"/>
+                </div>
+
+                <div>
+                    <label for="level">Level:</label>
+                    <input type="text" id="level" formControlName="level">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <hr>
 
 <form [formGroup]="departmentForm" (ngSubmit)="addDepartment()">
-  <div>
-    <label for="d-name">Name:</label>
-    <input type="text" id="d-name" formControlName="name">
-  </div>
+    <div>
+        <label for="d-name">Name:</label>
+        <input type="text" id="d-name" formControlName="name">
+    </div>
 
-  <div>
-    <label for="d-description">Description</label>
-    <input type="text" id="d-description" formControlName="description">
-  </div>
+    <div>
+        <label for="d-description">Description</label>
+        <input type="text" id="d-description" formControlName="description">
+    </div>
 
-  <div>
-    <label for="d-organizationId">OrganizationId</label>
-    <input type="text" id="d-organizationId" formControlName="organizationId">
-  </div>
+    <div>
+        <label for="d-organizationId">OrganizationId</label>
+        <input type="text" id="d-organizationId" formControlName="organizationId">
+    </div>
 
-  <button type="submit">Submit</button>
+    <button type="submit">Submit</button>
 </form>
