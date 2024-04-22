@@ -23,13 +23,13 @@
 
           <ul class="list-2">
             <li><span>{{e.name}}</span></li>
-            <li><span>{{e.dob}}</span></li>
+            <li><span>{{e.dob | dateFormat}}</span></li>
             <li><span>{{e.nic}}</span></li>
             <li><span>{{e.address}}</span></li>
             <li><span>{{e.email}}</span></li>
             <li><span>{{e.phone}}</span></li>
             <li><span>{{e.jobData.department}}</span></li>
-            <li><span>{{e.jobData.doj}}</span></li>
+            <li><span>{{e.jobData.doj | dateFormat}}</span></li>
             <li><span>{{e.status}}</span></li>
           </ul>
         </div>

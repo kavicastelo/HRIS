@@ -85,7 +85,6 @@ public class SystemAutomateService {
             credentialsModel.setPassword(password);
             credentialsModel.setLevel("1");
             credentialsRepository.save(credentialsModel);
-            System.out.println("Hello "+name+",\n"+para+tag+footer);
 //            TODO: //uncomment email service in prod mode
 //            emailService.sendSimpleEmail(employeeModel.getEmail(),"Login Credentials","Hello "+name+",\n"+para+tag+footer);
         }
@@ -111,6 +110,15 @@ public class SystemAutomateService {
             password[i] = values.charAt(rndm_method.nextInt(values.length()));
         }
         return password;
+    }
+
+    public void DeleteCredentials(String id){
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel employeeModel = optionalEmployeeModel.get();
+            credentialsRepository.deleteByEmail(employeeModel.getEmail());
+        }
     }
 
     public Float CalculateGratuity(ExitListModel exitListModel) {

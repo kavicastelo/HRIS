@@ -163,6 +163,8 @@ public class EmployeeController {
 
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteEmployee(@PathVariable String id){
+
+        systemAutomateService.DeleteCredentials(id);
         systemAutomateService.deleteEmployeeAndUpdateOrganization(id);
 
         ApiResponse apiResponse = new ApiResponse("Employee deleted successfully");

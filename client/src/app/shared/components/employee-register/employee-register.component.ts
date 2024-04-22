@@ -46,6 +46,21 @@ export class EmployeeRegisterComponent implements OnInit{
               private cookieService: AuthService) { }
 
   async ngOnInit(): Promise<any> {
+
+    this.initForm()
+
+    this.defaultPhoto()
+
+    this.loadAllDepartments().subscribe(()=>{
+      //TODO: do something
+    })
+
+    this.loadAllUsers().subscribe(()=>{
+      this.getUser()
+    })
+  }
+
+  initForm(){
     sessionStorage.setItem('orgId', this.cookieService.organization())
     this.employeeForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -65,17 +80,9 @@ export class EmployeeRegisterComponent implements OnInit{
       gender: ['', Validators.required],
       dob: ['', Validators.required],
       nic: ['', Validators.required],
-      photo: [null, Validators.required],
+      photo: [null],
       status: ['', Validators.required]
     });
-
-    this.loadAllDepartments().subscribe(()=>{
-      //TODO: do something
-    })
-
-    this.loadAllUsers().subscribe(()=>{
-      this.getUser()
-    })
   }
 
   loadAllUsers(): Observable<any>{
@@ -116,6 +123,7 @@ export class EmployeeRegisterComponent implements OnInit{
       sessionStorage.setItem('depId', this.selectedDepartment);
 
       this.employeeService.uploadEmployeeData(formData);
+      this.employeeForm.reset();
     } else {
       // Handle form validation errors
     }
@@ -183,6 +191,7 @@ export class EmployeeRegisterComponent implements OnInit{
   }
 
   defaultPhoto() {
+    this.chosenPhoto = null;
     // Create a path to the default image file in the assets folder
     const defaultImagePath = 'assets/imgs/shared/default_profile.jpg';
 
@@ -195,6 +204,7 @@ export class EmployeeRegisterComponent implements OnInit{
 
           // Assign the default image file to the chosenPhoto variable
           this.chosenPhoto = defaultImageFile;
+          this.employeeForm.patchValue({ photo: this.chosenPhoto });
 
           // Display the default image in the UI
           const imgtag: any = document.getElementById("empAddProfile");
