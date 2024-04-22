@@ -123,6 +123,7 @@ export class EmployeeRegisterComponent implements OnInit{
       sessionStorage.setItem('depId', this.selectedDepartment);
 
       this.employeeService.uploadEmployeeData(formData);
+      this.employeeForm.reset();
     } else {
       // Handle form validation errors
     }
