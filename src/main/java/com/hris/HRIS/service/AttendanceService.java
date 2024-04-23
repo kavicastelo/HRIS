@@ -4,7 +4,10 @@ import com.hris.HRIS.model.AttendanceModel;
 import com.hris.HRIS.repository.AttendanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AttendanceService {
@@ -48,5 +51,16 @@ public class AttendanceService {
         } else {
             return false; // Return false if the record with the given ID is not found
         }
+    }
+
+    // Calculate late minutes
+    public long calculateLateMinutes(AttendanceModel attendanceModel, Date expectedInTime) {
+        long diffInMillies = attendanceModel.getRecordInTime().getTime() - expectedInTime.getTime();
+        return (long) TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    }
+    // Calculate early departures
+    public long calculateEarlyDepartureMinutes(AttendanceModel attendanceModel, Date expectedOutTime) {
+        long diffInMillies = expectedOutTime.getTime() - attendanceModel.getRecordOutTime().getTime();
+        return (long) TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 }
