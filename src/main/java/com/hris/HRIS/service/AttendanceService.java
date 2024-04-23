@@ -20,11 +20,11 @@ public class AttendanceService {
         return attendanceRepository.findAll();
     }
 
-    public AttendanceModel getAttendanceById(Long id) {
+    public AttendanceModel getAttendanceById(String id) {
         return attendanceRepository.findById(id).orElse(null);
     }
 
-    public AttendanceModel updateAttendance(Long id, AttendanceModel updatedAttendanceModel) {
+    public AttendanceModel updateAttendance(String id, AttendanceModel updatedAttendanceModel) {
         AttendanceModel existingAttendanceModel = attendanceRepository.findById(id).orElse(null);
         if (existingAttendanceModel != null) {
             // Update the existing record with the new data
@@ -40,7 +40,7 @@ public class AttendanceService {
     }
 
     // Method to delete an attendance record by ID
-    public boolean deleteAttendance(Long id) {
+    public boolean deleteAttendance(String id) {
         AttendanceModel existingAttendanceModel = attendanceRepository.findById(id).orElse(null);
         if (existingAttendanceModel != null) {
             attendanceRepository.deleteById(id);

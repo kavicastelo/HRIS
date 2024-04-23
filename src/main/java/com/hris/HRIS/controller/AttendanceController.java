@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/attendance")
+@RequestMapping("/api/v1/attendance")
 public class AttendanceController {
 
     @Autowired
@@ -24,15 +24,15 @@ public class AttendanceController {
     }
 
     // Endpoint to retrieve all attendance records
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     public ResponseEntity<List<AttendanceModel>> getAllAttendance() {
         List<AttendanceModel> allAttendance = attendanceService.getAllAttendance();
         return new ResponseEntity<>(allAttendance, HttpStatus.OK);
     }
 
     // Endpoint to retrieve a specific attendance record by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<AttendanceModel> getAttendanceById(@PathVariable("id") Long id) {
+    @GetMapping("/get/{id}")
+    public ResponseEntity<AttendanceModel> getAttendanceById(@PathVariable("id") String id) {
         AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
         if (attendanceModel != null) {
             return new ResponseEntity<>(attendanceModel, HttpStatus.OK);
@@ -42,8 +42,8 @@ public class AttendanceController {
     }
 
     // Endpoint to update an existing attendance record
-    @PutMapping("/{id}")
-    public ResponseEntity<AttendanceModel> updateAttendance(@PathVariable("id") Long id, @RequestBody AttendanceModel attendanceModel) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<AttendanceModel> updateAttendance(@PathVariable("id") String id, @RequestBody AttendanceModel attendanceModel) {
         AttendanceModel updatedAttendance = attendanceService.updateAttendance(id, attendanceModel);
         if (updatedAttendance != null) {
             return new ResponseEntity<>(updatedAttendance, HttpStatus.OK);
@@ -53,8 +53,8 @@ public class AttendanceController {
     }
 
     // Endpoint to delete an attendance record by ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAttendance(@PathVariable("id") Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteAttendance(@PathVariable("id") String id) {
         boolean deleted;
         deleted = attendanceService.deleteAttendance(id);
         if (deleted) {

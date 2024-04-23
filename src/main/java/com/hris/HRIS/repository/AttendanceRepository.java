@@ -5,9 +5,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface AttendanceRepository extends MongoRepository<AttendanceModel, String> {
-    Optional<AttendanceModel> findById(long id);
+    Optional<AttendanceModel> findById(String id);
 
-    Optional<AttendanceModel> deleteById(long id);
+    void deleteById(String id);
 
 }
 
