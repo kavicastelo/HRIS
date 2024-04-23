@@ -55,7 +55,8 @@ public class AttendanceController {
     // Endpoint to delete an attendance record by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAttendance(@PathVariable("id") Long id) {
-        boolean deleted = attendanceService.deleteAttendance(id);
+        boolean deleted;
+        deleted = attendanceService.deleteAttendance(id);
         if (deleted) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
