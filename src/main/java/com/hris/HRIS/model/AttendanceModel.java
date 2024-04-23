@@ -28,11 +28,6 @@ public class AttendanceModel {
     private String workPattern;
     private Date breakStartTime;
     private Date breakEndTime;
-    private String leaveType;
-    private Date leaveStartDate;
-    private Date leaveEndDate;
-    private boolean leaveApproved;
-    private double leaveBalance;
     private int lateMinutes;
     private int earlyDepartureMinutes;
     private int noPayDays;
