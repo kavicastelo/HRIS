@@ -16,4 +16,5 @@ public class BulletInBoardModel {
     private String id;
     private Object messages; // messages ids
     private Object documents; // documents ids
+    //todo: add url
 }

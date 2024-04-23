@@ -36,24 +36,9 @@ public class OnboardingPlanController {
         return onboardingPlanModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/get/onboarding/{id}")
-    public ResponseEntity<OnboardingPlanModel> getOnboardingPlanByOnboardingId(@PathVariable String id) {
-        Optional<OnboardingPlanModel> onboardingPlanModelOptional = onboardingPlanRepository.findByOnboardingId(id);
-
-        return onboardingPlanModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteOnboardingPlan(@PathVariable String id) {
         onboardingPlanRepository.deleteById(id);
-
-        ApiResponse apiResponse = new ApiResponse("Onboarding plan deleted successfully.");
-        return ResponseEntity.ok(apiResponse);
-    }
-
-    @DeleteMapping("/delete/onboarding/{id}")
-    public ResponseEntity<ApiResponse> deleteOnboardingPlanByOnboardingId(@PathVariable String id) {
-        onboardingPlanRepository.deleteByOnboardingId(id);
 
         ApiResponse apiResponse = new ApiResponse("Onboarding plan deleted successfully.");
         return ResponseEntity.ok(apiResponse);
@@ -70,24 +55,6 @@ public class OnboardingPlanController {
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updateOnboardingPlan(@PathVariable String id, @RequestBody OnboardingPlanModel onboardingPlanModel) {
         Optional<OnboardingPlanModel> onboardingPlanModelOptional = onboardingPlanRepository.findById(id);
-
-        if (onboardingPlanModelOptional.isPresent()) {
-            OnboardingPlanModel existingOnboardingPlan = onboardingPlanModelOptional.get();
-            existingOnboardingPlan.setDescription(onboardingPlanModel.getDescription());
-            existingOnboardingPlan.setTaskDate(onboardingPlanModel.getTaskDate());
-
-            onboardingPlanRepository.save(existingOnboardingPlan);
-
-            ApiResponse apiResponse = new ApiResponse("Onboarding plan updated successfully.");
-            return ResponseEntity.ok(apiResponse);
-        }
-
-        return ResponseEntity.notFound().build();
-    }
-
-    @PutMapping("/update/onboarding/{id}")
-    public ResponseEntity<ApiResponse> updateOnboardingPlanByOnboardingId(@PathVariable String id, @RequestBody OnboardingPlanModel onboardingPlanModel) {
-        Optional<OnboardingPlanModel> onboardingPlanModelOptional = onboardingPlanRepository.findByOnboardingId(id);
 
         if (onboardingPlanModelOptional.isPresent()) {
             OnboardingPlanModel existingOnboardingPlan = onboardingPlanModelOptional.get();
