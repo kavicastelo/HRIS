@@ -14,10 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class OnboardingModel {
     @Id
     private String id;
+    private String onBoardingPlanId;
     private String employeeEmail; // Foreign key to EmployeeModel
     private String adminEmail;    // Foreign key to EmployeeModel with level 0
     private String description;
     private String startdate;
     private String taskdate;
-    private String status;
+    private String status; //onboarding offboarding hold
 }

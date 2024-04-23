@@ -28,9 +28,9 @@ public class OnboardingController {
     public ResponseEntity<ApiResponse> saveOnboarding(@RequestBody OnboardingModel onboardingModel) {
         onboardingRepository.save(onboardingModel);
 
-        String plan = onboardingPlanService.createOnboardingPlan(onboardingModel);
+        onboardingPlanService.updateOnboardingPlanOnboarding(onboardingModel);
 
-        ApiResponse apiResponse = new ApiResponse(plan);
+        ApiResponse apiResponse = new ApiResponse("Saved onboarding to employee");
         return ResponseEntity.ok(apiResponse);
     }
 
