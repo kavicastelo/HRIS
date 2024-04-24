@@ -184,3 +184,54 @@
 
     <button type="submit">Submit</button>
 </form>
+
+<hr>
+
+<form [formGroup]="bulletinForm" (ngSubmit)="addBulletin()">
+    <div>
+        <label for="org-id">orgId:</label>
+        <input type="text" id="org-id" formControlName="orgId">
+    </div>
+
+    <div>
+        <label for="dep-id">depId</label>
+        <input type="text" id="dep-id" formControlName="depId">
+    </div>
+
+    <div>
+        <label for="title">title</label>
+        <input type="text" id="title" formControlName="title">
+    </div>
+
+    <div>
+        <label for="msg">msg</label>
+        <input type="text" id="msg" formControlName="msg">
+    </div>
+
+    <div>
+        <label for="re-url">re-url</label>
+        <input type="text" id="re-url" formControlName="reUrl">
+    </div>
+
+    <div>
+        <label for="action">action</label>
+        <input type="text" id="action" formControlName="action">
+    </div>
+
+    <div>
+        <label for="string-bg">string-bg</label>
+        <input type="text" id="string-bg" formControlName="stringBg">
+    </div>
+
+    <div>
+        <label for="titlePhoto">titlePhoto</label>
+        <input type="file" id="titlePhoto" formControlName="titlePhoto" (change)="handleBulletinTitle($event)" accept="image/jpeg">
+    </div>
+
+    <div>
+        <label for="bgPhoto">bgPhoto</label>
+        <input type="file" id="bgPhoto" formControlName="bgPhoto" (change)="handleBulletinBg($event)" accept="image/jpeg">
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
