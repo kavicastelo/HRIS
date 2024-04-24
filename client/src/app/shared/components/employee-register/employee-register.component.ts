@@ -8,6 +8,7 @@ import {Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
+import {BulletingBoardService} from "../../../services/bulleting-board.service";
 
 @Component({
   selector: 'app-employee-register',
@@ -37,17 +38,22 @@ export class EmployeeRegisterComponent implements OnInit{
     ])
   })
 
+  bulletinForm: FormGroup | any;
+
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
               private logger: NGXLogger,
               private departmentService:DepartmentService,
               private multimediaService: MultimediaService,
+              private bulletinService: BulletingBoardService,
               private route: ActivatedRoute,
               private cookieService: AuthService) { }
 
   async ngOnInit(): Promise<any> {
 
     this.initForm()
+
+    this.initBulletinForm()
 
     this.defaultPhoto()
 
@@ -83,6 +89,20 @@ export class EmployeeRegisterComponent implements OnInit{
       photo: [null],
       status: ['', Validators.required]
     });
+  }
+
+  initBulletinForm(){
+    this.bulletinForm = this.formBuilder.group({
+      orgId: ['', Validators.required],
+      depId: ['', Validators.required],
+      title: ['', Validators.required],
+      msg: ['', Validators.required],
+      reUrl: ['', Validators.required],
+      action: ['', Validators.required],
+      stringBg: [''],
+      titlePhoto: [null],
+      bgPhoto: [null]
+    })
   }
 
   loadAllUsers(): Observable<any>{
@@ -133,21 +153,6 @@ export class EmployeeRegisterComponent implements OnInit{
     return this.departmentService.getAllDepartments().pipe(
         tap(data => this.departmentDataStore = data)
     );
-  }
-
-  addDepartment() {
-    if (this.departmentForm.valid) {
-      this.departmentService.addDepartment({
-        name: this.departmentForm.value.name,
-        description: this.departmentForm.value.description,
-        organizationId: this.departmentForm.value.organizationId
-      }).subscribe(() => {
-        this.departmentForm.reset();
-        this.logger.info('Department added successfully');
-      }, error => {
-        this.logger.error(error);
-      })
-    }
   }
 
   choosePhoto(): void {
@@ -213,5 +218,47 @@ export class EmployeeRegisterComponent implements OnInit{
         .catch(error => {
           console.error('Failed to load default image:', error);
         });
+  }
+
+  addDepartment() {
+    if (this.departmentForm.valid) {
+      this.departmentService.addDepartment({
+        name: this.departmentForm.value.name,
+        description: this.departmentForm.value.description,
+        organizationId: this.departmentForm.value.organizationId
+      }).subscribe(() => {
+        this.departmentForm.reset();
+        this.logger.info('Department added successfully');
+      }, error => {
+        this.logger.error(error);
+      })
+    }
+  }
+
+  addBulletin(){
+    if (this.bulletinForm) {
+
+      const formData = new FormData();
+      for (const key in this.bulletinForm.value) {
+        if (this.bulletinForm.value.hasOwnProperty(key)) {
+          formData.append(key, this.bulletinForm.value[key]);
+        }
+      }
+
+      this.bulletinService.uploadBulletin(formData);
+      this.bulletinForm.reset();
+    } else {
+      // Handle form validation errors
+    }
+  }
+
+  handleBulletinBg(event: any): void {
+    const file = event.target.files[0];
+    this.bulletinForm.patchValue({ bgPhoto: file });
+  }
+
+  handleBulletinTitle(event:any): void {
+    const file = event.target.files[0];
+    this.bulletinForm.patchValue({ titlePhoto: file });
   }
 }

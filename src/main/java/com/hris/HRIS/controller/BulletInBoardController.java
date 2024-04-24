@@ -21,24 +21,31 @@ public class BulletInBoardController {
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveBulletInBoard(@RequestParam("organizationId") String organizationId,
                                                          @RequestParam("departmentId") String departmentId,
-                                                         @RequestPart("titleImage") MultipartFile titleImage,
+                                                         @RequestPart(value = "titleImage", required = false) MultipartFile titleImage,
                                                          @RequestParam("title") String title,
                                                          @RequestParam("message") String message,
                                                          @RequestParam("redirectUrl") String redirectUrl,
                                                          @RequestParam("action") String action,
-                                                         @RequestPart("backgroundImage") MultipartFile backgroundImage,
-                                                         @RequestParam("stringBg") String stringBg) throws IOException {
+                                                         @RequestPart(value = "backgroundImage", required = false) MultipartFile backgroundImage,
+                                                         @RequestParam(value = "stringBg", required = false) String stringBg) throws IOException {
 
         BulletInBoardModel newBulletinBoardModel = new BulletInBoardModel();
         newBulletinBoardModel.setOrganizationId(organizationId);
         newBulletinBoardModel.setDepartmentId(departmentId);
-        newBulletinBoardModel.setTitleImage(titleImage.getBytes());
+        if (titleImage != null) {
+            newBulletinBoardModel.setTitleImage(titleImage.getBytes());
+        }
         newBulletinBoardModel.setTitle(title);
         newBulletinBoardModel.setMessages(message);
         newBulletinBoardModel.setRedirectUrl(redirectUrl);
         newBulletinBoardModel.setAction(action);
-        newBulletinBoardModel.setBackgroundImage(backgroundImage.getBytes());
-        newBulletinBoardModel.setStringBg(stringBg);
+        if (backgroundImage != null) {
+            newBulletinBoardModel.setBackgroundImage(backgroundImage.getBytes());
+        }
+
+        if (stringBg != null) {
+            newBulletinBoardModel.setStringBg(stringBg);
+        }
 
         bulletInBoardRepository.save(newBulletinBoardModel);
 
