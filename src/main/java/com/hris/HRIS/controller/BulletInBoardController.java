@@ -21,12 +21,12 @@ public class BulletInBoardController {
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveBulletInBoard(@RequestParam("organizationId") String organizationId,
                                                          @RequestParam("departmentId") String departmentId,
-                                                         @RequestParam("titleImage") MultipartFile titleImage,
+                                                         @RequestPart("titleImage") MultipartFile titleImage,
                                                          @RequestParam("title") String title,
                                                          @RequestParam("message") String message,
                                                          @RequestParam("redirectUrl") String redirectUrl,
                                                          @RequestParam("action") String action,
-                                                         @RequestParam("backgroundImage") MultipartFile backgroundImage,
+                                                         @RequestPart("backgroundImage") MultipartFile backgroundImage,
                                                          @RequestParam("stringBg") String stringBg) throws IOException {
 
         BulletInBoardModel newBulletinBoardModel = new BulletInBoardModel();
