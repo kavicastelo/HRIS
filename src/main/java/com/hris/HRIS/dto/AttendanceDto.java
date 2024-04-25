@@ -1,12 +1,10 @@
-package com.hris.HRIS.model;
+package com.hris.HRIS.dto;
 
 import lombok.*;
-
-import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.security.PrivateKey;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -14,9 +12,9 @@ import java.security.PrivateKey;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Document(collection = "Attendance")
-public class AttendanceModel {
-    @Id
+
+public class AttendanceDto {
+
     private String id;
     private String name;
     private String email;
@@ -28,6 +26,11 @@ public class AttendanceModel {
     private String workPattern;
     private Date breakStartTime;
     private Date breakEndTime;
+    private String leaveType;
+    private Date leaveStartDate;
+    private Date leaveEndDate;
+    private boolean leaveApproved;
+    private double leaveBalance;
     private int lateMinutes;
     private int earlyDepartureMinutes;
     private int noPayDays;
