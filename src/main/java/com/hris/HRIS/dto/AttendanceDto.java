@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class AttendanceDto {
 
-    private Long id;
+    private String id;
     private String name;
     private String email;
     private String fingerprintDetails;

@@ -1,9 +1,10 @@
 package com.hris.HRIS.service;
 
 import com.hris.HRIS.model.LeaveModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class LeaveService {
     public LeaveModel createLeave(LeaveModel leaveModel) {
         return null;

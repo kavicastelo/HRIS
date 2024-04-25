@@ -1,6 +1,8 @@
 package com.hris.HRIS.controller;
 
+import com.hris.HRIS.model.AttendanceModel;
 import com.hris.HRIS.model.LeaveModel;
+import com.hris.HRIS.repository.LeaveRepository;
 import com.hris.HRIS.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/leave")
@@ -15,6 +18,9 @@ public class LeaveController {
 
     @Autowired
     private LeaveService leaveService;
+
+    @Autowired
+    private LeaveRepository leaveRepository;
 
     // Endpoint to create a new leave
     @PostMapping("/create")
@@ -31,14 +37,12 @@ public class LeaveController {
     }
 
     // Endpoint to retrieve a specific leave by ID
+
     @GetMapping("/get/{id}")
-    public ResponseEntity<LeaveModel> getLeaveById(@PathVariable("id") String id) {
-        LeaveModel leaveModel = leaveService.getLeaveById(id);
-        if (leaveModel != null) {
-            return new ResponseEntity<>(leaveModel, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<LeaveModel> getLeaveById(@PathVariable String id) {
+        Optional<LeaveModel> leabeModelOptional = leaveRepository.findById(id);
+
+        return leabeModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     // Endpoint to update an existing leave

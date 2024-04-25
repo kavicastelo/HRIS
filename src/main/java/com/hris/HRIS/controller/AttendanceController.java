@@ -1,6 +1,8 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.model.AttendanceModel;
+import com.hris.HRIS.model.CredentialsModel;
+import com.hris.HRIS.repository.AttendanceRepository;
 import com.hris.HRIS.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/attendance")
@@ -16,6 +19,9 @@ public class AttendanceController {
 
     @Autowired
     private AttendanceService attendanceService;
+
+    @Autowired
+    private AttendanceRepository attendanceRepository;
 
     // Endpoint to create a new attendance record
     @PostMapping("/create")
@@ -33,14 +39,12 @@ public class AttendanceController {
 
     // Endpoint to retrieve a specific attendance record by ID
     @GetMapping("/get/{id}")
-    public ResponseEntity<AttendanceModel> getAttendanceById(@PathVariable("id") String id) {
-        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
-        if (attendanceModel != null) {
-            return new ResponseEntity<>(attendanceModel, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<AttendanceModel> getAttendanceById(@PathVariable String id) {
+        Optional<AttendanceModel> attendanceModelOptional = attendanceRepository.findById(id);
+
+        return attendanceModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
 
     // Endpoint to update an existing attendance record
     @PutMapping("/update/{id}")
