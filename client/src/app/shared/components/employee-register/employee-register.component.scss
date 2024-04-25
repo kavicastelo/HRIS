@@ -13,3 +13,96 @@
     height: 60px;
   }
 }
+
+.bulletin-card{
+  max-width: 400px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 18px 20px;
+
+  .title-image{
+    width: 100%;
+  }
+
+  input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-align: center;
+    margin: 5px 0;
+  }
+
+  #title{
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-text-100);
+
+    &::placeholder{
+      font-size: 22px;
+      font-weight: 800;
+    }
+  }
+
+  #msg{
+    text-align: left;
+    color: var(--color-text-300);
+
+    &::placeholder{
+      color: var(--color-text-300);
+    }
+  }
+
+  .bulletin-action-btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid var(--color-surface-mixed-100);
+    border-radius: 3px;
+    padding: 3px;
+    background-color: var(--color-surface-mixed-300);
+
+    #action{
+      font-weight: 500;
+      text-align: center;
+      color: var(--color-text-200);
+
+      &::placeholder{
+        font-weight: 500;
+      }
+    }
+  }
+
+  .bg-choose-btn, .title-choose-btn{
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    bottom: -10px;
+    right: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .mat-icon{
+      font-size: 22px;
+    }
+  }
+
+  .title-choose-btn{
+    height: 20px;
+    width: 20px;
+    right: -10px;
+    top: -10px;
+    padding: 0 !important;
+
+    .mat-icon{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+  }
+}

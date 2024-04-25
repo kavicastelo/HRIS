@@ -26,6 +26,9 @@ export class EmployeeRegisterComponent implements OnInit{
   userId:any;
   chosenPhoto: File | any;
 
+  bulletinBg: File | any;
+  titleImg: File | any;
+
   departmentForm = new FormGroup({
     name: new FormControl(null,[
       Validators.required
@@ -67,7 +70,6 @@ export class EmployeeRegisterComponent implements OnInit{
   }
 
   initForm(){
-    sessionStorage.setItem('orgId', this.cookieService.organization())
     this.employeeForm = this.formBuilder.group({
       name: ['', Validators.required],
       lname: ['', Validators.required],
@@ -93,15 +95,14 @@ export class EmployeeRegisterComponent implements OnInit{
 
   initBulletinForm(){
     this.bulletinForm = this.formBuilder.group({
-      orgId: ['', Validators.required],
       depId: ['', Validators.required],
       title: ['', Validators.required],
       msg: ['', Validators.required],
       reUrl: ['', Validators.required],
       action: ['', Validators.required],
       stringBg: [''],
-      titlePhoto: [null],
-      bgPhoto: [null]
+      bgPhoto: [null],
+      titlePhoto: [null]
     })
   }
 
@@ -124,6 +125,7 @@ export class EmployeeRegisterComponent implements OnInit{
   }
 
   onSubmit() {
+    sessionStorage.setItem('orgId', this.cookieService.organization())
     if (this.employeeForm) {
       const jobData = this.employeeForm.get('jobData').value;
       this.employeeForm.patchValue({ jobData: null });
@@ -236,6 +238,7 @@ export class EmployeeRegisterComponent implements OnInit{
   }
 
   addBulletin(){
+    sessionStorage.setItem('orgId', this.cookieService.organization())
     if (this.bulletinForm) {
 
       const formData = new FormData();
@@ -247,18 +250,68 @@ export class EmployeeRegisterComponent implements OnInit{
 
       this.bulletinService.uploadBulletin(formData);
       this.bulletinForm.reset();
+      this.titleImg = null;
+      this.bulletinBg = null;
     } else {
       // Handle form validation errors
     }
   }
 
+  chooseBulletinBg(): void {
+    this.bulletinBg = null // clear the photo input field before assign a value
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/jpeg';
+    input.onchange = (event: any) => {
+      this.handleBulletinBg(event);
+    };
+    input.click();
+  }
+
   handleBulletinBg(event: any): void {
     const file = event.target.files[0];
+    this.bulletinBg = file
     this.bulletinForm.patchValue({ bgPhoto: file });
+    this.onBulletinBgSelected();
+  }
+
+  onBulletinBgSelected(): void {
+    const bulletinCard: any = document.getElementById("bulletinCard");
+
+    if (this.bulletinBg) {
+      const url = `url('${URL.createObjectURL(this.bulletinBg)}')`;
+      bulletinCard.style.backgroundImage = url;
+    }
+  }
+
+  chooseBulletinTitle(): void {
+    this.titleImg = null // clear the photo input field before assign a value
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event: any) => {
+      this.handleBulletinTitle(event);
+    };
+    input.click();
   }
 
   handleBulletinTitle(event:any): void {
     const file = event.target.files[0];
+    this.titleImg = file
     this.bulletinForm.patchValue({ titlePhoto: file });
+    this.onTitleBgSelected();
+  }
+
+  onTitleBgSelected(): void {
+    const reader = new FileReader();
+
+    const imgtag: any = document.getElementById("titleImage");
+    imgtag.title = this.titleImg?.name;
+
+    reader.onload = function(event) {
+      imgtag.src = event.target?.result;
+    };
+
+    reader.readAsDataURL(this.titleImg);
   }
 }

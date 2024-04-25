@@ -32,7 +32,7 @@ export class BulletingBoardService {
     const titlePhoto = form.get('titlePhoto') as File;
 
     const requestBody:any = {
-      organizationId: form.get('orgId') as string,
+      organizationId: sessionStorage.getItem('orgId'),
       departmentId: form.get('depId') as string,
       titleImage: titlePhoto,
       title: form.get('title') as string,
