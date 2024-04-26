@@ -6,6 +6,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable, tap} from "rxjs";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-bulletins',
@@ -17,6 +18,7 @@ export class BulletinsComponent implements OnInit{
   bulletinBg: File | any;
   titleImg: File | any;
   bulletinForm: FormGroup | any;
+  bulletinsDataStore:any;
 
   departmentDataStore:any;
   selectedDepartment:any;
@@ -27,6 +29,7 @@ export class BulletinsComponent implements OnInit{
   constructor(private departmentService:DepartmentService,
               private formBuilder: FormBuilder,
               private bulletinService: BulletingBoardService,
+              private multimediaService: MultimediaService,
               private route: ActivatedRoute,
               private cookieService: AuthService) {
   }
@@ -34,6 +37,10 @@ export class BulletinsComponent implements OnInit{
     this.initBulletinForm()
 
     this.loadAllDepartments().subscribe(()=>{
+      //TODO: do something
+    })
+
+    this.loadAllBulletins().subscribe(()=>{
       //TODO: do something
     })
   }
@@ -144,14 +151,40 @@ export class BulletinsComponent implements OnInit{
     reader.readAsDataURL(this.titleImg);
   }
 
+  chooseDefaultImage(url: string) {
+    this.bulletinForm.patchValue({stringBg:url})
+    this.fontCheckDisabled = false;
+  }
+
   loadAllDepartments(): Observable<any> {
     return this.departmentService.getAllDepartments().pipe(
         tap(data => this.departmentDataStore = data)
     );
   }
 
-  chooseDefaultImage(url: string) {
-    this.bulletinForm.patchValue({stringBg:url})
-    this.fontCheckDisabled = false;
+  loadAllBulletins(): Observable<any> {
+    return this.bulletinService.getAllBulletinBoards().pipe(
+        tap(data => this.bulletinsDataStore = data)
+    );
+  }
+
+  convertToSafeUrl(url:any):SafeResourceUrl{
+    if (url.indexOf("/9j/")){
+      return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
+    }
+    else{
+      return this.multimediaService.convertToSafeUrl(url,'image/png')
+    }
+  }
+
+  getBackgroundStyle(bulletin: any): any {
+    let style: any = {};
+
+    if (bulletin.stringBg !== '') {
+      style['background-image'] = `url(${bulletin.stringBg})`;
+    } else if (bulletin.backgroundImage) {
+      style['background-image'] = `url(data:image/jpeg;base64,${bulletin.backgroundImage})`;
+    }
+    return style;
   }
 }
