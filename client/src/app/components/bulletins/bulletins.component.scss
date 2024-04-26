@@ -16,7 +16,7 @@
     margin: 5px 0;
   }
 
-  #title{
+  #title, .title{
     font-size: 22px;
     font-weight: 800;
     color: var(--color-text-100);
@@ -27,13 +27,17 @@
     }
   }
 
-  #msg{
+  #msg, .msg{
     text-align: left;
     color: var(--color-text-300);
 
     &::placeholder{
       color: var(--color-text-300);
     }
+  }
+
+  a{
+    text-decoration: none;
   }
 
   .bulletin-action-btn{

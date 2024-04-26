@@ -76,6 +76,24 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-6"></div>
+        <div class="col-12 col-md-6">
+            <h2>Current Bulletins</h2>
+            <div class="container">
+                <div *ngFor="let bulletin of bulletinsDataStore">
+                    <div class="card bulletin-card" [ngStyle]="getBackgroundStyle(bulletin)">
+                        <div style="width: 100%; margin: 10px 0" *ngIf="bulletin.titleImage">
+                            <img [src]="convertToSafeUrl(bulletin.titleImage)" alt="title image" class="title-image">
+                        </div>
+
+                        <h2 class="title">{{bulletin.title}}</h2>
+
+                        <p class="msg">{{bulletin.messages}}</p>
+
+                        <a href="{{bulletin.redirectUrl}}" target="_blank"><button class="btn-1 w-100">{{bulletin.action}}</button></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
