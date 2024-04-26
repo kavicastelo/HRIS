@@ -5,10 +5,8 @@ import {NGXLogger} from "ngx-logger";
 import {DepartmentService} from "../../../services/department.service";
 import {AuthService} from "../../../services/auth.service";
 import {Observable, tap} from "rxjs";
-import {SafeResourceUrl} from "@angular/platform-browser";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
-import {BulletingBoardService} from "../../../services/bulleting-board.service";
 
 @Component({
   selector: 'app-employee-register',
@@ -26,9 +24,6 @@ export class EmployeeRegisterComponent implements OnInit{
   userId:any;
   chosenPhoto: File | any;
 
-  bulletinBg: File | any;
-  titleImg: File | any;
-
   departmentForm = new FormGroup({
     name: new FormControl(null,[
       Validators.required
@@ -41,22 +36,19 @@ export class EmployeeRegisterComponent implements OnInit{
     ])
   })
 
-  bulletinForm: FormGroup | any;
+
 
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
               private logger: NGXLogger,
               private departmentService:DepartmentService,
               private multimediaService: MultimediaService,
-              private bulletinService: BulletingBoardService,
               private route: ActivatedRoute,
               private cookieService: AuthService) { }
 
   async ngOnInit(): Promise<any> {
 
     this.initForm()
-
-    this.initBulletinForm()
 
     this.defaultPhoto()
 
@@ -91,19 +83,6 @@ export class EmployeeRegisterComponent implements OnInit{
       photo: [null],
       status: ['', Validators.required]
     });
-  }
-
-  initBulletinForm(){
-    this.bulletinForm = this.formBuilder.group({
-      depId: ['', Validators.required],
-      title: ['', Validators.required],
-      msg: ['', Validators.required],
-      reUrl: ['', Validators.required],
-      action: ['', Validators.required],
-      stringBg: [''],
-      bgPhoto: [null],
-      titlePhoto: [null]
-    })
   }
 
   loadAllUsers(): Observable<any>{
@@ -235,83 +214,5 @@ export class EmployeeRegisterComponent implements OnInit{
         this.logger.error(error);
       })
     }
-  }
-
-  addBulletin(){
-    sessionStorage.setItem('orgId', this.cookieService.organization())
-    if (this.bulletinForm) {
-
-      const formData = new FormData();
-      for (const key in this.bulletinForm.value) {
-        if (this.bulletinForm.value.hasOwnProperty(key)) {
-          formData.append(key, this.bulletinForm.value[key]);
-        }
-      }
-
-      this.bulletinService.uploadBulletin(formData);
-      this.bulletinForm.reset();
-      this.titleImg = null;
-      this.bulletinBg = null;
-    } else {
-      // Handle form validation errors
-    }
-  }
-
-  chooseBulletinBg(): void {
-    this.bulletinBg = null // clear the photo input field before assign a value
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/jpeg';
-    input.onchange = (event: any) => {
-      this.handleBulletinBg(event);
-    };
-    input.click();
-  }
-
-  handleBulletinBg(event: any): void {
-    const file = event.target.files[0];
-    this.bulletinBg = file
-    this.bulletinForm.patchValue({ bgPhoto: file });
-    this.onBulletinBgSelected();
-  }
-
-  onBulletinBgSelected(): void {
-    const bulletinCard: any = document.getElementById("bulletinCard");
-
-    if (this.bulletinBg) {
-      const url = `url('${URL.createObjectURL(this.bulletinBg)}')`;
-      bulletinCard.style.backgroundImage = url;
-    }
-  }
-
-  chooseBulletinTitle(): void {
-    this.titleImg = null // clear the photo input field before assign a value
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (event: any) => {
-      this.handleBulletinTitle(event);
-    };
-    input.click();
-  }
-
-  handleBulletinTitle(event:any): void {
-    const file = event.target.files[0];
-    this.titleImg = file
-    this.bulletinForm.patchValue({ titlePhoto: file });
-    this.onTitleBgSelected();
-  }
-
-  onTitleBgSelected(): void {
-    const reader = new FileReader();
-
-    const imgtag: any = document.getElementById("titleImage");
-    imgtag.title = this.titleImg?.name;
-
-    reader.onload = function(event) {
-      imgtag.src = event.target?.result;
-    };
-
-    reader.readAsDataURL(this.titleImg);
   }
 }
