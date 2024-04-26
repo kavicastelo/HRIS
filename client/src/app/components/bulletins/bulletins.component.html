@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row pt-3 pb-3">
+        <div class="col-12 col-md-6">
+            <h2>Create New Bulletin Card</h2>
+            <form [formGroup]="bulletinForm">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>DEPARTMENT</mat-label>
+                            <mat-select id="depId" formControlName="depId" [(value)]="selectedDepartment">
+                                <mat-option *ngFor="let d of departmentDataStore" [value]="d.id">{{d.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>REDIRECT URL</mat-label>
+                            <input matInput id="re-url" formControlName="reUrl" placeholder="Redirect URL (blog)">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div id="bulletinCard" class="card bulletin-card" [ngStyle]="{'background-image':bulletinForm.value.stringBg != ''?'url('+bulletinForm.value.stringBg+')':''}">
+                    <div style="width: 100%; position: relative; margin: 10px 0">
+                        <img [src]="titleImg==null?'https://www.freepnglogos.com/uploads/avengers-png-logo/avengers-emblem-png-logo-7.png':onTitleBgSelected()" alt="title image" class="title-image" id="titleImage">
+                        <button type="button" class="btn-1 me-2 px-2 title-choose-btn" (click)="chooseBulletinTitle()" matTooltip="Choose Title Image"><mat-icon>edit</mat-icon></button>
+                    </div>
+
+                    <input type="text" id="title" formControlName="title" placeholder="Click to add title" [ngStyle]="{'color':fontChecked?'#000':'#fff'}">
+
+                    <input type="text" id="msg" formControlName="msg" placeholder="Click to add description" [ngStyle]="{'color':fontChecked?'#4b6a86':'#bfbfbf'}">
+
+                    <div class="bulletin-action-btn">
+                        <input type="text" id="action" formControlName="action" placeholder="Click to add action">
+                    </div>
+
+                    <button type="button" class="btn-1 me-2 px-2 bg-choose-btn" (click)="chooseBulletinBg()" matTooltip="Choose Custom Background Image"><mat-icon>edit</mat-icon></button>
+
+                </div>
+
+                <div class="row">
+                    <p>Choose default background</p>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://indieground.net/wp-content/uploads/2023/03/Freebie-GradientTextures-Preview-06.jpg')">
+                            <img src="https://indieground.net/wp-content/uploads/2023/03/Freebie-GradientTextures-Preview-06.jpg"
+                                 alt="bg-1" style="width: 100%">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg')">
+                            <img src="https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg"
+                                 alt="bg-2" style="width: 100%">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709856000&semt=ais')">
+                            <img src="https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709856000&semt=ais"
+                                 alt="bg-3" style="width: 100%">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://i0.wp.com/backgroundabstract.com/wp-content/uploads/edd/2021/09/gradient-blue-pink-abstract-art-wallpaper-preview-e1656162284223.jpg?fit=728%2C410&ssl=1')">
+                            <img src="https://i0.wp.com/backgroundabstract.com/wp-content/uploads/edd/2021/09/gradient-blue-pink-abstract-art-wallpaper-preview-e1656162284223.jpg?fit=728%2C410&ssl=1"
+                                 alt="bg-4" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="d-flex align-items-center justify-content-around">
+                <p class="m-0">Change Text Color</p>
+                <mat-slide-toggle class="font-chooser" [(ngModel)]="fontChecked" [disabled]="fontCheckDisabled">{{fontChecked?'Dark':'Light'}}</mat-slide-toggle>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn-1 px-2" (click)="addBulletin()" [disabled]="bulletinForm.invalid">Save</button>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6"></div>
+    </div>
+</div>

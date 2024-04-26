@@ -56,6 +56,8 @@ import {EmpTransferComponent} from './components/employee/emp-transfer/emp-trans
 import {EmpPromotionComponent} from './components/employee/emp-promotion/emp-promotion.component';
 import {ChangeJobDataDialogComponent} from './shared/dialogs/change-job-data-dialog/change-job-data-dialog.component';
 import {DateFormatPipe} from "./DTO/DateFormatPipe";
+import { BulletinsComponent } from './components/bulletins/bulletins.component';
+import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
     declarations: [
@@ -96,7 +98,8 @@ import {DateFormatPipe} from "./DTO/DateFormatPipe";
         EmpDashboardComponent,
         EmpTransferComponent,
         EmpPromotionComponent,
-        ChangeJobDataDialogComponent
+        ChangeJobDataDialogComponent,
+        BulletinsComponent
     ],
     imports: [
         BrowserModule,
@@ -117,7 +120,9 @@ import {DateFormatPipe} from "./DTO/DateFormatPipe";
         MatNativeDateModule,
         MatSnackBarModule,
         MatTooltipModule,
-        MatSelectModule
+        MatSelectModule,
+        MatSlideToggleModule,
+        _MatSlideToggleRequiredValidatorModule
     ],
     providers: [],
     bootstrap: [AppComponent]
