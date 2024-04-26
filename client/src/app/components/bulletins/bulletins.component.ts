@@ -83,11 +83,18 @@ export class BulletinsComponent implements OnInit{
   }
 
   handleBulletinBg(event: any): void {
+    const maxSize = 1024 * 1024;
+
     const file = event.target.files[0];
-    this.bulletinBg = file
-    this.bulletinForm.patchValue({ bgPhoto: file });
-    this.onBulletinBgSelected();
-    this.fontCheckDisabled = false;
+    if (file.size <= maxSize){
+      this.bulletinBg = file
+      this.bulletinForm.patchValue({ bgPhoto: file });
+      this.onBulletinBgSelected();
+      this.fontCheckDisabled = false;
+    }
+    else{
+      alert("Your Image is too large. Select under 1MB")
+    }
   }
 
   onBulletinBgSelected(): void {
@@ -111,10 +118,17 @@ export class BulletinsComponent implements OnInit{
   }
 
   handleBulletinTitle(event:any): void {
+    const maxSize = 1024 * 1024;
+
     const file = event.target.files[0];
-    this.titleImg = file
-    this.bulletinForm.patchValue({ titlePhoto: file });
-    this.onTitleBgSelected();
+    if (file.size <= maxSize){
+      this.titleImg = file
+      this.bulletinForm.patchValue({ titlePhoto: file });
+      this.onTitleBgSelected();
+    }
+    else{
+      alert("Your Image is too large. Select under 1MB")
+    }
   }
 
   onTitleBgSelected(): void {
