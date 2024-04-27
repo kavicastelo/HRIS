@@ -127,7 +127,7 @@
 
                 <div *ngFor="let news of filterNews() | truncateComments:maxNewsDisplayed">
                     <div class="latest-news mb-3">
-                        <p class="card-text" style="margin-bottom: 0">{{news.description}}</p>
+                        <p class="card-text" style="margin-bottom: 0" [title]="news.description">{{news.description | truncate:100}}</p>
                         <small class="text-body-secondary">{{news.timestamp | timeAgo}}</small>
                     </div>
                 </div>
