@@ -4,9 +4,10 @@ import {MultimediaService} from "../../services/multimedia.service";
 import {BulletingBoardService} from "../../services/bulleting-board.service";
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
+import {LatestNewsService} from "../../services/latest-news.service";
 
 @Component({
   selector: 'app-bulletins',
@@ -21,15 +22,27 @@ export class BulletinsComponent implements OnInit{
   bulletinsDataStore:any[] = [];
   filteredBulletins: any
 
+  newsDataStore:any[] = [];
+  filteredNews: any
+
   departmentDataStore:any;
   selectedDepartment:any;
 
   fontChecked:any;
   fontCheckDisabled = true;
 
+  maxNewsDisplayed: number = 3;
+  showAllNews: boolean = false;
+
+  newsForm = new FormGroup({
+    newsReUrl: new FormControl(null,[Validators.required]),
+    newsDes: new FormControl(null,[Validators.required])
+  })
+
   constructor(private departmentService:DepartmentService,
               private formBuilder: FormBuilder,
               private bulletinService: BulletingBoardService,
+              private newsService: LatestNewsService,
               private multimediaService: MultimediaService,
               private route: ActivatedRoute,
               private cookieService: AuthService) {
@@ -43,6 +56,10 @@ export class BulletinsComponent implements OnInit{
 
     this.loadAllBulletins().subscribe(()=>{
       this.filterBulletins()
+    })
+
+    this.loadAllNews().subscribe(()=>{
+      this.filterNews()
     })
   }
 
@@ -201,5 +218,48 @@ export class BulletinsComponent implements OnInit{
       style['background-image'] = `url(data:image/jpeg;base64,${bulletin.backgroundImage})`;
     }
     return style;
+  }
+
+  addNews(){
+    if (this.newsForm.valid){
+      this.newsService.saveNews({
+        organizationId: this.cookieService.organization(),
+        description: this.newsForm.value.newsDes,
+        redirectUrl: this.newsForm.value.newsReUrl,
+        timestamp: new Date()
+      }).subscribe(data=>{
+        this.newsForm.reset();
+        this.loadAllNews().subscribe(()=>{
+          this.filterNews();
+        })
+      }, error => {
+        console.log(error)
+      })
+    }
+  }
+
+  loadAllNews(): Observable<any> {
+    return this.newsService.getAllNews().pipe(
+        tap(data => this.newsDataStore = data)
+    );
+  }
+
+  filterNews(): any[]{
+    const organization = this.cookieService.organization();
+    this.filteredNews = this.newsDataStore.filter((data:any) => data.organizationId == organization? this.filteredNews = [data]: this.filteredNews = null)
+    this.filteredNews.sort((a:any, b:any) => {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    })
+
+    return this.filteredNews;
+  }
+
+  toggleNews() {
+    this.showAllNews = !this.showAllNews;
+    if (this.showAllNews) {
+      this.maxNewsDisplayed = Infinity;
+    } else {
+      this.maxNewsDisplayed = 3;
+    }
   }
 }

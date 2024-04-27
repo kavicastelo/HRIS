@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row pt-3 pb-3">
         <div class="col-12 col-md-6">
-            <h2>Create New Bulletin Card</h2>
+            <h3>Create New Bulletin Card</h3>
             <form [formGroup]="bulletinForm">
                 <div class="row">
                     <div class="col-12 col-md-6">
@@ -77,8 +77,8 @@
         </div>
 
         <div class="col-12 col-md-6">
-            <h2>Current Bulletins</h2>
             <div class="container">
+                <h3>Current Bulletins</h3>
                 <div *ngFor="let bulletin of filterBulletins()">
                     <div class="card bulletin-card" [ngStyle]="getBackgroundStyle(bulletin)">
                         <div style="width: 100%; margin: 10px 0" *ngIf="bulletin.titleImage">
@@ -92,7 +92,47 @@
                         <a href="{{bulletin.redirectUrl}}" target="_blank"><button class="btn-1 w-100">{{bulletin.action}}</button></a>
                     </div>
                 </div>
-                <div class="data-not-found" *ngIf="bulletinsDataStore.length == 0">
+                <div class="data-not-found" *ngIf="filterBulletins().length == 0">
+                    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+                </div>
+            </div>
+        </div>
+
+        <hr style="color: var(--color-primary-400); margin: 15px 0">
+
+        <div class="col-12 col-md-6">
+            <div class="container">
+                <h3>Latest News for Whole Organization</h3>
+                <form [formGroup]="newsForm" (ngSubmit)="addNews()">
+                    <div class="row">
+                        <div class="col-12">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>REDIRECT URL</mat-label>
+                                <input matInput id="news-re-url" formControlName="newsReUrl" placeholder="Redirect URL (blog)">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>SUMMARY</mat-label>
+                                <textarea matInput id="news-des" formControlName="newsDes" placeholder="News description (summary)"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn-1 px-2" [disabled]="newsForm.invalid">Add New</button>
+                    </div>
+                </form>
+
+                <hr style="color: var(--color-primary-400); margin: 15px 0">
+
+                <div *ngFor="let news of filterNews() | truncateComments:maxNewsDisplayed">
+                    <div class="latest-news mb-3">
+                        <p class="card-text" style="margin-bottom: 0">{{news.description}}</p>
+                        <small class="text-body-secondary">{{news.timestamp | timeAgo}}</small>
+                    </div>
+                </div>
+                <p class="view-all" *ngIf="filterNews().length>3" (click)="toggleNews()">... {{showAllNews?'Collapse':'View All'}} Latest News</p>
+                <div class="data-not-found" *ngIf="filterNews().length == 0">
                     <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
                 </div>
             </div>
