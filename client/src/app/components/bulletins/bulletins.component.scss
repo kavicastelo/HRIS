@@ -94,9 +94,44 @@
   }
 }
 
+h3{
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
 .btn-1{
   &:disabled{
     color: var(--color-text-300);
     background-color: var(--color-surface-mixed-600);
+  }
+}
+
+.card-text{
+  font-weight: 500;
+}
+.text-body-secondary{
+  font-size: 12px;
+  color: var(--color-text-300) !important;
+}
+
+.latest-news{
+  &:hover{
+    cursor: pointer;
+    background-color: var(--color-surface-mixed-100);
+  }
+}
+
+.view-all{
+  width: 100%;
+  text-align: center;
+  color: var(--color-text-100);
+  cursor: pointer;
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.3s ease;
+
+  &:hover{
+    color: var(--color-primary-200);
   }
 }
