@@ -8,5 +8,7 @@ export interface BulletinBoard {
     redirectUrl: any,
     action: any,
     backgroundImage?: any,
-    stringBg?: any
+    stringBg?: any,
+    fontColor?: any,
+    timestamp?: any
 }

@@ -40,7 +40,9 @@ export class BulletingBoardService {
       redirectUrl: form.get('reUrl') as string,
       action: form.get('action') as string,
       backgroundImage: bgPhoto,
-      stringBg: form.get('stringBg') as string
+      stringBg: form.get('stringBg') as string,
+      fontColor: sessionStorage.getItem('bulletin-color'),
+      timestamp: new Date()
     };
 
     const formData = new FormData();

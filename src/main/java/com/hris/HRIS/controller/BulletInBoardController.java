@@ -27,7 +27,10 @@ public class BulletInBoardController {
                                                          @RequestParam("redirectUrl") String redirectUrl,
                                                          @RequestParam("action") String action,
                                                          @RequestPart(value = "backgroundImage", required = false) MultipartFile backgroundImage,
-                                                         @RequestParam(value = "stringBg", required = false) String stringBg) throws IOException {
+                                                         @RequestParam(value = "stringBg", required = false) String stringBg,
+                                                         @RequestParam(value = "fontColor", required = false) String fontColor,
+                                                         @RequestParam("timestamp") String timestamp
+    ) throws IOException {
 
         BulletInBoardModel newBulletinBoardModel = new BulletInBoardModel();
         newBulletinBoardModel.setOrganizationId(organizationId);
@@ -46,6 +49,8 @@ public class BulletInBoardController {
         if (stringBg != null) {
             newBulletinBoardModel.setStringBg(stringBg);
         }
+        newBulletinBoardModel.setFontColor(fontColor);
+        newBulletinBoardModel.setTimestamp(timestamp);
 
         bulletInBoardRepository.save(newBulletinBoardModel);
 
