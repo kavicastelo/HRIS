@@ -79,20 +79,22 @@
         <div class="col-12 col-md-6">
             <h2>Current Bulletins</h2>
             <div class="container">
-                <div *ngFor="let bulletin of bulletinsDataStore">
+                <div *ngFor="let bulletin of filterBulletins()">
                     <div class="card bulletin-card" [ngStyle]="getBackgroundStyle(bulletin)">
                         <div style="width: 100%; margin: 10px 0" *ngIf="bulletin.titleImage">
                             <img [src]="convertToSafeUrl(bulletin.titleImage)" alt="title image" class="title-image">
                         </div>
 
-                        <h2 class="title">{{bulletin.title}}</h2>
+                        <h2 class="title" [ngStyle]="{'color':bulletin.fontColor=='true'?'#000':bulletin.fontColor=='false'?'#fff':''}">{{bulletin.title}}</h2>
 
-                        <p class="msg">{{bulletin.messages}}</p>
+                        <p class="msg" [ngStyle]="{'color':bulletin.fontColor=='true'?'#4b6a86':bulletin.fontColor=='false'?'#bfbfbf':''}">{{bulletin.messages}}</p>
 
                         <a href="{{bulletin.redirectUrl}}" target="_blank"><button class="btn-1 w-100">{{bulletin.action}}</button></a>
                     </div>
                 </div>
-
+                <div class="data-not-found" *ngIf="bulletinsDataStore.length == 0">
+                    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+                </div>
             </div>
         </div>
     </div>

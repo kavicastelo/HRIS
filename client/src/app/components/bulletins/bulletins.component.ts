@@ -18,7 +18,8 @@ export class BulletinsComponent implements OnInit{
   bulletinBg: File | any;
   titleImg: File | any;
   bulletinForm: FormGroup | any;
-  bulletinsDataStore:any;
+  bulletinsDataStore:any[] = [];
+  filteredBulletins: any
 
   departmentDataStore:any;
   selectedDepartment:any;
@@ -33,7 +34,7 @@ export class BulletinsComponent implements OnInit{
               private route: ActivatedRoute,
               private cookieService: AuthService) {
   }
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.initBulletinForm()
 
     this.loadAllDepartments().subscribe(()=>{
@@ -41,7 +42,7 @@ export class BulletinsComponent implements OnInit{
     })
 
     this.loadAllBulletins().subscribe(()=>{
-      //TODO: do something
+      this.filterBulletins()
     })
   }
 
@@ -60,6 +61,7 @@ export class BulletinsComponent implements OnInit{
 
   addBulletin(){
     sessionStorage.setItem('orgId', this.cookieService.organization())
+    sessionStorage.setItem('bulletin-color', this.fontChecked)
     if (this.bulletinForm) {
 
       const formData = new FormData();
@@ -73,6 +75,9 @@ export class BulletinsComponent implements OnInit{
       this.bulletinForm.reset();
       this.titleImg = null;
       this.bulletinBg = null;
+      this.loadAllBulletins().subscribe(()=>{
+        this.filterBulletins()
+      })
     } else {
       // Handle form validation errors
     }
@@ -166,6 +171,16 @@ export class BulletinsComponent implements OnInit{
     return this.bulletinService.getAllBulletinBoards().pipe(
         tap(data => this.bulletinsDataStore = data)
     );
+  }
+
+  filterBulletins(): any[]{
+    const organization = this.cookieService.organization();
+    this.filteredBulletins = this.bulletinsDataStore.filter((data:any) => data.organizationId == organization? this.filteredBulletins = [data]: this.filteredBulletins = null)
+    this.filteredBulletins.sort((a:any, b:any) => {
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    })
+
+    return this.filteredBulletins;
   }
 
   convertToSafeUrl(url:any):SafeResourceUrl{

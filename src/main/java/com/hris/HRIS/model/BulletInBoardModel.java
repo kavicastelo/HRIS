@@ -23,4 +23,6 @@ public class BulletInBoardModel {
     private String action;
     private byte[] backgroundImage;
     private String stringBg;
+    private String fontColor;
+    private String timestamp;
 }
