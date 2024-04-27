@@ -18,7 +18,7 @@ export class BulletinsComponent implements OnInit{
   bulletinBg: File | any;
   titleImg: File | any;
   bulletinForm: FormGroup | any;
-  bulletinsDataStore:any;
+  bulletinsDataStore:any[] = [];
   filteredBulletins: any
 
   departmentDataStore:any;
@@ -34,7 +34,7 @@ export class BulletinsComponent implements OnInit{
               private route: ActivatedRoute,
               private cookieService: AuthService) {
   }
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.initBulletinForm()
 
     this.loadAllDepartments().subscribe(()=>{
@@ -42,8 +42,7 @@ export class BulletinsComponent implements OnInit{
     })
 
     this.loadAllBulletins().subscribe(()=>{
-      //TODO: do something
-      console.log(this.bulletinsDataStore)
+      this.filterBulletins()
     })
   }
 
@@ -77,7 +76,7 @@ export class BulletinsComponent implements OnInit{
       this.titleImg = null;
       this.bulletinBg = null;
       this.loadAllBulletins().subscribe(()=>{
-
+        this.filterBulletins()
       })
     } else {
       // Handle form validation errors
