@@ -114,6 +114,7 @@ export class EmpDashboardComponent implements OnInit{
 
   editEmployee(id: any) {
     if (id){
+      this.router.navigate([`/emp-update/${id}`]);
     }
   }
 

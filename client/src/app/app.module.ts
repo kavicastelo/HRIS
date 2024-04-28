@@ -56,8 +56,9 @@ import {EmpTransferComponent} from './components/employee/emp-transfer/emp-trans
 import {EmpPromotionComponent} from './components/employee/emp-promotion/emp-promotion.component';
 import {ChangeJobDataDialogComponent} from './shared/dialogs/change-job-data-dialog/change-job-data-dialog.component';
 import {DateFormatPipe} from "./DTO/DateFormatPipe";
-import { BulletinsComponent } from './components/bulletins/bulletins.component';
+import {BulletinsComponent} from './components/bulletins/bulletins.component';
 import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {EmployeeUpdateComponent} from './shared/components/employee-update/employee-update.component';
 
 @NgModule({
     declarations: [
@@ -99,7 +100,8 @@ import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@ang
         EmpTransferComponent,
         EmpPromotionComponent,
         ChangeJobDataDialogComponent,
-        BulletinsComponent
+        BulletinsComponent,
+        EmployeeUpdateComponent
     ],
     imports: [
         BrowserModule,
