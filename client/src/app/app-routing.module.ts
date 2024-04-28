@@ -25,6 +25,7 @@ import {EmpDashboardComponent} from "./components/employee/emp-dashboard/emp-das
 import {EmpTransferComponent} from "./components/employee/emp-transfer/emp-transfer.component";
 import {EmpPromotionComponent} from "./components/employee/emp-promotion/emp-promotion.component";
 import {BulletinsComponent} from "./components/bulletins/bulletins.component";
+import {EmployeeUpdateComponent} from "./shared/components/employee-update/employee-update.component";
 
 const routes: Routes = [
     {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -50,6 +51,7 @@ const routes: Routes = [
     },
     {path: 'login', component: LogInComponent},
     {path: 'emp-register', component: EmployeeRegisterComponent, canActivate: [AuthGuard]},
+    {path: 'emp-update/:id', component: EmployeeUpdateComponent, canActivate: [AuthGuard]},
     {path: 'bulletins', component: BulletinsComponent, canActivate: [AuthGuard]},
     {path: 'reset-password', component: ResetPasswordComponent},
     {
