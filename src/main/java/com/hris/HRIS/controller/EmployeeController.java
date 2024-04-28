@@ -113,7 +113,7 @@ public class EmployeeController {
 
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updateEmployee(@PathVariable String id,
-                                                      @RequestPart("photo") MultipartFile photo,
+                                                      @RequestPart(value = "photo", required = false) MultipartFile photo,
                                                       @RequestParam("name") String name,
                                                       @RequestParam("email") String email,
                                                       @RequestParam("phone") String phone,
@@ -141,7 +141,11 @@ public class EmployeeController {
             employeeModel.setChannels(existModel.getChannels());
             employeeModel.setJobData(existModel.getJobData());
             employeeModel.setGender(gender);
-            employeeModel.setPhoto(photo.getBytes());
+            if (photo != null){
+                employeeModel.setPhoto(photo.getBytes());
+            } else {
+                employeeModel.setPhoto(existModel.getPhoto());
+            }
             employeeModel.setDob(dob);
             employeeModel.setNic(nic);
             employeeModel.setStatus(status);

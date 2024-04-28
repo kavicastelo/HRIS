@@ -7,6 +7,7 @@ import {AuthService} from "../../../services/auth.service";
 import {Observable, tap} from "rxjs";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-employee-register',
@@ -43,6 +44,7 @@ export class EmployeeRegisterComponent implements OnInit{
               private logger: NGXLogger,
               private departmentService:DepartmentService,
               private multimediaService: MultimediaService,
+              private snackBar: MatSnackBar,
               private route: ActivatedRoute,
               private cookieService: AuthService) { }
 
@@ -126,7 +128,7 @@ export class EmployeeRegisterComponent implements OnInit{
       this.employeeService.uploadEmployeeData(formData);
       this.employeeForm.reset();
     } else {
-      // Handle form validation errors
+      this.snackBar.open("Some required fields are missing!","OK",{duration:2000})
     }
   }
 
