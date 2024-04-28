@@ -93,22 +93,32 @@ export class EmployeesService {
       // Call backend API to save employee data
       this.sendToBackendUpdate(form, headers);
     }
+    else {
+      const requestBody:any = {
+        id: form.get('id') as string,
+        name: form.get('name') as string,
+        email: form.get('email') as string,
+        phone: form.get('phone') as string,
+        address: form.get('address') as string,
+        organizationId: form.get('organizationId') as string,
+        departmentId: form.get('departmentId') as string,
+        jobData: form.get('jobData'),
+        gender: form.get('gender') as string,
+        dob: form.get('dob') as string,
+        nic: form.get('nic') as string,
+        status: form.get('status') as string,
+        level: form.get('level') as string,
+      };
 
-    // return this.http.put(this.baseUrl + 'employee/update/id/' + id, {
-    //   name: employeeModel.name,
-    //   email: employeeModel.email,
-    //   phone: employeeModel.phone,
-    //   address: employeeModel.address,
-    //   organizationId: employeeModel.organizationId,
-    //   departmentId: employeeModel.departmentId,
-    //   channels: employeeModel.channels,
-    //   jobData: employeeModel.jobData,
-    //   gender: employeeModel.gender,
-    //   dob: employeeModel.dob,
-    //   photo: employeeModel.photo,
-    //   status: employeeModel.status,
-    //   level: employeeModel.level
-    // });
+      this.logger.info(requestBody.jobData);
+
+      // Set Content-Type header to multipart/form-data
+      const headers = new HttpHeaders();
+      headers.set('Content-Type', 'multipart/form-data');
+
+      // Call backend API to save employee data
+      this.sendToBackendUpdate(form, headers);
+    }
   }
 
   private sendToBackendUpdate(formData: FormData, headers: HttpHeaders): void {
