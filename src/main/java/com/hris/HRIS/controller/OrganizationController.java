@@ -58,7 +58,6 @@ public class OrganizationController {
         credentialsModel.setPassword(password);
         credentialsModel.setLevel("0");
         credentialsRepository.save(credentialsModel);
-        System.out.println("Dear " + name + ",\n" + para + tag + footer);
 //            TODO: //uncomment email service in prod mode
 //        emailService.sendSimpleEmail(organizationModel.getEmail(), "Organization Registration", "Dear " + name + ",\n" + para + tag + footer);
 
