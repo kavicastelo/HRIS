@@ -116,27 +116,28 @@ export class EmployeeUpdateComponent {
   }
 
   onSubmit() {
-    if (this.employeeForm) {
-      const jobData = this.employeeForm.get('jobData') as FormGroup;
-      const formData: any = new FormData();
-      formData.append('id', this.employee[0].id)
-      formData.append('name', this.employeeForm.value.name+" "+this.employeeForm.value.lname)
-      formData.append('email', this.employeeForm.value.email)
-      formData.append('phone', this.employeeForm.value.phone)
-      formData.append('address', this.employeeForm.value.address)
-      formData.append('organizationId', this.employee[0].organizationId)
-      formData.append('departmentId', jobData.get('department')?.value)
-      formData.append('channels', this.employee[0].channels)
-      formData.append('jobData', jobData)
-      formData.append('gender', this.employee[0].gender)
-      formData.append('dob', this.employee[0].dob)
-      formData.append('nic', this.employee[0].nic)
-      formData.append('photo', this.chosenPhoto)
-      formData.append('status', this.employee[0].status)
-      formData.append('level', this.employee[0].level)
-      this.employeeService.updateEmployeeById(this.employee[0].id,formData)
+    sessionStorage.setItem('orgId', this.cookieService.organization())
+    sessionStorage.setItem('updatingUserId', this.userId)
+    if (this.employeeForm.valid) {
+      const jobData = this.employeeForm.get('jobData').value;
+      this.employeeForm.patchValue({ jobData: null });
 
-      location.reload();
+      const formData = new FormData();
+      for (const key in this.employeeForm.value) {
+        if (this.employeeForm.value.hasOwnProperty(key)) {
+          formData.append(key, this.employeeForm.value[key]);
+        }
+      }
+
+      // Append jobData fields to the formData
+      const stringifiedJobData = typeof jobData === 'object' ? JSON.stringify(jobData) : jobData;
+      sessionStorage.setItem('jobData', stringifiedJobData);
+      formData.append('jobData', stringifiedJobData);
+
+      sessionStorage.setItem('depId', this.selectedDepartment);
+
+      this.employeeService.updateFullEmployeeById(this.userId, formData);
+      location.reload()
     } else {
       this.snackBar.open("Some required fields are missing!","OK",{duration:2000})
     }

@@ -107,7 +107,7 @@ export class EmployeeRegisterComponent implements OnInit{
 
   onSubmit() {
     sessionStorage.setItem('orgId', this.cookieService.organization())
-    if (this.employeeForm) {
+    if (this.employeeForm.valid) {
       const jobData = this.employeeForm.get('jobData').value;
       this.employeeForm.patchValue({ jobData: null });
 

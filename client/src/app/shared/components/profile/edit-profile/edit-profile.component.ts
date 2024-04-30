@@ -9,6 +9,7 @@ import {EmployeesService} from "../../../../services/employees.service";
 import {MultimediaService} from "../../../../services/multimedia.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {AuthService} from "../../../../services/auth.service";
+import {DateFormatPipe} from "../../../../DTO/DateFormatPipe";
 
 @Component({
   selector: 'app-edit-profile',
@@ -80,7 +81,9 @@ export class EditProfileComponent {
   }
 
   patchValues() {
+
     const firstName = this.employee[0].name;
+    const doj:any = new Date(this.employee[0].jobData.doj).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     this.editProfileForm.get('firstname')?.setValue(firstName.split(' ')[0]);
     this.editProfileForm.get('lastname')?.setValue(firstName.split(' ')[1]);
     this.editProfileForm.get('dob')?.setValue(this.employee[0].dob);
@@ -89,7 +92,7 @@ export class EditProfileComponent {
     this.editProfileForm.get('email')?.setValue(this.employee[0].email);
     this.editProfileForm.get('phone')?.setValue(this.employee[0].phone);
     this.editProfileForm.get('department')?.setValue(this.employee[0].jobData.department);
-    this.editProfileForm.get('doj')?.setValue(this.employee[0].jobData.doj);
+    this.editProfileForm.get('doj')?.setValue(doj);
     this.editProfileForm.get('status')?.setValue(this.employee[0].status);
   }
 
