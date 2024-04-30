@@ -349,6 +349,8 @@ public class SystemAutomateService {
                     existingOrganization.getEmployees()
                             .replaceAll(e -> e.getId().equals(updatedEmployee.getId()) ? updatedEmployee : e);
                 }
+
+                organizationRepository.save(existingOrganization);
             }
         }
     }
