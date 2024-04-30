@@ -38,6 +38,7 @@ export class RequestTransferDialogComponent {
     if (this.receivedData){
       this.transferService.saveTransfer({
         userId: this.receivedData.data.userId,
+        organizationId: this.receivedData.data.organizationId,
         timestamp: new Date(),
         reason: this.textAreaForm.value.text
       }).subscribe((data)=>{

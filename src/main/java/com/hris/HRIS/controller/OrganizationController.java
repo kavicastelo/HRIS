@@ -8,10 +8,12 @@ import com.hris.HRIS.repository.CredentialsRepository;
 import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.OrganizationRepository;
 import com.hris.HRIS.service.EmailService;
+import com.hris.HRIS.shared.objects.JobData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -35,11 +37,18 @@ public class OrganizationController {
     public ResponseEntity<ApiResponse> saveOrganization(@RequestBody OrganizationModel organizationModel) {
         OrganizationModel orgModel = organizationRepository.save(organizationModel);
 
+        JobData jobData = new JobData();
+        jobData.setPosition("Administrator");
+        jobData.setDepartment("");
+        jobData.setDoj(String.valueOf(new Date()));
+        jobData.setSalary("");
+
         EmployeeModel employeeModel = new EmployeeModel();
         employeeModel.setName(organizationModel.getContactPerson());
         employeeModel.setEmail(organizationModel.getEmail());
         employeeModel.setPhone(organizationModel.getPhone());
         employeeModel.setOrganizationId(orgModel.getId());
+        employeeModel.setJobData(jobData);
         employeeModel.setLevel(0);
 
         employeeRepository.save(employeeModel);

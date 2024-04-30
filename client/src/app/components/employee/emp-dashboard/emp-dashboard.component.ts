@@ -50,8 +50,8 @@ export class EmpDashboardComponent implements OnInit{
   }
 
   filterEmployees(): any[]{
-    if (this.targetInput == undefined){
-      this.filteredEmployees = this.employeeDataStore.filter((data:any) => data.organizationId == this.employee.organizationId? this.filteredEmployees = [data]: this.filteredEmployees = [])
+    if (this.targetInput === undefined){
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.employee.organizationId)
     }
     this.filteredEmployees.sort((a:any, b:any) => {
       return new Date(b.jobData.doj).getTime() - new Date(a.jobData.doj).getTime()

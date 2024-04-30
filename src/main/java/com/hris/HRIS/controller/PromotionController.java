@@ -47,6 +47,7 @@ public class PromotionController {
             EmployeeModel employeeModel = optionalEmployeeModel.get();
 
             newPromotionModel.setUserId(employeeModel.getId());
+            newPromotionModel.setOrganizationId(promotionModel.getOrganizationId());
             newPromotionModel.setTimestamp(promotionModel.getTimestamp());
             newPromotionModel.setName(employeeModel.getName());
             newPromotionModel.setEmail(employeeModel.getEmail());

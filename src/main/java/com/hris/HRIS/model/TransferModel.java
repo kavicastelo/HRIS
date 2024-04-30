@@ -15,6 +15,7 @@ public class TransferModel {
     @Id
     private String id;
     private String userId;
+    private String organizationId;
     private String timestamp;
     private String name;
     private String email;
