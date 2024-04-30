@@ -125,7 +125,7 @@ export class EmployeeUpdateComponent {
       formData.append('phone', this.employeeForm.value.phone)
       formData.append('address', this.employeeForm.value.address)
       formData.append('organizationId', this.employee[0].organizationId)
-      formData.append('departmentId', jobData.get('department'))
+      formData.append('departmentId', jobData.get('department')?.value)
       formData.append('channels', this.employee[0].channels)
       formData.append('jobData', jobData)
       formData.append('gender', this.employee[0].gender)

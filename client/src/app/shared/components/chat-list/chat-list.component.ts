@@ -101,6 +101,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   }
 
   loadChats() {
+    this.employeeDataStore = this.employeeDataStore.filter((data:any) => data.organizationId == this.employee.organizationId)
     this.chatService.getAllChats().subscribe(chats => {
       this.chatsDataStore = chats;
 

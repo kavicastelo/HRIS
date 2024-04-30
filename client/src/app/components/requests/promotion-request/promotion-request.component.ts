@@ -68,6 +68,7 @@ export class PromotionRequestComponent {
   requestLetter() {
     const data = {
       userId: this.employee.id,
+      organizationId: this.employee.organizationId
     }
 
     this.toggleDialog('Request Promotion Letter', 'Describe the reason why you need a promotion?', data, RequestPromotionDialogComponent)
