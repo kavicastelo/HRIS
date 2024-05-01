@@ -58,6 +58,9 @@ import {ChangeJobDataDialogComponent} from './shared/dialogs/change-job-data-dia
 import {DateFormatPipe} from "./DTO/DateFormatPipe";
 import { BulletinsComponent } from './components/bulletins/bulletins.component';
 import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { PayrollComponent } from "./components/payroll/payroll.component";
+import { AddpayiteamsComponent } from './components/payroll/addpayiteams/addpayiteams.component';
+import { PayrollnavbarComponent } from './components/payroll/payrollnavbar/payrollnavbar.component';
 
 @NgModule({
     declarations: [
@@ -99,7 +102,10 @@ import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@ang
         EmpTransferComponent,
         EmpPromotionComponent,
         ChangeJobDataDialogComponent,
-        BulletinsComponent
+        BulletinsComponent,
+        PayrollComponent,
+        AddpayiteamsComponent,
+        PayrollnavbarComponent
     ],
     imports: [
         BrowserModule,
