@@ -26,9 +26,9 @@ public class OnboardingController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveOnboarding(@RequestBody OnboardingModel onboardingModel) {
-        onboardingRepository.save(onboardingModel);
+        OnboardingModel model = onboardingRepository.save(onboardingModel);
 
-        onboardingPlanService.updateOnboardingPlanOnboarding(onboardingModel);
+        onboardingPlanService.setOnboardinsToPlan(model);
 
         ApiResponse apiResponse = new ApiResponse("Saved onboarding to employee");
         return ResponseEntity.ok(apiResponse);
@@ -46,13 +46,6 @@ public class OnboardingController {
         return onboardingModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/get/employee/email/{email}")
-    public ResponseEntity<OnboardingModel> getOnboardingByEmail(@PathVariable String email) {
-        Optional<OnboardingModel> onboardingModelOptional = onboardingRepository.findByEmployeeEmail(email);
-
-        return onboardingModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/get/admin/email/{email}")
     public ResponseEntity<OnboardingModel> getOnboardingByAdminEmail(@PathVariable String email) {
         Optional<OnboardingModel> onboardingModelOptional = onboardingRepository.findByAdminEmail(email);
@@ -66,7 +59,7 @@ public class OnboardingController {
 
         if (onboardingModelOptional.isPresent()) {
             OnboardingModel existingOnboarding = onboardingModelOptional.get();
-            existingOnboarding.setEmployeeEmail(onboardingModel.getEmployeeEmail());
+            existingOnboarding.setEmployees(onboardingModel.getEmployees());
             existingOnboarding.setAdminEmail(onboardingModel.getAdminEmail());
             existingOnboarding.setDescription(onboardingModel.getDescription());
             existingOnboarding.setStartdate(onboardingModel.getStartdate());
@@ -110,14 +103,6 @@ public class OnboardingController {
     @DeleteMapping("/delete/admin/email/{email}")
     public ResponseEntity<ApiResponse> deleteOnboardingByAdminEmail(@PathVariable String email) {
         onboardingRepository.deleteByAdminEmail(email);
-
-        ApiResponse apiResponse = new ApiResponse("Onboarding deleted successfully");
-        return ResponseEntity.ok(apiResponse);
-    }
-
-    @DeleteMapping("/delete/employee/email/{email}")
-    public ResponseEntity<ApiResponse> deleteOnboardingByEmployeeEmail(@PathVariable String email) {
-        onboardingRepository.deleteByEmployeeEmail(email);
 
         ApiResponse apiResponse = new ApiResponse("Onboarding deleted successfully");
         return ResponseEntity.ok(apiResponse);
