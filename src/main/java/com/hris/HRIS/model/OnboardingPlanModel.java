@@ -17,6 +17,7 @@ import java.util.List;
 public class OnboardingPlanModel {
     @Id
     private String id;
+    private String organizationId;
     private String title;
     @Field("onboarding")
     private List<OnboardingModel> onboarding;
