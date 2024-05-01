@@ -59,6 +59,7 @@ import {DateFormatPipe} from "./DTO/DateFormatPipe";
 import {BulletinsComponent} from './components/bulletins/bulletins.component';
 import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {EmployeeUpdateComponent} from './shared/components/employee-update/employee-update.component';
+import { OnboardingHandleComponent } from './components/onboarding-handle/onboarding-handle.component';
 
 @NgModule({
     declarations: [
@@ -101,7 +102,8 @@ import {EmployeeUpdateComponent} from './shared/components/employee-update/emplo
         EmpPromotionComponent,
         ChangeJobDataDialogComponent,
         BulletinsComponent,
-        EmployeeUpdateComponent
+        EmployeeUpdateComponent,
+        OnboardingHandleComponent
     ],
     imports: [
         BrowserModule,
