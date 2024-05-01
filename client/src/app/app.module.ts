@@ -60,6 +60,7 @@ import {BulletinsComponent} from './components/bulletins/bulletins.component';
 import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {EmployeeUpdateComponent} from './shared/components/employee-update/employee-update.component';
 import { OnboardingHandleComponent } from './components/onboarding-handle/onboarding-handle.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
     declarations: [
@@ -126,7 +127,8 @@ import { OnboardingHandleComponent } from './components/onboarding-handle/onboar
         MatTooltipModule,
         MatSelectModule,
         MatSlideToggleModule,
-        _MatSlideToggleRequiredValidatorModule
+        _MatSlideToggleRequiredValidatorModule,
+        MatCheckboxModule
     ],
     providers: [],
     bootstrap: [AppComponent]

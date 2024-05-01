@@ -1,6 +1,7 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.model.OnboardingModel;
 import com.hris.HRIS.repository.OnboardingRepository;
 import com.hris.HRIS.service.LettersGenerationService;
@@ -31,6 +32,14 @@ public class OnboardingController {
         onboardingPlanService.setOnboardinsToPlan(model);
 
         ApiResponse apiResponse = new ApiResponse("Saved onboarding to employee");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/assign/employee/{id}")
+    public ResponseEntity<ApiResponse> assignEmployees(@PathVariable String id, @RequestBody List<EmployeeModel> employeeModels) {
+        onboardingPlanService.addEmployeesToOnboarding(id, employeeModels);
+
+        ApiResponse apiResponse = new ApiResponse("Saved employees to onboarding");
         return ResponseEntity.ok(apiResponse);
     }
 
