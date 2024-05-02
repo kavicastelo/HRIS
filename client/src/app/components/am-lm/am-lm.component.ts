@@ -1,0 +1,74 @@
+import {Component, OnInit} from '@angular/core';
+import {Observable, Subscription, tap} from "rxjs";
+import {ThemeService} from "../../services/theme.service";
+import {EmployeesService} from "../../services/employees.service";
+import {MultimediaService} from "../../services/multimedia.service";
+import {MatDialog} from "@angular/material/dialog";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
+import {NGXLogger} from "ngx-logger";
+import {SafeResourceUrl} from "@angular/platform-browser";
+
+@Component({
+  selector: 'app-am-lm',
+  templateUrl: './am-lm.component.html',
+  styleUrls: ['./am-lm.component.scss']
+})
+export class AmLmComponent implements OnInit{
+
+  userId: any;
+  loggedUserId: any;
+
+  private themeSubscription: Subscription;
+  isDarkMode: boolean | undefined;
+
+  employeeDataStore:any;
+  employee: any
+
+  constructor(
+      private themeService: ThemeService,
+      private multimediaService:MultimediaService,
+      private dialog: MatDialog,
+      private router: Router) {
+    this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
+      this.isDarkMode = isDarkMode;
+    });
+  }
+
+  ngOnDestroy() {
+    this.themeSubscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Logic to update active class based on the current route
+        this.updateActiveClass();
+      }
+    });
+  }
+
+  convertToSafeUrl(url:any):SafeResourceUrl{
+    return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
+  }
+
+  navigateBetweenTabs(path: string) {
+    this.router.navigate([`/alm/${path}/`]);
+  }
+
+  updateActiveClass() {
+    const currentRoute = this.router.url;
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+
+    const activeLink = document.querySelector(`.nav-link[href="${currentRoute}"]`);
+    if (activeLink) {
+      activeLink.classList.add('active');
+    }
+  }
+  isActive(path: string) {
+    return this.router.url === `/alm/${path}`;
+  }
+}

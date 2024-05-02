@@ -29,6 +29,9 @@ import {PayrollComponent} from "./components/payroll/payroll.component";
 import {AddpayiteamsComponent} from './components/payroll/addpayiteams/addpayiteams.component';
 import {EmployeeUpdateComponent} from "./shared/components/employee-update/employee-update.component";
 import {OnboardingHandleComponent} from "./components/onboarding-handle/onboarding-handle.component";
+import {AmLmComponent} from "./components/am-lm/am-lm.component";
+import {AttendenceComponent} from "./components/am-lm/attendence/attendence.component";
+import {LeaveComponent} from "./components/am-lm/leave/leave.component";
 
 
 const routes: Routes = [
@@ -71,6 +74,13 @@ const routes: Routes = [
             {path: 'dashboard', component: EmpDashboardComponent},
             {path: 'transfer', component: EmpTransferComponent},
             {path: 'promotion', component: EmpPromotionComponent},
+        ]
+    },
+    {
+        path: 'alm', component:AmLmComponent, canActivate: [AuthGuard], children: [
+            {path: '', redirectTo: '/alm/attendance', pathMatch: 'full'},
+            {path: 'attendance', component: AttendenceComponent},
+            {path: 'leave', component: LeaveComponent}
         ]
     },
     {path:'payroll', component: PayrollComponent},

@@ -63,6 +63,9 @@ import { PayrollnavbarComponent } from './components/payroll/payrollnavbar/payro
 import {EmployeeUpdateComponent} from './shared/components/employee-update/employee-update.component';
 import { OnboardingHandleComponent } from './components/onboarding-handle/onboarding-handle.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {AmLmComponent} from './components/am-lm/am-lm.component';
+import {AttendenceComponent} from './components/am-lm/attendence/attendence.component';
+import {LeaveComponent} from './components/am-lm/leave/leave.component';
 
 
 @NgModule({
@@ -110,7 +113,10 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         AddpayiteamsComponent,
         PayrollnavbarComponent,
         EmployeeUpdateComponent,
-        OnboardingHandleComponent
+        OnboardingHandleComponent,
+        AmLmComponent,
+        AttendenceComponent,
+        LeaveComponent
 
     ],
     imports: [
