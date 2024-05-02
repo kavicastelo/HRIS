@@ -10,6 +10,7 @@ import com.hris.HRIS.repository.OrganizationRepository;
 import com.hris.HRIS.service.EmailService;
 import com.hris.HRIS.shared.objects.JobData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @RestController
 @RequestMapping("/api/v1/organization")
@@ -49,6 +55,16 @@ public class OrganizationController {
         employeeModel.setPhone(organizationModel.getPhone());
         employeeModel.setOrganizationId(orgModel.getId());
         employeeModel.setJobData(jobData);
+        // Set default photo from resources directory
+        try {
+            Resource defaultPhotoResource = new ClassPathResource("default_profile.jpg");
+            byte[] defaultPhotoBytes = Files.readAllBytes(defaultPhotoResource.getFile().toPath());
+            employeeModel.setPhoto(defaultPhotoBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("Failed to load default photo"));
+        }
         employeeModel.setLevel(0);
 
         employeeRepository.save(employeeModel);

@@ -25,8 +25,8 @@ import {EmpDashboardComponent} from "./components/employee/emp-dashboard/emp-das
 import {EmpTransferComponent} from "./components/employee/emp-transfer/emp-transfer.component";
 import {EmpPromotionComponent} from "./components/employee/emp-promotion/emp-promotion.component";
 import {BulletinsComponent} from "./components/bulletins/bulletins.component";
-import { PayrollComponent } from "./components/payroll/payroll.component";
-import { AddpayiteamsComponent } from './components/payroll/addpayiteams/addpayiteams.component';
+import {PayrollComponent} from "./components/payroll/payroll.component";
+import {AddpayiteamsComponent} from './components/payroll/addpayiteams/addpayiteams.component';
 import {EmployeeUpdateComponent} from "./shared/components/employee-update/employee-update.component";
 import {OnboardingHandleComponent} from "./components/onboarding-handle/onboarding-handle.component";
 
