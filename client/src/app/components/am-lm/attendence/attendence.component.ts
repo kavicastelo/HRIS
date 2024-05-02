@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {attendanceDataStore} from "../../../shared/data-stores/attendance-data-store";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-attendence',
@@ -9,6 +10,9 @@ import {attendanceDataStore} from "../../../shared/data-stores/attendance-data-s
 export class AttendenceComponent {
 
   attendanceStore:any = attendanceDataStore
+  filterForm = new FormGroup({
+    filter: new FormControl(null, [Validators.required])
+  })
 
   calculateHours(timestamp1: string, timestamp2: string): number {
     // Convert timestamps to Date objects

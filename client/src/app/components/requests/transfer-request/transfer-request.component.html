@@ -21,7 +21,7 @@
             </td>
             <td class="td-status">
                 <div class="d-flex align-items-center justify-content-center">
-                    <div class="status-tag" [ngStyle]="{'background-color':t.approved=='approved'?'green':t.approved=='declined'?'red':'orange'}">
+                    <div class="status-tag" [ngStyle]="{'background-color':t.approved=='approved'?'#0CBC87':t.approved=='declined'?'rgba(230, 41, 41, 0.20)':'rgba(247, 195, 46, 0.25)'}">
                         {{t.approved}}
                     </div>
                 </div>

@@ -23,7 +23,7 @@ export var attendanceDataStore: AttendanceModel[] = [
         id:"4",
         name:"Mary Ann",
         recordInTime:"Thu May 02 2024 08:15:15 GMT+0530 (India Standard Time)",
-        recordOutTime:"Thu May 02 2024 17:25:15 GMT+0530 (India Standard Time)"
+        recordOutTime:"Thu May 02 2024 16:25:15 GMT+0530 (India Standard Time)"
     },
     {
         id:"5",
@@ -47,7 +47,7 @@ export var attendanceDataStore: AttendanceModel[] = [
         id:"8",
         name:"John Smith",
         recordInTime:"Thu May 02 2024 08:15:15 GMT+0530 (India Standard Time)",
-        recordOutTime:"Thu May 02 2024 17:25:15 GMT+0530 (India Standard Time)"
+        recordOutTime:"Thu May 02 2024 17:05:15 GMT+0530 (India Standard Time)"
     },
     {
         id:"9",

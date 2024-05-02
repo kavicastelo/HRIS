@@ -6,39 +6,41 @@
             </div>
         </li>
         <li class="list-group-item">
-            <div class="d-md-flex align-items-center justify-content-between my-4">
-                <div class="d-flex align-items-center">
-                    <p>Date Range:&nbsp;&nbsp;</p>
-                    <div>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate placeholder="Start date">
-                                <input matEndDate placeholder="End date">
-                            </mat-date-range-input>
-                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center">
+            <form [formGroup]="filterForm">
+                <div class="d-md-flex align-items-center justify-content-between my-4">
                     <div class="d-flex align-items-center">
-                        <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
-                        <p>Filter by:&nbsp;&nbsp;</p>
+                        <p>Date Range:&nbsp;&nbsp;</p>
+                        <div>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate placeholder="Start date">
+                                    <input matEndDate placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div>
-                        <mat-form-field class="w-100" appearance="outline">
-                            <mat-label>DEPARTMENT</mat-label>
-                            <mat-select id="department" formControlName="department">
-                                <mat-option value="all">All</mat-option>
-                                <mat-option value="all">All</mat-option>
-                                <mat-option value="all">All</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
+                            <p>Filter by:&nbsp;&nbsp;</p>
+                        </div>
+                        <div>
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>DEPARTMENT</mat-label>
+                                <mat-select id="department" formControlName="filter">
+                                    <mat-option value="all">All</mat-option>
+                                    <mat-option value="all">All</mat-option>
+                                    <mat-option value="all">All</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div class="attendance-list">
                 <table class="table table-hover">
@@ -56,9 +58,13 @@
                     <tr *ngFor="let a of attendanceStore">
                         <td>{{a.name}}</td>
                         <td>{{a.recordInTime | dateFormat}}</td>
-                        <td>{{a.recordInTime | timeFormat}}</td>
+                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red':'var(--color-text-200)'}">
+                            {{a.recordInTime | timeFormat}}
+                        </td>
                         <td>{{a.recordOutTime | timeFormat}}</td>
-                        <td>{{calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}</td>
+                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red' : 'var(--color-text-200)'}">
+                            {{calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
+                        </td>
                         <td><div class="d-flex align-items-center justify-content-around">
                             <p>Edit</p>
                             <p>Add Shift</p>
