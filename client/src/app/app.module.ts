@@ -66,6 +66,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {AmLmComponent} from './components/am-lm/am-lm.component';
 import {AttendenceComponent} from './components/am-lm/attendence/attendence.component';
 import {LeaveComponent} from './components/am-lm/leave/leave.component';
+import {TimeFormatPipe} from "./DTO/TimeFormatPipe";
+import {HourMinuteFormatPipe} from "./DTO/HourMinuteFormatPipe";
 
 
 @NgModule({
@@ -91,6 +93,8 @@ import {LeaveComponent} from './components/am-lm/leave/leave.component';
         ChatAreaComponent,
         TimeAgoPipe,
         TruncatePipe,
+        TimeFormatPipe,
+        HourMinuteFormatPipe,
         TruncateCommentsPipe,
         DateFormatPipe,
         ConfirmDialogComponent,

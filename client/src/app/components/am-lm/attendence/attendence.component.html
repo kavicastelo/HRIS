@@ -53,13 +53,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <tr *ngFor="let a of attendanceStore">
+                        <td>{{a.name}}</td>
+                        <td>{{a.recordInTime | dateFormat}}</td>
+                        <td>{{a.recordInTime | timeFormat}}</td>
+                        <td>{{a.recordOutTime | timeFormat}}</td>
+                        <td>{{calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}</td>
+                        <td><div class="d-flex align-items-center justify-content-around">
+                            <p>Edit</p>
+                            <p>Add Shift</p>
+                        </div></td>
                     </tr>
                     </tbody>
                 </table>
