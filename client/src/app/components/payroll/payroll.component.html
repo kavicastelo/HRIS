@@ -1,0 +1,25 @@
+<div class="container body">
+<app-payrollnavbar></app-payrollnavbar>
+
+
+  <div class="container-fluid">
+    
+    <label>Employee Payments</label>
+    <button type="button"  class="btn btn-primary paymentButton" routerLink='/addpayiteams' >+ Add Pay Items</button>
+    <table class="table table-hover table table-borderless table-responsive">
+        <thead >
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employees">
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone }}</td>
+        </tbody>
+      </table>
+  </div>
+</div>
