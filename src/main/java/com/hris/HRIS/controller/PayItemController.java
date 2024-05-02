@@ -20,15 +20,18 @@ public class PayItemController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> savePayItem(@RequestBody PayItemModel payItemModel) {
+        payItemModel.setId(null);
         payItemRepository.save(payItemModel);
 
         ApiResponse apiResponse = new ApiResponse("Pay item added successfully.");
         return ResponseEntity.ok(apiResponse);
     }
-    
-    @GetMapping("/get/all")
-    public List<PayItemModel> getAllPayItems(){
-        return payItemRepository.findAll();
+
+    @GetMapping("/get/all/organizationId/{organizationId}")
+    public List<PayItemModel> getAllPayItems(@PathVariable String organizationId){
+
+        return payItemRepository.findAllByOrganizationId(organizationId);
+
     }
 
     @GetMapping("/get/id/{id}")
@@ -52,7 +55,8 @@ public class PayItemController {
         if(payItemModelOptional.isPresent()){
             PayItemModel existingPayItem = payItemModelOptional.get();
             existingPayItem.setItemName(payItemModel.getItemName());
-            existingPayItem.setDescription(payItemModel.getItemType());
+            existingPayItem.setDescription(payItemModel.getDescription());
+            existingPayItem.setItemType(payItemModel.getItemType());
             existingPayItem.setPaymentType(payItemModel.getPaymentType());
             existingPayItem.setStatus(payItemModel.getStatus());
 

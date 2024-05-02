@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class TaxModel {
     @Id
     private String id;
+    private String organizationId;
     private double min;
     private double max;
     private double rate;
