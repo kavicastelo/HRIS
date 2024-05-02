@@ -1,6 +1,6 @@
 package com.hris.HRIS.model;
 
-import com.hris.HRIS.dto.PayrollReportItem;
+import com.hris.HRIS.dto.SummaryReportItem;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,20 +13,17 @@ import java.util.List;
 @Setter
 @ToString
 
-@Document(collection = "payrollreport")
-public class PayrollReportModel {
+@Document(collection = "summary-report")
+public class SummaryReportModel {
     @Id
     private String id;
     private String organizationId;
-    private String email;
     private String reportDescription;
+    private List<SummaryReportItem> employeePayments;
+    private Double totalEarnings;
+    private Double totalDeductions;
+    private Double netPayTotal;
     private String reportType;
-    private Integer workedDays;
-    private List<PayrollReportItem> payItems;
-    private List<PayrollReportItem> deductions;
-    private double totalEarnings;
-    private double totalDeductions;
-    private double netPay;
     private String payPeriod; // July 2024, etc...
     private String reportGeneratedDate;
     private String status;

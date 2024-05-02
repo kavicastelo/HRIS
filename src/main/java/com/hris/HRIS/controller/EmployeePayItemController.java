@@ -1,6 +1,7 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.model.EmployeePayItemModel;
 import com.hris.HRIS.model.PayItemModel;
 import com.hris.HRIS.repository.EmployeePayItemRepository;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,25 +23,46 @@ public class EmployeePayItemController {
     EmployeePayItemRepository employeePayItemRepository;
 
     @Autowired
+    PayrollModuleCalculationService payrollModuleCalculationService;
+
+    @Autowired
     PayItemController payItemController;
 
     @Autowired
-    PayrollModuleCalculationService payrollModuleCalculationService;
-    
+    EmployeeController employeeController;
 
     @PostMapping("/assign")
     public ResponseEntity<ApiResponse> assignPayItem(@RequestBody EmployeePayItemModel employeePayItemModel) {
+        employeePayItemModel.setId(null);
         employeePayItemRepository.save(employeePayItemModel);
 
         ApiResponse apiResponse = new ApiResponse("Pay item assigned successfully to " + employeePayItemModel.getEmail() + ".");
         return ResponseEntity.ok(apiResponse);
     }
 
-    @GetMapping("/get/{email}")
+    @PostMapping("/assign/multiple-employees")
+    public ResponseEntity<ApiResponse> assignPayItemForMultipleEmployees(@RequestBody List<EmployeePayItemModel> employeePayItemModels) {
+
+        for (EmployeePayItemModel employeePayItemModel : employeePayItemModels) {
+            employeePayItemModel.setId(null);
+            employeePayItemRepository.save(employeePayItemModel);
+        }
+
+        ApiResponse apiResponse = new ApiResponse("Pay item assigned successfully.");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/get/email/{email}")
     public List<EmployeePayItemModel> getPayItemsByEmail(@PathVariable String email){
 
-        List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
-        
+        List<EmployeePayItemModel> employeePayItemsList = new ArrayList<>();
+
+        for(EmployeePayItemModel payitem : employeePayItemRepository.findAllByEmail(email)){
+            if(!payItemController.getPayItemById(payitem.getPayItemId()).getBody().getStatus().equals("Unavailable")){
+                employeePayItemsList.add(payitem);
+            }
+        }
+
         return employeePayItemsList;
     }
 
@@ -55,7 +74,8 @@ public class EmployeePayItemController {
             EmployeePayItemModel existingEmployeePayItem = employeePayItemModelOptional.get();
             existingEmployeePayItem.setPayItemId(employeePayItemModel.getPayItemId());
             existingEmployeePayItem.setEmail(employeePayItemModel.getEmail());
-            existingEmployeePayItem.setAmount(employeePayItemModel.getAmount());
+            existingEmployeePayItem.setType(employeePayItemModel.getType());
+            existingEmployeePayItem.setValue(employeePayItemModel.getValue());
 
             employeePayItemRepository.save(existingEmployeePayItem);
         }
@@ -64,21 +84,16 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @DeleteMapping("/delete/id/{id}")
-    public ResponseEntity<ApiResponse> removePayItemFromEmployee(@PathVariable String id){
-        employeePayItemRepository.deleteById(id);
-
-        ApiResponse apiResponse = new ApiResponse("Pay item removed from the employee successfully");
-        return ResponseEntity.ok(apiResponse);
-    }
-
     @PostMapping("/{email}/overtime-payment")
     public ResponseEntity<ApiResponse> addOvertimePayments(@PathVariable String email, @RequestBody String requestBody) {
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
         String returnMsg;
 
         try {
+
+            EmployeeModel existingEmployee = employeeController.getEmployeeByEmail(email).getBody();
+
             JsonNode requestBodyJson = objectMapper.readTree(requestBody);
 
             double totalHoursAllowed = requestBodyJson.get("totalHoursAllowed").asDouble();
@@ -86,18 +101,18 @@ public class EmployeePayItemController {
 
             List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
 
-            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double basicSalary = employeePayItemsList.get(0).getValue(); // First payitem is the basic.
             Double overtimePayments = 0.0;
 
             String payitemName = "Overtime payment";
 
-            if(overtimeHoursWorked <= totalHoursAllowed){
+            if (overtimeHoursWorked <= totalHoursAllowed) {
 
                 overtimePayments = payrollModuleCalculationService.calculateOvertimePayments(basicSalary, totalHoursAllowed, overtimeHoursWorked);
 
                 ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
 
-                if(!payItemModalOptional.hasBody()){
+                if (!payItemModalOptional.hasBody()) {
                     PayItemModel payItemModel = new PayItemModel();
 
                     payItemModel.setItemName(payitemName);
@@ -113,29 +128,30 @@ public class EmployeePayItemController {
 
                 employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
                 employeePayItemModel.setEmail(email);
-                employeePayItemModel.setAmount(overtimePayments);
+                employeePayItemModel.setType("Amount");
+                employeePayItemModel.setValue(overtimePayments);
 
                 boolean isOvertimePayItemFound = false;
 
-                for(int i = 0; i < employeePayItemsList.size(); i++){
-                    if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+                for (int i = 0; i < employeePayItemsList.size(); i++) {
+                    if (payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)) {
                         isOvertimePayItemFound = true;
                         updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
                         break;
                     }
                 }
 
-                if(!isOvertimePayItemFound){
+                if (!isOvertimePayItemFound) {
                     assignPayItem(employeePayItemModel);
                 }
 
                 returnMsg = "Overtime payments updated successfully.";
-            }else{
+            } else {
                 returnMsg = "Worked hours are out of range.";
             }
 
         } catch (Exception e) {
-            
+
             returnMsg = "Failed to process the received parameters.";
         }
 
@@ -150,23 +166,26 @@ public class EmployeePayItemController {
         String returnMsg;
 
         try {
+
+            EmployeeModel existingEmployee = employeeController.getEmployeeByEmail(email).getBody();
+
             JsonNode requestBodyJson = objectMapper.readTree(requestBody);
 
             double totalHoursAllowed = requestBodyJson.get("totalHoursAllowed").asDouble();
             double lateMinutes = requestBodyJson.get("lateMinutes").asDouble();
-        
+
             String payitemName = "Late minute deductions";
 
             List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
 
-            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double basicSalary = employeePayItemsList.get(0).getValue(); // First payitem is the basic.
             Double lateMinuteDeductionAmount = 0.0;
 
             lateMinuteDeductionAmount = payrollModuleCalculationService.calculateLateMinuteDeductions(basicSalary, totalHoursAllowed, lateMinutes);
 
             ResponseEntity<PayItemModel> payItemModalOptional = payItemController.getPayItemByName(payitemName);
 
-            if(!payItemModalOptional.hasBody()){
+            if (!payItemModalOptional.hasBody()) {
                 PayItemModel payItemModel = new PayItemModel();
 
                 payItemModel.setItemName(payitemName);
@@ -182,27 +201,29 @@ public class EmployeePayItemController {
 
             employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
             employeePayItemModel.setEmail(email);
-            employeePayItemModel.setAmount(lateMinuteDeductionAmount);
+            employeePayItemModel.setType("Amount");
+            employeePayItemModel.setValue(lateMinuteDeductionAmount);
 
             boolean isPayItemFound = false;
 
-            for(int i = 0; i < employeePayItemsList.size(); i++){
-                if(payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)){
+            for (int i = 0; i < employeePayItemsList.size(); i++) {
+                if (payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)) {
                     isPayItemFound = true;
+                    employeePayItemModel.setValue(employeePayItemModel.getValue() + employeePayItemsList.get(i).getValue());
                     updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemModel);
                     break;
                 }
             }
 
-            if(!isPayItemFound){
+            if (!isPayItemFound) {
                 assignPayItem(employeePayItemModel);
             }
 
             returnMsg = "Late minute deductions updated successfully.";
-        
 
         } catch (Exception e) {
-            
+
+            System.out.println(e);
             returnMsg = "Failed to process the received parameters.";
         }
 
@@ -223,11 +244,11 @@ public class EmployeePayItemController {
             double noPayHours = requestBodyJson.get("noPayHours").asDouble();
 
             String payitemName = "No pay hours";
-        
+
 
             List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
 
-            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double basicSalary = employeePayItemsList.get(0).getValue(); // First payitem is the basic.
             Double noPayHoursDeductionAmount = 0.0;
 
             if(noPayHours <= totalHoursAllowed){
@@ -252,7 +273,8 @@ public class EmployeePayItemController {
 
                 employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
                 employeePayItemModel.setEmail(email);
-                employeePayItemModel.setAmount(noPayHoursDeductionAmount);
+                employeePayItemModel.setType("Amount");
+                employeePayItemModel.setValue(noPayHoursDeductionAmount);
 
                 boolean isPayItemFound = false;
 
@@ -273,10 +295,10 @@ public class EmployeePayItemController {
             }else{
                 returnMsg = "No pay hours are out of range.";
             }
-        
+
 
         } catch (Exception e) {
-            
+
             returnMsg = "Failed to process the received parameters.";
         }
 
@@ -300,7 +322,7 @@ public class EmployeePayItemController {
 
                 List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
 
-                Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+                Double basicSalary = employeePayItemsList.get(0).getValue(); // First payitem is the basic.
                 Double EPFDeductionAmount = 0.0;
 
                 EPFDeductionAmount = payrollModuleCalculationService.calculateEPF(basicSalary, payitemNameEntry.getValue());
@@ -323,7 +345,8 @@ public class EmployeePayItemController {
 
                 employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
                 employeePayItemModel.setEmail(email);
-                employeePayItemModel.setAmount(EPFDeductionAmount);
+                employeePayItemModel.setType("Amount");
+                employeePayItemModel.setValue(EPFDeductionAmount);
 
                 boolean isPayItemFound = false;
 
@@ -361,7 +384,7 @@ public class EmployeePayItemController {
 
             List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
 
-            Double basicSalary = employeePayItemsList.get(0).getAmount(); // First payitem is the basic.
+            Double basicSalary = employeePayItemsList.get(0).getValue(); // First payitem is the basic.
             Double EPFDeductionAmount = 0.0;
 
             EPFDeductionAmount = payrollModuleCalculationService.calculateEPF(basicSalary, 3.0);
@@ -384,7 +407,8 @@ public class EmployeePayItemController {
 
             employeePayItemModel.setPayItemId(payItemController.getPayItemByName(payitemName).getBody().getId());
             employeePayItemModel.setEmail(email);
-            employeePayItemModel.setAmount(EPFDeductionAmount);
+            employeePayItemModel.setType("Amount");
+            employeePayItemModel.setValue(EPFDeductionAmount);
 
             boolean isPayItemFound = false;
 
@@ -407,6 +431,30 @@ public class EmployeePayItemController {
         }
 
         ApiResponse apiResponse = new ApiResponse(returnMsg);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    public void resetCommonPayItems(String email){
+        List<String> payitemsToReset = new ArrayList<>(Arrays.asList("Late minute deductions", "Overtime payment", "No pay hours"));
+
+        for(String payitemName : payitemsToReset){
+            List<EmployeePayItemModel> employeePayItemsList = employeePayItemRepository.findAllByEmail(email);
+
+            for (int i = 0; i < employeePayItemsList.size(); i++) {
+                if (payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody().getItemName().equals(payitemName)) {
+                    employeePayItemsList.get(i).setValue(0);
+                    updateEmployeePayItem(employeePayItemsList.get(i).getId(), employeePayItemsList.get(i));
+                    break;
+                }
+            }
+        }
+    }
+
+    @DeleteMapping("/delete/id/{id}")
+    public ResponseEntity<ApiResponse> removePayItemFromEmployee(@PathVariable String id){
+        employeePayItemRepository.deleteById(id);
+
+        ApiResponse apiResponse = new ApiResponse("Pay item removed from the employee successfully");
         return ResponseEntity.ok(apiResponse);
     }
 }
