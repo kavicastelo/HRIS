@@ -3,7 +3,10 @@ package com.hris.HRIS.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.ChannelModel;
+import com.hris.HRIS.model.DepartmentModel;
 import com.hris.HRIS.model.EmployeeModel;
+import com.hris.HRIS.repository.ChannelRepository;
+import com.hris.HRIS.repository.DepartmentRepository;
 import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +24,9 @@ import java.util.Optional;
 public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    ChannelRepository channelRepository;
 
     @Autowired
     SystemAutomateService systemAutomateService;
@@ -175,7 +182,6 @@ public class EmployeeController {
 
         ObjectMapper objectMapper = new ObjectMapper();
         Object fixedJobData = objectMapper.readValue(jobData, Object.class);
-        System.out.println(fixedJobData);
 
         Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
 
@@ -205,6 +211,8 @@ public class EmployeeController {
                 newEmployee.setLevel(newEmployee.getLevel());
             }
 
+            updateChannels(newEmployee);
+
             EmployeeModel emp = employeeRepository.save(newEmployee);
 
             systemAutomateService.updateOrganizationSingleEmployeeData(emp);
@@ -212,6 +220,19 @@ public class EmployeeController {
 
         ApiResponse apiResponse = new ApiResponse("Employee saved successfully");
         return ResponseEntity.ok(apiResponse);
+    }
+    private void updateChannels(EmployeeModel employee) {
+        if (employee.getChannels() == null) {
+            employee.setChannels(new ArrayList<>());
+            Optional<List<ChannelModel>> channelModel = channelRepository.findAllByDepartmentId(employee.getDepartmentId());
+            channelModel.ifPresent(channels -> employee.getChannels().addAll(channels));
+        } else {
+            Optional<List<ChannelModel>> channelModel = channelRepository.findAllByDepartmentId(employee.getDepartmentId());
+            channelModel.ifPresent(channels -> {
+                String departmentId = channels.get(0).getDepartmentId(); // Assuming channels is not empty
+                employee.getChannels().replaceAll(c -> c.getDepartmentId().equals(departmentId) ? channels.get(0) : c);
+            });
+        }
     }
 
     @PutMapping("/update/email/{email}")
