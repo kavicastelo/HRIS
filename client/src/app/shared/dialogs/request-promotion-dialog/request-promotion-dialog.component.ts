@@ -38,6 +38,7 @@ export class RequestPromotionDialogComponent {
     if (this.receivedData){
       this.promotionService.savePromotion({
         userId: this.receivedData.data.userId,
+        organizationId: this.receivedData.data.organizationId,
         timestamp: new Date(),
         reason: this.textAreaForm.value.text
       }).subscribe((data)=>{

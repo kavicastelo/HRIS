@@ -349,7 +349,29 @@ public class SystemAutomateService {
                     existingOrganization.getEmployees()
                             .replaceAll(e -> e.getId().equals(updatedEmployee.getId()) ? updatedEmployee : e);
                 }
+
+                organizationRepository.save(existingOrganization);
             }
+        }
+    }
+
+    public void updateOrganizationSingleEmployeeData(EmployeeModel updatedEmployee) {
+        // Update the organization
+        Optional<OrganizationModel> organizationOptional = organizationRepository.findById(updatedEmployee.getOrganizationId());
+
+        if (organizationOptional.isPresent()) {
+            OrganizationModel existingOrganization = organizationOptional.get();
+
+            // Check if employees list is null, and initialize it if necessary
+            if (existingOrganization.getEmployees() == null) {
+                existingOrganization.setEmployees(new ArrayList<>());
+            } else {
+                // Find and replace the existing employee with the updated one
+                existingOrganization.getEmployees()
+                        .replaceAll(e -> e.getId().equals(updatedEmployee.getId()) ? updatedEmployee : e);
+            }
+
+            organizationRepository.save(existingOrganization);
         }
     }
 

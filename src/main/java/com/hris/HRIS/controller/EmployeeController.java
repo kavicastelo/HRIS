@@ -38,7 +38,7 @@ public class EmployeeController {
                                                     @RequestParam("nic") String nic,
                                                     @RequestParam("status") String status,
                                                     @RequestParam("level") String level
-                                                    ) throws IOException {
+    ) throws IOException {
 
 //        Integer.parseInt(jobData);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -70,18 +70,17 @@ public class EmployeeController {
     }
 
     @PutMapping("/active/set-status/{id}")
-    public ResponseEntity<ApiResponse> setActivityStatus(@PathVariable String id, @RequestBody EmployeeModel employeeModel){
+    public ResponseEntity<ApiResponse> setActivityStatus(@PathVariable String id, @RequestBody EmployeeModel employeeModel) {
         Optional<EmployeeModel> optionalEmployee = employeeRepository.findById(id);
 
-        if(optionalEmployee.isPresent()){
+        if (optionalEmployee.isPresent()) {
             EmployeeModel existsEmployeeModel = optionalEmployee.get();
 
             Boolean status = existsEmployeeModel.getActivityStatus();
-            if (status != null){
+            if (status != null) {
                 existsEmployeeModel.setActivityStatus(!status);
                 existsEmployeeModel.setLastSeen(employeeModel.getLastSeen());
-            }
-            else {
+            } else {
                 existsEmployeeModel.setActivityStatus(true);
                 existsEmployeeModel.setLastSeen(employeeModel.getLastSeen());
             }
@@ -93,19 +92,19 @@ public class EmployeeController {
     }
 
     @GetMapping("/get/all")
-    public List<EmployeeModel> getAllEmployees(){
+    public List<EmployeeModel> getAllEmployees() {
         return employeeRepository.findAll();
     }
 
     @GetMapping("/get/id/{id}")
-    public ResponseEntity<EmployeeModel> getEmployeeById(@PathVariable String id){
+    public ResponseEntity<EmployeeModel> getEmployeeById(@PathVariable String id) {
         Optional<EmployeeModel> employeeModelOptional = employeeRepository.findById(id);
 
         return employeeModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/get/email/{email}")
-    public ResponseEntity<EmployeeModel> getEmployeeByEmail(@PathVariable String email){
+    public ResponseEntity<EmployeeModel> getEmployeeByEmail(@PathVariable String email) {
         Optional<EmployeeModel> employeeModelOptional = employeeRepository.findOneByEmail(email);
 
         return employeeModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
@@ -113,7 +112,7 @@ public class EmployeeController {
 
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updateEmployee(@PathVariable String id,
-                                                      @RequestPart("photo") MultipartFile photo,
+                                                      @RequestPart(value = "photo", required = false) MultipartFile photo,
                                                       @RequestParam("name") String name,
                                                       @RequestParam("email") String email,
                                                       @RequestParam("phone") String phone,
@@ -128,7 +127,7 @@ public class EmployeeController {
 
         Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
 
-        if (optionalEmployeeModel.isPresent()){
+        if (optionalEmployeeModel.isPresent()) {
             EmployeeModel existModel = optionalEmployeeModel.get();
 
             EmployeeModel employeeModel = new EmployeeModel();
@@ -141,7 +140,11 @@ public class EmployeeController {
             employeeModel.setChannels(existModel.getChannels());
             employeeModel.setJobData(existModel.getJobData());
             employeeModel.setGender(gender);
-            employeeModel.setPhoto(photo.getBytes());
+            if (photo != null) {
+                employeeModel.setPhoto(photo.getBytes());
+            } else {
+                employeeModel.setPhoto(existModel.getPhoto());
+            }
             employeeModel.setDob(dob);
             employeeModel.setNic(nic);
             employeeModel.setStatus(status);
@@ -153,8 +156,66 @@ public class EmployeeController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PutMapping("/update/full/id/{id}")
+    public ResponseEntity<ApiResponse> updateEmployeeFull(@PathVariable String id,
+                                                          @RequestPart(value = "photo", required = false) MultipartFile photo,
+                                                          @RequestParam("name") String name,
+                                                          @RequestParam("email") String email,
+                                                          @RequestParam("phone") String phone,
+                                                          @RequestParam("address") String address,
+                                                          @RequestParam("organizationId") String organizationId,
+                                                          @RequestParam("departmentId") String departmentId,
+                                                          @RequestParam("jobData") String jobData,
+                                                          @RequestParam("gender") String gender,
+                                                          @RequestParam("dob") String dob,
+                                                          @RequestParam("nic") String nic,
+                                                          @RequestParam("status") String status,
+                                                          @RequestParam(value = "level", required = false) String level
+    ) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Object fixedJobData = objectMapper.readValue(jobData, Object.class);
+        System.out.println(fixedJobData);
+
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel newEmployee = optionalEmployeeModel.get();
+            newEmployee.setName(name);
+            newEmployee.setEmail(email);
+            newEmployee.setPhone(phone);
+            newEmployee.setAddress(address);
+            newEmployee.setOrganizationId(organizationId);
+            newEmployee.setDepartmentId(departmentId);
+            newEmployee.setJobData(fixedJobData);
+            newEmployee.setChannels(newEmployee.getChannels());
+            newEmployee.setGender(gender);
+            newEmployee.setDob(dob);
+            newEmployee.setNic(nic);
+            if (photo != null) {
+                newEmployee.setPhoto(photo.getBytes());
+            } else {
+                newEmployee.setPhoto(newEmployee.getPhoto());
+            }
+            newEmployee.setStatus(status);
+            if (level != null && !level.equals("null")){
+                newEmployee.setLevel(Integer.parseInt(level));
+            }
+            else {
+                newEmployee.setLevel(newEmployee.getLevel());
+            }
+
+            EmployeeModel emp = employeeRepository.save(newEmployee);
+
+            systemAutomateService.updateOrganizationSingleEmployeeData(emp);
+        }
+
+        ApiResponse apiResponse = new ApiResponse("Employee saved successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
     @PutMapping("/update/email/{email}")
-    public ResponseEntity<ApiResponse> updateEmployeeByEmail(@PathVariable String email, @RequestBody EmployeeModel employeeModel){
+    public ResponseEntity<ApiResponse> updateEmployeeByEmail(@PathVariable String email, @RequestBody EmployeeModel employeeModel) {
         systemAutomateService.updateEmployeeAndUpdateOrganizationByEmail(email, employeeModel);
 
         ApiResponse apiResponse = new ApiResponse("Employee updated successfully");
@@ -162,7 +223,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/delete/id/{id}")
-    public ResponseEntity<ApiResponse> deleteEmployee(@PathVariable String id){
+    public ResponseEntity<ApiResponse> deleteEmployee(@PathVariable String id) {
 
         systemAutomateService.DeleteCredentials(id);
         systemAutomateService.deleteEmployeeAndUpdateOrganization(id);
@@ -172,7 +233,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/delete/email/{email}")
-    public ResponseEntity<ApiResponse> deleteEmployeeByEmail(@PathVariable String email){
+    public ResponseEntity<ApiResponse> deleteEmployeeByEmail(@PathVariable String email) {
         systemAutomateService.deleteEmployeeAndUpdateOrganizationByEmail(email);
 
         ApiResponse apiResponse = new ApiResponse("Employee deleted successfully");

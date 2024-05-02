@@ -27,6 +27,9 @@ import {EmpPromotionComponent} from "./components/employee/emp-promotion/emp-pro
 import {BulletinsComponent} from "./components/bulletins/bulletins.component";
 import { PayrollComponent } from "./components/payroll/payroll.component";
 import { AddpayiteamsComponent } from './components/payroll/addpayiteams/addpayiteams.component';
+import {EmployeeUpdateComponent} from "./shared/components/employee-update/employee-update.component";
+import {OnboardingHandleComponent} from "./components/onboarding-handle/onboarding-handle.component";
+
 
 const routes: Routes = [
     {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -52,6 +55,7 @@ const routes: Routes = [
     },
     {path: 'login', component: LogInComponent},
     {path: 'emp-register', component: EmployeeRegisterComponent, canActivate: [AuthGuard]},
+    {path: 'emp-update/:id', component: EmployeeUpdateComponent, canActivate: [AuthGuard]},
     {path: 'bulletins', component: BulletinsComponent, canActivate: [AuthGuard]},
     {path: 'reset-password', component: ResetPasswordComponent},
     {
@@ -71,6 +75,7 @@ const routes: Routes = [
     },
     {path:'payroll', component: PayrollComponent},
     {path:'addpayiteams', component: AddpayiteamsComponent},
+    {path:'onboardin', component:OnboardingHandleComponent, canActivate: [AuthGuard]},
     {path: '**', component: NotFoundComponent},
 
 ];

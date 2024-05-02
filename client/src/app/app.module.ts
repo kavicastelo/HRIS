@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './components/home/home.component';
@@ -56,11 +55,15 @@ import {EmpTransferComponent} from './components/employee/emp-transfer/emp-trans
 import {EmpPromotionComponent} from './components/employee/emp-promotion/emp-promotion.component';
 import {ChangeJobDataDialogComponent} from './shared/dialogs/change-job-data-dialog/change-job-data-dialog.component';
 import {DateFormatPipe} from "./DTO/DateFormatPipe";
-import { BulletinsComponent } from './components/bulletins/bulletins.component';
+import {BulletinsComponent} from './components/bulletins/bulletins.component';
 import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { PayrollComponent } from "./components/payroll/payroll.component";
 import { AddpayiteamsComponent } from './components/payroll/addpayiteams/addpayiteams.component';
 import { PayrollnavbarComponent } from './components/payroll/payrollnavbar/payrollnavbar.component';
+import {EmployeeUpdateComponent} from './shared/components/employee-update/employee-update.component';
+import { OnboardingHandleComponent } from './components/onboarding-handle/onboarding-handle.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+
 
 @NgModule({
     declarations: [
@@ -106,6 +109,9 @@ import { PayrollnavbarComponent } from './components/payroll/payrollnavbar/payro
         PayrollComponent,
         AddpayiteamsComponent,
         PayrollnavbarComponent
+        EmployeeUpdateComponent,
+        OnboardingHandleComponent
+
     ],
     imports: [
         BrowserModule,
@@ -128,7 +134,8 @@ import { PayrollnavbarComponent } from './components/payroll/payrollnavbar/payro
         MatTooltipModule,
         MatSelectModule,
         MatSlideToggleModule,
-        _MatSlideToggleRequiredValidatorModule
+        _MatSlideToggleRequiredValidatorModule,
+        MatCheckboxModule
     ],
     providers: [],
     bootstrap: [AppComponent]

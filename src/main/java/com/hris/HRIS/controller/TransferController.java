@@ -46,6 +46,7 @@ public class TransferController {
             EmployeeModel employeeModel = optionalEmployeeModel.get();
 
             newTransferModel.setUserId(employeeModel.getId());
+            newTransferModel.setOrganizationId(transferModel.getOrganizationId());
             newTransferModel.setTimestamp(transferModel.getTimestamp());
             newTransferModel.setName(employeeModel.getName());
             newTransferModel.setEmail(employeeModel.getEmail());

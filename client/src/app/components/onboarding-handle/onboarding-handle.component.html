@@ -1,0 +1,100 @@
+<h2>Initialize onboardin plan</h2>
+<form [formGroup]="onboardinPlanForm" (ngSubmit)="submitPlan()">
+    <div>
+        <label for="titlePlan">Title</label>
+        <input type="text" formControlName="titlePlan" id="titlePlan">
+    </div>
+    <div>
+        <label for="descriptionPlan">Description</label>
+        <input type="text" formControlName="descriptionPlan" id="descriptionPlan">
+    </div>
+    <div>
+        <label for="startDatePlan">Start Date</label>
+        <input type="text" formControlName="startDatePlan" id="startDatePlan">
+    </div>
+    <div>
+        <label for="endDatePlan">End Date</label>
+        <input type="text" formControlName="endDatePlan" id="endDatePlan">
+    </div>
+
+    <button type="submit">submit</button>
+</form>
+
+<hr>
+
+<h2>Initialize onboardin task</h2>
+<form [formGroup]="onboardinTaskForm" (ngSubmit)="submitTask()">
+    <div>
+        <label for="onboardingPlanId">Plan Id</label>
+        <input type="text" formControlName="onboardingPlanId" id="onboardingPlanId">
+    </div>
+    <div>
+        <label for="adminEmailTask">Admin Email</label>
+        <input type="text" formControlName="adminEmailTask" id="adminEmailTask">
+    </div>
+    <div>
+        <label for="descriptionTask">Description</label>
+        <input type="text" formControlName="descriptionTask" id="descriptionTask">
+    </div>
+    <div>
+        <label for="startDateTask">Start Date</label>
+        <input type="text" formControlName="startDateTask" id="startDateTask">
+    </div>
+    <div>
+        <label for="endDateTask">End Date</label>
+        <input type="text" formControlName="endDateTask" id="endDateTask">
+    </div>
+    <div>
+        <label for="statusTask">Status</label>
+        <input type="text" formControlName="statusTask" id="statusTask">
+    </div>
+
+    <button type="submit">submit</button>
+</form>
+
+<hr>
+
+<h2>Assign employees to tasks</h2>
+<form [formGroup]="assignForm"  (ngSubmit)="assignEmployees($event)">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>PLAN</mat-label>
+                <mat-select formControlName="plan" [(value)]="selectedPlan">
+                    <mat-option *ngFor="let p of filterPlans()" [value]="p.id">{{p.title}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>TASK</mat-label>
+                <mat-select formControlName="task" [(value)]="selectedTask">
+                    <mat-option *ngFor="let t of filterTasks()" [value]="t.id">{{t.description}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let e of filterEmployees(); let i = index">
+                    <td>
+                        <mat-checkbox [checked]="isChecked[i]" (change)="toggleSelection($event.checked, e.id)"></mat-checkbox>
+                    </td>
+                    <td>{{e.name}}</td>
+                    <td>{{e.jobData.department}}</td>
+                    <td>{{e.status}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button type="submit">submit</button>
+</form>

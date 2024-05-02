@@ -55,7 +55,7 @@ export class EmpTransferComponent {
   }
 
   filterLetters(): any[]{
-    this.filteredRequests = this.transferRequestsStore.filter((data:any)=> data.approved == "pending");
+    this.filteredRequests = this.transferRequestsStore.filter((data:any)=> data.approved == "pending" && data.organizationId == this.employee.organizationId);
     this.filteredRequests.sort((a:any, b:any) => {
       return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     })

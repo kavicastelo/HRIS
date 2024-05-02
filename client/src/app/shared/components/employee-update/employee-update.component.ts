@@ -1,20 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EmployeesService} from "../../../services/employees.service";
 import {NGXLogger} from "ngx-logger";
 import {DepartmentService} from "../../../services/department.service";
-import {AuthService} from "../../../services/auth.service";
-import {Observable, tap} from "rxjs";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../../../services/auth.service";
+import {Observable, tap} from "rxjs";
+import {SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-employee-register',
-  templateUrl: './employee-register.component.html',
-  styleUrls: ['./employee-register.component.scss']
+  selector: 'app-employee-update',
+  templateUrl: './employee-update.component.html',
+  styleUrls: ['./employee-update.component.scss']
 })
-export class EmployeeRegisterComponent implements OnInit{
+export class EmployeeUpdateComponent {
   employeeForm: FormGroup | any;
   organizationId: any;
   departmentId:any
@@ -25,25 +26,12 @@ export class EmployeeRegisterComponent implements OnInit{
   userId:any;
   chosenPhoto: File | any;
 
-  departmentForm = new FormGroup({
-    name: new FormControl(null,[
-      Validators.required
-    ]),
-    description: new FormControl(null,[
-      Validators.required
-    ]),
-    organizationId: new FormControl(null,[
-      Validators.required
-    ])
-  })
-
-
-
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
               private logger: NGXLogger,
               private departmentService:DepartmentService,
               private multimediaService: MultimediaService,
+              private changeDetectorRef: ChangeDetectorRef,
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
               private cookieService: AuthService) { }
@@ -51,8 +39,6 @@ export class EmployeeRegisterComponent implements OnInit{
   async ngOnInit(): Promise<any> {
 
     this.initForm()
-
-    this.defaultPhoto()
 
     this.loadAllDepartments().subscribe(()=>{
       //TODO: do something
@@ -70,9 +56,6 @@ export class EmployeeRegisterComponent implements OnInit{
       email: ['', Validators.required],
       phone: ['', Validators.required],
       address: ['', Validators.required],
-      city: ['', Validators.required],
-      state: [''],
-      zip: [''],
       jobData: this.formBuilder.group({
         position: ['', Validators.required],
         department: [sessionStorage.getItem('dep'), Validators.required],
@@ -100,13 +83,41 @@ export class EmployeeRegisterComponent implements OnInit{
 
         if (emp.id == this.userId) {
           this.employee = [emp];
+          this.patchValues()
         }
       })
     })
   }
 
+  patchValues() {
+    const firstName = this.employee[0].name;
+    this.employeeForm.get('name')?.setValue(firstName.split(' ')[0]);
+    this.employeeForm.get('lname')?.setValue(firstName.split(' ')[1]);
+    this.employeeForm.get('dob')?.setValue(this.employee[0].dob);
+    this.employeeForm.get('nic')?.setValue(this.employee[0].nic);
+    this.employeeForm.get('gender')?.setValue(this.employee[0].gender);
+    this.employeeForm.get('address')?.setValue(this.employee[0].address);
+    this.employeeForm.get('email')?.setValue(this.employee[0].email);
+    this.employeeForm.get('phone')?.setValue(this.employee[0].phone);
+
+    // Access the jobData group within employeeForm and set its values
+    const jobData = this.employeeForm.get('jobData') as FormGroup;
+    jobData.get('department')?.setValue(this.employee[0].jobData.departmentId);
+    this.changeDetectorRef.detectChanges();
+    jobData.get('position')?.setValue(this.employee[0].jobData.position);
+    jobData.get('doj')?.setValue(this.employee[0].jobData.doj);
+    jobData.get('salary')?.setValue(this.employee[0].jobData.salary);
+
+    this.employeeForm.get('status')?.setValue(this.employee[0].status);
+  }
+
+  convertToSafeUrl(url:any):SafeResourceUrl{
+    return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
+  }
+
   onSubmit() {
     sessionStorage.setItem('orgId', this.cookieService.organization())
+    sessionStorage.setItem('updatingUserId', this.userId)
     if (this.employeeForm.valid) {
       const jobData = this.employeeForm.get('jobData').value;
       this.employeeForm.patchValue({ jobData: null });
@@ -125,8 +136,8 @@ export class EmployeeRegisterComponent implements OnInit{
 
       sessionStorage.setItem('depId', this.selectedDepartment);
 
-      this.employeeService.uploadEmployeeData(formData);
-      this.employeeForm.reset();
+      this.employeeService.updateFullEmployeeById(this.userId, formData);
+      location.reload()
     } else {
       this.snackBar.open("Some required fields are missing!","OK",{duration:2000})
     }
@@ -201,20 +212,5 @@ export class EmployeeRegisterComponent implements OnInit{
         .catch(error => {
           console.error('Failed to load default image:', error);
         });
-  }
-
-  addDepartment() {
-    if (this.departmentForm.valid) {
-      this.departmentService.addDepartment({
-        name: this.departmentForm.value.name,
-        description: this.departmentForm.value.description,
-        organizationId: this.departmentForm.value.organizationId
-      }).subscribe(() => {
-        this.departmentForm.reset();
-        this.logger.info('Department added successfully');
-      }, error => {
-        this.logger.error(error);
-      })
-    }
   }
 }

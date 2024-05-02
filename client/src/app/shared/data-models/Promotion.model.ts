@@ -1,6 +1,7 @@
 export interface PromotionModel {
     id?: any,
     userId: any,
+    organizationId?:any,
     timestamp: any,
     name?: any,
     email?: any,

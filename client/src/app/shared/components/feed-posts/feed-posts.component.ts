@@ -183,9 +183,11 @@ export class FeedPostsComponent implements OnInit{
   }
 
   loadChannelIds(){
-    this.employee.channels.forEach((id:any)=>{
-      this.channelId.push(id.id)
-    })
+    if (this.employee.channels){
+      this.employee.channels.forEach((id:any)=>{
+        this.channelId.push(id.id)
+      })
+    }
   }
 
   async loadFeed(data:any) {
