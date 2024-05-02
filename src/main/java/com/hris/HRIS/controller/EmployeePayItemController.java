@@ -40,6 +40,18 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PostMapping("/assign/multiple-employees")
+    public ResponseEntity<ApiResponse> assignPayItemForMultipleEmployees(@RequestBody List<EmployeePayItemModel> employeePayItemModels) {
+
+        for (EmployeePayItemModel employeePayItemModel : employeePayItemModels) {
+            employeePayItemModel.setId(null);
+            employeePayItemRepository.save(employeePayItemModel);
+        }
+
+        ApiResponse apiResponse = new ApiResponse("Pay item assigned successfully.");
+        return ResponseEntity.ok(apiResponse);
+    }
+
     @GetMapping("/get/email/{email}")
     public List<EmployeePayItemModel> getPayItemsByEmail(@PathVariable String email){
 
