@@ -108,7 +108,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         BulletinsComponent,
         PayrollComponent,
         AddpayiteamsComponent,
-        PayrollnavbarComponent
+        PayrollnavbarComponent,
         EmployeeUpdateComponent,
         OnboardingHandleComponent
 
