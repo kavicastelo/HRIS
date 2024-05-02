@@ -47,17 +47,23 @@
                         <th>Date</th>
                         <th>Employee Name</th>
                         <th>Leave Type</th>
-                        <th>Status</th>
+                        <th class="d-flex align-items-center justify-content-center">Status</th>
                         <th>Approver</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <tr *ngFor="let l of leaveStore">
+                        <td>{{l.leaveStartDate | dateFormat}}</td>
+                        <td>-</td>
+                        <td>{{l.leaveType}}</td>
+                        <td class="td-status">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="status-tag" [ngStyle]="{'background-color':l.approved=='approved'?'#0CBC87':l.approved=='rejected'?'rgba(230, 41, 41, 0.20)':'rgba(247, 195, 46, 0.25)'}">
+                                    {{l.approved}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>-</td>
                     </tr>
                     </tbody>
                 </table>

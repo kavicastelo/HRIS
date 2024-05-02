@@ -28,6 +28,17 @@
             background-color: transparent;
             color: var(--color-text-200);
           }
+
+          .td-status{
+            text-align: center;
+
+            .status-tag{
+              text-transform: uppercase;
+              font-size: 14px;
+              padding: 3px 10px;
+              border-radius: 5px;
+            }
+          }
         }
       }
 
