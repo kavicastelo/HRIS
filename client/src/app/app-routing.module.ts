@@ -33,6 +33,10 @@ import {AmLmComponent} from "./components/am-lm/am-lm.component";
 import {AttendenceComponent} from "./components/am-lm/attendence/attendence.component";
 import {LeaveComponent} from "./components/am-lm/leave/leave.component";
 import {LeaveRequestComponent} from "./components/requests/leave-request/leave-request.component";
+import { EmployeePaymentsComponent } from './components/payroll/employee-payments/employee-payments/employee-payments.component';
+import { ViewEmployeePayitemsComponent } from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
+import { PayitemsComponent } from './components/payroll/payitems/payitems/payitems.component';
+import { AssignPayitemComponent } from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
 import {ProfileAttendanceComponent} from "./shared/components/profile/profile-attendance/profile-attendance.component";
 
 
@@ -87,8 +91,16 @@ const routes: Routes = [
             {path: 'leave', component: LeaveComponent}
         ]
     },
-    {path:'payroll', component: PayrollComponent},
-    {path:'addpayiteams', component: AddpayiteamsComponent},
+    {
+        path: 'payroll', component:PayrollComponent, canActivate: [AuthGuard], children: [
+            {path: '', redirectTo: '/payroll/employee-payments', pathMatch: 'full'},
+            {path: 'employee-payments', component: EmployeePaymentsComponent},
+            {path: 'employee/:id/payitems', component: ViewEmployeePayitemsComponent},
+            {path:'payitems', component: PayitemsComponent},
+            {path:'new-payitem', component: AddpayiteamsComponent},
+            {path:'assign-payitem', component: AssignPayitemComponent}
+        ]
+    },
     {path:'onboardin', component:OnboardingHandleComponent, canActivate: [AuthGuard]},
     {path: '**', component: NotFoundComponent},
 

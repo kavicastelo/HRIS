@@ -70,6 +70,10 @@ import {TimeFormatPipe} from "./DTO/TimeFormatPipe";
 import {HourMinuteFormatPipe} from "./DTO/HourMinuteFormatPipe";
 import {LeaveRequestComponent} from './components/requests/leave-request/leave-request.component';
 import {RequestLeaveComponent} from './shared/dialogs/request-leave/request-leave.component';
+import { EmployeePaymentsComponent } from './components/payroll/employee-payments/employee-payments/employee-payments.component';
+import { ViewEmployeePayitemsComponent } from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
+import { PayitemsComponent } from './components/payroll/payitems/payitems/payitems.component';
+import { AssignPayitemComponent } from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
 import {ProfileAttendanceComponent} from './shared/components/profile/profile-attendance/profile-attendance.component';
 
 
@@ -126,6 +130,10 @@ import {ProfileAttendanceComponent} from './shared/components/profile/profile-at
         LeaveComponent,
         LeaveRequestComponent,
         RequestLeaveComponent,
+        EmployeePaymentsComponent,
+        ViewEmployeePayitemsComponent,
+        PayitemsComponent,
+        AssignPayitemComponent
         ProfileAttendanceComponent
 
     ],

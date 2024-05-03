@@ -1,0 +1,33 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Employee Payments</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="table-data-list">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Item Name</th>
+                        <th>Item Type</th>
+                        <th>Payment Type</th>
+                        <th>Amount (LKR)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let element of employeePayitemsList">
+                        <td>{{ element.payitem.itemName }}</td>
+                        <td>{{ element.payitem.itemType }}</td>
+                        <td>{{ element.payitem.paymentType }}</td>
+                        <td>{{ element.amount.toFixed(2) }}</td>
+                    </tbody>
+                  </table>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>
+    
