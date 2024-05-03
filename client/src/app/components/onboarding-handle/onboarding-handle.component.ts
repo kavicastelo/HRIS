@@ -2,8 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {OnboardinService} from "../../services/onboardin.service";
 import {EmployeesService} from "../../services/employees.service";
-import {forkJoin, Observable, tap} from "rxjs";
+import {forkJoin, Observable, Subscription, tap} from "rxjs";
 import {AuthService} from "../../services/auth.service";
+import {ThemeService} from "../../services/theme.service";
+import {MultimediaService} from "../../services/multimedia.service";
+import {MatDialog} from "@angular/material/dialog";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {NGXLogger} from "ngx-logger";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-onboarding-handle',
@@ -11,160 +17,56 @@ import {AuthService} from "../../services/auth.service";
   styleUrls: ['./onboarding-handle.component.scss']
 })
 export class OnboardingHandleComponent implements OnInit{
+  loggedUserId: any;
 
-  employeeDataStore:any[] = [];
-  planDataStore:any[] = [];
-  taskDataStore:any[] = [];
-  filteredEmployees:any[] = [];
-  filteredPlans:any[] = [];
-  filteredTasks:any[] = [];
-  selectedPlan:any;
-  selectedTask:any;
-  organizationId:any;
+  private themeSubscription: Subscription;
+  isDarkMode: boolean | undefined;
 
-  isChecked: boolean[] = [];
-  selectedEmployeeIds: string[] = [];
-  selectedEmployees: any[] = [];
+  employeeDataStore:any;
+  employee: any
 
-  onboardinPlanForm = new FormGroup({
-    titlePlan: new FormControl(null, [Validators.required]),
-    descriptionPlan: new FormControl(null, [Validators.required]),
-    startDatePlan: new FormControl(null, [Validators.required]),
-    endDatePlan: new FormControl(null, [Validators.required])
-  })
+  constructor(
+      private themeService: ThemeService,
+      private dialog: MatDialog,
+      private router: Router,
+      private cookieService: AuthService) {
+    this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
+      this.isDarkMode = isDarkMode;
+    });
+  }
 
-  onboardinTaskForm = new FormGroup({
-    onboardingPlanId: new FormControl(null, [Validators.required]),
-    adminEmailTask: new FormControl(null, [Validators.required]),
-    descriptionTask: new FormControl(null, [Validators.required]),
-    startDateTask: new FormControl(null, [Validators.required]),
-    endDateTask: new FormControl(null, [Validators.required]),
-    statusTask: new FormControl(null, [Validators.required])
-  })
-
-  assignForm = new FormGroup({
-    plan: new FormControl(null, [Validators.required]),
-    task: new FormControl(null, [Validators.required])
-  })
-
-  constructor(private onboardinService: OnboardinService, private employeeService: EmployeesService, private cookiesService: AuthService) {
+  ngOnDestroy() {
+    this.themeSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.organizationId = this.cookiesService.organization();
-    this.loadAllUsers().subscribe(()=>{
-      this.filterEmployees()
-    })
-    this.loadAllPlans().subscribe(()=>{})
-    this.loadAllTasks().subscribe(()=>{})
-  }
+    this.loggedUserId = this.cookieService.userID().toString();
 
-  loadAllUsers(): Observable<any>{
-    return this.employeeService.getAllEmployees().pipe(
-        tap(data => this.employeeDataStore = data)
-    );
-  }
-
-  loadAllPlans(): Observable<any>{
-    return this.onboardinService.getAllPlans().pipe(
-        tap(data => this.planDataStore = data)
-    );
-  }
-
-  loadAllTasks(): Observable<any>{
-    return this.onboardinService.getAllTasks().pipe(
-        tap(data => this.taskDataStore = data)
-    );
-  }
-
-  filterEmployees(): any[]{
-    this.filteredEmployees = this.employeeDataStore.filter((data:any)=> data.organizationId == this.organizationId);
-
-    return this.filteredEmployees;
-  }
-
-  toggleSelection(checked: boolean, employeeId: string) {
-    if (checked) {
-      this.selectedEmployeeIds.push(employeeId); // Add employee ID if the checkbox is checked
-    } else {
-      const index = this.selectedEmployeeIds.indexOf(employeeId);
-      if (index !== -1) {
-        this.selectedEmployeeIds.splice(index, 1); // Remove employee ID if the checkbox is unchecked
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Logic to update active class based on the current route
+        this.updateActiveClass();
       }
+    });
+  }
+
+  navigateBetweenTabs(path: string) {
+    this.router.navigate([`/onboardin/${path}/`]);
+  }
+
+  updateActiveClass() {
+    const currentRoute = this.router.url;
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+
+    const activeLink = document.querySelector(`.nav-link[href="${currentRoute}"]`);
+    if (activeLink) {
+      activeLink.classList.add('active');
     }
   }
-
-  filterPlans(): any[]{
-    this.filteredPlans = this.planDataStore.filter((data:any)=> data.organizationId == this.organizationId);
-
-    return this.filteredPlans;
+  isActive(path: string) {
+    return this.router.url === `/onboardin/${path}`;
   }
-
-  filterTasks(): any[]{
-    this.filteredTasks = this.taskDataStore.filter((data:any)=> data.organizationId == this.organizationId);
-
-    return this.filteredTasks;
-  }
-
-  submitPlan(){
-    if (this.onboardinPlanForm.valid){
-      this.onboardinService.saveOnboardingPlan({
-        title: this.onboardinPlanForm.value.titlePlan,
-        organizationId: this.organizationId,
-        description: this.onboardinPlanForm.value.descriptionPlan,
-        startDate: this.onboardinPlanForm.value.startDatePlan,
-        taskDate: this.onboardinPlanForm.value.endDatePlan
-      }).subscribe(data=>{
-        console.log(data)
-      }, error => {
-        console.log(error)
-      })
-    }
-  }
-
-  submitTask(){
-    if (this.onboardinTaskForm.valid){
-      this.onboardinService.saveOnboardin({
-        organizationId: this.organizationId,
-        onBoardingPlanId: this.onboardinTaskForm.value.onboardingPlanId,
-        adminEmail: this.onboardinTaskForm.value.adminEmailTask,
-        description: this.onboardinTaskForm.value.descriptionTask,
-        startdate: this.onboardinTaskForm.value.startDateTask,
-        taskdate: this.onboardinTaskForm.value.endDateTask,
-        status: this.onboardinTaskForm.value.statusTask,
-      }).subscribe(data=>{
-        console.log(data)
-      }, error => {
-        console.log(error)
-      })
-    }
-  }
-
-  assignEmployees(event: Event) {
-    event.preventDefault();
-    if (this.assignForm.valid && this.selectedEmployeeIds.length > 0) {
-      const requests = this.selectedEmployeeIds.map(id => this.employeeService.getEmployeeById(id));
-
-      forkJoin(requests).subscribe(employees => {
-        // Clear the selected employees array
-        this.selectedEmployees = [];
-
-        // Add each employee to the selectedEmployees array if it's not already present
-        employees.forEach(emp => {
-          if (!this.selectedEmployees.some(selectedEmp => selectedEmp.id === emp.id)) {
-            this.selectedEmployees.push(emp);
-          }
-        });
-
-        // Now that the selectedEmployees array is populated with unique employees, make the HTTP request
-        this.onboardinService.assignEmployeeToTask(this.assignForm.value.task, this.selectedEmployees).subscribe(data => {
-          console.log(data);
-          this.selectedEmployeeIds = [];
-        }, error => {
-          console.log(error);
-        });
-      });
-    }
-  }
-
 }
