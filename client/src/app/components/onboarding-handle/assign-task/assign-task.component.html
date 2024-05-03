@@ -1,44 +1,65 @@
-<h2>Assign employees to tasks</h2>
-<form [formGroup]="assignForm"  (ngSubmit)="assignEmployees($event)">
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <mat-form-field class="w-100" appearance="outline">
-                <mat-label>PLAN</mat-label>
-                <mat-select formControlName="plan" [(value)]="selectedPlan">
-                    <mat-option *ngFor="let p of filterPlans()" [value]="p.id">{{p.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-12 col-md-6">
-            <mat-form-field class="w-100" appearance="outline">
-                <mat-label>TASK</mat-label>
-                <mat-select formControlName="task" [(value)]="selectedTask">
-                    <mat-option *ngFor="let t of filterTasks()" [value]="t.id">{{t.description}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-12">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let e of filterEmployees(); let i = index">
-                    <td>
-                        <mat-checkbox [checked]="isChecked[i]" (change)="toggleSelection($event.checked, e.id)"></mat-checkbox>
-                    </td>
-                    <td>{{e.name}}</td>
-                    <td>{{e.jobData.department}}</td>
-                    <td>{{e.status}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <button type="submit">submit</button>
-</form>
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-md-flex align-items-center justify-content-between">
+                <h5>Assign employees to tasks</h5>
+                <div class="input-group px-2" style="max-width: 400px; width: 100%">
+                    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+                    <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)">
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <form [formGroup]="assignForm"  (ngSubmit)="assignEmployees($event)">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>PLAN</mat-label>
+                            <mat-select formControlName="plan" [(value)]="selectedPlan">
+                                <mat-option *ngFor="let p of filterPlans()" [value]="p.id">{{p.title}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>TASK</mat-label>
+                            <mat-select formControlName="task" [(value)]="selectedTask">
+                                <mat-option *ngFor="let t of filterTasks()" [value]="t.id" (click)="checkEmployeeSelectionForTask(t.id)">{{t.description}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                        <div class="employee-list">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <mat-checkbox (change)="toggleAllSelection($event.checked)"></mat-checkbox>
+                                    </th>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let e of filterEmployees(); let i = index">
+                                    <td>
+                                        <mat-checkbox [checked]="isChecked[i]" [disabled]="isChecked[i]" (change)="toggleSelection($event.checked, e.id)"></mat-checkbox>
+                                    </td>
+                                    <td>{{e.name}}</td>
+                                    <td>{{e.jobData.department}}</td>
+                                    <td>{{e.status}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end">
+                    <button class="btn-1 px-4" type="submit">Assign</button>
+                </div>
+            </form>
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>
