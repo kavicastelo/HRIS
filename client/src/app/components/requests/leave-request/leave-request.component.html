@@ -1,0 +1,33 @@
+<div class="d-flex align-items-center justify-content-end">
+    <button class="btn-1 px-2" matTooltip="Request a leave" (click)="requestLeave()"><mat-icon>mail_outline</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Request Leave</span></button>
+</div>
+
+<div class="transfer-list">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Reason</th>
+            <th>Leave Type</th>
+            <th class="d-flex align-items-center justify-content-center">Status</th>
+            <th>Approver</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let l of leaveStore">
+            <td>{{l.leaveStartDate | dateFormat}}</td>
+            <td>-</td>
+            <td>{{l.leaveType}}</td>
+            <td class="td-status">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="status-tag" [ngStyle]="{'background-color':l.approved=='approved'?'#0CBC87':l.approved=='rejected'?'rgba(230, 41, 41, 0.20)':'rgba(247, 195, 46, 0.25)'}">
+                        {{l.approved}}
+                    </div>
+                </div>
+            </td>
+            <td>-</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

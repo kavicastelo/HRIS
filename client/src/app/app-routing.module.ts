@@ -32,6 +32,7 @@ import {OnboardingHandleComponent} from "./components/onboarding-handle/onboardi
 import {AmLmComponent} from "./components/am-lm/am-lm.component";
 import {AttendenceComponent} from "./components/am-lm/attendence/attendence.component";
 import {LeaveComponent} from "./components/am-lm/leave/leave.component";
+import {LeaveRequestComponent} from "./components/requests/leave-request/leave-request.component";
 
 
 const routes: Routes = [
@@ -65,7 +66,8 @@ const routes: Routes = [
         path: 'requests/:id', component: RequestsComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/requests/:id/transfer/:id', pathMatch: 'full'},
             {path: 'transfer/:id', component: TransferRequestComponent},
-            {path: 'promotion/:id', component: PromotionRequestComponent}
+            {path: 'promotion/:id', component: PromotionRequestComponent},
+            {path: 'leave/:id', component: LeaveRequestComponent},
         ]
     },
     {
