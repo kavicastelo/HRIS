@@ -68,6 +68,8 @@ import {AttendenceComponent} from './components/am-lm/attendence/attendence.comp
 import {LeaveComponent} from './components/am-lm/leave/leave.component';
 import {TimeFormatPipe} from "./DTO/TimeFormatPipe";
 import {HourMinuteFormatPipe} from "./DTO/HourMinuteFormatPipe";
+import {LeaveRequestComponent} from './components/requests/leave-request/leave-request.component';
+import {RequestLeaveComponent} from './shared/dialogs/request-leave/request-leave.component';
 
 
 @NgModule({
@@ -120,7 +122,9 @@ import {HourMinuteFormatPipe} from "./DTO/HourMinuteFormatPipe";
         OnboardingHandleComponent,
         AmLmComponent,
         AttendenceComponent,
-        LeaveComponent
+        LeaveComponent,
+        LeaveRequestComponent,
+        RequestLeaveComponent
 
     ],
     imports: [

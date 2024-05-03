@@ -1,0 +1,34 @@
+<div class="d-flex align-items-center justify-content-between px-2 my-2">
+    <h5>Request a Leave</h5>
+    <mat-icon (click)="closePopup()">close</mat-icon>
+</div>
+<hr>
+<div class="container">
+    <form action="">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>LEAVE TYPE</mat-label>
+            <mat-select id="leaveTYpe" formControlName="leaveType" [(value)]="selectedLeave">
+                <mat-option *ngFor="let l of leaveTypes" [value]="l">{{l}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>REASON</mat-label>
+            <textarea matInput id="reason" formControlName="reason" placeholder="Reason to ask a leave..." ></textarea>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DATE RANGE</mat-label>
+            <mat-date-range-input [rangePicker]="picker" formControlName="dateRange">
+                <input matStartDate placeholder="Start date">
+                <input matEndDate placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+    </form>
+</div>
+<hr>
+<div class="d-flex align-items-center justify-content-end px-2 my-2">
+    <button class="btn me-2" (click)="closePopup()">Cancel</button>
+    <button class="btn">Request</button>
+</div>
