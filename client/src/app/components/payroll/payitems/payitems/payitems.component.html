@@ -1,0 +1,38 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Pay Items</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+
+            <div class="d-flex align-items-center justify-content-end">
+                <button class="btn-1 px-2" matTooltip="New Payitem" [routerLink]="'../new-payitem'"><mat-icon>add</mat-icon><span class="d-none d-md-block">New Pay Item</span></button>
+            </div>
+
+            <div class="table-data-list">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Item name</th>
+                        <th>Description</th>
+                        <th>Item type</th>
+                        <th>Payment type</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- <tr *ngFor="let employee of employees" routerLink='../employee/{{employee.id}}/payitems'>
+                        <td>{{ employee.name }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.phone }}</td> -->
+                    </tbody>
+                  </table>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>
+    

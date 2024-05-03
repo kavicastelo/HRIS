@@ -1,23 +1,30 @@
-.body{
-    display: flex;
-    flex-direction: column;
-    margin: 30px 50px;
-   
-
-}
-.paymentButton{
-    float: right;
-    margin: 2%;
-
-}
-label{
-    font-size: 3.5dvb;
-    margin: 2% 0;
-}
- table{
-    
-    th{
-        border-width: 0 0 2px 0 ;
-        
+ .nav-pills{
+    background-color: var(--color-surface-mixed-300);
+    border-radius: 8px;
+    padding: 10px;
+    justify-content: flex-start;
+  
+    .nav-item{
+      .nav-link{
+        color: var(--color-text-300);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+  
+        span{
+          color: var(--color-text-300);
+          font-weight: 500;
+        }
+      }
+      .nav-link.active{
+        background-color: var(--color-primary-200);
+        color: white;
+  
+        span{
+          color: white;
+        }
+      }
     }
- }
+  }
