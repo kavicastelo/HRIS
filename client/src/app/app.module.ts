@@ -75,6 +75,9 @@ import { ViewEmployeePayitemsComponent } from './components/payroll/view-employe
 import { PayitemsComponent } from './components/payroll/payitems/payitems/payitems.component';
 import { AssignPayitemComponent } from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
 import {ProfileAttendanceComponent} from './shared/components/profile/profile-attendance/profile-attendance.component';
+import {AssignTaskComponent} from './components/onboarding-handle/assign-task/assign-task.component';
+import {CreatePlanComponent} from './components/onboarding-handle/create-plan/create-plan.component';
+import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
 
 
 @NgModule({
@@ -133,9 +136,12 @@ import {ProfileAttendanceComponent} from './shared/components/profile/profile-at
         EmployeePaymentsComponent,
         ViewEmployeePayitemsComponent,
         PayitemsComponent,
-        AssignPayitemComponent
-        ProfileAttendanceComponent
-
+        AssignPayitemComponent,
+        ProfileAttendanceComponent,
+        ProfileAttendanceComponent,
+        AssignTaskComponent,
+        CreatePlanComponent,
+        CreateTaskComponent
     ],
     imports: [
         BrowserModule,

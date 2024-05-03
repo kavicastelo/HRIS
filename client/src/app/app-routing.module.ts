@@ -38,6 +38,9 @@ import { ViewEmployeePayitemsComponent } from './components/payroll/view-employe
 import { PayitemsComponent } from './components/payroll/payitems/payitems/payitems.component';
 import { AssignPayitemComponent } from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
 import {ProfileAttendanceComponent} from "./shared/components/profile/profile-attendance/profile-attendance.component";
+import {AssignTaskComponent} from "./components/onboarding-handle/assign-task/assign-task.component";
+import {CreatePlanComponent} from "./components/onboarding-handle/create-plan/create-plan.component";
+import {CreateTaskComponent} from "./components/onboarding-handle/create-task/create-task.component";
 
 
 const routes: Routes = [
@@ -85,7 +88,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'alm', component:AmLmComponent, canActivate: [AuthGuard], children: [
+        path: 'alm', component: AmLmComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/alm/attendance', pathMatch: 'full'},
             {path: 'attendance', component: AttendenceComponent},
             {path: 'leave', component: LeaveComponent}
@@ -102,6 +105,16 @@ const routes: Routes = [
         ]
     },
     {path:'onboardin', component:OnboardingHandleComponent, canActivate: [AuthGuard]},
+    {path: 'payroll', component: PayrollComponent},
+    {path: 'addpayiteams', component: AddpayiteamsComponent},
+    {
+        path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard], children: [
+            {path: '', redirectTo: '/onboardin/assign', pathMatch: "full"},
+            {path: 'assign', component: AssignTaskComponent},
+            {path: 'plan', component: CreatePlanComponent},
+            {path: 'task', component: CreateTaskComponent},
+        ]
+    },
     {path: '**', component: NotFoundComponent},
 
 ];

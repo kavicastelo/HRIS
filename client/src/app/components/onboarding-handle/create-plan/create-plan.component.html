@@ -1,0 +1,21 @@
+<h2>Initialize onboardin plan</h2>
+<form [formGroup]="onboardinPlanForm" (ngSubmit)="submitPlan()">
+    <div>
+        <label for="titlePlan">Title</label>
+        <input type="text" formControlName="titlePlan" id="titlePlan">
+    </div>
+    <div>
+        <label for="descriptionPlan">Description</label>
+        <input type="text" formControlName="descriptionPlan" id="descriptionPlan">
+    </div>
+    <div>
+        <label for="startDatePlan">Start Date</label>
+        <input type="text" formControlName="startDatePlan" id="startDatePlan">
+    </div>
+    <div>
+        <label for="endDatePlan">End Date</label>
+        <input type="text" formControlName="endDatePlan" id="endDatePlan">
+    </div>
+
+    <button type="submit">submit</button>
+</form>

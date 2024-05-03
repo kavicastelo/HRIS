@@ -1,0 +1,29 @@
+<h2>Initialize onboardin task</h2>
+<form [formGroup]="onboardinTaskForm" (ngSubmit)="submitTask()">
+    <div>
+        <label for="onboardingPlanId">Plan Id</label>
+        <input type="text" formControlName="onboardingPlanId" id="onboardingPlanId">
+    </div>
+    <div>
+        <label for="adminEmailTask">Admin Email</label>
+        <input type="text" formControlName="adminEmailTask" id="adminEmailTask">
+    </div>
+    <div>
+        <label for="descriptionTask">Description</label>
+        <input type="text" formControlName="descriptionTask" id="descriptionTask">
+    </div>
+    <div>
+        <label for="startDateTask">Start Date</label>
+        <input type="text" formControlName="startDateTask" id="startDateTask">
+    </div>
+    <div>
+        <label for="endDateTask">End Date</label>
+        <input type="text" formControlName="endDateTask" id="endDateTask">
+    </div>
+    <div>
+        <label for="statusTask">Status</label>
+        <input type="text" formControlName="statusTask" id="statusTask">
+    </div>
+
+    <button type="submit">submit</button>
+</form>
