@@ -8,6 +8,7 @@ import {EmployeesService} from "../../../services/employees.service";
 import {Observable, tap} from "rxjs";
 import {AuthService} from "../../../services/auth.service";
 import {RequestLeaveComponent} from "../../../shared/dialogs/request-leave/request-leave.component";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-leave-request',
@@ -21,6 +22,12 @@ export class LeaveRequestComponent implements OnInit{
   employee: any = {
     id:''
   }
+
+  filterForm = new FormGroup({
+    startDate: new FormControl(null),
+    endDate: new FormControl(null),
+    filter: new FormControl(null)
+  })
 
   leaveStore:any = leaveDataStore;
 
