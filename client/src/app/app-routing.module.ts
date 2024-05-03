@@ -33,6 +33,7 @@ import {AmLmComponent} from "./components/am-lm/am-lm.component";
 import {AttendenceComponent} from "./components/am-lm/attendence/attendence.component";
 import {LeaveComponent} from "./components/am-lm/leave/leave.component";
 import {LeaveRequestComponent} from "./components/requests/leave-request/leave-request.component";
+import {ProfileAttendanceComponent} from "./shared/components/profile/profile-attendance/profile-attendance.component";
 
 
 const routes: Routes = [
@@ -55,6 +56,7 @@ const routes: Routes = [
             {path: 'edit/:id', component: EditProfileComponent},
             {path: 'posts/:id', component: ProfilePostsComponent},
             {path: 'activity/:id', component: ProfileActivityComponent},
+            {path: 'attendance/:id', component: ProfileAttendanceComponent},
         ]
     },
     {path: 'login', component: LogInComponent},

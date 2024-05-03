@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import {attendanceDataStore} from "../../../shared/data-stores/attendance-data-store";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {attendanceDataStore} from "../../../data-stores/attendance-data-store";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-attendence',
-  templateUrl: './attendence.component.html',
-  styleUrls: ['./attendence.component.scss']
+  selector: 'app-profile-attendance',
+  templateUrl: './profile-attendance.component.html',
+  styleUrls: ['./profile-attendance.component.scss']
 })
-export class AttendenceComponent {
+export class ProfileAttendanceComponent {
 
   attendanceStore:any = attendanceDataStore
 

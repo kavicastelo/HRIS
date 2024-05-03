@@ -70,6 +70,7 @@ import {TimeFormatPipe} from "./DTO/TimeFormatPipe";
 import {HourMinuteFormatPipe} from "./DTO/HourMinuteFormatPipe";
 import {LeaveRequestComponent} from './components/requests/leave-request/leave-request.component';
 import {RequestLeaveComponent} from './shared/dialogs/request-leave/request-leave.component';
+import {ProfileAttendanceComponent} from './shared/components/profile/profile-attendance/profile-attendance.component';
 
 
 @NgModule({
@@ -124,7 +125,8 @@ import {RequestLeaveComponent} from './shared/dialogs/request-leave/request-leav
         AttendenceComponent,
         LeaveComponent,
         LeaveRequestComponent,
-        RequestLeaveComponent
+        RequestLeaveComponent,
+        ProfileAttendanceComponent
 
     ],
     imports: [
