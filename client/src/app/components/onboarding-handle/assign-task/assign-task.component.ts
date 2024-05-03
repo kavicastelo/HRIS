@@ -26,6 +26,8 @@ export class AssignTaskComponent {
   selectedEmployeeIds: string[] = [];
   selectedEmployees: any[] = [];
 
+  targetInput:any;
+
   assignForm = new FormGroup({
     plan: new FormControl(null, [Validators.required]),
     task: new FormControl(null, [Validators.required])
@@ -38,6 +40,7 @@ export class AssignTaskComponent {
     this.organizationId = this.cookiesService.organization();
     this.loadAllUsers().subscribe(()=>{
       this.filterEmployees()
+      this.initializeCheckboxes();
     })
     this.loadAllPlans().subscribe(()=>{})
     this.loadAllTasks().subscribe(()=>{})
@@ -47,6 +50,20 @@ export class AssignTaskComponent {
     return this.employeeService.getAllEmployees().pipe(
         tap(data => this.employeeDataStore = data)
     );
+  }
+
+  initializeCheckboxes() {
+    this.isChecked = Array(this.filteredEmployees.length).fill(false);
+  }
+
+  handleSearch(data: any): void {
+    this.targetInput = data as HTMLInputElement;
+    const value = this.targetInput.value
+    if (value) {
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.name.toLowerCase().includes(value.toLowerCase()));
+    } else {
+      this.filteredEmployees = this.employeeDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    }
   }
 
   loadAllPlans(): Observable<any>{
@@ -62,7 +79,9 @@ export class AssignTaskComponent {
   }
 
   filterEmployees(): any[]{
-    this.filteredEmployees = this.employeeDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    if (this.targetInput === undefined){
+      this.filteredEmployees = this.employeeDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    }
 
     return this.filteredEmployees;
   }
@@ -78,6 +97,15 @@ export class AssignTaskComponent {
     }
   }
 
+  toggleAllSelection(checked: boolean) {
+    this.isChecked.fill(checked);
+    if (checked) {
+      this.selectedEmployeeIds = this.filteredEmployees.map(e => e.id);
+    } else {
+      this.selectedEmployeeIds = [];
+    }
+  }
+
   filterPlans(): any[]{
     this.filteredPlans = this.planDataStore.filter((data:any)=> data.organizationId == this.organizationId);
 
@@ -86,8 +114,25 @@ export class AssignTaskComponent {
 
   filterTasks(): any[]{
     this.filteredTasks = this.taskDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    this.filteredTasks = this.taskDataStore.filter((data:any)=> data.onBoardingPlanId == this.selectedPlan);
 
     return this.filteredTasks;
+  }
+
+  checkEmployeeSelectionForTask(taskId: any) {
+    // Clear current checkbox array before choosing new task
+    this.initializeCheckboxes();
+
+    // Find the selected task
+    const selectedTask = this.filteredTasks.find(task => task.id === taskId);
+
+    if (selectedTask) {
+      // Get the employee IDs from the selected task
+      const taskEmployeeIds = selectedTask.employees.map((e: any) => e.id);
+
+      // Check checkboxes for employees included in the task
+      this.isChecked = this.filteredEmployees.map(emp => taskEmployeeIds.includes(emp.id));
+    }
   }
 
   assignEmployees(event: Event) {
