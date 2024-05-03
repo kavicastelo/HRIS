@@ -37,6 +37,7 @@ import { EmployeePaymentsComponent } from './components/payroll/employee-payment
 import { ViewEmployeePayitemsComponent } from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
 import { PayitemsComponent } from './components/payroll/payitems/payitems/payitems.component';
 import { AssignPayitemComponent } from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
+import {ProfileAttendanceComponent} from "./shared/components/profile/profile-attendance/profile-attendance.component";
 
 
 const routes: Routes = [
@@ -59,6 +60,7 @@ const routes: Routes = [
             {path: 'edit/:id', component: EditProfileComponent},
             {path: 'posts/:id', component: ProfilePostsComponent},
             {path: 'activity/:id', component: ProfileActivityComponent},
+            {path: 'attendance/:id', component: ProfileAttendanceComponent},
         ]
     },
     {path: 'login', component: LogInComponent},

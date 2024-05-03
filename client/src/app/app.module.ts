@@ -74,6 +74,7 @@ import { EmployeePaymentsComponent } from './components/payroll/employee-payment
 import { ViewEmployeePayitemsComponent } from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
 import { PayitemsComponent } from './components/payroll/payitems/payitems/payitems.component';
 import { AssignPayitemComponent } from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
+import {ProfileAttendanceComponent} from './shared/components/profile/profile-attendance/profile-attendance.component';
 
 
 @NgModule({
@@ -133,6 +134,7 @@ import { AssignPayitemComponent } from './components/payroll/assign-payitem/assi
         ViewEmployeePayitemsComponent,
         PayitemsComponent,
         AssignPayitemComponent
+        ProfileAttendanceComponent
 
     ],
     imports: [

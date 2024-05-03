@@ -1,33 +1,114 @@
-<div class="d-flex align-items-center justify-content-end">
-    <button class="btn-1 px-2" matTooltip="Request a leave" (click)="requestLeave()"><mat-icon>mail_outline</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Request Leave</span></button>
-</div>
-
-<div class="transfer-list">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Reason</th>
-            <th>Leave Type</th>
-            <th class="d-flex align-items-center justify-content-center">Status</th>
-            <th>Approver</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let l of leaveStore">
-            <td>{{l.leaveStartDate | dateFormat}}</td>
-            <td>-</td>
-            <td>{{l.leaveType}}</td>
-            <td class="td-status">
-                <div class="d-flex align-items-center justify-content-center">
-                    <div class="status-tag" [ngStyle]="{'background-color':l.approved=='approved'?'#0CBC87':l.approved=='rejected'?'rgba(230, 41, 41, 0.20)':'rgba(247, 195, 46, 0.25)'}">
-                        {{l.approved}}
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="py-2">My Leave Balance</h5>
+                <button class="btn-1 px-2" matTooltip="Request a leave" (click)="requestLeave()"><mat-icon>mail_outline</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Request Leave</span></button>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row leave-balance">
+                <div class="col-3">
+                    <div class="leave-balance-card">
+                        <h1>12</h1>
+                        <small>Annual Leave</small>
                     </div>
                 </div>
-            </td>
-            <td>-</td>
-        </tr>
-        </tbody>
-    </table>
+                <div class="col-3">
+                    <div class="leave-balance-card">
+                        <h1>04</h1>
+                        <small>Sick Leave</small>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="leave-balance-card">
+                        <h1>03</h1>
+                        <small>Casual Leave</small>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="leave-balance-card">
+                        <h1>12</h1>
+                        <small>Paternity Leave</small>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
 </div>
 
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="py-2">My Recent Leaves</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <form [formGroup]="filterForm">
+                <div class="d-md-flex align-items-center justify-content-between my-4">
+                    <div class="d-flex align-items-center">
+                        <p>Date Range:&nbsp;&nbsp;</p>
+                        <div>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate placeholder="Start date" formControlName="startDate">
+                                    <input matEndDate placeholder="End date" formControlName="endDate">
+                                </mat-date-range-input>
+                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
+                            <p>Filter by:&nbsp;&nbsp;</p>
+                        </div>
+                        <div>
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>FILTER</mat-label>
+                                <mat-select id="department" formControlName="filter">
+                                    <mat-option value="all">All</mat-option>
+                                    <mat-option value="Approved">Approved</mat-option>
+                                    <mat-option value="Pending">Pending</mat-option>
+                                    <mat-option value="Rejected">Rejected</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="transfer-list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th>Leave Type</th>
+                        <th class="d-flex align-items-center justify-content-center">Status</th>
+                        <th>Approver</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let l of leaveStore">
+                        <td>{{l.leaveStartDate | dateFormat}}</td>
+                        <td>-</td>
+                        <td>{{l.leaveType}}</td>
+                        <td class="td-status">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="status-tag" [ngStyle]="{'background-color':l.approved=='approved'?'#0CBC87':l.approved=='rejected'?'rgba(230, 41, 41, 0.20)':'rgba(247, 195, 46, 0.25)'}">
+                                    {{l.approved}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>-</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -2,7 +2,7 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <div class="d-flex align-items-center justify-content-between">
-                <h5>Employee Attendance</h5>
+                <h5>My Attendance</h5>
             </div>
         </li>
         <li class="list-group-item">
@@ -46,17 +46,15 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>Name</th>
                         <th>Date</th>
                         <th>In</th>
                         <th>Out</th>
                         <th>No. Hours</th>
-                        <th>Actions</th>
+                        <th>More</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let a of attendanceStore">
-                        <td>{{a.name}}</td>
                         <td>{{a.recordInTime | dateFormat}}</td>
                         <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red':'var(--color-text-200)'}">
                             {{a.recordInTime | timeFormat}}
@@ -65,10 +63,11 @@
                         <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red' : 'var(--color-text-200)'}">
                             {{calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
                         </td>
-                        <td><div class="d-flex align-items-center justify-content-around">
-                            <p>Edit</p>
-                            <p>Add Shift</p>
-                        </div></td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-around">
+                                -
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
