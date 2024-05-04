@@ -43,6 +43,7 @@ import {CreatePlanComponent} from "./components/onboarding-handle/create-plan/cr
 import {CreateTaskComponent} from "./components/onboarding-handle/create-task/create-task.component";
 import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
 import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
+import {ShiftComponent} from "./components/am-lm/shift/shift.component";
 
 
 const routes: Routes = [
@@ -93,7 +94,8 @@ const routes: Routes = [
         path: 'alm', component: AmLmComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/alm/attendance', pathMatch: 'full'},
             {path: 'attendance', component: AttendenceComponent},
-            {path: 'leave', component: LeaveComponent}
+            {path: 'leave', component: LeaveComponent},
+            {path: 'shift', component: ShiftComponent}
         ]
     },
     {
@@ -108,7 +110,6 @@ const routes: Routes = [
             {path:'view-payroll-reports/:id', component: ViewPayrollReportsComponent}
         ]
     },
-    {path:'onboardin', component:OnboardingHandleComponent, canActivate: [AuthGuard]},
     {path: 'payroll', component: PayrollComponent},
     {path: 'addpayiteams', component: AddpayiteamsComponent},
     {

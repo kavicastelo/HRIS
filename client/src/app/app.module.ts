@@ -81,6 +81,9 @@ import {CreateTaskComponent} from './components/onboarding-handle/create-task/cr
 import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
 import { MatTableModule } from '@angular/material/table';
 import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
+import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
+import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
+import {ShiftComponent} from './components/am-lm/shift/shift.component';
 
 @NgModule({
     declarations: [
@@ -146,6 +149,9 @@ import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-r
         CreateTaskComponent,
         PayrollReportsComponent,
         ViewPayrollReportsComponent
+        CreatePlanDialogComponent,
+        CreateTaskDialogComponent,
+        ShiftComponent
     ],
     imports: [
         BrowserModule,

@@ -46,15 +46,15 @@ public class LeaveController {
     }
 
     // Endpoint to update an existing leave
-    @PutMapping("/update/{id}")
-    public ResponseEntity<LeaveModel> updateLeave(@PathVariable("id") String id, @RequestBody LeaveModel leaveModel) {
-        LeaveModel updatedLeave = leaveService.updateLeave(id, leaveModel);
-        if (updatedLeave != null) {
-            return new ResponseEntity<>(updatedLeave, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<LeaveModel> updateLeave(@PathVariable String id, @RequestBody LeaveModel leaveModel) {
+//        LeaveModel updatedLeave = leaveService.updateLeave(id, leaveModel);
+//        if (updatedLeave != null) {
+//            return new ResponseEntity<>(updatedLeave, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     // Endpoint to delete a leave by ID
     @DeleteMapping("/delete/{id}")
