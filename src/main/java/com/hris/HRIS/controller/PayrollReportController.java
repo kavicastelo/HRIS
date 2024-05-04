@@ -54,6 +54,8 @@ public class PayrollReportController {
     @PostMapping("/generate/organizationId/{organizationId}")
     public ResponseEntity<ApiResponse> generateAllPayrollReportsByOrganizationId(@PathVariable String organizationId) {
 
+        System.out.println("Process: Generate Payroll Reports - Running...");
+
         String payPeriod = LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM-yyyy"));
 
         for (EmployeeModel employeeModel : organizationRepository.findById(organizationId).get().getEmployees()) {

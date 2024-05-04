@@ -15,6 +15,10 @@ export class PayrollReportService {
     return this.http.get(this.baseUrl + "payrollreport/get/all/email/" + email);
   }
 
+  generateAllPayrollReportsByOrganizationId(organizationId: any){
+    return this.http.post(this.baseUrl + "payrollreport/generate/organizationId/" + organizationId, null);
+  }
+
   changeReportStatus(id:String, status: String){
     return this.http.put(this.baseUrl + "payrollreport/id/" + id + "/set-status", status);
   }

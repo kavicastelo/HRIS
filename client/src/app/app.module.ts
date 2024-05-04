@@ -78,7 +78,9 @@ import {ProfileAttendanceComponent} from './shared/components/profile/profile-at
 import {AssignTaskComponent} from './components/onboarding-handle/assign-task/assign-task.component';
 import {CreatePlanComponent} from './components/onboarding-handle/create-plan/create-plan.component';
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
-
+import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
+import { MatTableModule } from '@angular/material/table';
+import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
 
 @NgModule({
     declarations: [
@@ -141,7 +143,9 @@ import {CreateTaskComponent} from './components/onboarding-handle/create-task/cr
         ProfileAttendanceComponent,
         AssignTaskComponent,
         CreatePlanComponent,
-        CreateTaskComponent
+        CreateTaskComponent,
+        PayrollReportsComponent,
+        ViewPayrollReportsComponent
     ],
     imports: [
         BrowserModule,
@@ -165,7 +169,8 @@ import {CreateTaskComponent} from './components/onboarding-handle/create-task/cr
         MatSelectModule,
         MatSlideToggleModule,
         _MatSlideToggleRequiredValidatorModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatTableModule
     ],
     providers: [],
     bootstrap: [AppComponent]
