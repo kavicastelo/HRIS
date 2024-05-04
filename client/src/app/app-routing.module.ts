@@ -41,6 +41,7 @@ import {ProfileAttendanceComponent} from "./shared/components/profile/profile-at
 import {AssignTaskComponent} from "./components/onboarding-handle/assign-task/assign-task.component";
 import {CreatePlanComponent} from "./components/onboarding-handle/create-plan/create-plan.component";
 import {CreateTaskComponent} from "./components/onboarding-handle/create-task/create-task.component";
+import {ShiftComponent} from "./components/am-lm/shift/shift.component";
 
 
 const routes: Routes = [
@@ -91,7 +92,8 @@ const routes: Routes = [
         path: 'alm', component: AmLmComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/alm/attendance', pathMatch: 'full'},
             {path: 'attendance', component: AttendenceComponent},
-            {path: 'leave', component: LeaveComponent}
+            {path: 'leave', component: LeaveComponent},
+            {path: 'shift', component: ShiftComponent}
         ]
     },
     {
