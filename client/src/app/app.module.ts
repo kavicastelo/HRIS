@@ -78,10 +78,12 @@ import {ProfileAttendanceComponent} from './shared/components/profile/profile-at
 import {AssignTaskComponent} from './components/onboarding-handle/assign-task/assign-task.component';
 import {CreatePlanComponent} from './components/onboarding-handle/create-plan/create-plan.component';
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
+import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
+import { MatTableModule } from '@angular/material/table';
+import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 import {ShiftComponent} from './components/am-lm/shift/shift.component';
-
 
 @NgModule({
     declarations: [
@@ -145,6 +147,8 @@ import {ShiftComponent} from './components/am-lm/shift/shift.component';
         AssignTaskComponent,
         CreatePlanComponent,
         CreateTaskComponent,
+        PayrollReportsComponent,
+        ViewPayrollReportsComponent
         CreatePlanDialogComponent,
         CreateTaskDialogComponent,
         ShiftComponent
@@ -171,7 +175,8 @@ import {ShiftComponent} from './components/am-lm/shift/shift.component';
         MatSelectModule,
         MatSlideToggleModule,
         _MatSlideToggleRequiredValidatorModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatTableModule
     ],
     providers: [],
     bootstrap: [AppComponent]

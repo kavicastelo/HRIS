@@ -60,6 +60,12 @@ export class AssignPayitemComponent {
     );
   }
 
+  toggleAllEmployeesSelection(){
+    for(let employee of this.employees){
+      this.toggleEmployeeSelection(employee);
+    }
+  }
+
   toggleEmployeeSelection(employee: any) {
     if (this.isSelected(employee)) {
       this.selectedEmployees = this.selectedEmployees.filter(emp => emp !== employee);

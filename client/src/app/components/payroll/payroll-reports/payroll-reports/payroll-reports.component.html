@@ -1,0 +1,42 @@
+<div class="runPayrollSection">
+    <p *ngIf="isReportsGeneratingProcessInProgress" style="padding: 10px;">The monthly payroll process is in progress...</p>
+    <div class="row" *ngIf="!isReportsGeneratingProcessInProgress">
+        <div class="col-12 col-md-6" style="display: flex; align-items: center; justify-content: center;"><p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p></div>
+        <div class="col-12 col-md-6"><button class="btn-1 my-4" (click)="runMonthlyPayrollProcess()" >Run Payroll</button></div>
+    </div>
+</div>
+<br>
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Employee Payroll Reports</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+
+            <div class="table-data-list">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>                      
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let employee of employees" routerLink='../view-payroll-reports/{{employee.id}}'>
+                        <td><mat-icon>navigate_next</mat-icon></td>
+                        <td>{{ employee.name }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.phone }}</td>
+                    </tbody>
+                  </table>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>
+    

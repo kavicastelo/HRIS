@@ -41,6 +41,8 @@ import {ProfileAttendanceComponent} from "./shared/components/profile/profile-at
 import {AssignTaskComponent} from "./components/onboarding-handle/assign-task/assign-task.component";
 import {CreatePlanComponent} from "./components/onboarding-handle/create-plan/create-plan.component";
 import {CreateTaskComponent} from "./components/onboarding-handle/create-task/create-task.component";
+import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
+import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {ShiftComponent} from "./components/am-lm/shift/shift.component";
 
 
@@ -103,7 +105,9 @@ const routes: Routes = [
             {path: 'employee/:id/payitems', component: ViewEmployeePayitemsComponent},
             {path:'payitems', component: PayitemsComponent},
             {path:'new-payitem', component: AddpayiteamsComponent},
-            {path:'assign-payitem/:payitemId', component: AssignPayitemComponent}
+            {path:'assign-payitem/:payitemId', component: AssignPayitemComponent},
+            {path:'payroll-reports', component: PayrollReportsComponent},
+            {path:'view-payroll-reports/:id', component: ViewPayrollReportsComponent}
         ]
     },
     {path: 'payroll', component: PayrollComponent},
