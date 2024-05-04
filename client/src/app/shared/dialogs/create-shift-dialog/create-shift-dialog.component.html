@@ -1,0 +1,42 @@
+<div class="d-flex align-items-center justify-content-between px-2 my-2">
+    <h5>Create Shift</h5>
+    <mat-icon (click)="closePopup()">close</mat-icon>
+</div>
+<hr>
+<div class="container" style="overflow: auto">
+    <form [formGroup]="onboardinTaskForm">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Shift Name</mat-label>
+            <input matInput id="name" formControlName="name" placeholder="Workday Shift" >
+        </mat-form-field>
+        <div class="d-flex">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Start at</mat-label>
+                <input matInput id="start" formControlName="start" placeholder="8.00AM" >
+            </mat-form-field>
+            <div class="d-flex flex-column" style="margin-bottom: 22px">
+                <button type="button" class="btn-2" (click)="updateStartTime('AM')">AM</button>
+                <button type="button" class="btn-2" (click)="updateStartTime('PM')">PM</button>
+            </div>
+        </div>
+        <div class="d-flex">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Start at</mat-label>
+                <input matInput id="end" formControlName="end" placeholder="6.00PM" >
+            </mat-form-field>
+            <div class="d-flex flex-column" style="margin-bottom: 22px">
+                <button type="button" class="btn-2" (click)="updateEndTime('AM')">AM</button>
+                <button type="button" class="btn-2" (click)="updateEndTime('PM')">PM</button>
+            </div>
+        </div>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput id="descriptionTask" formControlName="descriptionTask" placeholder="Description to new task..." ></textarea>
+        </mat-form-field>
+    </form>
+</div>
+<hr>
+<div class="d-flex align-items-center justify-content-end px-2 my-2">
+    <button class="btn me-2" (click)="closePopup()">Cancel</button>
+    <button class="btn" [disabled]="onboardinTaskForm.invalid">Save</button>
+</div>

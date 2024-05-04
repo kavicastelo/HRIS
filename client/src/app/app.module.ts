@@ -84,6 +84,7 @@ import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-r
 import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 import {ShiftComponent} from './components/am-lm/shift/shift.component';
+import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/create-shift-dialog.component';
 
 @NgModule({
     declarations: [
@@ -148,10 +149,11 @@ import {ShiftComponent} from './components/am-lm/shift/shift.component';
         CreatePlanComponent,
         CreateTaskComponent,
         PayrollReportsComponent,
-        ViewPayrollReportsComponent
+        ViewPayrollReportsComponent,
         CreatePlanDialogComponent,
         CreateTaskDialogComponent,
-        ShiftComponent
+        ShiftComponent,
+        CreateShiftDialogComponent
     ],
     imports: [
         BrowserModule,
