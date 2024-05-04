@@ -1,20 +1,29 @@
-.transfer-list{
-  overflow: auto;
-  max-height: calc(100vh - 200px);
+.card{
+  .list-group{
+    background-color: var(--color-surface-mixed-200);
+    .list-group-item{
+      background-color: var(--color-surface-mixed-200);
 
-  .table{
-    margin-top: 15px;
-    border-radius: 5px;
-    overflow: hidden;
+      .transfer-list{
+        overflow: auto;
+        max-height: calc(100vh - 200px);
 
-    th{
-      background-color: var(--color-surface-mixed-300);
-      color: var(--color-text-200);
-    }
+        .table{
+          margin-top: 15px;
+          border-radius: 5px;
+          overflow: hidden;
 
-    td{
-      background-color: transparent;
-      color: var(--color-text-200);
+          th{
+            background-color: var(--color-surface-mixed-300);
+            color: var(--color-text-200);
+          }
+
+          td{
+            background-color: transparent;
+            color: var(--color-text-200);
+          }
+        }
+      }
     }
   }
 }

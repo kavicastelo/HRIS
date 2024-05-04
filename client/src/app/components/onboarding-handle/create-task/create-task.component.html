@@ -1,29 +1,38 @@
-<h2>Initialize onboardin task</h2>
-<form [formGroup]="onboardinTaskForm" (ngSubmit)="submitTask()">
-    <div>
-        <label for="onboardingPlanId">Plan Id</label>
-        <input type="text" formControlName="onboardingPlanId" id="onboardingPlanId">
-    </div>
-    <div>
-        <label for="adminEmailTask">Admin Email</label>
-        <input type="text" formControlName="adminEmailTask" id="adminEmailTask">
-    </div>
-    <div>
-        <label for="descriptionTask">Description</label>
-        <input type="text" formControlName="descriptionTask" id="descriptionTask">
-    </div>
-    <div>
-        <label for="startDateTask">Start Date</label>
-        <input type="text" formControlName="startDateTask" id="startDateTask">
-    </div>
-    <div>
-        <label for="endDateTask">End Date</label>
-        <input type="text" formControlName="endDateTask" id="endDateTask">
-    </div>
-    <div>
-        <label for="statusTask">Status</label>
-        <input type="text" formControlName="statusTask" id="statusTask">
-    </div>
+<div class="d-flex align-items-center justify-content-end">
+    <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Create Task</span></button>
+</div>
 
-    <button type="submit">submit</button>
-</form>
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-md-flex align-items-center justify-content-between">
+                <h5>Onboarding Task</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="transfer-list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Plan Title</th>
+                        <th>Task Description</th>
+                        <th>Task Date Range</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let t of filterTasks()">
+                        <td>{{filterPlan(t.onBoardingPlanId)}}</td>
+                        <td>{{t.description}}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {{t.startdate | dateFormat}}&nbsp;-&nbsp;{{t.taskdate | dateFormat}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>

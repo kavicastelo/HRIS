@@ -78,7 +78,8 @@ import {ProfileAttendanceComponent} from './shared/components/profile/profile-at
 import {AssignTaskComponent} from './components/onboarding-handle/assign-task/assign-task.component';
 import {CreatePlanComponent} from './components/onboarding-handle/create-plan/create-plan.component';
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
-import { CreatePlanDialogComponent } from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
+import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
+import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 
 
 @NgModule({
@@ -143,7 +144,8 @@ import { CreatePlanDialogComponent } from './shared/dialogs/create-plan-dialog/c
         AssignTaskComponent,
         CreatePlanComponent,
         CreateTaskComponent,
-        CreatePlanDialogComponent
+        CreatePlanDialogComponent,
+        CreateTaskDialogComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,40 @@
+<div class="d-flex align-items-center justify-content-between px-2 my-2">
+    <h5>Initialize Onboarding Plan</h5>
+    <mat-icon (click)="closePopup()">close</mat-icon>
+</div>
+<hr>
+<div class="container" style="overflow: auto">
+    <form [formGroup]="onboardinTaskForm">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>CHOOSE PLAN</mat-label>
+            <mat-select id="onboardingPlanId" formControlName="onboardingPlanId" [(value)]="selectedPlan">
+                <mat-option *ngFor="let f of filterPlans()" [value]="f.id">{{f.title}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DESCRIPTION</mat-label>
+            <textarea matInput id="descriptionTask" formControlName="descriptionTask" placeholder="Description to new task..." ></textarea>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DATE RANGE</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date" formControlName="startDateTask">
+                <input matEndDate placeholder="End date" formControlName="endDateTask">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>CHOOSE STATUS</mat-label>
+            <mat-select id="leaveTYpe" formControlName="statusTask" [(value)]="selectedStatus">
+                <mat-option *ngFor="let s of statusTypes" [value]="s">{{s}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+</div>
+<hr>
+<div class="d-flex align-items-center justify-content-end px-2 my-2">
+    <button class="btn me-2" (click)="closePopup()">Cancel</button>
+    <button class="btn" [disabled]="onboardinTaskForm.invalid" (click)="submitTask()">Create</button>
+</div>
