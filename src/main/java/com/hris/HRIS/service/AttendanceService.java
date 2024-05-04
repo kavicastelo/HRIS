@@ -23,10 +23,6 @@ public class AttendanceService {
         return attendanceRepository.findAll();
     }
 
-    public AttendanceModel getAttendanceById(String id) {
-        return attendanceRepository.findById(id).orElse(null);
-    }
-
     public AttendanceModel updateAttendance(String id, AttendanceModel updatedAttendanceModel) {
         AttendanceModel existingAttendanceModel = attendanceRepository.findById(id).orElse(null);
         if (existingAttendanceModel != null) {

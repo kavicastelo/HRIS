@@ -18,6 +18,7 @@ import java.security.PrivateKey;
 public class AttendanceModel {
     @Id
     private String id;
+    private String organizationId;
     private String name;
     private String email;
     private String fingerprintDetails;

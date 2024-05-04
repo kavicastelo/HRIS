@@ -17,9 +17,13 @@ import java.util.Date;
 public class LeaveModel {
     @Id
     private String id;
+    private String organizationId;
+    private String employeeName;
+    private String leaveReason;
     private LeaveType leaveType;
     private Date leaveStartDate;
     private Date leaveEndDate;
+    private String leaveApproverName;
     private boolean approved;
     private double leaveBalance;
 }
