@@ -104,7 +104,6 @@ const routes: Routes = [
             {path:'assign-payitem', component: AssignPayitemComponent}
         ]
     },
-    {path:'onboardin', component:OnboardingHandleComponent, canActivate: [AuthGuard]},
     {path: 'payroll', component: PayrollComponent},
     {path: 'addpayiteams', component: AddpayiteamsComponent},
     {

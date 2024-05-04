@@ -69,25 +69,25 @@ public class AttendanceController {
         }
     }
     // Rest API to calculate late minutes
-    @GetMapping("/calculate-late-minutes/{id}")
-    public ResponseEntity<Long> calculateLateMinutes(@PathVariable String id, @RequestParam Date expectedInTime) {
-        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
-        if (attendanceModel == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        long lateMinutes = attendanceService.calculateLateMinutes(attendanceModel, expectedInTime);
-        return new ResponseEntity<>(lateMinutes, HttpStatus.OK);
-    }
+//    @GetMapping("/calculate-late-minutes/{id}")
+//    public ResponseEntity<Long> calculateLateMinutes(@PathVariable String id, @RequestParam Date expectedInTime) {
+//        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
+//        if (attendanceModel == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        long lateMinutes = attendanceService.calculateLateMinutes(attendanceModel, expectedInTime);
+//        return new ResponseEntity<>(lateMinutes, HttpStatus.OK);
+//    }
 
     // Rest API to calculate early departures
-    @GetMapping("/calculate-early-departure-minutes/{id}")
-    public ResponseEntity<Long> calculateEarlyDepartureMinutes(@PathVariable String id, @RequestParam Date expectedOutTime) {
-        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
-        if (attendanceModel == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        long earlyDepartureMinutes = attendanceService.calculateEarlyDepartureMinutes(attendanceModel, expectedOutTime);
-        return new ResponseEntity<>(earlyDepartureMinutes, HttpStatus.OK);
-    }
+//    @GetMapping("/calculate-early-departure-minutes/{id}")
+//    public ResponseEntity<Long> calculateEarlyDepartureMinutes(@PathVariable String id, @RequestParam Date expectedOutTime) {
+//        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
+//        if (attendanceModel == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        long earlyDepartureMinutes = attendanceService.calculateEarlyDepartureMinutes(attendanceModel, expectedOutTime);
+//        return new ResponseEntity<>(earlyDepartureMinutes, HttpStatus.OK);
+//    }
 }
 

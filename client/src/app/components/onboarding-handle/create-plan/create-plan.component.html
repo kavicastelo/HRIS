@@ -1,21 +1,27 @@
-<h2>Initialize onboardin plan</h2>
-<form [formGroup]="onboardinPlanForm" (ngSubmit)="submitPlan()">
-    <div>
-        <label for="titlePlan">Title</label>
-        <input type="text" formControlName="titlePlan" id="titlePlan">
-    </div>
-    <div>
-        <label for="descriptionPlan">Description</label>
-        <input type="text" formControlName="descriptionPlan" id="descriptionPlan">
-    </div>
-    <div>
-        <label for="startDatePlan">Start Date</label>
-        <input type="text" formControlName="startDatePlan" id="startDatePlan">
-    </div>
-    <div>
-        <label for="endDatePlan">End Date</label>
-        <input type="text" formControlName="endDatePlan" id="endDatePlan">
-    </div>
+<div class="d-flex align-items-center justify-content-end">
+    <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Create Plan</span></button>
+</div>
 
-    <button type="submit">submit</button>
-</form>
+<div class="transfer-list">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date Range</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of filterPlans()">
+            <td>{{p.title}}</td>
+            <td>{{p.description}}</td>
+            <td>
+                <div class="d-flex align-items-center">
+                    {{p.startDate | dateFormat}}&nbsp;-&nbsp;{{p.taskDate | dateFormat}}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
