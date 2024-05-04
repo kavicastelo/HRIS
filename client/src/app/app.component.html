@@ -61,13 +61,13 @@
                     <hr style="color: var(--color-primary-400)">
                     <span>YOU</span>
                     <ul>
-                        <li routerLink="/home">Home</li>
-                        <li routerLink="/login">Login</li>
                         <li routerLink="/feed">Feed</li>
                         <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">Requests</li>
                         <li routerLink="/employee">Employee</li>
                         <li routerLink="/bulletins">Bulletins & News</li>
                         <li routerLink="/alm">Attendance & Leave</li>
+                        <li routerLink="/onboardin">Onboarding</li>
+                        <li routerLink="/login">Login</li>
                     </ul>
                 </mat-drawer>
                 <mat-drawer-content [ngStyle]="{'max-height':employee[0].id == null?'100vh':'calc(100vh - 70px)'}" style="overflow-y: auto">
