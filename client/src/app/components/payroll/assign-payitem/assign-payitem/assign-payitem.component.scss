@@ -1,20 +1,59 @@
-.body{
-    display: flex;
-    flex-direction: column;
-    margin: 30px 50px;
-   
-}
-
-.formsection{
-    
+.formsection{   
     margin: 5% 10%;
     width: clamp(40vw, 80% , 100vw);
- 
 }
-table{
-    background-color: thistle;
-}
-th{
-    border-width: 0 0 2px 0 ;
-        
+
+.card{
+  .list-group{
+    background-color: var(--color-surface-mixed-200);
+    .list-group-item{
+      background-color: var(--color-surface-mixed-200);
+
+      p, i{
+        margin: 0 0 20px 0;
+        padding: 0;
+        color: var(--color-text-200);
+      }
+
+      .table-data-list{
+        overflow: auto;
+
+        .table{
+          margin-top: 15px;
+          border-radius: 5px;
+          overflow: hidden;
+          //background-color: transparent;
+
+          th{
+            background-color: var(--color-surface-mixed-300);
+            color: var(--color-text-200);
+          }
+
+          td{
+            background-color: transparent;
+            color: var(--color-text-200);
+
+            p{
+              margin: 0;
+            }
+          }
+        }
+      }
+
+      .list-1, .list-2{
+        list-style: none;
+
+        li{
+          font-weight: 500;
+          padding: 7px 0;
+        }
+      }
+
+      .list-1{
+        li{
+          color: var(--color-text-300);
+        }
+      }
+    }
+  }
 }

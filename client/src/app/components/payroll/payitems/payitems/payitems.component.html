@@ -23,10 +23,12 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- <tr *ngFor="let employee of employees" routerLink='../employee/{{employee.id}}/payitems'>
-                        <td>{{ employee.name }}</td>
-                        <td>{{ employee.email }}</td>
-                        <td>{{ employee.phone }}</td> -->
+                      <tr *ngFor="let payitem of payitemsList" routerLink='../assign-payitem/{{payitem.id}}'>
+                        <td>{{ payitem.itemName }}</td>
+                        <td>{{ payitem.description }}</td>
+                        <td>{{ payitem.itemType }}</td>
+                        <td>{{ payitem.paymentType }}</td>
+                        <td>{{ payitem.status }}</td>
                     </tbody>
                   </table>
             </div>

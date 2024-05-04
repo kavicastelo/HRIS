@@ -1,92 +1,95 @@
-<div class="container body">
-    <div class="navbar">
-      <app-payrollnavbar></app-payrollnavbar>
-    </div>
-    <div class="heading">
-      <h2>Add Pay Iteam</h2></div>
-    </div>
-<div class=" formsection">
-    <form>
-      <div class="mb-3 row ">
-          <div class="col-4">
-              <label for="formGroupExampleInput" class="form-label">Pay Iteams Name</label>
+<div class="card">
+  <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+          <div class="d-flex align-items-center justify-content-between">
+              <h5>Assign Pay Item</h5>
           </div>
-          <div class="col-8">
-              <input type="text" class="form-control" id="formGroupExampleInput" placeholder=" ">
-          </div>
-      </div>
-      <div class="mb-3 row ">
-        <div class="col-4">
-            <label for="formGroupExampleInput" class="form-label">Description</label>
+      </li>
+      <li class="list-group-item">
+        <div class="formsection">
+            <form [formGroup]="assignPayitemFormGroup">
+              <div class="mb-3 row">
+                  <div class="col-4">
+                      <label>Pay Item Name</label>
+                  </div>
+                  <div class="col-8">
+                      <input type="text" class="form-control" [value]="selectedPayItem.itemName" disabled placeholder=" ">
+                  </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Description</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" [value]="selectedPayItem.description" disabled placeholder=" ">
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Item Type</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" [value]="selectedPayItem.itemType" disabled placeholder=" ">
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Payment Type</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" [value]="selectedPayItem.paymentType" disabled placeholder=" ">
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Type</label>
+                </div>
+                <div class="col-8">
+                    <select formControlName="typeCtrl" class="form-control" [(ngModel)]="valueType" placeholder="0.00">
+                      <option value="Percentage">Percentage</option>
+                      <option value="Hourly Rate">Hourly Rate</option>
+                      <option value="Amount" selected>Amount</option>
+                    </select>
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Value</label>
+                </div>
+                <div class="col-8">
+                    <input type="number" formControlName="valueCtrl" class="form-control" [(ngModel)]="value" placeholder="0.00">
+                </div>
+              </div>
+              <br>              
+              <div class="table-data-list">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Contact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let employee of employees">
+                      <td><input type="checkbox" [checked]="isSelected(employee)" (change)="toggleEmployeeSelection(employee)"></td>
+                      <td>{{ employee.name }}</td>
+                      <td>{{ employee.email }}</td>
+                      <td>{{ employee.phone }}</td>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button class="btn-1 my-4" style="padding-left: 10px; padding-right: 10px;" (click)="assignPayItemForMultipleEmployees()" [disabled]="!assignPayitemFormGroup.valid && selectedEmployees.length == 0">Save Changes</button>        
+                </div>
+            </div>
+            </form>
         </div>
-        <div class="col-8">
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder=" ">
-        </div>
-      </div>
-      <div class="mb-3 row ">
-        <div class="col-4">
-            <label for="formGroupExampleInput" class="form-label">Iteam Type</label>
-        </div>
-        <div class="col-8">
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder=" ">
-        </div>
-      </div>
-      <div class="mb-3 row ">
-        <div class="col-4">
-            <label for="formGroupExampleInput" class="form-label">Status</label>
-        </div>
-        <div class="col-8">
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder=" ">
-        </div>
-      </div>
-      <div class="mb-3 row ">
-        <div class="col-4">
-            <label for="formGroupExampleInput" class="form-label">Amount</label>
-        </div>
-        <div class="col-8">
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder=" ">
-        </div>
-      </div>
-      <div class="mb-3 row ">
-        <div class="col-4">
-            <label for="formGroupExampleInput" class="form-label">Pay Iteams Name</label>
-        </div>
-        <div class="col-8">
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder=" ">
-        </div>
-      </div>
-
-
-      
-      <div>    
-          <table class="table table-hover table table-borderless table-responsive">
-              <thead class="tableHeader">
-                <tr>
-                  <th></th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let employee of employees">
-                <td><input type="checkbox" name="selectEmployee" id="empselect"></td>
-                <td>{{ employee.name }}</td>
-                <td>{{ employee.email }}</td>
-                <td>{{ employee.phone }}</td>
-              </tbody>
-          </table>
-      </div>
-      <div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-secondary btn-lg" type="reset">Discard</button>
-          <button class="btn btn-primary me-md-2" type="submit">Save Changes</button>        
-        </div>
-    </div>
-    </form>
-
-      
-    
-  
+      </li>
+      <li class="list-group-item">&nbsp;</li>
+  </ul>
 </div>
+  
 

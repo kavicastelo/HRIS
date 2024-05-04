@@ -7,6 +7,7 @@ import { PayItemModel } from 'src/app/shared/data-models/payitem.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayitemService } from 'src/app/services/payitem.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   
@@ -34,7 +35,9 @@ export class AddpayiteamsComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
     private payitemService: PayitemService,
-    private cookieService: AuthService
+    private cookieService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
   ){
     
     this.payitemModel = new PayItemModel();
@@ -57,6 +60,7 @@ export class AddpayiteamsComponent implements OnInit {
               this._snackBar.open(res.message, "Ok");
             }else{
               this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+              this.router.navigate(['payroll', 'payitems']);
             }
           }
         },(error: any) => {
