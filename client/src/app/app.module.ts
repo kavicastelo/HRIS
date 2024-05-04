@@ -80,6 +80,7 @@ import {CreatePlanComponent} from './components/onboarding-handle/create-plan/cr
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
 import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
+import {ShiftComponent} from './components/am-lm/shift/shift.component';
 
 
 @NgModule({
@@ -145,7 +146,8 @@ import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/cre
         CreatePlanComponent,
         CreateTaskComponent,
         CreatePlanDialogComponent,
-        CreateTaskDialogComponent
+        CreateTaskDialogComponent,
+        ShiftComponent
     ],
     imports: [
         BrowserModule,
