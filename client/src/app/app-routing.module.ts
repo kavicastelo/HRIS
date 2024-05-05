@@ -44,6 +44,7 @@ import {CreateTaskComponent} from "./components/onboarding-handle/create-task/cr
 import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
 import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {ShiftComponent} from "./components/am-lm/shift/shift.component";
+import {MarkAttendanceComponent} from "./components/am-lm/mark-attendance/mark-attendance.component";
 
 
 const routes: Routes = [
@@ -95,7 +96,8 @@ const routes: Routes = [
             {path: '', redirectTo: '/alm/attendance', pathMatch: 'full'},
             {path: 'attendance', component: AttendenceComponent},
             {path: 'leave', component: LeaveComponent},
-            {path: 'shift', component: ShiftComponent}
+            {path: 'shift', component: ShiftComponent},
+            {path: 'mark-attendance', component: MarkAttendanceComponent}
         ]
     },
     {

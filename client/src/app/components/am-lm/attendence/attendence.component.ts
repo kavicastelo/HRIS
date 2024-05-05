@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {attendanceDataStore} from "../../../shared/data-stores/attendance-data-store";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-attendence',
@@ -10,12 +11,16 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class AttendenceComponent {
 
   attendanceStore:any = attendanceDataStore
+  isMarkingSheet:boolean = false;
 
   filterForm = new FormGroup({
     startDate: new FormControl(null),
     endDate: new FormControl(null),
     filter: new FormControl(null)
   })
+
+  constructor(private router: Router, private route: ActivatedRoute) {
+  }
 
   calculateHours(timestamp1: string, timestamp2: string): number {
     // Convert timestamps to Date objects
@@ -30,5 +35,4 @@ export class AttendenceComponent {
 
     return hours;
   }
-
 }

@@ -18,7 +18,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let s of shiftStore">
+                    <tr *ngFor="let s of filterShifts()">
                         <td>{{s.name}}</td>
                         <td>{{s.startTime}} - {{s.endTime}}</td>
                         <td>{{s.description}}</td>

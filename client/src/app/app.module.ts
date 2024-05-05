@@ -85,6 +85,7 @@ import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/cre
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 import {ShiftComponent} from './components/am-lm/shift/shift.component';
 import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/create-shift-dialog.component';
+import { MarkAttendanceComponent } from './components/am-lm/mark-attendance/mark-attendance.component';
 
 @NgModule({
     declarations: [
@@ -153,7 +154,8 @@ import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/c
         CreatePlanDialogComponent,
         CreateTaskDialogComponent,
         ShiftComponent,
-        CreateShiftDialogComponent
+        CreateShiftDialogComponent,
+        MarkAttendanceComponent
     ],
     imports: [
         BrowserModule,
