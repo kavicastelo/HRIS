@@ -59,7 +59,8 @@ public class AttendanceService {
         if (attendanceModel == null || attendanceModel.getRecordInTime() == null) {
             return 0;
         }
-        long diffInMillies = expectedInTime.getTime() - attendanceModel.getRecordInTime().getTime();
+        Date inTime = new Date(attendanceModel.getRecordInTime());
+        long diffInMillies = expectedInTime.getTime() - inTime.getTime();
         return Math.max(0, TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS));
     }
     // Calculate early departures
@@ -67,8 +68,8 @@ public class AttendanceService {
         if (attendanceModel == null || attendanceModel.getRecordOutTime() == null) {
             return 0;
         }
-
-        long diffInMillies = expectedOutTime.getTime() - attendanceModel.getRecordOutTime().getTime();
+        Date outTime = new Date(attendanceModel.getRecordOutTime());
+        long diffInMillies = expectedOutTime.getTime() - outTime.getTime();
         return Math.max(0, TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS));
     }
 }

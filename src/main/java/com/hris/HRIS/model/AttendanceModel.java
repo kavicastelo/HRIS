@@ -22,13 +22,13 @@ public class AttendanceModel {
     private String name;
     private String email;
     private String fingerprintDetails;
-    private Date recordInTime;
-    private Date recordOutTime;
+    private String recordInTime;
+    private String recordOutTime;
     private String workShift;
     private String workRoster;
     private String workPattern;
-    private Date breakStartTime;
-    private Date breakEndTime;
+    private String breakStartTime;
+    private String breakEndTime;
     private long lateMinutes;
     private long earlyDepartureMinutes;
     private int noPayDays;
