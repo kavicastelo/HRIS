@@ -8,9 +8,9 @@ import com.hris.HRIS.repository.OnboardingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class OnboardingPlanService {
@@ -54,6 +54,15 @@ public class OnboardingPlanService {
 
             // Add all employees to the list
             onboardingModel.getEmployees().addAll(employeeModels);
+
+            LocalDate now = LocalDate.now();
+
+            employeeModels.forEach(employeeModel -> {
+                emailService.sendSimpleEmail(employeeModel.getEmail(), "New Task Assigned","Dear "+employeeModel.getName()+",\n\n"
+                        +"We assigned you to a new task. Please find your task data through the system.\nPlan ID: "+onboardingModel.getOnBoardingPlanId()
+                        +"\nTask Description: "+onboardingModel.getDescription()+"\nDeadline: "+onboardingModel.getTaskdate()
+                        +"\nGood luck with your new task!\n\nTeam HR,\n"+now);
+            });
 
             onboardingRepository.save(onboardingModel);
         }

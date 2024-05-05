@@ -144,7 +144,7 @@ export class AssignTaskComponent {
     // Find the selected task
     const selectedTask = this.filteredTasks.find(task => task.id === taskId);
 
-    if (selectedTask) {
+    if (selectedTask.employees) {
       // Get the employee IDs from the selected task
       const taskEmployeeIds = selectedTask.employees.map((e: any) => e.id);
 

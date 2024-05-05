@@ -8,6 +8,7 @@ import com.hris.HRIS.repository.CredentialsRepository;
 import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.OrganizationRepository;
 import com.hris.HRIS.service.EmailService;
+import com.hris.HRIS.service.SystemAutomateService;
 import com.hris.HRIS.shared.objects.JobData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,9 @@ public class OrganizationController {
     CredentialsRepository credentialsRepository;
 
     @Autowired
+    SystemAutomateService systemAutomateService;
+
+    @Autowired
     EmailService emailService;
 
     @PostMapping("/save")
@@ -45,9 +49,9 @@ public class OrganizationController {
 
         JobData jobData = new JobData();
         jobData.setPosition("Administrator");
-        jobData.setDepartment("");
+        jobData.setDepartment("N/A");
         jobData.setDoj(String.valueOf(new Date()));
-        jobData.setSalary("");
+        jobData.setSalary("N/A");
 
         EmployeeModel employeeModel = new EmployeeModel();
         employeeModel.setName(organizationModel.getContactPerson());
@@ -55,6 +59,9 @@ public class OrganizationController {
         employeeModel.setPhone(organizationModel.getPhone());
         employeeModel.setOrganizationId(orgModel.getId());
         employeeModel.setJobData(jobData);
+        employeeModel.setDob("N/A");
+        employeeModel.setAddress("N/A");
+        employeeModel.setNic("N/A");
         // Set default photo from resources directory
         try {
             Resource defaultPhotoResource = new ClassPathResource("default_profile.jpg");
@@ -66,8 +73,10 @@ public class OrganizationController {
                     .body(new ApiResponse("Failed to load default photo"));
         }
         employeeModel.setLevel(0);
+        employeeModel.setStatus("N/A");
 
-        employeeRepository.save(employeeModel);
+        EmployeeModel emp = employeeRepository.save(employeeModel);
+        systemAutomateService.updateOrganizationEmployees(emp);
 
         String password = String.valueOf(random_Password(10));
         String name = employeeModel.getName().split(" ")[0];
@@ -83,8 +92,8 @@ public class OrganizationController {
         credentialsModel.setPassword(password);
         credentialsModel.setLevel("0");
         credentialsRepository.save(credentialsModel);
-//            TODO: //uncomment email service in prod mode
-//        emailService.sendSimpleEmail(organizationModel.getEmail(), "Organization Registration", "Dear " + name + ",\n" + para + tag + footer);
+
+        emailService.sendSimpleEmail(organizationModel.getEmail(), "Organization Registration", "Dear " + name + ",\n" + para + tag + footer);
 
         ApiResponse apiResponse = new ApiResponse("Organization saved successfully");
         return ResponseEntity.ok(apiResponse);
