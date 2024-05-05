@@ -4,6 +4,7 @@ import {OnboardinService} from "../../../services/onboardin.service";
 import {EmployeesService} from "../../../services/employees.service";
 import {AuthService} from "../../../services/auth.service";
 import {forkJoin, Observable, tap} from "rxjs";
+import {ShiftsService} from "../../../services/shifts.service";
 
 @Component({
   selector: 'app-assign-task',
@@ -15,11 +16,14 @@ export class AssignTaskComponent {
   employeeDataStore:any[] = [];
   planDataStore:any[] = [];
   taskDataStore:any[] = [];
+  shiftDataStore:any[] = [];
   filteredEmployees:any[] = [];
   filteredPlans:any[] = [];
   filteredTasks:any[] = [];
+  filteredShifts:any[] = [];
   selectedPlan:any;
   selectedTask:any;
+  selectedShift:any;
   organizationId:any;
 
   isChecked: boolean[] = [];
@@ -30,10 +34,11 @@ export class AssignTaskComponent {
 
   assignForm = new FormGroup({
     plan: new FormControl(null, [Validators.required]),
+    shift: new FormControl(null),
     task: new FormControl(null, [Validators.required])
   })
 
-  constructor(private onboardinService: OnboardinService, private employeeService: EmployeesService, private cookiesService: AuthService) {
+  constructor(private onboardinService: OnboardinService, private employeeService: EmployeesService, private cookiesService: AuthService, private shiftService: ShiftsService) {
   }
 
   ngOnInit(): void {
@@ -44,6 +49,7 @@ export class AssignTaskComponent {
     })
     this.loadAllPlans().subscribe(()=>{})
     this.loadAllTasks().subscribe(()=>{})
+    this.loadAllShifts().subscribe(()=>{})
   }
 
   loadAllUsers(): Observable<any>{
@@ -75,6 +81,12 @@ export class AssignTaskComponent {
   loadAllTasks(): Observable<any>{
     return this.onboardinService.getAllTasks().pipe(
         tap(data => this.taskDataStore = data)
+    );
+  }
+
+  loadAllShifts(): Observable<any>{
+    return this.shiftService.getAllShifts().pipe(
+        tap(data => this.shiftDataStore = data)
     );
   }
 
@@ -117,6 +129,12 @@ export class AssignTaskComponent {
     this.filteredTasks = this.taskDataStore.filter((data:any)=> data.onBoardingPlanId == this.selectedPlan);
 
     return this.filteredTasks;
+  }
+
+  filterShifts(): any[]{
+    this.filteredShifts = this.shiftDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+
+    return this.filteredShifts;
   }
 
   checkEmployeeSelectionForTask(taskId: any) {

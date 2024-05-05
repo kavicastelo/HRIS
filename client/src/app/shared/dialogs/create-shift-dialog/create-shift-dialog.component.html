@@ -31,12 +31,12 @@
         </div>
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>Description</mat-label>
-            <textarea matInput id="descriptionTask" formControlName="descriptionTask" placeholder="Description to new task..." ></textarea>
+            <textarea matInput id="description" formControlName="description" placeholder="Description to new task..." ></textarea>
         </mat-form-field>
     </form>
 </div>
 <hr>
 <div class="d-flex align-items-center justify-content-end px-2 my-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
-    <button class="btn" [disabled]="onboardinTaskForm.invalid">Save</button>
+    <button class="btn" [disabled]="onboardinTaskForm.invalid" (click)="saveShift()">Save</button>
 </div>

@@ -2,6 +2,8 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {ShiftsService} from "../../../services/shifts.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-create-shift-dialog',
@@ -17,6 +19,8 @@ export class CreateShiftDialogComponent {
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private formBuilder: FormBuilder,
+              private shiftService: ShiftsService,
+              private snackBar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreateShiftDialogComponent>) {
   }
@@ -32,7 +36,7 @@ export class CreateShiftDialogComponent {
       name: ['', Validators.required],
       start: ['', [Validators.required, this.timeValidator]],
       end: ['', [Validators.required, this.timeValidator]],
-      descriptionTask: ['', Validators.required]
+      description: ['', Validators.required]
     });
   }
 
@@ -59,5 +63,22 @@ export class CreateShiftDialogComponent {
 
   closePopup(){
     this.dialog.closeAll()
+  }
+
+  saveShift() {
+    if (this.onboardinTaskForm.valid){
+      this.shiftService.saveShift({
+        organizationId: this.receivedData.data.organizationId,
+        name: this.onboardinTaskForm.value.name,
+        startTime: this.onboardinTaskForm.value.start,
+        endTime: this.onboardinTaskForm.value.end,
+        description: this.onboardinTaskForm.value.description
+      }).subscribe(data=>{
+        this.closePopup()
+        this.snackBar.open("New Shift Item Created","OK", {duration:3000})
+      }, error => {
+        console.log(error)
+      })
+    }
   }
 }

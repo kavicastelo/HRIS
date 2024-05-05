@@ -34,4 +34,8 @@ export class OnboardinService {
   public assignEmployeeToTask(id: any, employee: EmployeeModel[]): Observable<any> {
     return this.http.put(this.baseUrl+'onboarding/assign/employee/'+id, employee);
   }
+
+  public editTaskById(id:any, onboarding: Onboardin): Observable<any> {
+    return this.http.put(this.baseUrl+'onboarding/update/id/'+id, onboarding)
+  }
 }
