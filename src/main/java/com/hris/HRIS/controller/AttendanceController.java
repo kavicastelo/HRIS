@@ -1,5 +1,6 @@
 package com.hris.HRIS.controller;
 
+import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.AttendanceModel;
 import com.hris.HRIS.model.CredentialsModel;
 import com.hris.HRIS.repository.AttendanceRepository;
@@ -26,9 +27,11 @@ public class AttendanceController {
 
     // Endpoint to create a new attendance record
     @PostMapping("/create")
-    public ResponseEntity<AttendanceModel> createAttendance(@RequestBody AttendanceModel attendanceModel) {
+    public ResponseEntity<ApiResponse> createAttendance(@RequestBody AttendanceModel attendanceModel) {
         AttendanceModel createdAttendance = attendanceService.createAttendance(attendanceModel);
-        return new ResponseEntity<>(createdAttendance, HttpStatus.CREATED);
+
+        ApiResponse response = new ApiResponse("Attendance created");
+        return ResponseEntity.ok(response);
     }
 
     // Endpoint to retrieve all attendance records

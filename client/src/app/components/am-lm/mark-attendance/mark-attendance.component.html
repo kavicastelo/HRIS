@@ -30,8 +30,8 @@
                         <td>{{e.email}}</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-end">
-                                <button class="btn-2 px2 me-2">Arrive</button>
-                                <button class="btn-2 px2">Depart</button>
+                                <button class="btn-2 px2 me-2" (click)="markIn(e)">Arrive</button>
+                                <button class="btn-2 px2" (click)="depart(e)">Depart</button>
                             </div>
                         </td>
                     </tr>

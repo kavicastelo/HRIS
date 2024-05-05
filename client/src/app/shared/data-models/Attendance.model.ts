@@ -1,5 +1,6 @@
 export interface AttendanceModel {
     id?:any,
+    organizationId?:any,
     name?:any,
     email?:any,
     fingerprintDetails?:any,
