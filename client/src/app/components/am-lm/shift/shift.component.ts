@@ -3,6 +3,8 @@ import {shiftDataStore} from "../../../shared/data-stores/shift-data-store";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateShiftDialogComponent} from "../../../shared/dialogs/create-shift-dialog/create-shift-dialog.component";
 import {AuthService} from "../../../services/auth.service";
+import {ShiftsService} from "../../../services/shifts.service";
+import {Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-shift',
@@ -12,12 +14,29 @@ import {AuthService} from "../../../services/auth.service";
 export class ShiftComponent implements OnInit{
 
   organizationId:any;
-  shiftStore:any = shiftDataStore
+  shiftDataStore:any[] = [];
+  filteredShifts:any[] = [];
 
-  constructor(private dialog: MatDialog, private cookieService: AuthService) {
+  constructor(private dialog: MatDialog, private cookieService: AuthService, private shiftService: ShiftsService) {
   }
-  ngOnInit() {
+  async ngOnInit(): Promise<any> {
     this.organizationId = this.cookieService.organization();
+
+    await this.loadAllShifts().subscribe(()=>{
+
+    })
+  }
+
+  loadAllShifts(): Observable<any>{
+    return this.shiftService.getAllShifts().pipe(
+        tap(data => this.shiftDataStore = data)
+    );
+  }
+
+  filterShifts(): any[]{
+    this.filteredShifts = this.shiftDataStore.filter((data: any) => data.organizationId === this.organizationId)
+
+    return this.filteredShifts;
   }
 
   addShift() {
