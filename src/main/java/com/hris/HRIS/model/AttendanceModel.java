@@ -29,8 +29,8 @@ public class AttendanceModel {
     private String workPattern;
     private Date breakStartTime;
     private Date breakEndTime;
-    private int lateMinutes;
-    private int earlyDepartureMinutes;
+    private long lateMinutes;
+    private long earlyDepartureMinutes;
     private int noPayDays;
     private double overtimeHours;
 
