@@ -61,8 +61,8 @@ public class PromotionController {
         }
 
         String receivedLetter = lettersGenerationService.generateReceivedPromotionLetter(newPromotionModel);
-//        TODO: uncomment in prod mode
-//        emailService.sendSimpleEmail(promotionModel.getEmail(), "Promotion Request", "We received your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
+
+        emailService.sendSimpleEmail(promotionModel.getEmail(), "Promotion Request", "We received your promotion request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -185,12 +185,12 @@ public class PromotionController {
                 systemAutomateService.UpdateEmployeeJobDataPromotion(existingLetter);
 
                 approvedLetter = lettersGenerationService.generateApprovedPromotionLetter(existingLetter);
-                //        TODO: uncomment in prod mode
-//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+
+                emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Congratulations!\nWe approved your promotion request. Please find more information in platform.\n\nBest Regards,\nHR Department");
             } else if (Objects.equals(promotionModel.getApproved(),"declined")){
                 approvedLetter = lettersGenerationService.generateRejectedPromotionLetter(existingLetter);
-                //        TODO: uncomment in prod mode
-//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Our Apologies!\nWe declined your promotion request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+
+                emailService.sendSimpleEmail(existingLetter.getEmail(), "Promotion Request", "Our Apologies!\nWe declined your promotion request. Please find more information in platform.\n\nBest Regards,\nHR Department");
             }
         }
 
