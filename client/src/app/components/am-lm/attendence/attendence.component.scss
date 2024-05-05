@@ -4,10 +4,23 @@
     .list-group-item{
       background-color: var(--color-surface-mixed-200);
 
-      p, i{
-        margin: 0 0 20px 0;
-        padding: 0;
-        color: var(--color-text-200);
+      .input-group{
+        .input-group-text{
+          background-color: var(--color-surface-mixed-200);
+          color: var(--color-text-200);
+        }
+        .form-control{
+          background-color: var(--color-surface-mixed-200);
+          color: var(--color-text-200);
+
+          &:focus{
+            background-color: var(--color-surface-mixed-200);
+          }
+
+          &::placeholder{
+            color: var(--color-text-200);
+          }
+        }
       }
 
       .attendance-list{
@@ -28,8 +41,15 @@
             background-color: transparent;
             color: var(--color-text-200);
 
-            p{
+            .text-btn{
               margin: 0;
+              cursor: pointer;
+              text-decoration: underline;
+              font-weight: 500;
+
+              &:hover{
+                color: var(--color-text-300);
+              }
             }
           }
         }
