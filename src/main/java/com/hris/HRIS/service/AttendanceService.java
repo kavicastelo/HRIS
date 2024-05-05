@@ -50,13 +50,25 @@ public class AttendanceService {
     }
 
     // Calculate late minutes
+
+    public AttendanceModel getAttendanceById(String id) {
+        // Implement method to fetch attendance by id from repository or database
+        return null; // Example implementation; replace with actual logic
+    }
     public long calculateLateMinutes(AttendanceModel attendanceModel, Date expectedInTime) {
-        long diffInMillies = attendanceModel.getRecordInTime().getTime() - expectedInTime.getTime();
-        return (long) TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        if (attendanceModel == null || attendanceModel.getRecordInTime() == null) {
+            return 0;
+        }
+        long diffInMillies = expectedInTime.getTime() - attendanceModel.getRecordInTime().getTime();
+        return Math.max(0, TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS));
     }
     // Calculate early departures
     public long calculateEarlyDepartureMinutes(AttendanceModel attendanceModel, Date expectedOutTime) {
+        if (attendanceModel == null || attendanceModel.getRecordOutTime() == null) {
+            return 0;
+        }
+
         long diffInMillies = expectedOutTime.getTime() - attendanceModel.getRecordOutTime().getTime();
-        return (long) TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        return Math.max(0, TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS));
     }
 }
