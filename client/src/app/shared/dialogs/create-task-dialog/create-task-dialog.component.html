@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-between px-2 my-2">
-    <h5>Initialize Onboarding Plan</h5>
+    <h5>{{receivedData.data.taskId?'Edit':'Initialize'}} Onboarding Plan</h5>
     <mat-icon (click)="closePopup()">close</mat-icon>
 </div>
 <hr>
@@ -36,5 +36,5 @@
 <hr>
 <div class="d-flex align-items-center justify-content-end px-2 my-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
-    <button class="btn" [disabled]="onboardinTaskForm.invalid" (click)="submitTask()">Create</button>
+    <button class="btn" [disabled]="onboardinTaskForm.invalid" (click)="receivedData.data.taskId?editTask():submitTask()">{{receivedData.data.taskId?'Edit':'Create'}}</button>
 </div>
