@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PayItemModel {
     @Id
     private String id;
+    private String organizationId;
     private String itemName;
     private String description;
     private String itemType;

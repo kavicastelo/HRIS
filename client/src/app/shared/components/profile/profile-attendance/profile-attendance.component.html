@@ -1,0 +1,79 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>My Attendance</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <form [formGroup]="filterForm">
+                <div class="d-md-flex align-items-center justify-content-between my-4">
+                    <div class="d-flex align-items-center">
+                        <p>Date Range:&nbsp;&nbsp;</p>
+                        <div>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate placeholder="Start date" formControlName="startDate">
+                                    <input matEndDate placeholder="End date" formControlName="endDate">
+                                </mat-date-range-input>
+                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
+                            <p>Filter by:&nbsp;&nbsp;</p>
+                        </div>
+                        <div>
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>FILTER</mat-label>
+                                <mat-select id="department" formControlName="filter">
+                                    <mat-option value="all">All</mat-option>
+                                    <mat-option value="all">All</mat-option>
+                                    <mat-option value="all">All</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="attendance-list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>In</th>
+                        <th>Out</th>
+                        <th>No. Hours</th>
+                        <th>More</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let a of attendanceStore">
+                        <td>{{a.recordInTime | dateFormat}}</td>
+                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red':'var(--color-text-200)'}">
+                            {{a.recordInTime | timeFormat}}
+                        </td>
+                        <td>{{a.recordOutTime | timeFormat}}</td>
+                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red' : 'var(--color-text-200)'}">
+                            {{calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-around">
+                                -
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>

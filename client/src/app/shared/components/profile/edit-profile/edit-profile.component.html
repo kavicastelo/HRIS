@@ -1,0 +1,141 @@
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="d-flex align-items-center justify-content-start">
+        <h5 class="py-2">Edit Profile</h5>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div *ngFor="let e of employee" class="py-1">
+        <form [formGroup]="editProfileForm">
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Avatar</div>
+            <div class="col-8 col-sm-9">
+              <div class="d-flex align-items-center">
+                <div class="profile-img me-2">
+                  <img id="empProfile" [src]="chosenPhoto==null?convertToSafeUrl(e.photo):onFileSelected()" alt="profile image">
+                </div>
+                <div class="profile-img-setting">
+                  <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .pjp</span>
+                  <div class="d-flex">
+                    <button class="btn-1 me-2 px-2" (click)="choosePhoto()"><mat-icon class="d-flex d-md-none">add</mat-icon><span class="d-none d-md-flex w-col">Upload Image</span></button>
+                    <button class="btn-3 px-2" (click)="removePhoto()"><mat-icon class="d-flex d-md-none">delete_sweep</mat-icon><span class="d-none d-md-flex">Remove</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Full Name</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <input type="text" class="form-control" formControlName="firstname" placeholder="First Name">
+                </div>
+                <div class="col-12 col-md-6">
+                  <input type="text" class="form-control" formControlName="lastname" placeholder="Last Name">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">DOB</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="dob" placeholder="Date of Birth">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">NIC</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="nic" placeholder="NIC">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Address</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Email</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="email" placeholder="Email">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Contact Phone</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="phone" placeholder="Phone">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Department</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="department" placeholder="Department">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Joined Date</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="doj" placeholder="Joined Date">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Status</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="status" placeholder="Status">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="d-flex align-items-center justify-content-end">
+        <button class="btn-3 px-3 py-2" (click)="navigateBetweenTabs('about')">Discard</button>
+        <button class="btn-1 px-3 py-2" [disabled]="editProfileForm.invalid" (click)="updateEmployee()">Save Changes</button>
+      </div>
+    </li>
+  </ul>
+</div>

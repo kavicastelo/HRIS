@@ -1,0 +1,54 @@
+.card{
+  .list-group{
+    background-color: var(--color-surface-mixed-200);
+    .list-group-item{
+      background-color: var(--color-surface-mixed-200);
+
+      .input-group{
+        .input-group-text{
+          background-color: var(--color-surface-mixed-200);
+          color: var(--color-text-200);
+        }
+        .form-control{
+          background-color: var(--color-surface-mixed-200);
+          color: var(--color-text-200);
+
+          &:focus{
+            background-color: var(--color-surface-mixed-200);
+          }
+
+          &::placeholder{
+            color: var(--color-text-200);
+          }
+        }
+      }
+
+      .employee-list{
+        overflow: auto;
+        max-height: calc(100vh - 200px);
+
+        .table{
+          margin-top: 15px;
+          border-radius: 5px;
+          overflow: hidden;
+          //background-color: transparent;
+
+          th{
+            background-color: var(--color-surface-mixed-300);
+            color: var(--color-text-200);
+          }
+
+          td{
+            background-color: transparent;
+            color: var(--color-text-200);
+
+            p{
+              margin: 0;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

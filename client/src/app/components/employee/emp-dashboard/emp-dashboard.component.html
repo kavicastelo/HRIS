@@ -1,0 +1,52 @@
+<div class="d-flex align-items-center justify-content-end">
+    <button class="btn-1 px-2" matTooltip="Request a letter" routerLink="/emp-register"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;New Employee</span></button>
+    <div class="input-group px-2" style="width: 200px">
+        <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+        <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)">
+    </div>
+</div>
+
+<div class="transfer-list">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th class="d-none d-sm-table-cell">Name</th>
+            <th class="d-none d-md-table-cell">Position</th>
+            <th class="d-none d-md-table-cell">NIC</th>
+            <th>Contact</th>
+            <th class="td-manage">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let e of filterEmployees()">
+            <td (click)="navigateToProfile(e.id)">
+                <div class="pro-pic">
+                    <img [src]="convertToSafeUrl(e.photo)" alt="{{e.name}}">
+                </div>
+            </td>
+            <td class="d-none d-sm-table-cell" (click)="navigateToProfile(e.id)">{{e.name}}</td>
+            <td class="d-none d-md-table-cell" (click)="navigateToProfile(e.id)">{{e.jobData.position}}</td>
+            <td class="d-none d-md-table-cell" (click)="navigateToProfile(e.id)">{{e.nic}}</td>
+            <td>
+                <div class="d-flex d-md-block">
+                    <p matTooltip="Click to send an email"><a href="mailto:{{e.email}}" class="d-flex"><mat-icon>alternate_email</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-flex">{{e.email}}</span></a></p>
+                    <p matTooltip="Click to get a call"><a href="tel:{{e.phone}}" class="d-flex"><mat-icon>call</mat-icon>&nbsp;&nbsp;<span class="d-none d-md-flex">{{e.phone}}</span></a></p>
+                    <p matTooltip="Click to send a message" class="d-flex d-md-none"><a routerLink="/feed/chat/{{e.id}}"><mat-icon>message</mat-icon></a></p>
+                </div>
+            </td>
+            <td class="td-manage">
+                <div class="d-flex align-items-center justify-content-end">
+                    <button class="btn-2" matTooltip="Edit" (click)="editEmployee(e.id)"><mat-icon>create</mat-icon></button>
+                    <button class="btn-2 mx-1" matTooltip="Delete" (click)="deleteEmployee(e.id)"><mat-icon>delete_forever</mat-icon></button>
+                    <button class="btn-2" matTooltip="More"><mat-icon>more_vert</mat-icon></button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="data-not-found" *ngIf="filterEmployees().length == 0">
+        <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+    </div>
+</div>
+

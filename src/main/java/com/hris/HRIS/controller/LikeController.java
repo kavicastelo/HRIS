@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.LikeModel;
 import com.hris.HRIS.repository.LikeRepository;
+import com.hris.HRIS.service.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,31 @@ public class LikeController {
     @Autowired
     LikeRepository likeRepository;
 
-    @PostMapping("/save")
+    @Autowired
+    MultimediaService multimediaService;
+
+    @PostMapping("/toggle")
     public ResponseEntity<ApiResponse> saveLike(@RequestBody LikeModel likeModel) {
-        likeRepository.save(likeModel);
+        Optional<LikeModel> existsLikeModel = likeRepository.findById(likeModel.getId());
+
+        if (existsLikeModel.isPresent()) {
+            likeRepository.deleteById(likeModel.getId());
+        } else {
+            likeRepository.save(likeModel);
+        }
+
+        String id = likeModel.getId();
+        String multimediaId = likeModel.getMultimediaId();
+
+        multimediaService.toggleLike(multimediaId, id);
 
         ApiResponse apiResponse = new ApiResponse("Like saved successfully");
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("get/all")
+    public List<LikeModel> getAllLikes() {
+        return likeRepository.findAll();
     }
 
     @GetMapping("/get/message/{id}")

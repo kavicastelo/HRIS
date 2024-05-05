@@ -1,0 +1,19 @@
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="d-flex align-items-center justify-content-start">
+        <h5 class="py-2">Activity Timeline</h5>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <ol class="style_1">
+        <li *ngFor="let activity of activityDataStore">
+          <small>{{activity.timestamp | timeAgo}}</small><br>
+          <span>{{activity.userId == userId?'You':activity.userName}} {{activity.action}} <a routerLink="/feed/post/{{activity.postId}}">{{activity.posterName}}'s Post</a></span><br>
+          <small>{{activity.postCaption}}</small>
+        </li>
+      </ol>
+    </li>
+    <li class="list-group-item">&nbsp;</li>
+  </ul>
+</div>

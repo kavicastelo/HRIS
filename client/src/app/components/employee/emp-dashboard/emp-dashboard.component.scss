@@ -1,0 +1,85 @@
+.btn-1{
+  color: white;
+  font-weight: 500;
+
+  span{
+    color: white;
+  }
+}
+
+.input-group{
+  .input-group-text{
+    background-color: var(--color-surface-mixed-200);
+    color: var(--color-text-200);
+  }
+  .form-control{
+    background-color: var(--color-surface-mixed-200);
+    color: var(--color-text-200);
+
+    &:focus{
+      background-color: var(--color-surface-mixed-200);
+    }
+
+    &::placeholder{
+      color: var(--color-text-200);
+    }
+  }
+}
+
+.transfer-list{
+  overflow: auto;
+
+  .table{
+    min-width: 350px;
+    margin-top: 15px;
+    background-color: transparent;
+
+    th, td{
+      background-color: transparent;
+      color: var(--color-text-200);
+
+      p, span, small{
+        margin: 0;
+        color: var(--color-text-200);
+      }
+      P{
+        font-weight: 450;
+
+        a{
+          text-decoration: none;
+          color: var(--color-primary-200);
+
+          span{
+            color: var(--color-primary-200);
+          }
+        }
+      }
+
+      .pro-pic{
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+
+        img{
+          width: 100%;
+        }
+      }
+    }
+    .td-manage{
+      text-align: end;
+    }
+  }
+}
+
+.btn-2{
+  width: fit-content;
+
+  &:nth-child(2){
+    background-color: #e74c3c;
+    color: white;
+
+    &:hover{
+      background-color: #c0392b;
+    }
+  }
+}

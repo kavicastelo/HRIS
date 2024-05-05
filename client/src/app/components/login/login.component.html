@@ -1,0 +1,45 @@
+<div class="container">
+  <div class=" logo_container" >
+    <img  src=""></div>
+  <div class="login_container">
+      <div class="text">
+          Welcome
+      </div>
+      <div class="text1">
+        Log in to Continue
+      </div>
+      <div  *ngIf="errorMassage" class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ errorMassage }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+        <form action="#" (ngSubmit)="login()">
+         
+            <div class="data">
+              
+              <label for="username">Username </label>
+              <input type="text" id="username" name="username" [(ngModel)]="email" placeholder="enter your email" >
+            </div>
+            <div class="data">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" [(ngModel)]="password"  placeholder="enter your password" required>
+              <div *ngIf="password.length < 8 "   class="error-message">Password must be at least 8 characters long
+              </div>
+            </div><br/>
+            <div class="forgot-password">
+              <a routerLink="/reset-password" >Forgot Password?</a>
+            </div>
+            <div class="box05">
+              <button class="button" type="submit" (click)="login()">LogIn</button>
+            </div>
+
+
+
+              <div class="text2">
+                Don't have an account?
+              </div>
+              <div class="signup-link">
+              <a href="#">Request Account</a>
+              </div>
+        </form>
+  </div>
+</div>

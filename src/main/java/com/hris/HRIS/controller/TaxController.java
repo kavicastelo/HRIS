@@ -19,15 +19,18 @@ public class TaxController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveTaxInfo(@RequestBody TaxModel taxModel) {
+        taxModel.setId(null);
         taxRepository.save(taxModel);
 
-        ApiResponse apiResponse = new ApiResponse("tax rates added successfully.");
+        ApiResponse apiResponse = new ApiResponse("Tax rates added successfully.");
         return ResponseEntity.ok(apiResponse);
     }
 
-    @GetMapping("/get/all")
-    public List<TaxModel> getAllTaxRates(){
-        return taxRepository.findAll();
+    @GetMapping("/get/all/organizationId/{organizationId}")
+    public List<TaxModel> getAllTaxRates(@PathVariable String organizationId){
+
+        return taxRepository.findAllByOrganizationId(organizationId);
+
     }
 
     @GetMapping("/get/id/{id}")
@@ -37,11 +40,11 @@ public class TaxController {
         return taxModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/get/salary/{amount}")
-    public ResponseEntity<ApiResponse> getTaxRateForSalary(@PathVariable double amount) {
-        List<TaxModel> taxRates  = getAllTaxRates();
+    @GetMapping("/get/salary/{amount}/{organizationId}")
+    public ResponseEntity<ApiResponse> getTaxRateForSalary(@PathVariable double amount, @PathVariable String organizationId) {
+        List<TaxModel> taxRates  = getAllTaxRates(organizationId);
         double taxRate = 0.0;
-        
+
         for(int i = 0; i < taxRates.size(); i++){
             if (amount >= taxRates.get(i).getMin() & amount <= taxRates.get(i).getMax()){
                 taxRate = taxRates.get(i).getRate();

@@ -1,19 +1,15 @@
-<div class="container" style="max-height: 100vh; overflow-y: auto">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Annual survey is now open Ten questions should be answered</h5>
-      <p class="card-text">Ten questions you should answer truthfully. Ten questions you should answer truthfully</p>
+<div class="container" style="max-height: calc(100vh - 70px); overflow-y: auto">
+  <div *ngFor="let bulletin of filterBulletins()">
+    <div class="card bulletin-card" [ngStyle]="getBackgroundStyle(bulletin)">
+      <div style="width: 100%; margin: 10px 0" *ngIf="bulletin.titleImage">
+        <img [src]="convertToSafeUrl(bulletin.titleImage)" alt="title image" class="title-image">
+      </div>
 
-      <button class="btn-2">Learn more</button>
-    </div>
-  </div>
+      <h2 class="title" [ngStyle]="{'color':bulletin.fontColor=='true'?'#000':bulletin.fontColor=='false'?'#fff':''}">{{bulletin.title}}</h2>
 
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Annual survey is now open Ten questions should be answered</h5>
-      <p class="card-text">Ten questions you should answer truthfully. Ten questions you should answer truthfully</p>
+      <p class="msg" [ngStyle]="{'color':bulletin.fontColor=='true'?'#4b6a86':bulletin.fontColor=='false'?'#bfbfbf':''}">{{bulletin.messages}}</p>
 
-      <button class="btn-2">Learn more</button>
+      <a href="{{bulletin.redirectUrl}}" target="_blank"><button class="btn-1 w-100">{{bulletin.action}}</button></a>
     </div>
   </div>
 
@@ -21,19 +17,16 @@
   <div class="card ln">
     <div class="card-body">
       <h5 class="card-title">Latest News</h5>
-      <div style="margin-bottom: 15px" class="latest-news">
-        <p class="card-text" style="margin-bottom: 0">Today’s news Ten questions you should answer truthfully</p>
-        <small class="text-body-secondary">2hr</small>
+      <div *ngFor="let news of filterNews() | truncateComments:maxNewsDisplayed">
+        <div class="latest-news mb-3" (click)="openURL(news.redirectUrl)">
+          <p class="card-text" style="margin-bottom: 0" [title]="news.description">{{news.description | truncate:100}}</p>
+          <small class="text-body-secondary">{{news.timestamp | timeAgo}}</small>
+        </div>
       </div>
-      <div style="margin-bottom: 15px" class="latest-news">
-        <p class="card-text" style="margin-bottom: 0">Today’s news Ten questions you should answer truthfully</p>
-        <small class="text-body-secondary">2hr</small>
+      <p class="view-all" *ngIf="filterNews().length>3" (click)="toggleNews()">... {{showAllNews?'Collapse':'View All'}} Latest News</p>
+      <div class="data-not-found" *ngIf="filterNews().length == 0">
+        <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
       </div>
-      <div style="margin-bottom: 15px" class="latest-news">
-        <p class="card-text" style="margin-bottom: 0">Today’s news Ten questions you should answer truthfully</p>
-        <p class="text-body-secondary">2hr</p>
-      </div>
-      <p class="view-all">... View All Latest News</p>
     </div>
   </div>
 </div>

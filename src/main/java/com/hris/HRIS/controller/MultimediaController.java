@@ -4,6 +4,8 @@ import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.MultimediaModel;
 import com.hris.HRIS.repository.MultimediaRepository;
 import com.hris.HRIS.service.PhotoService;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -26,23 +28,51 @@ public class MultimediaController {
     public final AtomicReference<String> receivedID = new AtomicReference<>();
 
     @PostMapping("/photos/add")
-    public String addPhoto(@RequestParam("title") String title,
-                           @RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<ApiResponse> addPhoto(@RequestParam("title") String title,
+                                                @RequestParam("file") MultipartFile file) throws IOException {
         String id = photoService.addMultimedia(title, file, "image/jpeg");
 
         receivedID.set(id);
 
-        return "redirect:/photos/" + id;
+        return ResponseEntity.ok(new ApiResponse(String.valueOf(id)));
     }
 
     @PostMapping("/videos/add")
-    public String addVideo(@RequestParam("title") String title,
+    public ResponseEntity<ApiResponse> addVideo(@RequestParam("title") String title,
                            @RequestParam("file") MultipartFile file) throws IOException {
         String id = photoService.addMultimedia(title, file, "video/mp4");
 
         receivedID.set(id);
 
-        return "redirect:/videos/" + id;
+        return ResponseEntity.ok(new ApiResponse(String.valueOf(id)));
+    }
+
+    @PostMapping("/save/data/text")
+    public ResponseEntity<ApiResponse> saveTextPost(@RequestBody MultimediaModel multimediaModel) {
+        multimediaRepository.save(multimediaModel);
+
+        ApiResponse response = new ApiResponse("post saved");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/save/data/shared")
+    public ResponseEntity<ApiResponse> saveSharedPost(@RequestBody MultimediaModel multimediaModel) {
+
+        MultimediaModel newModel = new MultimediaModel();
+        newModel.setUserId(multimediaModel.getUserId());
+        newModel.setChannelId(multimediaModel.getChannelId());
+        newModel.setFile(new Binary(BsonBinarySubType.BINARY, multimediaModel.getFile().getData()));
+        newModel.setTitle(multimediaModel.getTitle());
+        newModel.setTimestamp(multimediaModel.getTimestamp());
+        newModel.setContentType(multimediaModel.getContentType());
+        newModel.setSharedUserId(multimediaModel.getSharedUserId());
+        newModel.setSharedUserCaption(multimediaModel.getSharedUserCaption());
+        newModel.setSharedUserTimestamp(multimediaModel.getSharedUserTimestamp());
+
+        multimediaRepository.save(newModel);
+
+        ApiResponse response = new ApiResponse("Shared Post Saved Successfully");
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/save/data")
@@ -56,6 +86,9 @@ public class MultimediaController {
             existingMultimediaModel.setChatId(multimediaModel.getChatId());
             existingMultimediaModel.setStatus(multimediaModel.getStatus());
             existingMultimediaModel.setTimestamp(multimediaModel.getTimestamp());
+            existingMultimediaModel.setSharedUserId(multimediaModel.getSharedUserId());
+            existingMultimediaModel.setSharedUserCaption(multimediaModel.getSharedUserCaption());
+            existingMultimediaModel.setSharedUserTimestamp(multimediaModel.getSharedUserTimestamp());
 
             multimediaRepository.save(existingMultimediaModel);
 
@@ -63,6 +96,25 @@ public class MultimediaController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/update/caption/{id}")
+    public ResponseEntity<ApiResponse> updateCaptionById(@PathVariable String id, @RequestBody MultimediaModel multimediaModel){
+        Optional<MultimediaModel> optionalMultimediaModel = multimediaRepository.findById(id);
+
+        if (optionalMultimediaModel.isPresent()){
+            MultimediaModel existingMultimediaModel = optionalMultimediaModel.get();
+            if (multimediaModel.getSharedUserCaption() != null && multimediaModel.getTitle() == null){
+                existingMultimediaModel.setSharedUserCaption(multimediaModel.getSharedUserCaption());
+            }
+            else if (multimediaModel.getSharedUserCaption() == null && multimediaModel.getTitle() != null){
+                existingMultimediaModel.setTitle(multimediaModel.getTitle());
+            }
+
+            multimediaRepository.save(existingMultimediaModel);
+        }
+
+        return ResponseEntity.ok(new ApiResponse("Data updated successfully"));
     }
 
     @GetMapping("/get/{id}")

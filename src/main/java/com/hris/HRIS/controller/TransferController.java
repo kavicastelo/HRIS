@@ -1,7 +1,9 @@
 package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.model.EmployeeModel;
 import com.hris.HRIS.model.TransferModel;
+import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.TransferRepository;
 import com.hris.HRIS.service.EmailService;
 import com.hris.HRIS.service.LettersGenerationService;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +23,9 @@ public class TransferController {
 
     @Autowired
     TransferRepository transferRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Autowired
     LettersGenerationService lettersGenerationService;
@@ -32,10 +38,30 @@ public class TransferController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveLetter(@RequestBody TransferModel transferModel) {
-        transferRepository.save(transferModel);
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(transferModel.getUserId());
 
-        String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(transferModel);
-        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
+        TransferModel newTransferModel = new TransferModel();
+
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel employeeModel = optionalEmployeeModel.get();
+
+            newTransferModel.setUserId(employeeModel.getId());
+            newTransferModel.setOrganizationId(transferModel.getOrganizationId());
+            newTransferModel.setTimestamp(transferModel.getTimestamp());
+            newTransferModel.setName(employeeModel.getName());
+            newTransferModel.setEmail(employeeModel.getEmail());
+            newTransferModel.setPhone(employeeModel.getPhone());
+            newTransferModel.setJobData(employeeModel.getJobData());
+            newTransferModel.setPhoto(employeeModel.getPhoto());
+            newTransferModel.setReason(transferModel.getReason());
+            newTransferModel.setApproved("pending");
+
+            transferRepository.save(newTransferModel);
+        }
+
+        String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(newTransferModel);
+//        TODO: uncomment in prod mode
+//        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find more information in the platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -76,19 +102,34 @@ public class TransferController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PutMapping("/update/reason/{id}")
+    public ResponseEntity<ApiResponse> updateReason(@PathVariable String id, @RequestBody TransferModel transferModel) {
+        Optional<TransferModel> transferModelOptional = transferRepository.findById(id);
+
+        if (transferModelOptional.isPresent()){
+            TransferModel newTransfer = transferModelOptional.get();
+
+            newTransfer.setReason(transferModel.getReason());
+
+            transferRepository.save(newTransfer);
+        }
+
+        ApiResponse response = new ApiResponse("Reason updated");
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/update/id/{id}")
     public ResponseEntity<ApiResponse> updateLetter(@PathVariable String id, @RequestBody TransferModel transferModel) {
         Optional<TransferModel> transferModelOptional = transferRepository.findById(id);
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
+            existingLetter.setUserId(transferModel.getUserId());
+            existingLetter.setTimestamp(transferModel.getTimestamp());
             existingLetter.setName(transferModel.getName());
             existingLetter.setEmail(transferModel.getEmail());
             existingLetter.setPhone(transferModel.getPhone());
-            existingLetter.setAddress(transferModel.getAddress());
             existingLetter.setJobData(transferModel.getJobData());
-            existingLetter.setDate(transferModel.getDate());
-            existingLetter.setDoj(transferModel.getDoj());
             existingLetter.setPhoto(transferModel.getPhoto());
             existingLetter.setReason(transferModel.getReason());
             existingLetter.setApproved(transferModel.getApproved());
@@ -106,13 +147,12 @@ public class TransferController {
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
+            existingLetter.setUserId(transferModel.getUserId());
+            existingLetter.setTimestamp(transferModel.getTimestamp());
             existingLetter.setName(transferModel.getName());
             existingLetter.setEmail(transferModel.getEmail());
             existingLetter.setPhone(transferModel.getPhone());
-            existingLetter.setAddress(transferModel.getAddress());
             existingLetter.setJobData(transferModel.getJobData());
-            existingLetter.setDate(transferModel.getDate());
-            existingLetter.setDoj(transferModel.getDoj());
             existingLetter.setPhoto(transferModel.getPhoto());
             existingLetter.setReason(transferModel.getReason());
             existingLetter.setApproved(transferModel.getApproved());
@@ -124,20 +164,33 @@ public class TransferController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PutMapping("/approve/id/{id}")
-    public ResponseEntity<ApiResponse> approveLetter(@PathVariable String id) {
+    @PutMapping("/status/id/{id}")
+    public ResponseEntity<ApiResponse> approveLetter(@PathVariable String id, @RequestBody TransferModel transferModel) {
         Optional<TransferModel> transferModelOptional = transferRepository.findById(id);
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
-            existingLetter.setApproved(true);
+            existingLetter.setApproved(transferModel.getApproved());
+            if (transferModel.getJobData() != null){
+                existingLetter.setJobData(transferModel.getJobData());
+                transferRepository.save(existingLetter);
+            }
+            else {
+                transferRepository.save(existingLetter);
+            }
 
-            transferRepository.save(existingLetter);
+            if (Objects.equals(transferModel.getApproved(), "approved")){
+                systemAutomateService.UpdateEmployeeJobDataTransfer(existingLetter);
 
-            systemAutomateService.UpdateEmployeeJobDataTransfer(existingLetter);
+                approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
+                //        TODO: uncomment in prod mode
+//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Congratulations!\nWe approved your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+            } else if (Objects.equals(transferModel.getApproved(),"declined")){
+                approvedLetter = lettersGenerationService.generateRejectedTransferLetter(existingLetter);
+                //        TODO: uncomment in prod mode
+//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Our Apologies!\nWe declined your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+            }
 
-            approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
-            emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Congratulations!\nWe approved your transfer request. Please find your letter in platform.\n\nBest Regards,\nHR Department");
         }
 
         ApiResponse apiResponse = new ApiResponse(approvedLetter);
@@ -150,7 +203,7 @@ public class TransferController {
 
         if (transferModelOptional.isPresent()) {
             TransferModel existingLetter = transferModelOptional.get();
-            existingLetter.setApproved(true);
+            existingLetter.setApproved("");
 
             transferRepository.save(existingLetter);
 

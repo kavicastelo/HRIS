@@ -1,0 +1,38 @@
+<div class="d-flex align-items-center justify-content-end">
+    <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Create Plan</span></button>
+</div>
+
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-md-flex align-items-center justify-content-between">
+                <h5>Onboarding Task</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="transfer-list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Date Range</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let p of filterPlans()">
+                        <td>{{p.title}}</td>
+                        <td>{{p.description}}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {{p.startDate | dateFormat}}&nbsp;-&nbsp;{{p.taskDate | dateFormat}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>

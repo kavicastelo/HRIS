@@ -16,5 +16,6 @@ public class EmployeePayItemModel {
     private String id;
     private String payItemId;
     private String email;
-    private double amount;
+    private String type;
+    private double value;
 }

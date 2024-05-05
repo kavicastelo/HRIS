@@ -1,12 +1,110 @@
 <div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}">
 
-  <div class="w-100 main-body">
-    <button class="theme-btn" (click)="toggleTheme()" title="Theme">
-      <img [src]="themeService.isDarkMode()?'./assets/imgs/icons/light.png':'./assets/imgs/icons/dark.png'"
-           alt="theme" height="40" width="40">
-    </button>
+    <div class="w-100 main-body"  *ngFor="let e of employee">
+        <button class="theme-btn" (click)="toggleTheme()" title="Theme">
+            <img [src]="themeService.isDarkMode()?'https://img.icons8.com/clouds/100/sun.png':'https://img.icons8.com/bubbles/50/moon-satellite.png'"
+                 alt="theme" height="40" width="40">
+        </button>
 
-    <router-outlet></router-outlet>
-  </div>
+        <div class="heading w-100 sticky-top" *ngIf="employee[0].id != null">
+            <div class="d-flex align-items-center justify-content-center">
+                <button class="btn-1" (click)="drawer.toggle()">
+                    <mat-icon>reorder</mat-icon>
+                </button>
+                <!--    <img src="./assets/images/logo.png" alt="logo" routerLink="/home">-->
+                <span class="d-none d-md-flex">SPARKC Logo</span>
+            </div>
+            <div class="d-flex align-items-center justify-content-around">
+                <button class="d-flex d-sm-none btn-1" routerLink="/chat-list">
+                    <mat-icon>forum</mat-icon>
+                </button>
+                <button class="d-flex d-md-none btn-1" routerLink="/news">
+                    <mat-icon>chrome_reader_mode</mat-icon>
+                </button>
+                <button class="btn-1" (click)="navigateUrl('edit')">
+                    <mat-icon>settings</mat-icon>
+                </button>
+                <button class="btn-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                    <mat-icon class="position-relative" style="overflow: visible">
+                        notifications
+                        <span *ngIf="notifications.length !=0" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border-light rounded-circle">
+                        <span class="visually-hidden">New alerts</span></span>
+                    </mat-icon>
+                </button>
+                <div class="main-bar-profile-tag" *ngFor="let e of employee">
+                    <div class="d-flex align-items-center">
+                        <div class="profile-pic me-md-3" (click)="navigateUrl('about')">
+                            <img [src]="e.photo" alt="profile">
+                        </div>
+                        <div class="d-none d-md-flex flex-column justify-content-between profile-tag">
+                            <h6 (click)="navigateUrl('about')">{{e.name}}</h6>
+                            <span (click)="logOut()">Sign out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-100">
+            <mat-drawer-container class="drawer-container main-body">
+                <mat-drawer #drawer mode="over" class="drawer">
+                    <div class="profile-div">
+                        <div class="d-flex align-items-center">
+                            <div class="profile-pic">
+                                <img [src]="e.photo" alt="{{e.name}}">
+                            </div>
+                            <div>
+                                <h6>{{e.name}}</h6>
+                                <small>{{e.jobData.position}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="color: var(--color-primary-400)">
+                    <span>YOU</span>
+                    <ul>
+                        <li routerLink="/feed">Feed</li>
+                        <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">Requests</li>
+                        <li routerLink="/employee">Employee</li>
+                        <li routerLink="/bulletins">Bulletins & News</li>
+                        <li routerLink="/alm">Attendance & Leave</li>
+                        <li routerLink="/onboardin">Onboarding</li>
+                        <li routerLink="/login">Login</li>
+                    </ul>
+                </mat-drawer>
+                <mat-drawer-content [ngStyle]="{'max-height':employee[0].id == null?'100vh':'calc(100vh - 70px)'}" style="overflow-y: auto">
+                    <router-outlet></router-outlet>
+                </mat-drawer-content>
+            </mat-drawer-container>
+        </div>
+
+        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Notifications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="notifications" *ngFor="let n of notifications | truncateComments: maxNotificationsDisplayed">
+                    <div class="w-100 notification" [routerLink]=n.router.toString() (click)="readNotification(n.id)" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <p [ngStyle]="{'font-weight': n.status?'700':'normal'}">{{n.notification}}</p>
+                        <span><small>{{n.timestamp | timeAgo}}</small></span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn-2 me-1" [matTooltip]="n.status?'Mark as read':'Mark as unread'" (click)="readNotification(n.id)"><mat-icon>{{n.status?'visibility_off':'visibility'}}</mat-icon></button>
+                        <button class="btn-2" matTooltip="Delete" (click)="deleteNotification(n.id)"><mat-icon>delete_forever</mat-icon></button>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between see-more"
+                     *ngIf="notifications.length>5">
+                    <div class="flex-1 w-100">
+                        <hr>
+                    </div>
+                    <button class="see-more-btn" (click)="toggleNotifications()">
+                        Show {{ showAllNotifications ? 'less' : 'all' }}</button>
+                    <div class="flex-1 w-100">
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

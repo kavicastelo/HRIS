@@ -1,0 +1,72 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>New Pay Item</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="table-data-list">
+
+                <form [formGroup]="payitemDetailsFormGroup">
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Item Name</mat-label>
+                                <input matInput placeholder="e.g. Salary(Basic)" formControlName="itemNameCtrl" [(ngModel)]="payitemModel.itemName" required>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Description</mat-label>
+                                <input matInput placeholder="Description" formControlName="descriptionCtrl" [(ngModel)]="payitemModel.description">
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Item Type</mat-label>
+                                <mat-select matNativeControl placeholder="Item Type" formControlName="itemTypeCtrl" [(ngModel)]="payitemModel.itemType" required>
+                                    <mat-option value="Salary">Salary</mat-option>
+                                    <mat-option value="Addition">Addition</mat-option>
+                                    <mat-option value="Deletion">Deletion</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Payment Type</mat-label>
+                                <mat-select matNativeControl placeholder="Payment Type" formControlName="paymentTypeCtrl" [(ngModel)]="payitemModel.paymentType" required>
+                                    <mat-option value="Fixed">Fixed</mat-option>
+                                    <mat-option value="Variable">Variable</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                
+                        <div class="col-12 col-md-6">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>Status</mat-label>
+                                <mat-select matNativeControl placeholder="Status" formControlName="statusCtrl" [(ngModel)]="payitemModel.status" required>
+                                    <mat-option value="Available">Available</mat-option>
+                                    <mat-option value="Unavailable">Unavailable</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                
+                        <div class="col-12 col-md-6"></div>
+                        <div class="col-12 col-md-6">
+                            <button class="btn-1 my-4 w-100"  (click)="addNewPayitem()" [disabled]="!payitemDetailsFormGroup.valid">{{ finalizeBtnText }}</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+  
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+  </div>
+  

@@ -1,0 +1,154 @@
+.profile-pic {
+  margin-right: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: var(--color-surface-mixed-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
+}
+
+.commentAreaLink{
+  text-decoration: none;
+}
+
+.form-floating {
+  width: 100%;
+
+  .form-control {
+    height: 80px;
+    width: 100%;
+    background-color: var(--color-surface-mixed-200);
+    color: var(--color-text-200);
+
+    &::placeholder {
+      color: var(--color-text-500);
+    }
+  }
+
+  label {
+    color: var(--color-text-200);
+
+    &::after {
+      color: var(--color-text-300);
+      background: transparent;
+    }
+  }
+}
+
+.author-wrapper {
+
+  .author-name {
+    h6, p {
+      margin: 0;
+      padding: 0;
+    }
+
+    p {
+      font-size: 12px;
+    }
+
+    h6 {
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+}
+
+.post-description {
+  font-size: 13px;
+  color: var(--color-text-300);
+}
+
+.shared-post{
+  border-radius: 20px;
+  border: 1px solid var(--color-surface-mixed-300);
+  width: 95%;
+  padding: 10px;
+}
+
+
+.posted-content {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: var(--color-surface-mixed-200);
+  object-fit: cover;
+  cursor: pointer;
+  object-position: center;
+
+  img {
+    width: 100%;
+  }
+}
+
+.post-reaction {
+  .clickable-span {
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--color-text-300);
+    transition: color 0.3s ease;
+  }
+
+  &:hover {
+    .clickable-span {
+      color: var(--color-primary-200);
+    }
+  }
+}
+
+.comment{
+  color: var(--color-text-300);
+  font-size: 12px;
+  transition: color 0.3s ease;
+  background-color: var(--color-surface-mixed-300);
+  padding: 8px;
+  border-radius: 5px;
+
+  h6, p{
+    margin: 0;
+    padding: 0;
+  }
+
+  h6{
+    cursor: pointer;
+  }
+
+  .mat-icon{
+    width: 15px;
+    height: 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
+.btn-1{
+  &:disabled{
+    color: var(--color-text-300);
+    background-color: var(--color-surface-mixed-600);
+  }
+}
+
+.see-more{
+  hr{
+    color: var(--color-surface-mixed-600);
+  }
+  .see-more-btn{
+    margin: 0 20px;
+    border: none;
+    outline: none;
+    white-space: nowrap;
+    background: transparent;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-text-500);
+  }
+}

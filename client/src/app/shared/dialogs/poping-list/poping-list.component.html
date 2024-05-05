@@ -1,0 +1,14 @@
+<div [ngClass]="{'theme-light': !isDarkMode, 'theme-dark': isDarkMode}">
+  <div class="main-body" style="min-height:fit-content; min-width: 300px; max-height: 350px">
+    <mat-dialog-content class="mat-typography" style="max-height: 70%; overflow-y: auto; overflow-x: hidden">
+      <div *ngFor="let e of data.data">
+        <div class="d-flex align-items-center my-2 user" (click)="navigateToProfile(e.id)">
+          <div class="profile-image">
+            <img [src]="convertToSafeUrl(e.photo)" alt="profile image">
+          </div>
+          <p>{{e.name}}</p>
+        </div>
+      </div>
+    </mat-dialog-content>
+  </div>
+</div>

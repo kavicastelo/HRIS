@@ -1,0 +1,38 @@
+<div class="d-flex align-items-center justify-content-end">
+    <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Create Task</span></button>
+</div>
+
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-md-flex align-items-center justify-content-between">
+                <h5>Onboarding Task</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="transfer-list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Plan Title</th>
+                        <th>Task Description</th>
+                        <th>Task Date Range</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let t of filterTasks()">
+                        <td>{{filterPlan(t.onBoardingPlanId)}}</td>
+                        <td>{{t.description}}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {{t.startdate | dateFormat}}&nbsp;-&nbsp;{{t.taskdate | dateFormat}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{receivedData.title}}</h1>
+<div mat-dialog-content *ngFor="let c of receivedData.data">
+    <p>{{receivedData.msg}}</p>
+    <mat-form-field class="form-control">
+        <mat-label>Select Channel</mat-label>
+        <mat-select [(value)]="selectedChannel">
+            <mat-option [value]="c.id">{{c.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="d-flex mt-2 align-items-center justify-content-end">
+        <button mat-raised-button color="primary" class="btn-1 my-2" (click)="selectChannel()">OK</button>
+    </div>
+</div>

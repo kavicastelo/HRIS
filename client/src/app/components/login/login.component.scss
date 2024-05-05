@@ -1,0 +1,172 @@
+/* Mobile-first approach */
+.container {
+  max-width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+   background-image: url(https://s3-alpha-sig.figma.com/img/3228/bc7e/3c8ac5f4b8d64f0b3e68af0c63e3d909?Expires=1715558400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=UkCmrF~ak-OWMYSEON4TtZauUH8gJ1vJH1wXvkT8ok3t~~MF1yOeStQhI~WtGmAd5WKy1a3NemG8zpagSX-I-yPh2s5Wdl4F5yY-MdwM52mhG-w3dPzP77gwXYjBXorn~mMKF1-YT0xiKQIkRm4KQvXHK8dfS4sjXLCl0z3QAsWGKfkgt0MSGWU9lkUlaf1CG1UCJLiwspWYhHThl9GrddT925Z1HOg3~GUb7AHoXeviPoQzkFAC-sT54S-YNlc4iVdYYNNNLkLJpVH8uwgJZ0~otmc9OsFWbv2PLplmRg7E3Cm4nGHlL-aEBl8HV97AXGRNhjD0JY1M~tMch5mo~g__);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login_container {
+  margin: 0 20px;
+  padding: 20px 8%;
+  border-radius: 20px;
+  background-color: var(--color-surface-mixed-200);
+  opacity: 0.9;
+  font-family: "Roboto", sans-serif;
+  font-size: clamp( 14px, 1.6vw, 16px);
+  color: var(--color-text-200);
+  overflow-y: auto;
+
+  .text {
+    font-size: clamp( 20px, 5vw, 26px);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .text1, .text2 {
+    font-size: clamp( 14px, 2vw, 20px);
+    text-align: center;
+  }
+
+  .text2 {
+    font-size: clamp( 14px, 1.6vw, 16px);
+  }
+
+  form{
+    .data {
+      height: 45px;
+      width: 100%;
+      margin: 30px 0;
+
+      label {
+        font-size: clamp( 12px, 1.5vw, 16px);
+      }
+
+      input {
+        height: 100%;
+        width: 100%;
+        padding-left: 10px;
+        font-size: clamp( 14px, 1.6vw, 18px);
+        border: 1px solid var(--color-surface-mixed-600);
+        border-radius: 10px;
+        background-color: var(--color-surface-mixed-100);
+        color: var(--color-text-100); 
+
+        &:focus{
+          outline: var(--color-primary-200) solid;
+        }
+      }
+      
+
+      .error-message {
+        font-size: clamp( 14px, 2vw, 16px);
+      }
+    }
+
+    .forgot-password {
+      text-align: right;
+
+      a {
+        color: var(--color-primary-300);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .box05 button {
+      width: 100%;
+      height: 40px;
+      border: none;
+      border-radius: 20px;
+      outline: none;
+      font-size: clamp( 14px, 2vw, 20px);
+      font-weight: bold;
+      margin: 20px 0;
+      background-color: var(--color-primary-200);
+      cursor: pointer;
+      transition: background-color 0.5s ease;
+      color: aliceblue;
+    }
+
+    .box05 button:hover {
+      background-color: var(--color-primary-100);
+      color: aliceblue;
+    }
+
+    .signup-link {
+      text-align: center;
+
+      a {
+        color: var(--color-primary-200);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+img {
+  width: 100%;
+  max-width: clamp(200px, 45vw , 500px);
+  height: auto;
+  margin-bottom: 20px;
+}
+
+
+br{
+  box-sizing: border-box;
+  padding: 40px;
+}
+
+/* Desktop responsiveness */
+@media only screen and (min-width: 768px) {
+  .container {
+    min-height: calc(100vh - 70px);
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo_container{
+    margin: 20px;
+    width: 400px;
+    height: auto;
+
+  img {
+    max-width: clamp(200px, 45vw , 400px);
+    height: auto;
+    box-sizing: border-box;
+    margin: 0 20px;
+  }}
+
+  .login_container {
+    margin: 0 20px;
+    padding: 20px 40px;
+    width: 400px;
+
+    .text {
+      font-size: clamp( 20px, 5vw, 36px);
+    }
+    .text1, .text2 {
+      font-size: clamp( 14px, 2vw, 20px);
+    }
+
+    form .data {
+      margin: 40px 0;
+    }
+
+    .box05 button {
+      margin: 30px 0;
+    }
+  }
+}

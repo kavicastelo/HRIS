@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.ShareModel;
 import com.hris.HRIS.repository.ShareRepository;
+import com.hris.HRIS.service.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,14 @@ public class ShareController {
     @Autowired
     ShareRepository shareRepository;
 
+    @Autowired
+    MultimediaService multimediaService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveShare(@RequestBody ShareModel shareModel) {
-        shareRepository.save(shareModel);
+        ShareModel savedShareModel = shareRepository.save(shareModel);
+
+        multimediaService.saveShare(savedShareModel.getMultimediaId(), savedShareModel.getId());
 
         ApiResponse apiResponse = new ApiResponse("Share saved successfully");
         return ResponseEntity.ok(apiResponse);
@@ -55,7 +61,14 @@ public class ShareController {
 
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteShareById(@PathVariable String id) {
-        shareRepository.deleteById(id);
+        Optional<ShareModel> shareModelOptional = shareRepository.findById(id);
+        if (shareModelOptional.isPresent()) {
+            ShareModel existingShareInfo = shareModelOptional.get();
+
+            multimediaService.deleteShare(existingShareInfo.getMultimediaId(), existingShareInfo.getId());
+
+            shareRepository.deleteById(id);
+        }
 
         ApiResponse apiResponse = new ApiResponse("Share deleted successfully");
         return ResponseEntity.ok(apiResponse);

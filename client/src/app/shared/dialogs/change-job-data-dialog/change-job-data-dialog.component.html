@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{receivedData.title}}</h1>
+<div mat-dialog-content>
+    <p>{{receivedData.msg}}</p>
+    <form [formGroup]="textForm">
+        <label for="text1">Position</label>
+        <input id="text1" type="text" formControlName="text1" class="form-control">
+        <label for="text2">Department</label>
+        <input id="text2" type="text" formControlName="text2" class="form-control">
+        <label for="text3">Salary</label>
+        <input id="text3" type="text" formControlName="text3" class="form-control">
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button (click)="closePopup()" mat-raised-button color="secondary">Cancel</button>
+    <button (click)="confirm()" [disabled]="textForm.invalid" mat-raised-button color="primary">Confirm</button>
+</div>

@@ -1,62 +1,49 @@
-<div class="container">
-  <div class="row card">
-    <div class="col" style="position: relative">
-      <div class="w-100 d-flex flex-column align-items-center justify-content-center profile-cover">
-        <img src="./assets/imgs/shared/cover.jpg" alt="profile cover">
-      </div>
+<div class="row card mt-0">
+  <div class="col" style="position: relative">
+    <div class="w-100 d-flex flex-column align-items-center justify-content-center profile-cover">
+      <img [src]="selectedCoverImage" alt="profile cover">
+    </div>
 
-      <div class="d-md-flex w-100">
+    <div class="container">
+      <div *ngFor="let e of employee">
         <div class="profile-img">
-          <img src="./assets/imgs/shared/profile-male.png" alt="profile image">
+          <img [src]="convertToSafeUrl(e.photo)" alt="profile image">
         </div>
 
-        <div class="profile-name" *ngFor="let e of employeeDataStore">
-          <h1>{{e.name}}</h1>
-          <h5>{{e.jobData.department}}</h5>
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="profile-name">
+            <h3>{{e.name}}</h3>
+            <h6>{{e.jobData.position}}</h6>
+          </div>
+          <button class="btn-1 px-3 py-2" (click)="userId!=loggedUserId?navigateChat():logOut()" [matTooltip]="userId!=loggedUserId?'Open Chat':'Sign out from the application'"><mat-icon>{{userId!=loggedUserId?'sms':'exit_to_app'}}</mat-icon><span class="d-none d-md-flex" style="color: white">&nbsp;&nbsp;{{userId!=loggedUserId?'Message':'Sign Out'}}</span></button>
         </div>
+
       </div>
     </div>
+
   </div>
+</div>
 
-  <hr>
+<div class="container">
 
-  <div class="row" *ngFor="let e of employeeDataStore">
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card-2">
-        <h4>Info</h4>
-        <ul>
-          <li><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;{{e.name}}</li>
-          <li><i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;&nbsp;{{e.email}}</li>
-          <li><i class="fa fa-phone" aria-hidden="true"></i> &nbsp;&nbsp;{{e.phone}}</li>
-          <li><i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;&nbsp;{{e.address}}</li>
-          <li><i class="fa fa-building" aria-hidden="true"></i> &nbsp;&nbsp;Organization</li>
-          <li><i class="fa fa-compass" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.department}}</li>
-          <li><i class="fa fa-briefcase" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.position}}</li>
-          <li><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;&nbsp;{{e.jobData.salary}}</li>
-          <li><i class="fa fa-genderless" aria-hidden="true"></i> &nbsp;&nbsp;{{e.gender}}</li>
-          <li><i class="fa fa-birthday-cake" aria-hidden="true"></i> &nbsp;&nbsp;{{e.dob}}</li>
-          <li><span>Joined on: {{e.jobData.doj}}</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-8">
-      <div class="card-2">
-        <div class="d-flex align-items-center justify-content-around">
-          <div class="posting-item" (click)="openVideoDialog()">
-            <span><i class="fa fa-file-video-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Video</span>
-          </div>
-          <div class="vr"></div>
-          <div class="posting-item">
-            <span><i class="fa fa-picture-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Image</span>
-          </div>
-          <div class="d-none d-lg-flex" style="width: 100%">
-            <div class="vr"></div>
-            <div class="posting-item">
-              <span><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Text</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ul class="nav nav-pills my-3">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('about')" [class.active]="isActive('about')"><mat-icon>face</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Overview</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="navigateBetweenTabs('posts')" [class.active]="isActive('posts')"><mat-icon>favorite_border</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Posts</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="navigateBetweenTabs('activity')" [class.active]="isActive('activity')"><mat-icon>timeline</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Activity</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="navigateBetweenTabs('attendance')" [class.active]="isActive('attendance')"><mat-icon>stars</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Attendance</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" aria-disabled="true">menu 5</a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
+
 </div>
