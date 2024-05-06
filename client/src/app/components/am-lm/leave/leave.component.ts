@@ -28,8 +28,6 @@ export class LeaveComponent implements OnInit{
   leaveTypes:any = ["ALL", "ANNUAL", "SICK", "MATERNITY", "PATERNITY", "UNPAID"]
 
   filterForm = new FormGroup({
-    startDate: new FormControl(null),
-    endDate: new FormControl(null),
     filter: new FormControl(null)
   })
 

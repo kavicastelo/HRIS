@@ -10,6 +10,7 @@ import {AuthService} from "../../../services/auth.service";
 import {RequestLeaveComponent} from "../../../shared/dialogs/request-leave/request-leave.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {LeaveService} from "../../../services/leave.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-leave-request',
@@ -25,8 +26,6 @@ export class LeaveRequestComponent implements OnInit{
   }
 
   filterForm = new FormGroup({
-    startDate: new FormControl(null),
-    endDate: new FormControl(null),
     filter: new FormControl(null)
   })
   leaveTypes:any = ["ALL", "ANNUAL", "SICK", "MATERNITY", "PATERNITY", "UNPAID"]
@@ -35,7 +34,7 @@ export class LeaveRequestComponent implements OnInit{
   leaveDataStore:any[]=[]
   filteredLeaves:any[]=[]
 
-  constructor(private dialog: MatDialog, private employeesService: EmployeesService, private cookieService: AuthService, private leaveService: LeaveService) {
+  constructor(private dialog: MatDialog, private employeesService: EmployeesService, private cookieService: AuthService, private leaveService: LeaveService, private snackBar: MatSnackBar) {
   }
   async ngOnInit() {
     await this.loadAllUsers().subscribe(()=>{
@@ -58,6 +57,18 @@ export class LeaveRequestComponent implements OnInit{
 
   requestLeave(){
     const data = {
+      userId: this.employee.id,
+      employee: this.employee,
+      organizationId: this.employee.organizationId
+    }
+
+    this.toggleDialog('', '', data, RequestLeaveComponent)
+  }
+
+  editLeave(leave:any){
+    const data = {
+      leaveId: leave.id,
+      leave: leave,
       userId: this.employee.id,
       employee: this.employee,
       organizationId: this.employee.organizationId
@@ -114,5 +125,9 @@ export class LeaveRequestComponent implements OnInit{
     })
 
     return this.filteredLeaves;
+  }
+
+  message(msg: string) {
+    this.snackBar.open(msg, "OK", {duration:3000})
   }
 }
