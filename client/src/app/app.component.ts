@@ -9,6 +9,7 @@ import {NotificationsService} from "./services/notifications.service";
 import {Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {AuthService} from "./services/auth.service";
+import {OrganizationService} from "./services/organization.service";
 
 @Component({
     selector: 'app-root',
@@ -20,6 +21,10 @@ export class AppComponent implements OnInit {
     employeeDataStore: any;
     employee: any[] = [];
     userId: any;
+    organizationId:any
+    organizationName:any
+
+    organization:any
 
     showAllNotifications: boolean = false;
     maxNotificationsDisplayed: number = 5;
@@ -31,6 +36,7 @@ export class AppComponent implements OnInit {
                 private webSocketService: WebSocketService,
                 public multimediaService: MultimediaService,
                 public notificationsService: NotificationsService,
+                private organizationService: OrganizationService,
                 public router: Router,
                 private cookieService: AuthService,
                 private employeeService: EmployeesService, private logger: NGXLogger) {
@@ -40,6 +46,11 @@ export class AppComponent implements OnInit {
     async ngOnInit(): Promise<any> {
         this.loadAllUsers();
         this.userId = this.cookieService.userID().toString();
+        this.organizationId = this.cookieService.organization().toString();
+
+        await this.getOrganization().subscribe(()=>{
+            this.organizationName = this.organization.organizationName + " HR System"
+        });
 
         if (this.cookieService.isExists()) {
             // Establish WebSocket connection
@@ -97,6 +108,12 @@ export class AppComponent implements OnInit {
             (error) => {
                 console.error(error);
             }
+        );
+    }
+
+    getOrganization(): Observable<any> {
+        return this.organizationService.getOrganizationById(this.organizationId).pipe(
+            tap(data => this.organization = data)
         );
     }
 
