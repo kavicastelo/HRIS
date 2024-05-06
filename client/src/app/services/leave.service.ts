@@ -18,6 +18,6 @@ export class LeaveService {
   }
 
   public getAllLeaves(): Observable<any> {
-    return this.http.get(this.baseUrl+'leave/all');
+    return this.http.get(this.baseUrl+'leave/get/all');
   }
 }

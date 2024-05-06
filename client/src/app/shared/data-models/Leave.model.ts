@@ -1,6 +1,6 @@
 export interface LeaveModel {
     id?:any,
-    organizationID?:any,
+    organizationId?:any,
     name?:any,
     leaveType?:any,
     reason?:any,

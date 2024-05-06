@@ -57,11 +57,11 @@ import {ChangeJobDataDialogComponent} from './shared/dialogs/change-job-data-dia
 import {DateFormatPipe} from "./DTO/DateFormatPipe";
 import {BulletinsComponent} from './components/bulletins/bulletins.component';
 import {_MatSlideToggleRequiredValidatorModule, MatSlideToggleModule} from "@angular/material/slide-toggle";
-import { PayrollComponent } from "./components/payroll/payroll.component";
-import { AddpayiteamsComponent } from './components/payroll/addpayiteams/addpayiteams.component';
-import { PayrollnavbarComponent } from './components/payroll/payrollnavbar/payrollnavbar.component';
+import {PayrollComponent} from "./components/payroll/payroll.component";
+import {AddpayiteamsComponent} from './components/payroll/addpayiteams/addpayiteams.component';
+import {PayrollnavbarComponent} from './components/payroll/payrollnavbar/payrollnavbar.component';
 import {EmployeeUpdateComponent} from './shared/components/employee-update/employee-update.component';
-import { OnboardingHandleComponent } from './components/onboarding-handle/onboarding-handle.component';
+import {OnboardingHandleComponent} from './components/onboarding-handle/onboarding-handle.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {AmLmComponent} from './components/am-lm/am-lm.component';
 import {AttendenceComponent} from './components/am-lm/attendence/attendence.component';
@@ -70,23 +70,24 @@ import {TimeFormatPipe} from "./DTO/TimeFormatPipe";
 import {HourMinuteFormatPipe} from "./DTO/HourMinuteFormatPipe";
 import {LeaveRequestComponent} from './components/requests/leave-request/leave-request.component';
 import {RequestLeaveComponent} from './shared/dialogs/request-leave/request-leave.component';
-import { EmployeePaymentsComponent } from './components/payroll/employee-payments/employee-payments/employee-payments.component';
-import { ViewEmployeePayitemsComponent } from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
-import { PayitemsComponent } from './components/payroll/payitems/payitems/payitems.component';
-import { AssignPayitemComponent } from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
+import {EmployeePaymentsComponent} from './components/payroll/employee-payments/employee-payments/employee-payments.component';
+import {ViewEmployeePayitemsComponent} from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
+import {PayitemsComponent} from './components/payroll/payitems/payitems/payitems.component';
+import {AssignPayitemComponent} from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
 import {ProfileAttendanceComponent} from './shared/components/profile/profile-attendance/profile-attendance.component';
 import {AssignTaskComponent} from './components/onboarding-handle/assign-task/assign-task.component';
 import {CreatePlanComponent} from './components/onboarding-handle/create-plan/create-plan.component';
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
-import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
-import { MatTableModule } from '@angular/material/table';
-import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
+import {PayrollReportsComponent} from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
+import {MatTableModule} from '@angular/material/table';
+import {ViewPayrollReportsComponent} from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 import {ShiftComponent} from './components/am-lm/shift/shift.component';
 import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/create-shift-dialog.component';
-import { MarkAttendanceComponent } from './components/am-lm/mark-attendance/mark-attendance.component';
-import { EditAttendanceComponent } from './shared/dialogs/edit-attendance/edit-attendance.component';
+import {MarkAttendanceComponent} from './components/am-lm/mark-attendance/mark-attendance.component';
+import {EditAttendanceComponent} from './shared/dialogs/edit-attendance/edit-attendance.component';
+import {ApproveLeaveComponent} from './shared/dialogs/approve-leave/approve-leave.component';
 
 @NgModule({
     declarations: [
@@ -157,7 +158,8 @@ import { EditAttendanceComponent } from './shared/dialogs/edit-attendance/edit-a
         ShiftComponent,
         CreateShiftDialogComponent,
         MarkAttendanceComponent,
-        EditAttendanceComponent
+        EditAttendanceComponent,
+        ApproveLeaveComponent
     ],
     imports: [
         BrowserModule,
