@@ -7,22 +7,7 @@
         </li>
         <li class="list-group-item">
             <form [formGroup]="filterForm">
-            <div class="d-md-flex align-items-center justify-content-between my-4">
-                <div class="d-flex align-items-center">
-                    <p>Date Range:&nbsp;&nbsp;</p>
-                    <div>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate placeholder="Start date" formControlName="startDate">
-                                <input matEndDate placeholder="End date" formControlName="endDate">
-                            </mat-date-range-input>
-                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-                    </div>
-                </div>
+            <div class="d-md-flex align-items-center justify-content-end my-1">
                 <div class="d-flex align-items-center">
                     <div class="d-flex align-items-center">
                         <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;

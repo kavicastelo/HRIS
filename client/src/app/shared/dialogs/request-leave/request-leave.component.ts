@@ -33,10 +33,21 @@ export class RequestLeaveComponent implements OnInit{
 
   ngOnInit() {
     this.receivedData = this.data;
+
+    if (this.receivedData.data.leaveId != null){
+      this.patchValue()
+    }
   }
 
   closePopup(){
     this.dialog.closeAll()
+  }
+
+  patchValue(){
+    this.leaveForm.get('leaveType')?.setValue(this.receivedData.data.leave.leaveType)
+    this.leaveForm.get('reason')?.setValue(this.receivedData.data.leave.reason)
+    this.leaveForm.get('startDate')?.setValue(this.receivedData.data.leave.leaveStartDate)
+    this.leaveForm.get('endDate')?.setValue(this.receivedData.data.leave.leaveEndDate)
   }
 
   submitLeave() {
@@ -52,6 +63,26 @@ export class RequestLeaveComponent implements OnInit{
       }).subscribe(data=>{
         this.closePopup()
         this.snackBar.open("Leave requested Successfully!", "OK", {duration:3000})
+      }, error => {
+        this.snackBar.open("Somethings wrong! Try again later", "OK", {duration:3000})
+      })
+    }
+  }
+
+  editLeave() {
+    if (this.leaveForm.valid){
+      this.leaveService.saveLeave({
+        id: this.receivedData.data.leave.id,
+        organizationId:this.receivedData.data.organizationId,
+        name:this.receivedData.data.employee.name,
+        leaveType:this.leaveForm.value.leaveType,
+        reason:this.leaveForm.value.reason,
+        leaveStartDate:this.leaveForm.value.startDate,
+        leaveEndDate:this.leaveForm.value.endDate,
+        approved: "pending"
+      }).subscribe(data=>{
+        this.closePopup()
+        this.snackBar.open("Leave requested Updated!", "OK", {duration:3000})
       }, error => {
         this.snackBar.open("Somethings wrong! Try again later", "OK", {duration:3000})
       })
