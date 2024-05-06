@@ -18,12 +18,12 @@ public class LeaveModel {
     @Id
     private String id;
     private String organizationId;
-    private String employeeName;
-    private String leaveReason;
+    private String name;
+    private String reason;
     private LeaveType leaveType;
-    private Date leaveStartDate;
-    private Date leaveEndDate;
-    private String leaveApproverName;
-    private boolean approved;
+    private String leaveStartDate;
+    private String leaveEndDate;
+    private String approved;
+    private String approver;
     private double leaveBalance;
 }

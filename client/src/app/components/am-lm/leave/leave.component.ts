@@ -23,6 +23,8 @@ export class LeaveComponent implements OnInit{
   leaveDataStore:any[] = [];
   filteredLeaves:any[] = [];
 
+  leaveTypes:any = ["ALL", "ANNUAL", "SICK", "MATERNITY", "PATERNITY", "UNPAID"]
+
   filterForm = new FormGroup({
     startDate: new FormControl(null),
     endDate: new FormControl(null),
@@ -56,9 +58,26 @@ export class LeaveComponent implements OnInit{
   }
 
   filterLeaves(): any[]{
-    this.filteredLeaves = this.leaveDataStore.filter((data: any) => data.organizationId === this.employee.organizationId)
+    if (!this.filterForm.value.filter || this.filterForm.value.filter == "ALL")
+      this.filteredLeaves = this.leaveDataStore.filter((data: any) => data.organizationId === this.employee.organizationId)
+
     this.filteredLeaves.sort((a:any, b:any) => {
-      return new Date(b.jobData.doj).getTime() - new Date(a.jobData.doj).getTime()
+      return new Date(b.leaveStartDate).getTime() - new Date(a.leaveStartDate).getTime()
+    })
+
+    return this.filteredLeaves;
+  }
+
+  selectFilter(val:any):any[] {
+    if (val){
+      this.filteredLeaves = this.leaveDataStore.filter((data: any) => data.organizationId === this.employee.organizationId && data.leaveType == val)
+    }
+    else {
+      this.filteredLeaves = this.leaveDataStore.filter((data: any) => data.organizationId === this.employee.organizationId)
+    }
+
+    this.filteredLeaves.sort((a:any, b:any) => {
+      return new Date(b.leaveStartDate).getTime() - new Date(a.leaveStartDate).getTime()
     })
 
     return this.filteredLeaves;

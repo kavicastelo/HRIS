@@ -26,7 +26,7 @@ public class LeaveService {
             // Update the existing record with the new data
 
             existingLeaveModel.setLeaveType(updateLeaveModel.getLeaveType());
-            existingLeaveModel.setLeaveReason(updateLeaveModel.getLeaveReason());
+            existingLeaveModel.setReason(updateLeaveModel.getReason());
             existingLeaveModel.setLeaveStartDate(updateLeaveModel.getLeaveStartDate());
             existingLeaveModel.setLeaveEndDate(updateLeaveModel.getLeaveEndDate());
             // Update other fields as needed

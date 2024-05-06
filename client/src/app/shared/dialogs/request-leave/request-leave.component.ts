@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {MultimediaService} from "../../../services/multimedia.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LeaveService} from "../../../services/leave.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-request-leave',
@@ -25,6 +26,7 @@ export class RequestLeaveComponent implements OnInit{
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private leaveService: LeaveService,
+              private snackBar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<RequestLeaveComponent>) {
   }
@@ -40,16 +42,18 @@ export class RequestLeaveComponent implements OnInit{
   submitLeave() {
     if (this.leaveForm.valid){
       this.leaveService.saveLeave({
-        organizationID:this.receivedData.data.organizationID,
-        name:this.receivedData.data.name,
+        organizationId:this.receivedData.data.organizationId,
+        name:this.receivedData.data.employee.name,
         leaveType:this.leaveForm.value.leaveType,
         reason:this.leaveForm.value.reason,
         leaveStartDate:this.leaveForm.value.startDate,
-        leaveEndDate:this.leaveForm.value.endDate
+        leaveEndDate:this.leaveForm.value.endDate,
+        approved: "pending"
       }).subscribe(data=>{
-        console.log(data)
+        this.closePopup()
+        this.snackBar.open("Leave requested Successfully!", "OK", {duration:3000})
       }, error => {
-        console.log(error)
+        this.snackBar.open("Somethings wrong! Try again later", "OK", {duration:3000})
       })
     }
   }

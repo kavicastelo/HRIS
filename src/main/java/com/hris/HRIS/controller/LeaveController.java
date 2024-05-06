@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/leave")
+@RequestMapping("/api/v1/leave")
 public class LeaveController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class LeaveController {
     }
 
     // Endpoint to retrieve all leaves
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     public ResponseEntity<List<LeaveModel>> getAllLeaves() {
         List<LeaveModel> allLeaves = leaveService.getAllLeaves();
         return new ResponseEntity<>(allLeaves, HttpStatus.OK);
