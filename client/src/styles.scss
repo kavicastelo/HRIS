@@ -208,6 +208,25 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   color: var(--color-text-200) !important;
 }
 
+// expansion panels
+.mat-expansion-panel{
+  background-color: var(--color-surface-mixed-200);
+  background: var(--color-surface-mixed-200);
+}
+.mat-expansion-panel-header:not([aria-disabled=true]), .mat-expansion-panel-header{
+  background-color: var(--color-surface-mixed-200);
+}
+.mat-expansion-panel-header-title, .mat-expansion-panel-header-description{
+  color: var(--color-text-200);
+}
+.mat-expansion-panel-body{
+  background-color: var(--color-surface-mixed-300);
+  padding: 0 18px 4px 18px!important;
+}
+.mat-expansion-panel-header-description, .mat-expansion-indicator::after{
+  color: var(--color-text-200);
+}
+
 // bootstrap dropdown
 .dropdown-menu{
   button{

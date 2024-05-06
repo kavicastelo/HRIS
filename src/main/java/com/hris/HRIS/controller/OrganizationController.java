@@ -126,14 +126,14 @@ public class OrganizationController {
     }
 
     @GetMapping("/get/id/{id}")
-    public ResponseEntity<OrganizationModel> getOrganizationById(String id) {
+    public ResponseEntity<OrganizationModel> getOrganizationById(@PathVariable String id) {
         Optional<OrganizationModel> organizationModelOptional = organizationRepository.findById(id);
 
         return organizationModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/get/email/{email}")
-    public ResponseEntity<OrganizationModel> getOrganizationByEmail(String email) {
+    public ResponseEntity<OrganizationModel> getOrganizationByEmail(@PathVariable String email) {
         Optional<OrganizationModel> organizationModelOptional = organizationRepository.findByEmail(email);
 
         return organizationModelOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
