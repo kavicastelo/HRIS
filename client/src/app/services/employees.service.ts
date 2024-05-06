@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {EmployeeModel} from "../shared/data-models/Employee.model";
 import {NGXLogger} from "ngx-logger";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class EmployeesService {
 
   baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient, private logger: NGXLogger) { }
+  constructor(private http: HttpClient, private logger: NGXLogger, private snackBar: MatSnackBar) { }
 
   private sendToBackend(formData: FormData, headers: HttpHeaders): void {
 
@@ -21,7 +22,7 @@ export class EmployeesService {
         sessionStorage.clear();
       },
       error => {
-        console.error('Error uploading employee data:', error);
+        this.snackBar.open("Server error! try again in few minutes", "OK", {duration:3000})
       }
     );
   }
