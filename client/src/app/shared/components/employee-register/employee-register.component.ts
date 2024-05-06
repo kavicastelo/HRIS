@@ -54,11 +54,11 @@ export class EmployeeRegisterComponent implements OnInit{
 
     this.defaultPhoto()
 
-    this.loadAllDepartments().subscribe(()=>{
+    await this.loadAllDepartments().subscribe(()=>{
       //TODO: do something
     })
 
-    this.loadAllUsers().subscribe(()=>{
+    await this.loadAllUsers().subscribe(()=>{
       this.getUser()
     })
   }
@@ -123,12 +123,27 @@ export class EmployeeRegisterComponent implements OnInit{
       sessionStorage.setItem('jobData', stringifiedJobData);
       formData.append('jobData', stringifiedJobData);
 
-      sessionStorage.setItem('depId', this.selectedDepartment);
+      this.departmentDataStore.forEach((d:any) => {
+        if(d.name == this.selectedDepartment){
+          sessionStorage.setItem('depId', d.id);
+        }
+      })
 
-      this.employeeService.uploadEmployeeData(formData);
-      this.employeeForm.reset();
+      this.employeeDataStore.forEach((e:any) =>{
+        if(e.email == this.employeeForm.value.email){
+          sessionStorage.setItem('isExists', "1");
+        }
+      })
+      if (sessionStorage.getItem('isExists') != "1"){
+        this.employeeService.uploadEmployeeData(formData);
+        this.employeeForm.reset();
+      } else {
+        this.snackBar.open("User Already Exists!!", "OK", {duration:3000})
+      }
+      sessionStorage.removeItem('isExists');
+
     } else {
-      this.snackBar.open("Some required fields are missing!","OK",{duration:2000})
+      this.snackBar.open("Some required fields are missing!","OK",{duration:3000})
     }
   }
 
@@ -179,7 +194,11 @@ export class EmployeeRegisterComponent implements OnInit{
   }
 
   defaultPhoto() {
-    this.chosenPhoto = null;
+    // Check if default photo already loaded
+    if (this.chosenPhoto) {
+      return;
+    }
+
     // Create a path to the default image file in the assets folder
     const defaultImagePath = 'assets/imgs/shared/default_profile.jpg';
 
@@ -202,6 +221,7 @@ export class EmployeeRegisterComponent implements OnInit{
           console.error('Failed to load default image:', error);
         });
   }
+
 
   addDepartment() {
     if (this.departmentForm.valid) {

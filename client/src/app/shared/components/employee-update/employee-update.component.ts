@@ -102,13 +102,14 @@ export class EmployeeUpdateComponent {
 
     // Access the jobData group within employeeForm and set its values
     const jobData = this.employeeForm.get('jobData') as FormGroup;
-    jobData.get('department')?.setValue(this.employee[0].jobData.departmentId);
+    jobData.get('department')?.setValue(this.employee[0].jobData.department);
     this.changeDetectorRef.detectChanges();
     jobData.get('position')?.setValue(this.employee[0].jobData.position);
     jobData.get('doj')?.setValue(this.employee[0].jobData.doj);
     jobData.get('salary')?.setValue(this.employee[0].jobData.salary);
 
     this.employeeForm.get('status')?.setValue(this.employee[0].status);
+    this.selectedDepartment = this.employee[0].jobData.department
   }
 
   convertToSafeUrl(url:any):SafeResourceUrl{
@@ -134,7 +135,11 @@ export class EmployeeUpdateComponent {
       sessionStorage.setItem('jobData', stringifiedJobData);
       formData.append('jobData', stringifiedJobData);
 
-      sessionStorage.setItem('depId', this.selectedDepartment);
+      this.departmentDataStore.forEach((d:any) => {
+        if (d.name == this.selectedDepartment){
+          sessionStorage.setItem('depId', d.id);
+        }
+      })
 
       this.employeeService.updateFullEmployeeById(this.userId, formData);
       location.reload()
