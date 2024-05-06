@@ -1,0 +1,37 @@
+<div class="d-flex align-items-center justify-content-between px-2 my-2">
+    <h5>Leave Request</h5>
+    <mat-icon (click)="closePopup()">close</mat-icon>
+</div>
+<hr>
+<div class="container">
+    <form [formGroup]="leaveForm">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>NAME</mat-label>
+            <input matInput id="name" formControlName="name" placeholder="John Doe" readonly>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>NAME</mat-label>
+            <input matInput id="leaveTYpe" formControlName="leaveType" placeholder="John Doe" readonly>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DATE RANGE</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date" formControlName="startDate" readonly>
+                <input matEndDate placeholder="End date" formControlName="endDate" readonly>
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker" disabled></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>REASON</mat-label>
+            <textarea matInput id="reason" formControlName="reason" placeholder="Reason to ask a leave..." readonly></textarea>
+        </mat-form-field>
+    </form>
+</div>
+<hr>
+<div class="d-flex align-items-center justify-content-end px-2 my-2">
+    <button class="btn me-2" (click)="closePopup()">Cancel</button>
+    <button class="btn me-2" [disabled]="leaveForm.invalid" (click)="rejectLeave()">Reject</button>
+    <button class="btn" [disabled]="leaveForm.invalid" (click)="approveLeave()">Approve</button>
+</div>
