@@ -90,6 +90,8 @@ import {EditAttendanceComponent} from './shared/dialogs/edit-attendance/edit-att
 import {ApproveLeaveComponent} from './shared/dialogs/approve-leave/approve-leave.component';
 import {CreateDepartmentDialogComponent} from './shared/dialogs/create-department-dialog/create-department-dialog.component';
 import {MatMenuModule} from "@angular/material/menu";
+import {ServerLoadingComponent} from './shared/effects/server-loading/server-loading.component';
+import {InProgressComponent} from './shared/effects/in-progress/in-progress.component';
 
 @NgModule({
     declarations: [
@@ -162,7 +164,9 @@ import {MatMenuModule} from "@angular/material/menu";
         MarkAttendanceComponent,
         EditAttendanceComponent,
         ApproveLeaveComponent,
-        CreateDepartmentDialogComponent
+        CreateDepartmentDialogComponent,
+        ServerLoadingComponent,
+        InProgressComponent
     ],
     imports: [
         BrowserModule,
