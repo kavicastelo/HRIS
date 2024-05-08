@@ -85,42 +85,46 @@ export class MarkAttendanceComponent implements OnInit{
     }
   }
 
-  markIn(e: any){
+  async markIn(e: any) {
     const attendances = this.filterAttendance();
-    attendances.forEach((attendance:any) => {
-      if (attendance.email == e.email){
-        this.attendanceService.saveAttendance({
-          id: attendance.id,
+
+    // Filter out duplicate attendance entries for the current employee
+    const uniqueAttendances = attendances.filter((attendance: any) =>
+        attendance.recordInTime != null && attendance.recordOutTime == null && attendance.email == e.email
+    );
+
+    try {
+      if (uniqueAttendances.length > 0) {
+        // Mark existing attendance entry
+        await this.attendanceService.saveAttendance({
+          id: uniqueAttendances[0].id, // Assuming there's only one unique attendance entry per employee
           organizationId: this.organizationId,
           name: e.name,
           email: e.email,
           recordInTime: new Date()
-        }).subscribe(data => {
-          this.snackBar.open("Departure Marked", "OK")
-        }, error => {
-          console.log(error)
-        })
+        }).toPromise();
       } else {
-        this.attendanceService.saveAttendance({
+        // Mark new attendance entry
+        await this.attendanceService.saveAttendance({
           organizationId: this.organizationId,
           name: e.name,
           email: e.email,
           recordInTime: new Date()
-        }).subscribe(data => {
-          this.snackBar.open("Departure Marked", "OK")
-        }, error => {
-          console.log(error)
-        })
+        }).toPromise();
       }
-    })
+
+      this.snackBar.open("Attendance Marked", "OK", {duration:3000});
+    } catch (error) {
+      console.error("Error marking attendance:", error);
+    }
   }
+
 
   depart(e: any){
     const attendances = this.filterAttendance();
     attendances.forEach((attendance:any) => {
       if (attendance.email == e.email){
-        this.attendanceService.saveAttendance({
-          id: attendance.id,
+        this.attendanceService.departAttendance(attendance.id,{
           organizationId: this.organizationId,
           name: e.name,
           email: e.email,

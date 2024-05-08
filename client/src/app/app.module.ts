@@ -88,6 +88,7 @@ import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/c
 import {MarkAttendanceComponent} from './components/am-lm/mark-attendance/mark-attendance.component';
 import {EditAttendanceComponent} from './shared/dialogs/edit-attendance/edit-attendance.component';
 import {ApproveLeaveComponent} from './shared/dialogs/approve-leave/approve-leave.component';
+import {CreateDepartmentDialogComponent} from './shared/dialogs/create-department-dialog/create-department-dialog.component';
 
 @NgModule({
     declarations: [
@@ -159,7 +160,8 @@ import {ApproveLeaveComponent} from './shared/dialogs/approve-leave/approve-leav
         CreateShiftDialogComponent,
         MarkAttendanceComponent,
         EditAttendanceComponent,
-        ApproveLeaveComponent
+        ApproveLeaveComponent,
+        CreateDepartmentDialogComponent
     ],
     imports: [
         BrowserModule,

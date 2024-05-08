@@ -1,0 +1,22 @@
+<div class="d-flex align-items-center justify-content-between px-2 my-2">
+    <h5>Initialize New Department</h5>
+    <mat-icon (click)="closePopup()">close</mat-icon>
+</div>
+<hr>
+<div class="container">
+    <form [formGroup]="onboardinPlanForm">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>NAME</mat-label>
+            <input matInput id="name" formControlName="name" placeholder="HR Department" >
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DESCRIPTION</mat-label>
+            <textarea matInput id="description" formControlName="description" placeholder="Description to new department..." ></textarea>
+        </mat-form-field>
+    </form>
+</div>
+<hr>
+<div class="d-flex align-items-center justify-content-end px-2 my-2">
+    <button class="btn me-2" (click)="closePopup()">Cancel</button>
+    <button class="btn" [disabled]="onboardinPlanForm.invalid" (click)="submitPlan()">Create</button>
+</div>

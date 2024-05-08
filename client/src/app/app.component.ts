@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
 
         if (this.cookieService.isExists()) {
             // Establish WebSocket connection
-            this.webSocketService.connect('ws://localhost:4200/ws');
+            this.webSocketService.connect('ws://hris-prod.onrender.com/ws');
 
             this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
                 this.logger.log('WebSocket connection status:', status);
