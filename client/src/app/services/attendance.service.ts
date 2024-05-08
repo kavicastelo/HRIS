@@ -23,4 +23,8 @@ export class AttendanceService {
   public getAllAttendance(): Observable<any> {
     return this.http.get(this.baseUrl+'attendance/get/all');
   }
+
+  public assignShift(id: any, shift:any): Observable<any> {
+    return this.http.put(this.baseUrl+'attendance/assign/shift/'+id,shift)
+  }
 }

@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {attendanceDataStore} from "../../../shared/data-stores/attendance-data-store";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AttendanceService} from "../../../services/attendance.service";
 import {Observable, tap} from "rxjs";
 import {AuthService} from "../../../services/auth.service";
 import {MatDialog} from "@angular/material/dialog";
-import {CreateShiftDialogComponent} from "../../../shared/dialogs/create-shift-dialog/create-shift-dialog.component";
 import {EditAttendanceComponent} from "../../../shared/dialogs/edit-attendance/edit-attendance.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {ShiftsService} from "../../../services/shifts.service";
 
 @Component({
   selector: 'app-attendence',
@@ -17,18 +16,20 @@ import {EditAttendanceComponent} from "../../../shared/dialogs/edit-attendance/e
 export class AttendenceComponent implements OnInit{
 
   organizationId:any;
-  attendanceStore:any = attendanceDataStore
   attendanceDataStore:any[] = [];
+  shiftDataStore: any[] = [];
   filteredAttendance:any[] = [];
+  filteredShifts: any[] = [];
 
   targetInput:any;
 
-  constructor(private router: Router, private route: ActivatedRoute, private attendanceService: AttendanceService, private cookieService: AuthService, private  dialog: MatDialog) {
+  constructor(private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar, private shiftService: ShiftsService, private attendanceService: AttendanceService, private cookieService: AuthService, private  dialog: MatDialog) {
   }
   async ngOnInit(): Promise<any> {
     this.organizationId = this.cookieService.organization()
 
     await this.loadAllAttendance().subscribe(()=>{})
+    await this.loadAllShifts().subscribe(()=>{})
   }
 
   loadAllAttendance(): Observable<any> {
@@ -95,5 +96,34 @@ export class AttendenceComponent implements OnInit{
         this.filterAttendance()
       })
     })
+  }
+
+  loadAllShifts(): Observable<any>{
+    return this.shiftService.getAllShifts().pipe(
+        tap(data => this.shiftDataStore = data)
+    );
+  }
+
+  filterShifts(): any[]{
+    this.filteredShifts = this.shiftDataStore.filter((data: any) => data.organizationId === this.organizationId)
+
+    return this.filteredShifts;
+  }
+
+  assignShift(id: any, shift: any) {
+    if (id){
+      this.attendanceService.assignShift(id, shift).subscribe(data => {
+        this.openSnackBar("Shift Assigned", "OK")
+      }, error => {
+        this.openSnackBar("Somethings Wrong! Try again!", "OK")
+      })
+    }
+    else {
+      this.openSnackBar("Employee not attended today", "OK")
+    }
+  }
+
+  openSnackBar(message: any, action: any){
+    this.snackBar.open(message, action, {duration:3000})
   }
 }

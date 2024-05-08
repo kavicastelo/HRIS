@@ -4,14 +4,11 @@ import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../../services/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {EmployeesService} from "../../../services/employees.service";
-import {TransferRequestService} from "../../../services/transfer-request.service";
 import {Observable, tap} from "rxjs";
-import {
-  RequestTransferDialogComponent
-} from "../../../shared/dialogs/request-transfer-dialog/request-transfer-dialog.component";
-import {LetterDataDialogComponent} from "../../../shared/dialogs/letter-data-dialog/letter-data-dialog.component";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {MultimediaService} from "../../../services/multimedia.service";
+import {ShiftsService} from "../../../services/shifts.service";
+import {AttendanceService} from "../../../services/attendance.service";
 
 @Component({
   selector: 'app-emp-dashboard',
@@ -21,11 +18,15 @@ import {MultimediaService} from "../../../services/multimedia.service";
 export class EmpDashboardComponent implements OnInit{
 
   userId: any
-  employeeDataStore: any[] = []
+  employeeDataStore: any[] = [];
+  shiftDataStore: any[] = [];
+  attendanceDataStore: any[] = [];
   employee: any = {
     id:''
   }
   filteredEmployees: any[] = [];
+  filteredShifts: any[] = [];
+  filteredAttendance: any[] = [];
   targetInput:any;
 
   constructor(private route: ActivatedRoute,
@@ -33,14 +34,18 @@ export class EmpDashboardComponent implements OnInit{
               private router: Router,
               private cookieService: AuthService,
               private snackBar: MatSnackBar,
+              private shiftService: ShiftsService,
+              private attendanceService: AttendanceService,
               private employeesService: EmployeesService,
               private multimediaService: MultimediaService) {
   }
 
   async ngOnInit(): Promise<any> {
-    this.loadAllUsers().subscribe(()=>{
+    await this.loadAllUsers().subscribe(()=>{
       this.getUser();
     })
+    await this.loadAllShifts().subscribe(()=>{})
+    await this.loadAllAttendances().subscribe(()=>{})
   }
 
   loadAllUsers(): Observable<any>{
@@ -124,5 +129,41 @@ export class EmpDashboardComponent implements OnInit{
 
   convertToSafeUrl(url:any):SafeResourceUrl{
     return this.multimediaService.convertToSafeUrl(url,'image/jpeg')
+  }
+
+  loadAllShifts(): Observable<any>{
+    return this.shiftService.getAllShifts().pipe(
+        tap(data => this.shiftDataStore = data)
+    );
+  }
+
+  filterShifts(): any[]{
+    this.filteredShifts = this.shiftDataStore.filter((data: any) => data.organizationId === this.employee.organizationId)
+
+    return this.filteredShifts;
+  }
+
+  loadAllAttendances(): Observable<any>{
+    return this.attendanceService.getAllAttendance().pipe(
+        tap(data => this.attendanceDataStore = data)
+    );
+  }
+
+  assignShift(email: any, shift: any) {
+    this.filteredAttendance = this.attendanceDataStore.filter((data: any) => data.organizationId === this.employee.organizationId && data.email == email)
+    this.filteredAttendance.sort((a:any, b:any) => {
+      return new Date(b.recordInTime).getTime() - new Date(a.recordInTime).getTime()
+    })
+
+    if (this.filteredAttendance[0]){
+      this.attendanceService.assignShift(this.filteredAttendance[0].id, shift).subscribe(data => {
+        this.openSnackBar("Shift Assigned", "OK")
+      }, error => {
+        this.openSnackBar("Somethings Wrong! Try again!", "OK")
+      })
+    }
+    else {
+      this.openSnackBar("Employee not attended today", "OK")
+    }
   }
 }

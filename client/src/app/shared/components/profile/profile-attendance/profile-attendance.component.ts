@@ -24,8 +24,6 @@ export class ProfileAttendanceComponent {
   employeeDataStore:any[] = [];
   employee:any;
 
-  targetInput:any;
-
   constructor(private router: Router, private route: ActivatedRoute, private attendanceService: AttendanceService, private employeeService: EmployeesService, private cookieService: AuthService, private  dialog: MatDialog) {
   }
   async ngOnInit(): Promise<any> {
@@ -58,9 +56,7 @@ export class ProfileAttendanceComponent {
   }
 
   filterAttendance(): any[]{
-    if (this.targetInput === undefined){
-      this.filteredAttendance = this.attendanceDataStore.filter((data: any) => data.organizationId === this.organizationId && data.email == this.employee.email)
-    }
+    this.filteredAttendance = this.attendanceDataStore.filter((data: any) => data.organizationId === this.organizationId && data.email == this.employee.email)
 
     return this.filteredAttendance;
   }

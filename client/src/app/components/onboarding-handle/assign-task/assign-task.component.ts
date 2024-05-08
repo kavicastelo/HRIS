@@ -23,7 +23,6 @@ export class AssignTaskComponent {
   filteredShifts:any[] = [];
   selectedPlan:any;
   selectedTask:any;
-  selectedShift:any;
   organizationId:any;
 
   isChecked: boolean[] = [];
@@ -34,7 +33,6 @@ export class AssignTaskComponent {
 
   assignForm = new FormGroup({
     plan: new FormControl(null, [Validators.required]),
-    shift: new FormControl(null),
     task: new FormControl(null, [Validators.required])
   })
 
