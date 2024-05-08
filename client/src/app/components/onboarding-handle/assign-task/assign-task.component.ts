@@ -31,6 +31,8 @@ export class AssignTaskComponent {
 
   targetInput:any;
 
+  isInProgress:boolean = false
+
   assignForm = new FormGroup({
     plan: new FormControl(null, [Validators.required]),
     task: new FormControl(null, [Validators.required])
@@ -152,6 +154,7 @@ export class AssignTaskComponent {
   }
 
   assignEmployees(event: Event) {
+    this.isInProgress = true;
     event.preventDefault();
     if (this.assignForm.valid && this.selectedEmployeeIds.length > 0) {
       const requests = this.selectedEmployeeIds.map(id => this.employeeService.getEmployeeById(id));
@@ -169,7 +172,7 @@ export class AssignTaskComponent {
 
         // Now that the selectedEmployees array is populated with unique employees, make the HTTP request
         this.onboardinService.assignEmployeeToTask(this.assignForm.value.task, this.selectedEmployees).subscribe(data => {
-          console.log(data);
+          this.isInProgress = false;
           this.selectedEmployeeIds = [];
         }, error => {
           console.log(error);

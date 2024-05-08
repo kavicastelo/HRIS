@@ -30,7 +30,9 @@ export class AppComponent implements OnInit {
     maxNotificationsDisplayed: number = 5;
 
     notifyDataStore: any[] = [];
-    notifications: any[] = []
+    notifications: any[] = [];
+
+    isServerConfig: boolean = false;
 
     constructor(public themeService: ThemeService,
                 private webSocketService: WebSocketService,
@@ -118,7 +120,9 @@ export class AppComponent implements OnInit {
     }
 
     loadAllUsers() {
+        this.isServerConfig = true;
         this.employeeService.getAllEmployees().subscribe(data => {
+            this.isServerConfig = false;
             this.employeeDataStore = data;
             this.getUser(this.employeeDataStore);
 
