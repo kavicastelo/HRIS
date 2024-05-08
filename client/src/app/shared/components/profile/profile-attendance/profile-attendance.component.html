@@ -15,6 +15,7 @@
                         <th>In</th>
                         <th>Out</th>
                         <th>No. Hours</th>
+                        <th>Work Shift</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -27,6 +28,7 @@
                         <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red' : 'var(--color-text-200)'}">
                             {{a.recordOutTime==null ? '-' : calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
                         </td>
+                        <td>{{a.workShift ? a.workShift : 'N/A'}}</td>
                     </tr>
                     </tbody>
                 </table>

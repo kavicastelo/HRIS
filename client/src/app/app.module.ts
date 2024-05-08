@@ -89,6 +89,7 @@ import {MarkAttendanceComponent} from './components/am-lm/mark-attendance/mark-a
 import {EditAttendanceComponent} from './shared/dialogs/edit-attendance/edit-attendance.component';
 import {ApproveLeaveComponent} from './shared/dialogs/approve-leave/approve-leave.component';
 import {CreateDepartmentDialogComponent} from './shared/dialogs/create-department-dialog/create-department-dialog.component';
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
     declarations: [
@@ -186,7 +187,8 @@ import {CreateDepartmentDialogComponent} from './shared/dialogs/create-departmen
         MatSlideToggleModule,
         _MatSlideToggleRequiredValidatorModule,
         MatCheckboxModule,
-        MatTableModule
+        MatTableModule,
+        MatMenuModule
     ],
     providers: [],
     bootstrap: [AppComponent]

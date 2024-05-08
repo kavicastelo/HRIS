@@ -36,15 +36,17 @@
                 </div>
             </td>
             <td>
-                <div class="dropdown">
-                    <button class="btn-2" matTooltip="More" type="button" data-bs-toggle="dropdown" aria-expanded="false"><mat-icon>more_vert</mat-icon></button>
-                    <ul class="dropdown-menu">
-                        <li><button class="dropdown-item" type="button" (click)="editEmployee(e.id)">Edit Employee</button></li>
-                        <li><button class="dropdown-item" type="button" (click)="deleteEmployee(e.id)">Delete Employee</button></li>
-                        <li><button class="dropdown-item" type="button">Assign Task</button></li>
-                        <li><button class="dropdown-item" type="button">Assign Shift</button></li>
-                    </ul>
-                </div>
+                <button class="btn-2" matTooltip="More" type="button" [matMenuTriggerFor]="employee"><mat-icon>more_vert</mat-icon></button>
+                <mat-menu #employee="matMenu">
+                    <button mat-menu-item type="button" (click)="editEmployee(e.id)">Edit Employee</button>
+                    <button mat-menu-item type="button" (click)="deleteEmployee(e.id)">Delete Employee</button>
+                    <button mat-menu-item type="button">Assign Task</button>
+                    <button mat-menu-item [matMenuTriggerFor]="shift">Assign Shift</button>
+                </mat-menu>
+
+                <mat-menu #shift="matMenu">
+                    <button mat-menu-item *ngFor="let s of filterShifts()" (click)="assignShift(e.email, s.name)">{{s.name}}</button>
+                </mat-menu>
             </td>
         </tr>
         </tbody>

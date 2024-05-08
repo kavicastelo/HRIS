@@ -39,7 +39,11 @@
                         </td>
                         <td><div class="d-flex align-items-center justify-content-around">
                             <p class="text-btn" (click)="editAttendance(a)">Edit</p>
-                            <p class="text-btn">Add Shift</p>
+                            <p class="text-btn" type="button" [matMenuTriggerFor]="shift">Add Shift</p>
+                            <mat-menu #shift="matMenu">
+<!--                                <button mat-menu-item type="button">Assign Task</button>-->
+                                <button mat-menu-item *ngFor="let s of filterShifts()" (click)="assignShift(a.id, s.name)">{{s.name}}</button>
+                            </mat-menu>
                         </div></td>
                     </tr>
                     </tbody>
