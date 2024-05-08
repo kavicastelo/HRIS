@@ -8,6 +8,10 @@ import {Observable, tap} from "rxjs";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  CreateDepartmentDialogComponent
+} from "../../dialogs/create-department-dialog/create-department-dialog.component";
 
 @Component({
   selector: 'app-employee-register',
@@ -19,25 +23,12 @@ export class EmployeeRegisterComponent implements OnInit{
   organizationId: any;
   departmentId:any
   departmentDataStore:any;
+  filteredDepartments:any;
   selectedDepartment:any;
   employeeDataStore:any;
   employee:any;
   userId:any;
   chosenPhoto: File | any;
-
-  departmentForm = new FormGroup({
-    name: new FormControl(null,[
-      Validators.required
-    ]),
-    description: new FormControl(null,[
-      Validators.required
-    ]),
-    organizationId: new FormControl(null,[
-      Validators.required
-    ])
-  })
-
-
 
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
@@ -46,9 +37,11 @@ export class EmployeeRegisterComponent implements OnInit{
               private multimediaService: MultimediaService,
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
+              private dialog: MatDialog,
               private cookieService: AuthService) { }
 
   async ngOnInit(): Promise<any> {
+    this.organizationId = this.cookieService.organization();
 
     this.initForm()
 
@@ -153,6 +146,12 @@ export class EmployeeRegisterComponent implements OnInit{
     );
   }
 
+  filterDepartments():any[]{
+    this.filteredDepartments = this.departmentDataStore.filter((dep:any) => dep.organizationId == this.organizationId)
+
+    return this.filteredDepartments;
+  }
+
   choosePhoto(): void {
     this.chosenPhoto = null // clear the photo input field before assign a value
     const input = document.createElement('input');
@@ -222,19 +221,28 @@ export class EmployeeRegisterComponent implements OnInit{
         });
   }
 
-
   addDepartment() {
-    if (this.departmentForm.valid) {
-      this.departmentService.addDepartment({
-        name: this.departmentForm.value.name,
-        description: this.departmentForm.value.description,
-        organizationId: this.departmentForm.value.organizationId
-      }).subscribe(() => {
-        this.departmentForm.reset();
-        this.logger.info('Department added successfully');
-      }, error => {
-        this.logger.error(error);
-      })
+    const data = {
+      organizationId: this.organizationId
     }
+    this.toggleDialog('','',data,CreateDepartmentDialogComponent)
+  }
+
+  toggleDialog(title:any, msg:any, data: any, component:any) {
+    const _popup = this.dialog.open(component, {
+      width: '350px',
+      enterAnimationDuration: '500ms',
+      exitAnimationDuration: '500ms',
+      data: {
+        data: data,
+        title: title,
+        msg: msg
+      }
+    });
+    _popup.afterClosed().subscribe(item => {
+      this.loadAllDepartments().subscribe(()=>{
+        this.filterDepartments()
+      })
+    })
   }
 }

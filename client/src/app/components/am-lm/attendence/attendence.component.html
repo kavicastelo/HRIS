@@ -33,9 +33,9 @@
                         <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red':'var(--color-text-200)'}">
                             {{a.recordInTime | timeFormat}}
                         </td>
-                        <td>{{a.recordOutTime | timeFormat}}</td>
+                        <td>{{a.recordOutTime==null ? '-' : a.recordOutTime | timeFormat}}</td>
                         <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red' : 'var(--color-text-200)'}">
-                            {{calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
+                            {{a.recordOutTime==null ? '-' : calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
                         </td>
                         <td><div class="d-flex align-items-center justify-content-around">
                             <p class="text-btn" (click)="editAttendance(a)">Edit</p>
