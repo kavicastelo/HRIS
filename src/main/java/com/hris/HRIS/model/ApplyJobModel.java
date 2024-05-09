@@ -25,4 +25,6 @@ public class ApplyJobModel {
     private String email;
 
     private byte[] cv;
+
+    private boolean action = false;
 }
