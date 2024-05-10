@@ -35,5 +35,10 @@
         </tr>
         </tbody>
     </table>
+    <div *ngIf="filterLetters().length == 0">
+        <div class="data-not-found">
+            <p>Data not available!</p>
+        </div>
+    </div>
 </div>
 

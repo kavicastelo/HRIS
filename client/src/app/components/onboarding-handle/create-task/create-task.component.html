@@ -42,6 +42,11 @@
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="filterTasks().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
             </div>
         </li>
         <li class="list-group-item">&nbsp;</li>

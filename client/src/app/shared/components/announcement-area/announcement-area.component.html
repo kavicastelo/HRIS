@@ -25,7 +25,7 @@
       </div>
       <p class="view-all" *ngIf="filterNews().length>3" (click)="toggleNews()">... {{showAllNews?'Collapse':'View All'}} Latest News</p>
       <div class="data-not-found" *ngIf="filterNews().length == 0">
-        <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+        <p>No Data Available</p>
       </div>
     </div>
   </div>

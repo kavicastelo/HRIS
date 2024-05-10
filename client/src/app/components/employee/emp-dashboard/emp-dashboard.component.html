@@ -39,7 +39,7 @@
                 <button class="btn-2" matTooltip="More" type="button" [matMenuTriggerFor]="employee"><mat-icon>more_vert</mat-icon></button>
                 <mat-menu #employee="matMenu">
                     <button mat-menu-item type="button" (click)="editEmployee(e.id)">Edit Employee</button>
-                    <button mat-menu-item type="button" (click)="deleteEmployee(e.id)">Delete Employee</button>
+                    <button mat-menu-item type="button" [disabled]="filterEmployees().length == 1" (click)="deleteEmployee(e.id)">Delete Employee</button>
                     <button mat-menu-item type="button">Assign Task</button>
                     <button mat-menu-item [matMenuTriggerFor]="shift">Assign Shift</button>
                 </mat-menu>

@@ -25,6 +25,11 @@
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="filterShifts().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
             </div>
 
         </li>
