@@ -84,9 +84,9 @@
                                 <ul>
                                     <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">My Requests</li>
                                     <ul class="list-2">
-                                        <li>Promotion</li>
-                                        <li>Transfer</li>
-                                        <li>Leave</li>
+                                        <li routerLink="/requests/{{e.id}}/promotion/{{e.id}}">Promotion</li>
+                                        <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">Transfer</li>
+                                        <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">Leave</li>
                                     </ul>
                                 </ul>
                             </mat-expansion-panel>
@@ -163,6 +163,12 @@
                         Show {{ showAllNotifications ? 'less' : 'all' }}</button>
                     <div class="flex-1 w-100">
                         <hr>
+                    </div>
+                </div>
+                <div *ngIf="notifications.length == 0">
+                    <div class="data-not-found">
+                        <h4>All caught up!</h4>
+                        <p>No new notifications found for you</p>
                     </div>
                 </div>
             </div>

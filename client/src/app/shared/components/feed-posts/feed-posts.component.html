@@ -1,5 +1,5 @@
 <div class="card" *ngFor="let post of feedPost; index as i">
-    <div class="card-body">
+    <div class="card-body" *ngIf="post.id != ''">
         <div *ngIf="post.sharedUserCaption != null && post.sharedUserTimestamp != null">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="author-wrapper d-flex align-items-center justify-content-start">
@@ -145,4 +145,8 @@
         </div>
 
     </div>
+</div>
+
+<div class="card feed-not-found" *ngIf="feedPost.length == 0">
+    <h2>Your News Feed is empty</h2>
 </div>

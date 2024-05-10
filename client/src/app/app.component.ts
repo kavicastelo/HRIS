@@ -7,7 +7,6 @@ import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
 import {NotificationsService} from "./services/notifications.service";
 import {Observable, tap} from "rxjs";
-import {SafeResourceUrl} from "@angular/platform-browser";
 import {AuthService} from "./services/auth.service";
 import {OrganizationService} from "./services/organization.service";
 
@@ -56,7 +55,7 @@ export class AppComponent implements OnInit {
 
         if (this.cookieService.isExists()) {
             // Establish WebSocket connection
-            this.webSocketService.connect('ws://hris-prod.onrender.com/ws');
+            this.webSocketService.connect('wss://hris-prod.onrender.com/ws');
 
             this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
                 this.logger.log('WebSocket connection status:', status);

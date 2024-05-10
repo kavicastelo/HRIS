@@ -8,6 +8,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {LatestNewsService} from "../../services/latest-news.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-bulletins',
@@ -43,6 +44,7 @@ export class BulletinsComponent implements OnInit{
               private formBuilder: FormBuilder,
               private bulletinService: BulletingBoardService,
               private newsService: LatestNewsService,
+              private snackBar: MatSnackBar,
               private multimediaService: MultimediaService,
               private route: ActivatedRoute,
               private cookieService: AuthService) {
@@ -96,7 +98,7 @@ export class BulletinsComponent implements OnInit{
         this.filterBulletins()
       })
     } else {
-      // Handle form validation errors
+      this.snackBar.open("Required data is missing!", "OK", {duration:3000})
     }
   }
 
@@ -122,7 +124,7 @@ export class BulletinsComponent implements OnInit{
       this.fontCheckDisabled = false;
     }
     else{
-      alert("Your Image is too large. Select under 1MB")
+      this.snackBar.open("Your Image is too large. Select under 1MB", "OK", {duration:3000})
     }
   }
 
@@ -156,7 +158,7 @@ export class BulletinsComponent implements OnInit{
       this.onTitleBgSelected();
     }
     else{
-      alert("Your Image is too large. Select under 1MB")
+      this.snackBar.open("Your Image is too large. Select under 1MB", "OK", {duration:3000})
     }
   }
 
@@ -233,7 +235,7 @@ export class BulletinsComponent implements OnInit{
           this.filterNews();
         })
       }, error => {
-        console.log(error)
+        this.snackBar.open("Somethings went wrong. Try again!", "OK", {duration:3000})
       })
     }
   }
