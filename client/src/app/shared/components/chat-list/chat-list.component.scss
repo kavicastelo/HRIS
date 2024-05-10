@@ -1,3 +1,15 @@
+.c-main-canvas{
+  background-image: url("https://splendid-hr.com/wp-content/uploads/2023/10/h4_banner_img.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center right;
+  .c-main{
+    max-height: calc(100vh - 70px);
+    max-width: 600px;
+    overflow-y: auto;
+  }
+}
+
 .card{
   .card-body{
     .input-group{
@@ -129,9 +141,9 @@
 .mat-expansion-indicator::after, .mat-expansion-indicator::before {
   color: var(--color-text-200) !important;
 }
-.mat-expansion-panel-body {
-  padding: 0 !important;
-  background-color: var(--color-surface-mixed-300) !important;
+.mat-expansion-panel-body{
+  background-color: var(--color-surface-mixed-300);
+  padding: 0 0 4px 0!important;
 }
 .mat-expansion-panel-header.mat-expanded:focus, .mat-expansion-panel-header.mat-expanded:hover {
   background-color: var(--color-surface-mixed-200);

@@ -3,13 +3,13 @@
     <li class="list-group-item">
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex flex-column align-items-start">
-          <h5>{{r.name}}</h5>
+          <h5 routerLink="/profile/{{r.id}}/about/{{r.id}}">{{r.name}}</h5>
           <small *ngIf="r.activityStatus != null">{{r.activityStatus?'Active now':'Last Seen '+(r.lastSeen | timeAgo)}}</small>
         </div>
         <button class="btn-3"><mat-icon>more_horiz</mat-icon></button>
       </div>
     </li>
-    <li class="list-group-item" style="max-height: calc(100vh - 260px); overflow-y: auto" #scrollMe>
+    <li class="list-group-item" style="height: calc(100vh - 260px); overflow-y: auto" #scrollMe>
       <div class="receiver-message" *ngFor="let message of chatMessages" [ngClass]="isMessageFrom(message) ? 'sender' : 'receiver'">
         <div class="profile-wrapper">
           <div class="pro-pic">
