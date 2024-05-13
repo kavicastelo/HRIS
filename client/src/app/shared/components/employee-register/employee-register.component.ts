@@ -22,10 +22,10 @@ export class EmployeeRegisterComponent implements OnInit{
   employeeForm: FormGroup | any;
   organizationId: any;
   departmentId:any
-  departmentDataStore:any;
-  filteredDepartments:any;
-  selectedDepartment:any;
-  employeeDataStore:any;
+  departmentDataStore:any[] = [];
+  filteredDepartments:any[] = [];
+  selectedDepartment:any[] = [];
+  employeeDataStore:any[] = [];
   employee:any;
   userId:any;
   chosenPhoto: File | any;

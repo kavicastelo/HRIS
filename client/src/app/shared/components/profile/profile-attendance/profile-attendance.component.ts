@@ -56,7 +56,7 @@ export class ProfileAttendanceComponent {
   }
 
   filterAttendance(): any[]{
-    this.filteredAttendance = this.attendanceDataStore.filter((data: any) => data.organizationId === this.organizationId && data.email == this.employee.email)
+    this.filteredAttendance = this.attendanceDataStore.filter((data: any) => data.organizationId === this.organizationId && data.email === this.employee?.email)
 
     return this.filteredAttendance;
   }
