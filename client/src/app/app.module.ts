@@ -92,6 +92,7 @@ import {CreateDepartmentDialogComponent} from './shared/dialogs/create-departmen
 import {MatMenuModule} from "@angular/material/menu";
 import {ServerLoadingComponent} from './shared/effects/server-loading/server-loading.component';
 import {InProgressComponent} from './shared/effects/in-progress/in-progress.component';
+import {MarkdownModule} from "ngx-markdown";
 
 @NgModule({
     declarations: [
@@ -192,7 +193,8 @@ import {InProgressComponent} from './shared/effects/in-progress/in-progress.comp
         _MatSlideToggleRequiredValidatorModule,
         MatCheckboxModule,
         MatTableModule,
-        MatMenuModule
+        MatMenuModule,
+        MarkdownModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]

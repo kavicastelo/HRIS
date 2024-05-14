@@ -84,9 +84,10 @@ export class EditProfileComponent {
 
     const firstName = this.employee[0].name;
     const doj:any = new Date(this.employee[0].jobData.doj).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const dob:any = new Date(this.employee[0].dob).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     this.editProfileForm.get('firstname')?.setValue(firstName.split(' ')[0]);
     this.editProfileForm.get('lastname')?.setValue(firstName.split(' ')[1]);
-    this.editProfileForm.get('dob')?.setValue(this.employee[0].dob);
+    this.editProfileForm.get('dob')?.setValue(dob);
     this.editProfileForm.get('nic')?.setValue(this.employee[0].nic);
     this.editProfileForm.get('address')?.setValue(this.employee[0].address);
     this.editProfileForm.get('email')?.setValue(this.employee[0].email);
