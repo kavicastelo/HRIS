@@ -64,8 +64,7 @@
 
         .message-content{
           color: var(--color-text-200);
-          padding: 10px;
-          border-radius: 10px;
+          padding: 10px 10px 0 10px;
           margin-left: 10px;
           margin-bottom: 10px;
           width: fit-content;
@@ -79,6 +78,20 @@
           font-weight: 400;
           font-family: Roboto, "Helvetica Neue", sans-serif;
           overflow-wrap: break-word;
+          position: relative;
+        }
+
+        .msg-status{
+          position: absolute;
+          bottom: 3px;
+          right: 3px;
+
+          .mat-icon{
+            font-size: 14px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+          }
         }
       }
       .receiver-message.receiver{
@@ -86,6 +99,7 @@
 
         .message-content{
           background-color: var(--color-surface-mixed-300);
+          border-radius: 0 10px 10px 10px;
         }
       }
       .receiver-message.sender{
@@ -93,6 +107,7 @@
 
         .message-content{
           background-color: var(--color-surface-mixed-400);
+          border-radius: 10px 0 10px 10px;
         }
       }
     }
