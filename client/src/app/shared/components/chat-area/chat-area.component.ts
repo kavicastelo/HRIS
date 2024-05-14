@@ -1,9 +1,18 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+    AfterViewChecked,
+    AfterViewInit,
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    Renderer2,
+    ViewChild
+} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../../services/chat.service";
 import {WebSocketService} from "../../../services/web-socket.service";
-import {Observable, Subscription, tap} from "rxjs";
+import {Observable, Subject, Subscription, tap} from "rxjs";
 import {MessageModel} from "../../data-models/Message.model";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
@@ -16,8 +25,9 @@ import {AuthService} from "../../../services/auth.service";
     templateUrl: './chat-area.component.html',
     styleUrls: ['./chat-area.component.scss']
 })
-export class ChatAreaComponent implements OnInit, OnDestroy {
-    @ViewChild('scrollMe') private myScrollContainer: ElementRef | any;
+export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
+
+    @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any> | any;
 
     employeeDataStore: any
     chatDataStore: any
@@ -40,11 +50,15 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         ])
     });
 
+    private sectionSource = new Subject<string>();
+    section$ = this.sectionSource.asObservable();
+
     constructor(private route: ActivatedRoute,
                 private chatService: ChatService,
                 private webSocketService: WebSocketService,
                 private multimediaService: MultimediaService,
                 private cookieService: AuthService,
+                private renderer: Renderer2,
                 private employeeService: EmployeesService, private logger: NGXLogger) {
     }
 
@@ -53,6 +67,12 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
             this.loadSender();
             this.loadReceiver();
         })
+        this.scrollBottom()
+    }
+
+    ngAfterViewInit(): void{
+
+        this.scrollBottom(); // TODO: remove this when start to working with sockets
 
         try {
             // Establish WebSocket connection
@@ -70,6 +90,10 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    ngAfterViewChecked() {
+        this.scrollBottom()
     }
 
     ngOnDestroy(): void {
@@ -148,7 +172,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
             this.chatMessages.push(parsedMessage);
 
             // Optionally, you can scroll to the bottom of the chat window to show the latest message
-            this.scrollToBottom();
+            this.scrollBottom();
         }
     }
 
@@ -176,14 +200,15 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         }
     }
 
-    scrollToBottom(): void {
-        try {
-            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch (err) {
-        }
-    }
-
     convertToSafeUrl(url: any): SafeResourceUrl {
         return this.multimediaService.convertToSafeUrl(url, 'image/jpeg')
+    }
+
+    public scrollBottom() {
+        this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
+    }
+
+    public scrollToTop() {
+        this.scroll.nativeElement.scrollTop = 0;
     }
 }
