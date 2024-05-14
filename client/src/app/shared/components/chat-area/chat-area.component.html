@@ -1,6 +1,6 @@
 <div class="card">
-    <ul class="list-group list-group-flush" *ngFor="let r of receiver">
-        <li class="list-group-item">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let r of receiver">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-column align-items-start">
                     <h5 routerLink="/profile/{{r.id}}/about/{{r.id}}">{{r.name}}</h5>
@@ -11,10 +11,10 @@
                 </button>
             </div>
         </li>
-        <li class="list-group-item" style="height: calc(100vh - 260px); overflow-y: auto" #scrollMe>
+        <li #scroll class="list-group-item" style="height: calc(100vh - 260px); overflow-y: auto;">
             <div class="receiver-message" *ngFor="let message of chatMessages"
                  [ngClass]="isMessageFrom(message) ? 'sender' : 'receiver'">
-                <div class="profile-wrapper">
+                <div class="profile-wrapper" *ngFor="let r of receiver">
                     <div class="pro-pic">
                         <img [src]="isMessageFrom(message) ? convertToSafeUrl(sender.photo) : convertToSafeUrl(r.photo)"
                              [alt]="isMessageFrom(message) ? 'You' : r.name">
