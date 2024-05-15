@@ -95,6 +95,9 @@ import {InProgressComponent} from './shared/effects/in-progress/in-progress.comp
 import {MarkdownModule} from "ngx-markdown";
 import {AngularFireModule} from "@angular/fire/compat";
 import {environment} from "../environments/environment";
+import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
+import {AngularFireStorageModule} from "@angular/fire/compat/storage";
+import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
@@ -199,6 +202,9 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         MatMenuModule,
         MarkdownModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireStorageModule,
+        AngularFirestoreModule,
+        AngularFireAuthModule,
         MatProgressBarModule
     ],
     providers: [],
