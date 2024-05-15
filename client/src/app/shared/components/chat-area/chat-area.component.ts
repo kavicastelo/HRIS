@@ -12,13 +12,14 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../../services/chat.service";
 import {WebSocketService} from "../../../services/web-socket.service";
-import {Observable, Subject, Subscription, tap} from "rxjs";
+import {finalize, Observable, Subject, Subscription, tap} from "rxjs";
 import {MessageModel} from "../../data-models/Message.model";
 import {EmployeesService} from "../../../services/employees.service";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {NGXLogger} from "ngx-logger";
 import {AuthService} from "../../../services/auth.service";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 @Component({
     selector: 'app-chat-area',
@@ -44,7 +45,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
     messageSubscription: Subscription | any;
 
     messageForm = new FormGroup({
-        message: new FormControl(null, [
+        message: new FormControl('', [
             Validators.required,
             Validators.maxLength(2000)
         ])
@@ -53,12 +54,18 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
     private sectionSource = new Subject<string>();
     section$ = this.sectionSource.asObservable();
 
+    selectedImage: File | any;
+    uploadProgress = 0;
+    imageUrl: any;
+    progressBar:boolean = false;
+
     constructor(private route: ActivatedRoute,
                 private chatService: ChatService,
                 private webSocketService: WebSocketService,
                 private multimediaService: MultimediaService,
                 private cookieService: AuthService,
                 private renderer: Renderer2,
+                private storage: AngularFireStorage,
                 private employeeService: EmployeesService, private logger: NGXLogger) {
     }
 
@@ -210,5 +217,37 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
 
     public scrollToTop() {
         this.scroll.nativeElement.scrollTop = 0;
+    }
+
+    onFileSelected(event: any) {
+        this.selectedImage = event.target.files[0];
+        this.uploadImage(this.selectedImage)
+    }
+
+    uploadImage(file: File) {
+        if (!file) return;
+
+        this.progressBar = true;
+        const filePath = `images/${Date.now()}_${file.name}`;
+        const fileRef = this.storage.ref(filePath);
+        const uploadTask = this.storage.upload(filePath, file);
+
+        uploadTask.percentageChanges().subscribe((progress:any) => {
+            this.uploadProgress = progress;
+        });
+
+        uploadTask.snapshotChanges().pipe(
+            finalize(async () => {
+                this.imageUrl = await fileRef.getDownloadURL().toPromise();
+                this.addImageToMessage(this.imageUrl);
+            })
+        ).subscribe();
+    }
+
+    addImageToMessage(imageUrl: string) {
+        const markdown: string = `![image](${imageUrl})`; // Markdown syntax for displaying image
+        // Assuming messageForm is your FormGroup for the message
+        this.messageForm.get('message')?.setValue(this.messageForm.get('message')?.value + markdown);
+        this.progressBar = false;
     }
 }
