@@ -29,6 +29,7 @@
             </div>
         </li>
         <li class="list-group-item">
+            <mat-progress-bar *ngIf="progressBar" mode="determinate" [value]="uploadProgress"></mat-progress-bar>
             <form [formGroup]="messageForm">
                 <div>
                     <textarea class="form-control w-100" placeholder="Type your message here..." id="message"
@@ -36,7 +37,10 @@
                 </div>
             </form>
             <div class="d-flex align-items-center justify-content-between mt-2">
-                <div class="d-flex"></div>
+                <div class="d-flex">
+                    <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;" #fileInput>
+                    <button class="btn-1" (click)="fileInput.click()"><mat-icon> attach_file</mat-icon></button>
+                </div>
                 <button class="btn-1" [disabled]="messageForm.invalid" (click)="sendMessage()">
                     <mat-icon>send</mat-icon>
                 </button>

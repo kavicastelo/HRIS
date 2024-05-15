@@ -93,6 +93,9 @@ import {MatMenuModule} from "@angular/material/menu";
 import {ServerLoadingComponent} from './shared/effects/server-loading/server-loading.component';
 import {InProgressComponent} from './shared/effects/in-progress/in-progress.component';
 import {MarkdownModule} from "ngx-markdown";
+import {AngularFireModule} from "@angular/fire/compat";
+import {environment} from "../environments/environment";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
     declarations: [
@@ -194,7 +197,9 @@ import {MarkdownModule} from "ngx-markdown";
         MatCheckboxModule,
         MatTableModule,
         MatMenuModule,
-        MarkdownModule.forRoot()
+        MarkdownModule.forRoot(),
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        MatProgressBarModule
     ],
     providers: [],
     bootstrap: [AppComponent]
