@@ -1,5 +1,5 @@
 <div class="card">
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush" style="position: relative">
         <li class="list-group-item" *ngFor="let r of receiver">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-column align-items-start">
@@ -28,6 +28,9 @@
                 </div>
             </div>
         </li>
+        <li class="list-group-item" *ngIf="showEmojiPicker" style="position: absolute">
+            <emoji-mart class="emoji-mart" set="facebook" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"></emoji-mart>
+        </li>
         <li class="list-group-item">
             <mat-progress-bar *ngIf="progressBar" mode="determinate" [value]="uploadProgress"></mat-progress-bar>
             <form [formGroup]="messageForm">
@@ -38,6 +41,7 @@
             </form>
             <div class="d-flex align-items-center justify-content-between mt-2">
                 <div class="d-flex">
+                    <button class="btn-1 me-2" (click) ="toggleEmojiPicker()">😀</button>
                     <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;" #fileInput>
                     <button class="btn-1" (click)="fileInput.click()"><mat-icon> attach_file</mat-icon></button>
                 </div>

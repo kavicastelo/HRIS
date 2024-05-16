@@ -99,6 +99,7 @@ import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {PickerModule} from "@ctrl/ngx-emoji-mart";
 
 @NgModule({
     declarations: [
@@ -205,7 +206,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         AngularFireStorageModule,
         AngularFirestoreModule,
         AngularFireAuthModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        PickerModule
     ],
     providers: [],
     bootstrap: [AppComponent]

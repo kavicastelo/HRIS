@@ -59,6 +59,18 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
     imageUrl: any;
     progressBar:boolean = false;
 
+    emojiMessage:any;
+    showEmojiPicker = false;
+    sets = [
+        'native',
+        'google',
+        'twitter',
+        'facebook',
+        'emojione',
+        'apple',
+        'messenger'
+    ]
+
     constructor(private route: ActivatedRoute,
                 private chatService: ChatService,
                 private webSocketService: WebSocketService,
@@ -249,5 +261,14 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
         // Assuming messageForm is your FormGroup for the message
         this.messageForm.get('message')?.setValue(this.messageForm.get('message')?.value + markdown);
         this.progressBar = false;
+    }
+
+    toggleEmojiPicker() {
+        this.showEmojiPicker = !this.showEmojiPicker;
+    }
+
+    addEmoji(event: any) {
+        const emoji = `${event.emoji.native}`;
+        this.messageForm.get('message')?.setValue(this.messageForm.get('message')?.value + emoji);
     }
 }
