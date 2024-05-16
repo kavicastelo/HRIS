@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Ephesis&family=Poppins&family=Red+Hat+Display:wght@300&family=Roboto+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Rubik+Maps&display=swap');
+@import '@ctrl/ngx-emoji-mart/picker';
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -277,6 +278,28 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
       border-radius: 5px;
     }
   }
+}
+
+// emoji-mart
+.emoji-mart{
+  width: 100% !important;
+  background-color: var(--color-surface-mixed-200);
+  border: none;
+  border-radius: 0;
+}
+.emoji-mart-dark .emoji-mart-category-label span{
+  background-color: var(--color-surface-mixed-100);
+  color: var(--color-text-200);
+}
+.emoji-mart-dark .emoji-mart-search input{
+  background-color: var(--color-surface-mixed-100);
+  color: var(--color-text-300);
+  border: none;
+  border-radius: 0;
+  margin-bottom: 2px;
+}
+.emoji-mart-dark .emoji-mart-search-icon svg{
+  fill: var(--color-text-300);
 }
 
 
