@@ -32,35 +32,29 @@
         }
       }
 
+      .profile-wrapper{
+        display: flex;
+        align-items: center;
+
+        .pro-pic{
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          margin-right: 10px;
+          img{
+            width: 100%;
+          }
+        }
+      }
+
       .receiver-message{
         width: 100%;
         display: flex;
         flex-direction: column;
-
-        .profile-wrapper{
-          display: flex;
-          align-items: center;
-          margin-bottom: 10px;
-
-          .pro-pic{
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-right: 10px;
-            img{
-              width: 100%;
-            }
-          }
-
-          h6{
-            margin: 0 10px 0 0;
-            padding: 0;
-          }
-        }
 
         .message-content{
           color: var(--color-text-200);
@@ -83,14 +77,18 @@
 
         .msg-status{
           position: absolute;
-          bottom: 3px;
+          bottom: 0;
           right: 3px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
 
           .mat-icon{
             font-size: 14px;
             display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
+            align-items: center;
+            justify-content: center;
           }
         }
       }
