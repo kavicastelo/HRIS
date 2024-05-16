@@ -59,17 +59,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
     imageUrl: any;
     progressBar:boolean = false;
 
-    emojiMessage:any;
     showEmojiPicker = false;
-    sets = [
-        'native',
-        'google',
-        'twitter',
-        'facebook',
-        'emojione',
-        'apple',
-        'messenger'
-    ]
 
     constructor(private route: ActivatedRoute,
                 private chatService: ChatService,
@@ -216,6 +206,16 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
             }, error => {
                 this.logger.error(error)
             })
+        }
+    }
+    onEnterKey(event: any) {
+        const key = event as KeyboardEvent;
+        // Check if the Enter key is pressed and the Shift key is not pressed
+        if (key.key === 'Enter' && !key.shiftKey) {
+            // Prevent the default Enter key behavior (e.g., newline in textarea)
+            key.preventDefault();
+            // Call the sendMessage function
+            this.sendMessage();
         }
     }
 

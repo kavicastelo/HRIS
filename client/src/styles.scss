@@ -270,6 +270,7 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 
 // markdown
 .message-content{
+  min-width: 100px;
   p {
     width: 100%;
     margin-bottom: 0;
@@ -288,7 +289,8 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   border-radius: 0;
 }
 .emoji-mart-dark .emoji-mart-category-label span{
-  background-color: var(--color-surface-mixed-100);
+  background-color: var(--color-surface-mixed-200);
+  font-size: 12px;
   color: var(--color-text-200);
 }
 .emoji-mart-dark .emoji-mart-search input{
@@ -300,6 +302,12 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 .emoji-mart-dark .emoji-mart-search-icon svg{
   fill: var(--color-text-300);
+}
+.emoji-mart-anchor-selected .emoji-mart-anchor-bar{
+  background-color: var(--color-primary-400)!important;
+}
+.emoji-mart-dark .emoji-mart-anchor:hover, .emoji-mart-dark .emoji-mart-anchor:focus, .emoji-mart-dark .emoji-mart-anchor-selected{
+  color: var(--color-primary-400)!important;
 }
 
 
