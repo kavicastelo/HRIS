@@ -28,7 +28,7 @@
                 </div>
             </div>
         </li>
-        <li class="list-group-item" *ngIf="showEmojiPicker" style="position: absolute">
+        <li class="list-group-item" *ngIf="showEmojiPicker" style="position: absolute; bottom: 0">
             <emoji-mart class="emoji-mart" set="facebook" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"></emoji-mart>
         </li>
         <li class="list-group-item">
