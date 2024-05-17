@@ -41,15 +41,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   employee: any
 
   coverImages: any[] = [
-    'https://c1.wallpaperflare.com/preview/88/241/234/adult-blur-bokeh-city.jpg',
-    'https://c1.wallpaperflare.com/preview/704/487/655/59687928ebb22-thumbnail.jpg',
-    'https://e0.pxfuel.com/wallpapers/1017/992/desktop-wallpaper-rainy-night-background-for-your-mobile-tablet-explore-rainy-background-rainy-day-widescreen-rainy-day-dark-rainy-night.jpg',
-    'https://e0.pxfuel.com/wallpapers/116/359/desktop-wallpaper-laptop-jason-choi-zy-23-rainy-london-thumbnail.jpg',
-    'https://c4.wallpaperflare.com/wallpaper/564/101/189/autumn-forest-glade-wallpaper-preview.jpg',
-    'https://wallpaper-house.com/data/out/12/wallpaper2you_513656.jpg',
-    'https://c4.wallpaperflare.com/wallpaper/480/252/986/best-pictures-of-nature-hd-picture-1920x1080-wallpaper-preview.jpg',
-    'https://wallpapercave.com/wp/wp8335968.jpg',
-    'https://wallup.net/wp-content/uploads/2019/09/309505-forests-paths-golden-sunlight-morning-creek.jpg',
+    'https://img.freepik.com/free-photo/snowy-mountain-peak-starry-galaxy-majesty-generative-ai_188544-9650.jpg?w=996&t=st=1715601166~exp=1715601766~hmac=a316e8d9fbf63dc7910796c350f5915131f56ae5607bbc60442c44f6dd2f78a3',
+    'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?t=st=1715600602~exp=1715604202~hmac=449d5e626eeca272f7aa72388d107ea68f7233ed0b2a6eb6a95e859c885172ab&w=996',
+    'https://img.freepik.com/free-photo/fresh-autumn-leaves-reveal-vibrant-organic-pattern-generated-by-ai_188544-15037.jpg?w=996&t=st=1715600804~exp=1715601404~hmac=1ffb437536f8d3e6d79fbbc01590b0ce03a19efd190e78071a5b7c60fd9aafc1',
+    'https://img.freepik.com/free-photo/nature-beauty-reflected-tranquil-mountain-lake-generative-ai_188544-12625.jpg?w=996&t=st=1715600840~exp=1715601440~hmac=ce440a6738b8bed0902a786d19afe6c485c980e44724cbb839873928272f6185',
+    'https://img.freepik.com/free-photo/natures-beauty-shines-multi-colored-floral-decoration-generative-ai_188544-8615.jpg?w=996&t=st=1715600880~exp=1715601480~hmac=12ef0258b73d13d36733188e46c2180b65a748c6cd2d3b434bef32e81685cc8b',
+    'https://img.freepik.com/free-photo/beautiful-mountains-landscape_23-2150787838.jpg?t=st=1715600618~exp=1715604218~hmac=02f63ab77a901aa5e81b98dcbe8ae7946a8bc9525237d4f98bcdf18f1cd0a080&w=996',
+    'https://img.freepik.com/free-photo/nature-landscape-with-black-sand-beach_23-2151380348.jpg?t=st=1715600195~exp=1715603795~hmac=249d869de3b141a801fbd6b73fedf625d4b09e922a0b165f3417f216688e2692&w=996',
+    'https://img.freepik.com/free-photo/majestic-mountain-range-meets-reflective-blue-water-generated-by-ai_188544-15024.jpg?w=996&t=st=1715601030~exp=1715601630~hmac=02ac930005bc92a967bff449f55db2cf75ca1ad46fea7e2436473e61e3c9f52f',
+    'https://img.freepik.com/free-photo/beautiful-mountains-landscape_23-2151151047.jpg?t=st=1715600988~exp=1715604588~hmac=e35346bae93cb1992ea07c46fdd0cc915c38e888ae64ea9b75bbce9e1f956d83&w=996',
   ];
   selectedCoverImage: string | undefined;
 

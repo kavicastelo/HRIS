@@ -1,5 +1,7 @@
 <div class="d-flex align-items-center justify-content-end">
-    <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Create Task</span></button>
+    <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()">
+        <mat-icon>add</mat-icon>
+        <span class="d-none d-md-block">&nbsp;&nbsp;Create Task</span></button>
 </div>
 
 <div class="card">
@@ -17,20 +19,34 @@
                         <th>Plan Title</th>
                         <th>Task Description</th>
                         <th>Task Date Range</th>
+                        <th>State</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let t of filterTasks()">
-                        <td>{{filterPlan(t.onBoardingPlanId)}}</td>
-                        <td>{{t.description}}</td>
+                    <tr *ngFor="let t of filterTasks()" (click)="openEdit(t)">
+                        <td [title]="filterPlan(t.onBoardingPlanId)">{{filterPlan(t.onBoardingPlanId) | truncate:18}}</td>
+                        <td [title]="t.description">{{t.description | truncate:40}}</td>
                         <td>
                             <div class="d-flex align-items-center">
                                 {{t.startdate | dateFormat}}&nbsp;-&nbsp;{{t.taskdate | dateFormat}}
                             </div>
                         </td>
+                        <td class="td-status">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="status-tag"
+                                     [ngStyle]="{'background-color':t.status=='Completed'?'rgba(12, 188, 135, 0.5)':t.status=='Open'?'rgba(190, 149, 255, 0.5)':t.status=='In Progress'?'rgba(115, 172, 255, 0.5)':t.status=='On Hold'?'rgba(232, 232, 232, 0.5)':t.status=='Pending Review'?'rgba(247, 195, 46, 0.5)':t.status=='Canceled'?'rgba(230, 41, 41, 0.5)':'rgba(255, 174, 252, 0.5)'}">
+                                    {{t.status}}
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="filterTasks().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
             </div>
         </li>
         <li class="list-group-item">&nbsp;</li>

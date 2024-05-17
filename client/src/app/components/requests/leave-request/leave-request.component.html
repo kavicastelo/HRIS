@@ -46,22 +46,7 @@
         </li>
         <li class="list-group-item">
             <form [formGroup]="filterForm">
-                <div class="d-md-flex align-items-center justify-content-between my-4">
-                    <div class="d-flex align-items-center">
-                        <p>Date Range:&nbsp;&nbsp;</p>
-                        <div>
-                            <mat-form-field appearance="outline">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate placeholder="Start date" formControlName="startDate">
-                                    <input matEndDate placeholder="End date" formControlName="endDate">
-                                </mat-date-range-input>
-                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
-                        </div>
-                    </div>
+                <div class="d-md-flex align-items-center justify-content-end my-1">
                     <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center">
                             <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;&nbsp;
@@ -71,10 +56,7 @@
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>FILTER</mat-label>
                                 <mat-select id="department" formControlName="filter">
-                                    <mat-option value="all">All</mat-option>
-                                    <mat-option value="Approved">Approved</mat-option>
-                                    <mat-option value="Pending">Pending</mat-option>
-                                    <mat-option value="Rejected">Rejected</mat-option>
+                                    <mat-option *ngFor="let lt of leaveTypes" [value]="lt" (click)="selectFilter(lt)">{{lt}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -93,9 +75,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let l of leaveStore">
+                    <tr *ngFor="let l of filterLeaves()" (click)="l.approved == 'pending'?editLeave(l):message('Sorry!! You are unable to edit this request.')">
                         <td>{{l.leaveStartDate | dateFormat}}</td>
-                        <td>-</td>
+                        <td>{{l.name}}</td>
                         <td>{{l.leaveType}}</td>
                         <td class="td-status">
                             <div class="d-flex align-items-center justify-content-center">
@@ -104,10 +86,15 @@
                                 </div>
                             </div>
                         </td>
-                        <td>-</td>
+                        <td>{{l.approver?l.approver:'-'}}</td>
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="filterLeaves().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
             </div>
         </li>
     </ul>

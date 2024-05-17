@@ -8,6 +8,10 @@ import {Observable, tap} from "rxjs";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  CreateDepartmentDialogComponent
+} from "../../dialogs/create-department-dialog/create-department-dialog.component";
 
 @Component({
   selector: 'app-employee-register',
@@ -18,26 +22,13 @@ export class EmployeeRegisterComponent implements OnInit{
   employeeForm: FormGroup | any;
   organizationId: any;
   departmentId:any
-  departmentDataStore:any;
-  selectedDepartment:any;
-  employeeDataStore:any;
+  departmentDataStore:any[] = [];
+  filteredDepartments:any[] = [];
+  selectedDepartment:any[] = [];
+  employeeDataStore:any[] = [];
   employee:any;
   userId:any;
   chosenPhoto: File | any;
-
-  departmentForm = new FormGroup({
-    name: new FormControl(null,[
-      Validators.required
-    ]),
-    description: new FormControl(null,[
-      Validators.required
-    ]),
-    organizationId: new FormControl(null,[
-      Validators.required
-    ])
-  })
-
-
 
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
@@ -46,19 +37,21 @@ export class EmployeeRegisterComponent implements OnInit{
               private multimediaService: MultimediaService,
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
+              private dialog: MatDialog,
               private cookieService: AuthService) { }
 
   async ngOnInit(): Promise<any> {
+    this.organizationId = this.cookieService.organization();
 
     this.initForm()
 
     this.defaultPhoto()
 
-    this.loadAllDepartments().subscribe(()=>{
+    await this.loadAllDepartments().subscribe(()=>{
       //TODO: do something
     })
 
-    this.loadAllUsers().subscribe(()=>{
+    await this.loadAllUsers().subscribe(()=>{
       this.getUser()
     })
   }
@@ -123,12 +116,27 @@ export class EmployeeRegisterComponent implements OnInit{
       sessionStorage.setItem('jobData', stringifiedJobData);
       formData.append('jobData', stringifiedJobData);
 
-      sessionStorage.setItem('depId', this.selectedDepartment);
+      this.departmentDataStore.forEach((d:any) => {
+        if(d.name == this.selectedDepartment){
+          sessionStorage.setItem('depId', d.id);
+        }
+      })
 
-      this.employeeService.uploadEmployeeData(formData);
-      this.employeeForm.reset();
+      this.employeeDataStore.forEach((e:any) =>{
+        if(e.email == this.employeeForm.value.email){
+          sessionStorage.setItem('isExists', "1");
+        }
+      })
+      if (sessionStorage.getItem('isExists') != "1"){
+        this.employeeService.uploadEmployeeData(formData);
+        this.employeeForm.reset();
+      } else {
+        this.snackBar.open("User Already Exists!!", "OK", {duration:3000})
+      }
+      sessionStorage.removeItem('isExists');
+
     } else {
-      this.snackBar.open("Some required fields are missing!","OK",{duration:2000})
+      this.snackBar.open("Some required fields are missing!","OK",{duration:3000})
     }
   }
 
@@ -136,6 +144,12 @@ export class EmployeeRegisterComponent implements OnInit{
     return this.departmentService.getAllDepartments().pipe(
         tap(data => this.departmentDataStore = data)
     );
+  }
+
+  filterDepartments():any[]{
+    this.filteredDepartments = this.departmentDataStore.filter((dep:any) => dep.organizationId == this.organizationId)
+
+    return this.filteredDepartments;
   }
 
   choosePhoto(): void {
@@ -179,7 +193,11 @@ export class EmployeeRegisterComponent implements OnInit{
   }
 
   defaultPhoto() {
-    this.chosenPhoto = null;
+    // Check if default photo already loaded
+    if (this.chosenPhoto) {
+      return;
+    }
+
     // Create a path to the default image file in the assets folder
     const defaultImagePath = 'assets/imgs/shared/default_profile.jpg';
 
@@ -204,17 +222,27 @@ export class EmployeeRegisterComponent implements OnInit{
   }
 
   addDepartment() {
-    if (this.departmentForm.valid) {
-      this.departmentService.addDepartment({
-        name: this.departmentForm.value.name,
-        description: this.departmentForm.value.description,
-        organizationId: this.departmentForm.value.organizationId
-      }).subscribe(() => {
-        this.departmentForm.reset();
-        this.logger.info('Department added successfully');
-      }, error => {
-        this.logger.error(error);
-      })
+    const data = {
+      organizationId: this.organizationId
     }
+    this.toggleDialog('','',data,CreateDepartmentDialogComponent)
+  }
+
+  toggleDialog(title:any, msg:any, data: any, component:any) {
+    const _popup = this.dialog.open(component, {
+      width: '350px',
+      enterAnimationDuration: '500ms',
+      exitAnimationDuration: '500ms',
+      data: {
+        data: data,
+        title: title,
+        msg: msg
+      }
+    });
+    _popup.afterClosed().subscribe(item => {
+      this.loadAllDepartments().subscribe(()=>{
+        this.filterDepartments()
+      })
+    })
   }
 }

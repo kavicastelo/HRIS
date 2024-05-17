@@ -29,6 +29,16 @@ export class MultimediaService {
         return null;
     }
 
+    public addImageToMarkdown(file: File): Observable<any> {
+        const formData: FormData = new FormData();
+        formData.append('file', file);
+
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+
+        return this.http.post(`${this.baseUrl}message/upload-image`, formData, {headers});
+    }
+
     public addMultimediaPhoto(title: string, file: File): Observable<any> {
         const formData: FormData = new FormData();
         formData.append('title', title);

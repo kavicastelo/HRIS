@@ -6,6 +6,7 @@ import {AuthService} from "../../../services/auth.service";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {LeaveService} from "../../../services/leave.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-create-plan-dialog',
@@ -26,6 +27,7 @@ export class CreatePlanDialogComponent {
 
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
+              private snackBar: MatSnackBar,
               private onboardinService: OnboardinService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreatePlanDialogComponent>) {
@@ -48,7 +50,8 @@ export class CreatePlanDialogComponent {
         startDate: this.onboardinPlanForm.value.startDatePlan,
         taskDate: this.onboardinPlanForm.value.endDatePlan
       }).subscribe(data=>{
-        console.log(data)
+        this.closePopup();
+        this.snackBar.open("New Plan Create!","Ok", {duration:3000})
       }, error => {
         console.log(error)
       })

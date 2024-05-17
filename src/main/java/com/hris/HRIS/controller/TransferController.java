@@ -60,8 +60,8 @@ public class TransferController {
         }
 
         String receivedLetter = lettersGenerationService.generateReceivedTransferLetter(newTransferModel);
-//        TODO: uncomment in prod mode
-//        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find more information in the platform.\n\nBest Regards,\nHR Department");
+
+        emailService.sendSimpleEmail(transferModel.getEmail(), "Transfer Request", "We received your transfer request. Please find more information in the platform.\n\nBest Regards,\nHR Department");
 
         ApiResponse apiResponse = new ApiResponse(receivedLetter);
         return ResponseEntity.ok(apiResponse);
@@ -183,12 +183,12 @@ public class TransferController {
                 systemAutomateService.UpdateEmployeeJobDataTransfer(existingLetter);
 
                 approvedLetter = lettersGenerationService.generateApprovedTransferLetter(existingLetter);
-                //        TODO: uncomment in prod mode
-//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Congratulations!\nWe approved your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+
+                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Congratulations!\nWe approved your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
             } else if (Objects.equals(transferModel.getApproved(),"declined")){
                 approvedLetter = lettersGenerationService.generateRejectedTransferLetter(existingLetter);
-                //        TODO: uncomment in prod mode
-//                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Our Apologies!\nWe declined your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
+
+                emailService.sendSimpleEmail(existingLetter.getEmail(), "Transfer Request", "Our Apologies!\nWe declined your transfer request. Please find more information in platform.\n\nBest Regards,\nHR Department");
             }
 
         }

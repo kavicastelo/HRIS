@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-between px-2 my-2">
-    <h5>Request a Leave</h5>
+    <h5>{{receivedData.data.leaveId?'Edit Request':'Request a Leave'}}</h5>
     <mat-icon (click)="closePopup()">close</mat-icon>
 </div>
 <hr>
@@ -30,5 +30,5 @@
 <hr>
 <div class="d-flex align-items-center justify-content-end px-2 my-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
-    <button class="btn" [disabled]="leaveForm.invalid" (click)="submitLeave()">Request</button>
+    <button class="btn" [disabled]="leaveForm.invalid" (click)="receivedData.data.leaveId?editLeave():submitLeave()">{{receivedData.data.leaveId?'Edit':'Request'}}</button>
 </div>

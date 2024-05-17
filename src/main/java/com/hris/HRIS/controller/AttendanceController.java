@@ -1,10 +1,12 @@
 package com.hris.HRIS.controller;
 
+import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.AttendanceModel;
 import com.hris.HRIS.model.CredentialsModel;
 import com.hris.HRIS.repository.AttendanceRepository;
 import com.hris.HRIS.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +27,44 @@ public class AttendanceController {
 
     // Endpoint to create a new attendance record
     @PostMapping("/create")
-    public ResponseEntity<AttendanceModel> createAttendance(@RequestBody AttendanceModel attendanceModel) {
+    public ResponseEntity<ApiResponse> createAttendance(@RequestBody AttendanceModel attendanceModel) {
         AttendanceModel createdAttendance = attendanceService.createAttendance(attendanceModel);
-        return new ResponseEntity<>(createdAttendance, HttpStatus.CREATED);
+
+        ApiResponse response = new ApiResponse("Attendance created");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/depart/{id}")
+    public ResponseEntity<ApiResponse> departAttendance(@PathVariable String id, @RequestBody AttendanceModel attendanceModel){
+        Optional<AttendanceModel> optionalAttendanceModel = attendanceRepository.findById(id);
+
+        if (optionalAttendanceModel.isPresent()){
+            AttendanceModel newModel = optionalAttendanceModel.get();
+
+            newModel.setRecordOutTime(attendanceModel.getRecordOutTime());
+            newModel.setLateMinutes(attendanceModel.getLateMinutes());
+
+            attendanceRepository.save(newModel);
+        }
+
+        ApiResponse response = new ApiResponse("Attendance departed");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/assign/shift/{id}")
+    public ResponseEntity<ApiResponse> assignShift(@PathVariable String id, @RequestBody String shift){
+        Optional<AttendanceModel> optionalAttendanceModel = attendanceRepository.findById(id);
+
+        if (optionalAttendanceModel.isPresent()){
+            AttendanceModel newModel = optionalAttendanceModel.get();
+
+            newModel.setWorkShift(shift);
+
+            attendanceRepository.save(newModel);
+        }
+
+        ApiResponse response = new ApiResponse("Shift assigned");
+        return ResponseEntity.ok(response);
     }
 
     // Endpoint to retrieve all attendance records
@@ -69,25 +106,30 @@ public class AttendanceController {
         }
     }
     // Rest API to calculate late minutes
-//    @GetMapping("/calculate-late-minutes/{id}")
-//    public ResponseEntity<Long> calculateLateMinutes(@PathVariable String id, @RequestParam Date expectedInTime) {
-//        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
-//        if (attendanceModel == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        long lateMinutes = attendanceService.calculateLateMinutes(attendanceModel, expectedInTime);
-//        return new ResponseEntity<>(lateMinutes, HttpStatus.OK);
-//    }
+    @GetMapping("/calculate-late-minutes/{id}")
+    public ResponseEntity<Long> calculateLateMinutes(@PathVariable String id,
+                                                     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date expectedInTime) {
+        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
+        if (attendanceModel == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        long lateMinutes = attendanceService.calculateLateMinutes(attendanceModel, expectedInTime);
+        return new ResponseEntity<>(lateMinutes, HttpStatus.OK);
+    }
+
 
     // Rest API to calculate early departures
-//    @GetMapping("/calculate-early-departure-minutes/{id}")
-//    public ResponseEntity<Long> calculateEarlyDepartureMinutes(@PathVariable String id, @RequestParam Date expectedOutTime) {
-//        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
-//        if (attendanceModel == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        long earlyDepartureMinutes = attendanceService.calculateEarlyDepartureMinutes(attendanceModel, expectedOutTime);
-//        return new ResponseEntity<>(earlyDepartureMinutes, HttpStatus.OK);
-//    }
+    @GetMapping("/calculate-early-departure-minutes/{id}")
+    public ResponseEntity<Long> calculateEarlyDepartureMinutes(@PathVariable String id,
+                                                               @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date expectedOutTime) {
+        AttendanceModel attendanceModel = attendanceService.getAttendanceById(id);
+        if (attendanceModel == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        long earlyDepartureMinutes = attendanceService.calculateEarlyDepartureMinutes(attendanceModel, expectedOutTime);
+        return new ResponseEntity<>(earlyDepartureMinutes, HttpStatus.OK);
+    }
 }
 

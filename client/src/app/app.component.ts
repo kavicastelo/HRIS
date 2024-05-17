@@ -7,8 +7,8 @@ import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
 import {NotificationsService} from "./services/notifications.service";
 import {Observable, tap} from "rxjs";
-import {SafeResourceUrl} from "@angular/platform-browser";
 import {AuthService} from "./services/auth.service";
+import {OrganizationService} from "./services/organization.service";
 
 @Component({
     selector: 'app-root',
@@ -20,17 +20,24 @@ export class AppComponent implements OnInit {
     employeeDataStore: any;
     employee: any[] = [];
     userId: any;
+    organizationId:any
+    organizationName:any
+
+    organization:any
 
     showAllNotifications: boolean = false;
     maxNotificationsDisplayed: number = 5;
 
     notifyDataStore: any[] = [];
-    notifications: any[] = []
+    notifications: any[] = [];
+
+    isServerConfig: boolean = false;
 
     constructor(public themeService: ThemeService,
                 private webSocketService: WebSocketService,
                 public multimediaService: MultimediaService,
                 public notificationsService: NotificationsService,
+                private organizationService: OrganizationService,
                 public router: Router,
                 private cookieService: AuthService,
                 private employeeService: EmployeesService, private logger: NGXLogger) {
@@ -40,10 +47,15 @@ export class AppComponent implements OnInit {
     async ngOnInit(): Promise<any> {
         this.loadAllUsers();
         this.userId = this.cookieService.userID().toString();
+        this.organizationId = this.cookieService.organization().toString();
+
+        await this.getOrganization().subscribe(()=>{
+            this.organizationName = this.organization.organizationName + " HR System"
+        });
 
         if (this.cookieService.isExists()) {
             // Establish WebSocket connection
-            this.webSocketService.connect('ws://localhost:4200/ws');
+            this.webSocketService.connect('wss://hris-prod.onrender.com/ws');
 
             this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
                 this.logger.log('WebSocket connection status:', status);
@@ -100,8 +112,16 @@ export class AppComponent implements OnInit {
         );
     }
 
+    getOrganization(): Observable<any> {
+        return this.organizationService.getOrganizationById(this.organizationId).pipe(
+            tap(data => this.organization = data)
+        );
+    }
+
     loadAllUsers() {
+        this.isServerConfig = true;
         this.employeeService.getAllEmployees().subscribe(data => {
+            this.isServerConfig = false;
             this.employeeDataStore = data;
             this.getUser(this.employeeDataStore);
 

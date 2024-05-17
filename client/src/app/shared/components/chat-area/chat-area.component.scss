@@ -7,6 +7,7 @@
       h5{
         margin: 0;
         font-size: 16px;
+        cursor: pointer;
       }
       small{
         font-size: 12px;
@@ -31,40 +32,33 @@
         }
       }
 
+      .profile-wrapper{
+        display: flex;
+        align-items: center;
+
+        .pro-pic{
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          margin-right: 10px;
+          img{
+            width: 100%;
+          }
+        }
+      }
+
       .receiver-message{
         width: 100%;
         display: flex;
         flex-direction: column;
 
-        .profile-wrapper{
-          display: flex;
-          align-items: center;
-          margin-bottom: 10px;
-
-          .pro-pic{
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-right: 10px;
-            img{
-              width: 100%;
-            }
-          }
-
-          h6{
-            margin: 0 10px 0 0;
-            padding: 0;
-          }
-        }
-
         .message-content{
           color: var(--color-text-200);
-          padding: 10px;
-          border-radius: 10px;
+          padding: 10px 10px 0 10px;
           margin-left: 10px;
           margin-bottom: 10px;
           width: fit-content;
@@ -78,6 +72,24 @@
           font-weight: 400;
           font-family: Roboto, "Helvetica Neue", sans-serif;
           overflow-wrap: break-word;
+          position: relative;
+        }
+
+        .msg-status{
+          position: absolute;
+          bottom: 0;
+          right: 3px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
+
+          .mat-icon{
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
         }
       }
       .receiver-message.receiver{
@@ -85,6 +97,7 @@
 
         .message-content{
           background-color: var(--color-surface-mixed-300);
+          border-radius: 0 10px 10px 10px;
         }
       }
       .receiver-message.sender{
@@ -92,6 +105,7 @@
 
         .message-content{
           background-color: var(--color-surface-mixed-400);
+          border-radius: 10px 0 10px 10px;
         }
       }
     }

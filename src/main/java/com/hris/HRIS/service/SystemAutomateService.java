@@ -85,8 +85,8 @@ public class SystemAutomateService {
             credentialsModel.setPassword(password);
             credentialsModel.setLevel("1");
             credentialsRepository.save(credentialsModel);
-//            TODO: //uncomment email service in prod mode
-//            emailService.sendSimpleEmail(employeeModel.getEmail(),"Login Credentials","Hello "+name+",\n"+para+tag+footer);
+
+            emailService.sendSimpleEmail(employeeModel.getEmail(),"Login Credentials","Hello "+name+",\n"+para+tag+footer);
         }
     }
     static char[] random_Password(int len)

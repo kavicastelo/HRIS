@@ -10,17 +10,13 @@
 
       .list-1, .list-2{
         list-style: none;
-
-        li{
-          font-weight: 500;
-          padding: 7px 0;
-        }
+        font-weight: 500;
+        padding: 7px 5px;
       }
 
       .list-1{
-        li{
-          color: var(--color-text-300);
-        }
+        white-space: nowrap;
+        color: var(--color-text-300);
       }
     }
   }

@@ -68,7 +68,8 @@ public class OnboardingController {
 
         if (onboardingModelOptional.isPresent()) {
             OnboardingModel existingOnboarding = onboardingModelOptional.get();
-            existingOnboarding.setEmployees(onboardingModel.getEmployees());
+            existingOnboarding.setOrganizationId(onboardingModel.getOrganizationId());
+            existingOnboarding.setOnBoardingPlanId(onboardingModel.getOnBoardingPlanId());
             existingOnboarding.setAdminEmail(onboardingModel.getAdminEmail());
             existingOnboarding.setDescription(onboardingModel.getDescription());
             existingOnboarding.setStartdate(onboardingModel.getStartdate());

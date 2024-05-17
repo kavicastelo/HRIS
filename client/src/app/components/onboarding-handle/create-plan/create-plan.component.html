@@ -21,8 +21,8 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let p of filterPlans()">
-                        <td>{{p.title}}</td>
-                        <td>{{p.description}}</td>
+                        <td [title]="p.title">{{p.title | truncate:18}}</td>
+                        <td [title]="p.description">{{p.description | truncate:40}}</td>
                         <td>
                             <div class="d-flex align-items-center">
                                 {{p.startDate | dateFormat}}&nbsp;-&nbsp;{{p.taskDate | dateFormat}}
@@ -31,6 +31,11 @@
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="filterPlans().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
             </div>
         </li>
         <li class="list-group-item">&nbsp;</li>

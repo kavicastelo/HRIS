@@ -4,6 +4,7 @@ import {OnboardinService} from "../../../services/onboardin.service";
 import {EmployeesService} from "../../../services/employees.service";
 import {AuthService} from "../../../services/auth.service";
 import {forkJoin, Observable, tap} from "rxjs";
+import {ShiftsService} from "../../../services/shifts.service";
 
 @Component({
   selector: 'app-assign-task',
@@ -15,9 +16,11 @@ export class AssignTaskComponent {
   employeeDataStore:any[] = [];
   planDataStore:any[] = [];
   taskDataStore:any[] = [];
+  shiftDataStore:any[] = [];
   filteredEmployees:any[] = [];
   filteredPlans:any[] = [];
   filteredTasks:any[] = [];
+  filteredShifts:any[] = [];
   selectedPlan:any;
   selectedTask:any;
   organizationId:any;
@@ -28,12 +31,14 @@ export class AssignTaskComponent {
 
   targetInput:any;
 
+  isInProgress:boolean = false
+
   assignForm = new FormGroup({
     plan: new FormControl(null, [Validators.required]),
     task: new FormControl(null, [Validators.required])
   })
 
-  constructor(private onboardinService: OnboardinService, private employeeService: EmployeesService, private cookiesService: AuthService) {
+  constructor(private onboardinService: OnboardinService, private employeeService: EmployeesService, private cookiesService: AuthService, private shiftService: ShiftsService) {
   }
 
   ngOnInit(): void {
@@ -44,6 +49,7 @@ export class AssignTaskComponent {
     })
     this.loadAllPlans().subscribe(()=>{})
     this.loadAllTasks().subscribe(()=>{})
+    this.loadAllShifts().subscribe(()=>{})
   }
 
   loadAllUsers(): Observable<any>{
@@ -75,6 +81,12 @@ export class AssignTaskComponent {
   loadAllTasks(): Observable<any>{
     return this.onboardinService.getAllTasks().pipe(
         tap(data => this.taskDataStore = data)
+    );
+  }
+
+  loadAllShifts(): Observable<any>{
+    return this.shiftService.getAllShifts().pipe(
+        tap(data => this.shiftDataStore = data)
     );
   }
 
@@ -119,6 +131,12 @@ export class AssignTaskComponent {
     return this.filteredTasks;
   }
 
+  filterShifts(): any[]{
+    this.filteredShifts = this.shiftDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+
+    return this.filteredShifts;
+  }
+
   checkEmployeeSelectionForTask(taskId: any) {
     // Clear current checkbox array before choosing new task
     this.initializeCheckboxes();
@@ -126,7 +144,7 @@ export class AssignTaskComponent {
     // Find the selected task
     const selectedTask = this.filteredTasks.find(task => task.id === taskId);
 
-    if (selectedTask) {
+    if (selectedTask.employees) {
       // Get the employee IDs from the selected task
       const taskEmployeeIds = selectedTask.employees.map((e: any) => e.id);
 
@@ -136,6 +154,7 @@ export class AssignTaskComponent {
   }
 
   assignEmployees(event: Event) {
+    this.isInProgress = true;
     event.preventDefault();
     if (this.assignForm.valid && this.selectedEmployeeIds.length > 0) {
       const requests = this.selectedEmployeeIds.map(id => this.employeeService.getEmployeeById(id));
@@ -153,7 +172,7 @@ export class AssignTaskComponent {
 
         // Now that the selectedEmployees array is populated with unique employees, make the HTTP request
         this.onboardinService.assignEmployeeToTask(this.assignForm.value.task, this.selectedEmployees).subscribe(data => {
-          console.log(data);
+          this.isInProgress = false;
           this.selectedEmployeeIds = [];
         }, error => {
           console.log(error);

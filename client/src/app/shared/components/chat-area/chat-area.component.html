@@ -1,36 +1,58 @@
 <div class="card">
-  <ul class="list-group list-group-flush" *ngFor="let r of receiver">
-    <li class="list-group-item">
-      <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex flex-column align-items-start">
-          <h5>{{r.name}}</h5>
-          <small *ngIf="r.activityStatus != null">{{r.activityStatus?'Active now':'Last Seen '+(r.lastSeen | timeAgo)}}</small>
-        </div>
-        <button class="btn-3"><mat-icon>more_horiz</mat-icon></button>
-      </div>
-    </li>
-    <li class="list-group-item" style="max-height: calc(100vh - 260px); overflow-y: auto" #scrollMe>
-      <div class="receiver-message" *ngFor="let message of chatMessages" [ngClass]="isMessageFrom(message) ? 'sender' : 'receiver'">
-        <div class="profile-wrapper">
-          <div class="pro-pic">
-            <img [src]="isMessageFrom(message) ? convertToSafeUrl(sender.photo) : convertToSafeUrl(r.photo)" [alt]="isMessageFrom(message) ? 'You' : r.name">
-          </div>
-          <h6>{{ isMessageFrom(message) ? 'You' : r.name }}</h6>
-          <small>{{ message.timestamp | timeAgo }}</small>
-        </div>
-        <p class="message-content">{{ message.content }}</p>
-      </div>
-    </li>
-    <li class="list-group-item">
-      <form [formGroup]="messageForm">
-        <div>
-          <textarea class="form-control w-100" placeholder="Type your message here..." id="message" formControlName="message"></textarea>
-        </div>
-      </form>
-      <div class="d-flex align-items-center justify-content-between mt-2">
-        <div class="d-flex"></div>
-        <button class="btn-1" [disabled]="messageForm.invalid" (click)="sendMessage()"><mat-icon>send</mat-icon></button>
-      </div>
-    </li>
-  </ul>
+    <ul class="list-group list-group-flush" style="position: relative">
+        <li class="list-group-item" *ngFor="let r of receiver">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="profile-wrapper">
+                        <div class="pro-pic">
+                            <img [src]="isMessageFrom(message) ? convertToSafeUrl(sender.photo) : convertToSafeUrl(r.photo)"
+                                 [alt]="isMessageFrom(message) ? 'You' : r.name">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-start">
+                        <h5 routerLink="/profile/{{r.id}}/about/{{r.id}}">{{r.name}}</h5>
+                        <small *ngIf="r.activityStatus != null">{{r.activityStatus ? 'Active now' : 'Last Seen ' + (r.lastSeen | timeAgo)}}</small>
+                    </div>
+                </div>
+                <button class="btn-3">
+                    <mat-icon>more_horiz</mat-icon>
+                </button>
+            </div>
+        </li>
+        <li #scroll class="list-group-item" style="height: calc(100vh - 260px); overflow-y: auto;">
+            <div class="receiver-message" *ngFor="let message of chatMessages"
+                 [ngClass]="isMessageFrom(message) ? 'sender' : 'receiver'">
+                <div class="message-content">
+                    <div [innerHTML]="message.content | markdown"></div>
+                    <span class="msg-status">
+                        <small>{{ message.timestamp | timeFormat }}</small>
+                        <mat-icon>{{ message.status == 'sent' ? 'done' : 'done_all' }}</mat-icon>
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item" *ngIf="showEmojiPicker" style="position: absolute; bottom: 0">
+            <emoji-mart class="emoji-mart" set="facebook" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"></emoji-mart>
+        </li>
+        <li class="list-group-item">
+            <mat-progress-bar *ngIf="progressBar" mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+            <form [formGroup]="messageForm">
+                <div>
+                    <textarea class="form-control w-100" placeholder="Type your message here...
+Shift + Enter to new line" id="message"
+                              formControlName="message"  (keydown.enter)="onEnterKey($event)"></textarea>
+                </div>
+            </form>
+            <div class="d-flex align-items-center justify-content-between mt-2">
+                <div class="d-flex">
+                    <button class="btn-1 me-2" (click) ="toggleEmojiPicker()">😀</button>
+                    <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;" #fileInput>
+                    <button class="btn-1" (click)="fileInput.click()"><mat-icon> attach_file</mat-icon></button>
+                </div>
+                <button class="btn-1" [disabled]="messageForm.invalid" (click)="sendMessage()">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </div>
+        </li>
+    </ul>
 </div>

@@ -12,7 +12,7 @@
                     <mat-icon>reorder</mat-icon>
                 </button>
                 <!--    <img src="./assets/images/logo.png" alt="logo" routerLink="/home">-->
-                <span class="d-none d-md-flex">SPARKC Logo</span>
+                <span id="orgName" class="d-none d-md-flex" [innerText]="organizationName" routerLink="/">SPARKC HR Systems</span>
             </div>
             <div class="d-flex align-items-center justify-content-around">
                 <button class="d-flex d-sm-none btn-1" routerLink="/chat-list">
@@ -47,8 +47,8 @@
         <div class="w-100">
             <mat-drawer-container class="drawer-container main-body">
                 <mat-drawer #drawer mode="over" class="drawer">
-                    <div class="profile-div">
-                        <div class="d-flex align-items-center">
+                    <div class="profile-div sticky-top">
+                        <div class="d-flex align-items-center justify-content-center flex-column">
                             <div class="profile-pic">
                                 <img [src]="e.photo" alt="{{e.name}}">
                             </div>
@@ -57,18 +57,80 @@
                                 <small>{{e.jobData.position}}</small>
                             </div>
                         </div>
+                        <hr style="color: var(--color-primary-400)">
                     </div>
-                    <hr style="color: var(--color-primary-400)">
-                    <span>YOU</span>
-                    <ul>
-                        <li routerLink="/feed">Feed</li>
-                        <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">Requests</li>
-                        <li routerLink="/employee">Employee</li>
-                        <li routerLink="/bulletins">Bulletins & News</li>
-                        <li routerLink="/alm">Attendance & Leave</li>
-                        <li routerLink="/onboardin">Onboarding</li>
-                        <li routerLink="/login">Login</li>
-                    </ul>
+                    <span>MENU</span>
+                    <div class="accordian">
+                        <mat-accordion>
+                            <mat-expansion-panel expanded>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Employee
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li routerLink="/profile/{{e.id}}/about/{{e.id}}">Profile</li>
+                                    <li routerLink="/feed">News Feed</li>
+                                    <li routerLink="/chat-list">Connections</li>
+                                    <li routerLink="/employee">Manage Employees</li>
+                                </ul>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Requests
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">My Requests</li>
+                                    <ul class="list-2">
+                                        <li routerLink="/requests/{{e.id}}/promotion/{{e.id}}">Promotion</li>
+                                        <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">Transfer</li>
+                                        <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">Leave</li>
+                                    </ul>
+                                </ul>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Attendance & Leaves
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li routerLink="/profile/{{e.id}}/attendance/{{e.id}}">My Attendance</li>
+                                    <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">My Leaves</li>
+                                    <li routerLink="/alm">Manage Attendance & Leaves</li>
+                                    <li routerLink="/alm/mark-attendance">Mark attendance</li>
+                                </ul>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Ongoing Processes
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li routerLink="/onboardin/plan">Create Ongoing Plan</li>
+                                    <li routerLink="/onboardin/task">Create Ongoing Tasks</li>
+                                    <li routerLink="/onboardin">Assign employees</li>
+                                </ul>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Bulletins & News
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li routerLink="/bulletins">Create</li>
+                                </ul>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                    <div class="footer-tag">
+                        Powered By: SPARCKC
+                    </div>
+
                 </mat-drawer>
                 <mat-drawer-content [ngStyle]="{'max-height':employee[0].id == null?'100vh':'calc(100vh - 70px)'}" style="overflow-y: auto">
                     <router-outlet></router-outlet>
@@ -103,8 +165,18 @@
                         <hr>
                     </div>
                 </div>
+                <div *ngIf="notifications.length == 0">
+                    <div class="data-not-found">
+                        <h4>All caught up!</h4>
+                        <p>No new notifications found for you</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 </div>
+<div *ngIf="isServerConfig">
+    <app-server-loading></app-server-loading>
+</div>
+

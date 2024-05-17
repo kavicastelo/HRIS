@@ -15,7 +15,7 @@
             <th class="d-none d-md-table-cell">Position</th>
             <th class="d-none d-md-table-cell">NIC</th>
             <th>Contact</th>
-            <th class="td-manage">Manage</th>
+            <th>Manage</th>
         </tr>
         </thead>
         <tbody>
@@ -25,7 +25,7 @@
                     <img [src]="convertToSafeUrl(e.photo)" alt="{{e.name}}">
                 </div>
             </td>
-            <td class="d-none d-sm-table-cell" (click)="navigateToProfile(e.id)">{{e.name}}</td>
+            <td (click)="navigateToProfile(e.id)">{{e.name}}</td>
             <td class="d-none d-md-table-cell" (click)="navigateToProfile(e.id)">{{e.jobData.position}}</td>
             <td class="d-none d-md-table-cell" (click)="navigateToProfile(e.id)">{{e.nic}}</td>
             <td>
@@ -35,12 +35,18 @@
                     <p matTooltip="Click to send a message" class="d-flex d-md-none"><a routerLink="/feed/chat/{{e.id}}"><mat-icon>message</mat-icon></a></p>
                 </div>
             </td>
-            <td class="td-manage">
-                <div class="d-flex align-items-center justify-content-end">
-                    <button class="btn-2" matTooltip="Edit" (click)="editEmployee(e.id)"><mat-icon>create</mat-icon></button>
-                    <button class="btn-2 mx-1" matTooltip="Delete" (click)="deleteEmployee(e.id)"><mat-icon>delete_forever</mat-icon></button>
-                    <button class="btn-2" matTooltip="More"><mat-icon>more_vert</mat-icon></button>
-                </div>
+            <td>
+                <button class="btn-2" matTooltip="More" type="button" [matMenuTriggerFor]="employee"><mat-icon>more_vert</mat-icon></button>
+                <mat-menu #employee="matMenu">
+                    <button mat-menu-item type="button" (click)="editEmployee(e.id)">Edit Employee</button>
+                    <button mat-menu-item type="button" [disabled]="filterEmployees().length == 1" (click)="deleteEmployee(e.id)">Delete Employee</button>
+                    <button mat-menu-item type="button">Assign Task</button>
+                    <button mat-menu-item [matMenuTriggerFor]="shift">Assign Shift</button>
+                </mat-menu>
+
+                <mat-menu #shift="matMenu">
+                    <button mat-menu-item *ngFor="let s of filterShifts()" (click)="assignShift(e.email, s.name)">{{s.name}}</button>
+                </mat-menu>
             </td>
         </tr>
         </tbody>

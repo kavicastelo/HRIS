@@ -92,8 +92,10 @@
                         <a href="{{bulletin.redirectUrl}}" target="_blank"><button class="btn-1 w-100">{{bulletin.action}}</button></a>
                     </div>
                 </div>
-                <div class="data-not-found" *ngIf="filterBulletins().length == 0">
-                    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+                <div *ngIf="filterBulletins().length == 0">
+                    <div class="data-not-found">
+                        <p>Current bulletins are not available!</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,8 +134,10 @@
                     </div>
                 </div>
                 <p class="view-all" *ngIf="filterNews().length>3" (click)="toggleNews()">... {{showAllNews?'Collapse':'View All'}} Latest News</p>
-                <div class="data-not-found" *ngIf="filterNews().length == 0">
-                    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+                <div *ngIf="filterNews().length == 0">
+                    <div class="data-not-found">
+                        <p>Current latest news are not available!</p>
+                    </div>
                 </div>
             </div>
         </div>

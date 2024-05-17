@@ -1,87 +1,90 @@
-<div class="w-100" style="max-height: calc(100vh - 70px); overflow-y: auto">
-  <div class="card">
-    <div class="card-body">
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
-        <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1"  (click)="drawer.toggle()">
+<div class="c-main-canvas">
+  <div class="w-100 c-main">
+    <div class="card">
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+          <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1"  (click)="drawer.toggle()">
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="w-100">
-    <mat-drawer-container class="drawer-container">
-      <mat-drawer #drawer mode="over" class="drawer" style="width: 100%;">
-        <div class="d-flex align-items-center justify-content-end">
-          <span class="lnr lnr-cross" (click)="drawer.toggle()"></span>
-        </div>
-        <div class="direct-messages-chat-area all-contacts" *ngFor="let e of employeeDataStore">
-          <div class="chat-wrapper" (click)="navigateUrl(e.id); drawer.toggle()">
-            <div class="chat-icon">
-              <img [src]="convertToSafeUrl(e.photo)" alt="profile">
-              <div class="active-btn" *ngIf="e.activityStatus"></div>
-            </div>
-            <div class="chat-content">
-              <h6>{{e.name}}</h6>
+    <div class="w-100">
+      <mat-drawer-container class="drawer-container">
+        <mat-drawer #drawer mode="over" class="drawer" style="width: 100%;">
+          <div class="d-flex align-items-center justify-content-end">
+            <span class="lnr lnr-cross" (click)="drawer.toggle()"></span>
+          </div>
+          <div class="direct-messages-chat-area all-contacts" *ngFor="let e of employeeDataStore">
+            <div class="chat-wrapper" (click)="navigateUrl(e.id); drawer.toggle()">
+              <div class="chat-icon">
+                <img [src]="convertToSafeUrl(e.photo)" alt="profile">
+                <div class="active-btn" *ngIf="e.activityStatus"></div>
+              </div>
+              <div class="chat-content">
+                <h6>{{e.name}}</h6>
+              </div>
             </div>
           </div>
-        </div>
-      </mat-drawer>
-      <mat-drawer-content style="min-height: calc(100vh - 175px); max-height: calc(100vh - 175px); overflow-y: auto;">
-        <mat-accordion>
-          <mat-expansion-panel expanded>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Direct Messages
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="d-flex align-items-center justify-content-start mt-2" style="cursor: pointer" *ngIf="availableChats.length == 0" (click)="drawer.toggle()">
-              <span class="lnr lnr-plus-circle"></span>
-              <div>
-                <h6 style="margin: 0">Welcome {{employee.name.split(' ')[0]}}!</h6>
-                <p style="margin: 0">Click to start a new chat</p>
-              </div>
-            </div>
-            <div class="direct-messages-chat-area" *ngFor="let e of availableChats">
-              <div class="chat-wrapper" (click)="navigateUrl(e.id)">
-                <div class="chat-icon">
-                  <img [src]="e.photo" alt="profile">
-                </div>
-                <div class="chat-content">
-                  <h6>{{e.name}}</h6>
-                  <p [ngStyle]="{'font-weight':e.status=='sent'&&e.messageSenderId!=senderId?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
-                </div>
-
-                <div class="d-flex flex-column align-items-center justify-content-end">
-                  <small class="chat-time" [ngStyle]="{'color':e.status=='sent'&&e.messageSenderId!=senderId?'var(--color-primary-300)':'var(--color-text-300)'}">{{e.time | timeAgo}}</small>
-                  <div class="active-chat-count" [ngStyle]="{'display':e.status=='sent'&&e.messageSenderId!=senderId?'block':'none'}"></div>
-                </div>
-
-              </div>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
-          <mat-expansion-panel style="margin-top: 10px">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Channels
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="direct-messages-chat-area">
-              <div class="chat-wrapper" *ngFor="let c of channelsDataStore">
-                <div class="chat-icon">
-                  <img src="{{c.photo}}" alt="{{c.name}}">
-                </div>
-                <div class="chat-content">
-                  <h6>{{c.name}}</h6>
-                  <p>Lorem ipsum dolor sit</p>
+        </mat-drawer>
+        <mat-drawer-content style="min-height: calc(100vh - 175px); max-height: calc(100vh - 175px); overflow-y: auto;">
+          <mat-accordion>
+            <mat-expansion-panel expanded>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Direct Messages
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="d-flex align-items-center justify-content-start mt-2" style="cursor: pointer" *ngIf="availableChats.length == 0" (click)="drawer.toggle()">
+                <span class="lnr lnr-plus-circle"></span>
+                <div>
+                  <h6 style="margin: 0">Welcome {{employee.name.split(' ')[0]}}!</h6>
+                  <p style="margin: 0">Click to start a new chat</p>
                 </div>
               </div>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </mat-drawer-content>
-    </mat-drawer-container>
+              <div class="direct-messages-chat-area" *ngFor="let e of availableChats">
+                <div class="chat-wrapper" (click)="navigateUrl(e.id)">
+                  <div class="chat-icon">
+                    <img [src]="e.photo" alt="profile">
+                  </div>
+                  <div class="chat-content">
+                    <h6>{{e.name}}</h6>
+                    <p [ngStyle]="{'font-weight':e.status=='sent'&&e.messageSenderId!=senderId?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
+                  </div>
+
+                  <div class="d-flex flex-column align-items-center justify-content-end">
+                    <small class="chat-time" [ngStyle]="{'color':e.status=='sent'&&e.messageSenderId!=senderId?'var(--color-primary-300)':'var(--color-text-300)'}">{{e.time | timeAgo}}</small>
+                    <div class="active-chat-count" [ngStyle]="{'display':e.status=='sent'&&e.messageSenderId!=senderId?'block':'none'}"></div>
+                  </div>
+
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+          <mat-accordion>
+            <mat-expansion-panel style="margin-top: 10px">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Channels
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="direct-messages-chat-area">
+                <p>This feature is under development</p>
+<!--                <div class="chat-wrapper" *ngFor="let c of channelsDataStore">-->
+<!--                  <div class="chat-icon">-->
+<!--                    <img src="{{c.photo}}" alt="{{c.name}}">-->
+<!--                  </div>-->
+<!--                  <div class="chat-content">-->
+<!--                    <h6>{{c.name}}</h6>-->
+<!--                    <p>Lorem ipsum dolor sit</p>-->
+<!--                  </div>-->
+<!--                </div>-->
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-drawer-content>
+      </mat-drawer-container>
+    </div>
   </div>
 </div>

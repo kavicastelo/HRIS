@@ -1,0 +1,16 @@
+.btn{
+  border: none;
+  outline: none;
+  background-color: #8b8b8b;
+  border-radius: 5px;
+  padding: 3px 10px;
+  color: white;
+
+  &:nth-child(2){
+    background-color: #DC3545;
+  }
+
+  &:nth-child(3){
+    background-color: #0CBC87;
+  }
+}
