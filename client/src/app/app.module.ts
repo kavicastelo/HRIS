@@ -78,6 +78,9 @@ import {ProfileAttendanceComponent} from './shared/components/profile/profile-at
 import {AssignTaskComponent} from './components/onboarding-handle/assign-task/assign-task.component';
 import {CreatePlanComponent} from './components/onboarding-handle/create-plan/create-plan.component';
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
+import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
+import { MatTableModule } from '@angular/material/table';
+import { ViewPayrollReportsComponent } from './components/payroll/payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {PayrollReportsComponent} from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
 import {MatTableModule} from '@angular/material/table';
 import {ViewPayrollReportsComponent} from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
@@ -85,6 +88,8 @@ import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/cre
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 import {ShiftComponent} from './components/am-lm/shift/shift.component';
 import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/create-shift-dialog.component';
+import { ViewPayrollReportDialogComponent } from './components/payroll/payroll-reports/view-payroll-report-dialog/view-payroll-report-dialog.component';
+import { PayrollHistoryComponent } from './components/payroll/payroll-reports/payroll-history/payroll-history.component';
 import {MarkAttendanceComponent} from './components/am-lm/mark-attendance/mark-attendance.component';
 import {EditAttendanceComponent} from './shared/dialogs/edit-attendance/edit-attendance.component';
 import {ApproveLeaveComponent} from './shared/dialogs/approve-leave/approve-leave.component';
@@ -169,6 +174,8 @@ import {PickerModule} from "@ctrl/ngx-emoji-mart";
         CreateTaskDialogComponent,
         ShiftComponent,
         CreateShiftDialogComponent,
+        ViewPayrollReportDialogComponent,
+        PayrollHistoryComponent
         MarkAttendanceComponent,
         EditAttendanceComponent,
         ApproveLeaveComponent,

@@ -37,7 +37,7 @@
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="employeePayrollReportsTableColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: employeePayrollReportsTableColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: employeePayrollReportsTableColumns;" (click)="viewEmployeePayrollReport(row)"></tr>
     </table>
     <p *ngIf="employeePayrollReportsTabledataSource.data.length == 0" style="padding: 5px;">No payroll reports have been created for the selected employee.</p>
 </div>
