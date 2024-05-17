@@ -40,7 +40,6 @@ export class EditAttendanceComponent {
         this.attendanceForm = this.formBuilder.group({
             date: ['', Validators.required],
             name: ['', Validators.required],
-            department: ['', Validators.required],
             start: ['', Validators.required],
             end: ['', Validators.required]
         });
@@ -52,7 +51,6 @@ export class EditAttendanceComponent {
             const endTime = `${new Date(this.receivedData.data.attendance.recordOutTime).getHours()}:${(new Date(this.receivedData.data.attendance.recordOutTime).getMinutes() < 10 ? '0' : '') + new Date(this.receivedData.data.attendance.recordOutTime).getMinutes()}`;
             this.attendanceForm.get('date').setValue(new Date(this.receivedData.data.attendance.recordInTime))
             this.attendanceForm.get('name').setValue(this.receivedData.data.attendance.name)
-            this.attendanceForm.get('department').setValue(this.receivedData.data.department)
             this.attendanceForm.get('start').setValue(startTime)
             this.attendanceForm.get('end').setValue(endTime)
             this.startTime = new Date(this.receivedData.data.attendance.recordInTime)
@@ -93,6 +91,7 @@ export class EditAttendanceComponent {
                 email: this.receivedData.data.attendance.email,
                 recordInTime: startTimeStamp.toString(),
                 recordOutTime: endTimeStamp.toString(),
+                lateMinutes: this.calculateLateMins(startTimeStamp.toString(), endTimeStamp.toString())
             }).subscribe(data=>{
               this.closePopup()
               this.snackBar.open("Attendance data updated","OK", {duration:3000})
@@ -100,5 +99,19 @@ export class EditAttendanceComponent {
               console.log(error)
             })
         }
+    }
+
+    calculateLateMins(timestamp1: string, timestamp2: string): number {
+        // Convert timestamps to Date objects
+        const date1 = new Date(timestamp1);
+        const date2 = new Date(timestamp2);
+
+        // Calculate the difference in milliseconds
+        const differenceMs = Math.abs(date2.getTime() - date1.getTime());
+
+        const mins = differenceMs / (1000 * 60)
+
+        // Convert milliseconds to minutes
+        return mins < (9*60)? (9*60) - mins : 0;
     }
 }
