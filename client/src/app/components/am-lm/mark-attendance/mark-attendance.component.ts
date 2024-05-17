@@ -119,24 +119,50 @@ export class MarkAttendanceComponent implements OnInit{
     }
   }
 
-
-  depart(e: any){
+  async depart(e: any){
     const attendances = this.filterAttendance();
-    attendances.forEach((attendance:any) => {
-      if (attendance.email == e.email){
-        this.attendanceService.departAttendance(attendance.id,{
+
+    // Filter out duplicate attendance entries for the current employee
+    const uniqueAttendances = attendances.filter((attendance: any) =>
+        attendance.recordInTime != null && attendance.recordOutTime == null && attendance.email == e.email
+    );
+
+    try {
+      if (uniqueAttendances.length > 0) {
+        // calculate late minutes
+        let lateMinutes:any = 0;
+        if (this.calculateLateMins(uniqueAttendances[0].recordInTime) < (9 * 60)) {
+          lateMinutes = (9*60) - this.calculateLateMins(uniqueAttendances[0].recordInTime)
+        }
+        // Mark existing attendance entry
+        await this.attendanceService.departAttendance(uniqueAttendances[0].id,{
           organizationId: this.organizationId,
           name: e.name,
           email: e.email,
-          recordInTime: attendance.recordInTime,
-          recordOutTime: new Date()
-        }).subscribe(data => {
-          this.snackBar.open("Departure Marked", "OK")
-        }, error => {
-          console.log(error)
-        })
+          recordInTime: uniqueAttendances[0].recordInTime,
+          recordOutTime: new Date(),
+          lateMinutes: lateMinutes
+        }).toPromise();
+        this.snackBar.open("Departure Marked", "OK", {duration:3000});
+      } else {
+        // Mark new attendance entry
+        this.snackBar.open("User not attended to mark the departure", "OK", {duration:3000});
       }
-    })
+    } catch (error) {
+      console.error("Error marking attendance:", error);
+    }
+  }
+
+  calculateLateMins(timestamp1: string): number {
+    // Convert timestamps to Date objects
+    const date1 = new Date(timestamp1);
+    const date2 = new Date();
+
+    // Calculate the difference in milliseconds
+    const differenceMs = Math.abs(date2.getTime() - date1.getTime());
+
+    // Convert milliseconds to minutes
+    return differenceMs / (1000 * 60);
   }
 
 }
