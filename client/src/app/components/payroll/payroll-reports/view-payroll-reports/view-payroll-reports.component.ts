@@ -6,6 +6,7 @@ import { EmployeesService } from 'src/app/services/employees.service';
 import { PayrollReportService } from 'src/app/services/payroll-report.service';
 import { EmployeeModel } from 'src/app/shared/data-models/Employee.model';
 import { PayrollReportModel } from 'src/app/shared/data-models/payroll-report.model';
+import { ViewPayrollReportDialogComponent } from '../view-payroll-report-dialog/view-payroll-report-dialog.component';
 
 @Component({
   selector: 'app-view-payroll-reports',
@@ -65,5 +66,19 @@ export class ViewPayrollReportsComponent {
       default:
         return '';
     }
+  }
+
+  viewEmployeePayrollReport(payrollReportModel: PayrollReportModel){
+    if(payrollReportModel.id != ""){
+      const viewEmployeePayrollReportDialogRef = this.dialog.open(ViewPayrollReportDialogComponent, {data: {payrollReportModel, isEmployee: this.isEmployee, approvePayrollReport: this.approvePayrollReport.bind(this)}, width:'100%', height: '97%', panelClass: 'popup-dialog'});
+    }
+  }
+
+  approvePayrollReport(id: String, status: String){
+    this.payrollReportsService.changeReportStatus(id, status).subscribe(res => {
+      if(res){
+        
+      }
+    });
   }
 }

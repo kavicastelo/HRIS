@@ -80,11 +80,13 @@ import {CreatePlanComponent} from './components/onboarding-handle/create-plan/cr
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
 import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
 import { MatTableModule } from '@angular/material/table';
-import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
+import { ViewPayrollReportsComponent } from './components/payroll/payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 import {ShiftComponent} from './components/am-lm/shift/shift.component';
 import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/create-shift-dialog.component';
+import { ViewPayrollReportDialogComponent } from './components/payroll/payroll-reports/view-payroll-report-dialog/view-payroll-report-dialog.component';
+import { PayrollHistoryComponent } from './components/payroll/payroll-reports/payroll-history/payroll-history.component';
 
 @NgModule({
     declarations: [
@@ -153,7 +155,9 @@ import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/c
         CreatePlanDialogComponent,
         CreateTaskDialogComponent,
         ShiftComponent,
-        CreateShiftDialogComponent
+        CreateShiftDialogComponent,
+        ViewPayrollReportDialogComponent,
+        PayrollHistoryComponent
     ],
     imports: [
         BrowserModule,

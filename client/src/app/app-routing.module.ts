@@ -42,8 +42,9 @@ import {AssignTaskComponent} from "./components/onboarding-handle/assign-task/as
 import {CreatePlanComponent} from "./components/onboarding-handle/create-plan/create-plan.component";
 import {CreateTaskComponent} from "./components/onboarding-handle/create-task/create-task.component";
 import { PayrollReportsComponent } from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
-import { ViewPayrollReportsComponent } from './components/payroll/view-payroll-reports/view-payroll-reports/view-payroll-reports.component';
+import { ViewPayrollReportsComponent } from './components/payroll/payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {ShiftComponent} from "./components/am-lm/shift/shift.component";
+import { PayrollHistoryComponent } from './components/payroll/payroll-reports/payroll-history/payroll-history.component';
 
 
 const routes: Routes = [
@@ -107,7 +108,8 @@ const routes: Routes = [
             {path:'new-payitem', component: AddpayiteamsComponent},
             {path:'assign-payitem/:payitemId', component: AssignPayitemComponent},
             {path:'payroll-reports', component: PayrollReportsComponent},
-            {path:'view-payroll-reports/:id', component: ViewPayrollReportsComponent}
+            {path:'view-payroll-reports/:id', component: ViewPayrollReportsComponent},
+            {path:'payroll-history', component: PayrollHistoryComponent}
         ]
     },
     {path: 'payroll', component: PayrollComponent},

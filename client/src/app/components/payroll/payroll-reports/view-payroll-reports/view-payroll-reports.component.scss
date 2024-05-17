@@ -9,3 +9,7 @@
 .approved {
   background-color: #EAF3FC;
 }
+
+::ng-deep .popup-dialog {
+  z-index: 1 !important;
+}
