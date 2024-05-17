@@ -4,6 +4,9 @@ import {AuthService} from "../../../services/auth.service";
 import {Observable, tap} from "rxjs";
 import {AttendanceService} from "../../../services/attendance.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NotificationsService} from "../../../services/notifications.service";
+import {TimeFormatPipe} from "../../../DTO/TimeFormatPipe";
+import {DateFormatPipe} from "../../../DTO/DateFormatPipe";
 
 @Component({
   selector: 'app-mark-attendance',
@@ -24,7 +27,11 @@ export class MarkAttendanceComponent implements OnInit{
 
   targetInput:any;
 
-  constructor(private employeeService: EmployeesService, private cookieService: AuthService, private attendanceService: AttendanceService, private snackBar: MatSnackBar) {
+  constructor(private employeeService: EmployeesService,
+              private cookieService: AuthService,
+              private notificationsService: NotificationsService,
+              private attendanceService: AttendanceService,
+              private snackBar: MatSnackBar) {
   }
 
   async ngOnInit(): Promise<any> {
@@ -113,6 +120,16 @@ export class MarkAttendanceComponent implements OnInit{
         }).toPromise();
       }
 
+      const notificationData = {
+        userId: e.id,
+        notification: this.employee.name + ` marked you are attended to the work at ${new TimeFormatPipe().transform(new Date().toString())} in ${new DateFormatPipe().transform(new Date().toString())}`,
+        timestamp: new Date(),
+        router: '/profile/'+this.userId+'/attendance/'+this.userId,
+        status: true
+      }
+
+      this.pushNotification(notificationData);
+
       this.snackBar.open("Attendance Marked", "OK", {duration:3000});
     } catch (error) {
       console.error("Error marking attendance:", error);
@@ -144,6 +161,17 @@ export class MarkAttendanceComponent implements OnInit{
           lateMinutes: lateMinutes
         }).toPromise();
         this.snackBar.open("Departure Marked", "OK", {duration:3000});
+
+        const notificationData = {
+          userId: e.id,
+          notification: this.employee.name + ` marked you are departure from the work at ${new TimeFormatPipe().transform(new Date().toString())} in ${new DateFormatPipe().transform(new Date().toString())}`,
+          timestamp: new Date(),
+          router: '/profile/'+this.userId+'/attendance/'+this.userId,
+          status: true
+        }
+
+        this.pushNotification(notificationData);
+
       } else {
         // Mark new attendance entry
         this.snackBar.open("User not attended to mark the departure", "OK", {duration:3000});
@@ -163,6 +191,15 @@ export class MarkAttendanceComponent implements OnInit{
 
     // Convert milliseconds to minutes
     return differenceMs / (1000 * 60);
+  }
+
+  pushNotification(data:any){
+    if (data){
+      this.notificationsService.saveNotification(data).subscribe(data=>{
+      }, error => {
+        console.log(error)
+      })
+    }
   }
 
 }
