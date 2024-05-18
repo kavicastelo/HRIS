@@ -5,6 +5,9 @@ import {EmployeesService} from "../../../services/employees.service";
 import {AuthService} from "../../../services/auth.service";
 import {forkJoin, Observable, tap} from "rxjs";
 import {ShiftsService} from "../../../services/shifts.service";
+import {NotificationsService} from "../../../services/notifications.service";
+import {TimeFormatPipe} from "../../../DTO/TimeFormatPipe";
+import {DateFormatPipe} from "../../../DTO/DateFormatPipe";
 
 @Component({
   selector: 'app-assign-task',
@@ -26,7 +29,7 @@ export class AssignTaskComponent {
   organizationId:any;
 
   isChecked: boolean[] = [];
-  selectedEmployeeIds: string[] = [];
+  selectedEmployeeIds: any[] = [];
   selectedEmployees: any[] = [];
 
   targetInput:any;
@@ -38,7 +41,11 @@ export class AssignTaskComponent {
     task: new FormControl(null, [Validators.required])
   })
 
-  constructor(private onboardinService: OnboardinService, private employeeService: EmployeesService, private cookiesService: AuthService, private shiftService: ShiftsService) {
+  constructor(private onboardinService: OnboardinService,
+              private employeeService: EmployeesService,
+              private cookiesService: AuthService,
+              private notificationsService: NotificationsService,
+              private shiftService: ShiftsService) {
   }
 
   ngOnInit(): void {
@@ -98,7 +105,7 @@ export class AssignTaskComponent {
     return this.filteredEmployees;
   }
 
-  toggleSelection(checked: boolean, employeeId: string) {
+  toggleSelection(checked: boolean, employeeId: any) {
     if (checked) {
       this.selectedEmployeeIds.push(employeeId); // Add employee ID if the checkbox is checked
     } else {
@@ -172,12 +179,32 @@ export class AssignTaskComponent {
 
         // Now that the selectedEmployees array is populated with unique employees, make the HTTP request
         this.onboardinService.assignEmployeeToTask(this.assignForm.value.task, this.selectedEmployees).subscribe(data => {
+          this.selectedEmployeeIds.forEach(id => {
+            const notificationData = {
+              userId: id,
+              notification: `You are assigned to a new task!`,
+              timestamp: new Date(),
+              router: '/onboardin/task',
+              status: true
+            }
+
+            this.pushNotification(notificationData);
+          })
           this.isInProgress = false;
           this.selectedEmployeeIds = [];
         }, error => {
           console.log(error);
         });
       });
+    }
+  }
+
+  pushNotification(data:any){
+    if (data){
+      this.notificationsService.saveNotification(data).subscribe(data=>{
+      }, error => {
+        console.log(error)
+      })
     }
   }
 
