@@ -5,6 +5,8 @@ import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Observable, tap} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NotificationsService} from "../../../services/notifications.service";
+import {EmployeesService} from "../../../services/employees.service";
 
 @Component({
   selector: 'app-create-task-dialog',
@@ -19,6 +21,7 @@ export class CreateTaskDialogComponent {
   statusTypes:any[] = ["Open", "In Progress", "On Hold", "Pending Review", "Completed", "Canceled", "Reopened"]
 
   plansStore: any[] = [];
+  employeeDataStore:any[] = [];
   filteredPlans: any;
 
 
@@ -34,6 +37,8 @@ export class CreateTaskDialogComponent {
               private dialog: MatDialog,
               private onboardinService: OnboardinService,
               private snackbar: MatSnackBar,
+              private employeesService: EmployeesService,
+              private notificationsService: NotificationsService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreateTaskDialogComponent>) {
   }
@@ -42,6 +47,7 @@ export class CreateTaskDialogComponent {
     this.receivedData = this.data;
 
     await this.loadAllPlans().subscribe(()=>{})
+    await this.loadAllUsers().subscribe(()=>{})
     this.patchValues();
   }
 
@@ -58,6 +64,18 @@ export class CreateTaskDialogComponent {
     })
 
     return this.filteredPlans;
+  }
+
+  loadAllUsers(): Observable<any> {
+    return this.employeesService.getAllEmployees().pipe(
+        tap(data => this.employeeDataStore = data)
+    );
+  }
+
+  filterEmployees(): any[]{
+    this.employeeDataStore = this.employeeDataStore.filter((data:any) => data.organizationId == this.receivedData.data.organizationId? this.employeeDataStore = [data]: this.employeeDataStore = [])
+
+    return this.employeeDataStore;
   }
 
   closePopup(){
@@ -87,6 +105,19 @@ export class CreateTaskDialogComponent {
         status: this.onboardinTaskForm.value.statusTask,
       }).subscribe(data=>{
         this.closePopup()
+        this.snackbar.open("Please wait a moment...!");
+        this.filterEmployees().forEach((emp)=>{
+          const notificationData = {
+            userId: emp.id,
+            notification: this.receivedData.data.userName + ` created a new task for ${this.selectedPlan} plan`,
+            timestamp: new Date(),
+            router: '/onboardin/task',
+            status: true
+          }
+
+          this.pushNotification(notificationData);
+        })
+        this.snackbar.dismiss();
         this.snackbar.open("Task Created Successfully", "OK", {duration:3000})
       }, error => {
         console.log(error)
@@ -106,7 +137,29 @@ export class CreateTaskDialogComponent {
         status: this.onboardinTaskForm.value.statusTask
       }).subscribe(data => {
         this.closePopup()
+        this.snackbar.open("Please wait a moment...!");
+        this.filterEmployees().forEach((emp)=>{
+          const notificationData = {
+            userId: emp.id,
+            notification: this.receivedData.data.userName + ` updated the task- ${this.receivedData.data.taskId} in ${this.selectedPlan} plan`,
+            timestamp: new Date(),
+            router: '/onboardin/task',
+            status: true
+          }
+
+          this.pushNotification(notificationData);
+        })
+        this.snackbar.dismiss();
         this.snackbar.open("Task Edited Successfully", "OK", {duration:3000})
+      }, error => {
+        console.log(error)
+      })
+    }
+  }
+
+  pushNotification(data:any){
+    if (data){
+      this.notificationsService.saveNotification(data).subscribe(data=>{
       }, error => {
         console.log(error)
       })

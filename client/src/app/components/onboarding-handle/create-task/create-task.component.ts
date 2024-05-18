@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CreatePlanDialogComponent} from "../../../shared/dialogs/create-plan-dialog/create-plan-dialog.component";
 import {CreateTaskDialogComponent} from "../../../shared/dialogs/create-task-dialog/create-task-dialog.component";
+import {NotificationsService} from "../../../services/notifications.service";
 
 @Component({
     selector: 'app-create-task',
@@ -27,7 +28,12 @@ export class CreateTaskComponent {
     filteredTasks: any;
     filteredPlans: any;
 
-    constructor(private route: ActivatedRoute, private dialog: MatDialog, private cookieService: AuthService, private snackBar: MatSnackBar, private employeesService: EmployeesService, private taskService: OnboardinService) {
+    constructor(private route: ActivatedRoute,
+                private dialog: MatDialog,
+                private cookieService: AuthService,
+                private snackBar: MatSnackBar,
+                private employeesService: EmployeesService,
+                private taskService: OnboardinService) {
     }
 
     async ngOnInit(): Promise<any> {
@@ -85,6 +91,7 @@ export class CreateTaskComponent {
         const data = {
             userId: this.employee.id,
             userEmail: this.employee.email,
+            userName: this.employee.name,
             organizationId: this.employee.organizationId
         }
 
@@ -122,6 +129,7 @@ export class CreateTaskComponent {
             taskId: d.id,
             task:d,
             userId: this.employee.id,
+            userName: this.employee.name,
             userEmail: this.employee.email,
             organizationId: this.employee.organizationId
         }

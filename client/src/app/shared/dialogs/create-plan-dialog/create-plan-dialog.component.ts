@@ -7,6 +7,10 @@ import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {LeaveService} from "../../../services/leave.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NotificationsService} from "../../../services/notifications.service";
+import {Observable, tap} from "rxjs";
+import {TimeFormatPipe} from "../../../DTO/TimeFormatPipe";
+import {DateFormatPipe} from "../../../DTO/DateFormatPipe";
 
 @Component({
   selector: 'app-create-plan-dialog',
@@ -17,6 +21,7 @@ export class CreatePlanDialogComponent {
 
   receivedData:any;
   planDataStore:any[] = [];
+  employeeDataStore:any[] = [];
 
   onboardinPlanForm = new FormGroup({
     titlePlan: new FormControl(null, [Validators.required]),
@@ -28,17 +33,33 @@ export class CreatePlanDialogComponent {
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private snackBar: MatSnackBar,
+              private employeesService: EmployeesService,
+              private notificationsService: NotificationsService,
               private onboardinService: OnboardinService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreatePlanDialogComponent>) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.receivedData = this.data;
+
+    await this.loadAllUsers().subscribe(()=>{})
   }
 
   closePopup(){
     this.dialog.closeAll()
+  }
+
+  loadAllUsers(): Observable<any> {
+    return this.employeesService.getAllEmployees().pipe(
+        tap(data => this.employeeDataStore = data)
+    );
+  }
+
+  filterEmployees(): any[]{
+    this.employeeDataStore = this.employeeDataStore.filter((data:any) => data.organizationId == this.receivedData.data.organizationId? this.employeeDataStore = [data]: this.employeeDataStore = [])
+
+    return this.employeeDataStore;
   }
 
   submitPlan(){
@@ -51,7 +72,29 @@ export class CreatePlanDialogComponent {
         taskDate: this.onboardinPlanForm.value.endDatePlan
       }).subscribe(data=>{
         this.closePopup();
+        this.snackBar.open("Please wait a moment...!");
+        this.filterEmployees().forEach((emp)=>{
+          const notificationData = {
+            userId: emp.id,
+            notification: this.receivedData.data.userName + ' created a new onboarding plan',
+            timestamp: new Date(),
+            router: '/onboardin/plan',
+            status: true
+          }
+
+          this.pushNotification(notificationData);
+        })
+        this.snackBar.dismiss();
         this.snackBar.open("New Plan Create!","Ok", {duration:3000})
+      }, error => {
+        console.log(error)
+      })
+    }
+  }
+
+  pushNotification(data:any){
+    if (data){
+      this.notificationsService.saveNotification(data).subscribe(data=>{
       }, error => {
         console.log(error)
       })

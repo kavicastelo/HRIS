@@ -13,6 +13,7 @@ import {
 } from "../../../shared/dialogs/request-transfer-dialog/request-transfer-dialog.component";
 import {LetterDataDialogComponent} from "../../../shared/dialogs/letter-data-dialog/letter-data-dialog.component";
 import {CreatePlanDialogComponent} from "../../../shared/dialogs/create-plan-dialog/create-plan-dialog.component";
+import {NotificationsService} from "../../../services/notifications.service";
 
 @Component({
   selector: 'app-create-plan',
@@ -29,7 +30,12 @@ export class CreatePlanComponent {
   plansStore: any[] = [];
   filteredPlans: any;
 
-  constructor(private route: ActivatedRoute, private dialog: MatDialog, private cookieService: AuthService, private snackBar: MatSnackBar, private employeesService: EmployeesService, private planService: OnboardinService) {
+  constructor(private route: ActivatedRoute,
+              private dialog: MatDialog,
+              private cookieService: AuthService,
+              private snackBar: MatSnackBar,
+              private employeesService: EmployeesService,
+              private planService: OnboardinService) {
   }
 
   async ngOnInit(): Promise<any> {
@@ -71,6 +77,7 @@ export class CreatePlanComponent {
   cratePlan() {
     const data = {
       userId: this.employee.id,
+      userName: this.employee.name,
       organizationId: this.employee.organizationId
     }
 
