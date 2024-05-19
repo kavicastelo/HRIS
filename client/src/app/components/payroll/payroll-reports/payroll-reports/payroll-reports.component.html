@@ -1,8 +1,14 @@
+<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" routerLink="../payroll-reports-overview">arrow_back</mat-icon>
 <div class="runPayrollSection">
     <p *ngIf="isReportsGeneratingProcessInProgress" style="padding: 10px;">The monthly payroll process is in progress...</p>
-    <div class="row" *ngIf="!isReportsGeneratingProcessInProgress">
+    <!-- <div class="row" *ngIf="!isReportsGeneratingProcessInProgress">
         <div class="col-12 col-md-6" style="display: flex; align-items: center; justify-content: center;"><p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p></div>
         <div class="col-12 col-md-6"><button class="btn-1 my-4" (click)="runMonthlyPayrollProcess()" >Run Payroll</button></div>
+    </div> -->
+    <div *ngIf="!isReportsGeneratingProcessInProgress">
+        
+        <p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p>
+        <button class="btn-1" style="padding-right:10px;" (click)="runMonthlyPayrollProcess()" ><mat-icon>play_arrow</mat-icon> Run Payroll</button>
     </div>
 </div>
 <br>

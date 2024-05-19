@@ -1,0 +1,25 @@
+.report-types-navigation-card{
+    border: 2px solid var(--color-surface-mixed-600);
+    border-radius: 5px;
+    padding: 10px;
+    width: 180px;
+    text-align: center;
+    margin: 10px;
+    cursor: pointer;
+
+    mat-icon{
+        color: var(--color-text-400);
+        font-size: 90px;
+        width: 90px;
+        height: 90px;
+    }
+
+    p{
+        color: var(--color-text-400);
+        font-weight: 500;
+    }
+}
+
+.report-types-navigation-card:hover{
+    background-color: var(--color-surface-mixed-300);
+}

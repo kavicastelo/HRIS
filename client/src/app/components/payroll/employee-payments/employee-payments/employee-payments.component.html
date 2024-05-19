@@ -15,6 +15,7 @@
                 <table class="table table-hover">
                     <thead>
                       <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Contact</th>
@@ -22,6 +23,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let employee of employees" routerLink='../employee/{{employee.id}}/payitems'>
+                        <td><mat-icon>navigate_next</mat-icon></td>
                         <td>{{ employee.name }}</td>
                         <td>{{ employee.email }}</td>
                         <td>{{ employee.phone }}</td>
