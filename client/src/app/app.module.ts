@@ -102,6 +102,7 @@ import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {PickerModule} from "@ctrl/ngx-emoji-mart";
+import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
 
 @NgModule({
     declarations: [
@@ -178,7 +179,8 @@ import {PickerModule} from "@ctrl/ngx-emoji-mart";
         ApproveLeaveComponent,
         CreateDepartmentDialogComponent,
         ServerLoadingComponent,
-        InProgressComponent
+        InProgressComponent,
+        PayrollReportsOverviewComponent
     ],
     imports: [
         BrowserModule,

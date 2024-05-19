@@ -46,6 +46,7 @@ import { ViewPayrollReportsComponent } from './components/payroll/payroll-report
 import {ShiftComponent} from "./components/am-lm/shift/shift.component";
 import { PayrollHistoryComponent } from './components/payroll/payroll-reports/payroll-history/payroll-history.component';
 import {MarkAttendanceComponent} from "./components/am-lm/mark-attendance/mark-attendance.component";
+import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
 
 
 const routes: Routes = [
@@ -109,7 +110,8 @@ const routes: Routes = [
             {path:'payitems', component: PayitemsComponent},
             {path:'new-payitem', component: AddpayiteamsComponent},
             {path:'assign-payitem/:payitemId', component: AssignPayitemComponent},
-            {path:'payroll-reports', component: PayrollReportsComponent},
+            {path:'payroll-reports-overview', component: PayrollReportsOverviewComponent},
+            {path:'employee-payroll-reports', component: PayrollReportsComponent},
             {path:'view-payroll-reports/:id', component: ViewPayrollReportsComponent},
             {path:'payroll-history', component: PayrollHistoryComponent}
         ]

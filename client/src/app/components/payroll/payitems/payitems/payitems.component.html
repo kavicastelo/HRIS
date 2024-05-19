@@ -15,6 +15,7 @@
                 <table class="table table-hover">
                     <thead>
                       <tr>
+                        <th></th>
                         <th>Item name</th>
                         <th>Description</th>
                         <th>Item type</th>
@@ -24,6 +25,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let payitem of payitemsList" routerLink='../assign-payitem/{{payitem.id}}'>
+                        <td><mat-icon>navigate_next</mat-icon></td>
                         <td>{{ payitem.itemName }}</td>
                         <td>{{ payitem.description }}</td>
                         <td>{{ payitem.itemType }}</td>

@@ -1,9 +1,11 @@
 .runPayrollSection{
     background-color: var(--color-surface-mixed-300);
+    border: 2px solid var(--color-surface-mixed-600);
     border-radius: 8px;
     padding-left: 10px;
     padding-right: 10px;
     justify-content: flex-start;
+    padding: 20px;
 }
 
 .card{
