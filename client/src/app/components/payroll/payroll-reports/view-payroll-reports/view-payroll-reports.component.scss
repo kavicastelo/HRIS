@@ -13,3 +13,8 @@
 ::ng-deep .popup-dialog {
   z-index: 1 !important;
 }
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  opacity: 0.8;
+  cursor: pointer;
+}
