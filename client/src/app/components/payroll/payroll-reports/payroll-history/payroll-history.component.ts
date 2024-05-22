@@ -7,6 +7,8 @@ import { EmployeesService } from 'src/app/services/employees.service';
 import { PayrollReportService } from 'src/app/services/payroll-report.service';
 import { SummaryReportService } from 'src/app/services/summary-report.service';
 import { PayrollReportModel } from 'src/app/shared/data-models/payroll-report.model';
+import { SummaryReportModel } from 'src/app/shared/data-models/summary-report.model';
+import { ViewSummaryReportDialogComponent } from '../view-summary-report-dialog/view-summary-report-dialog.component';
 
 @Component({
   selector: 'app-payroll-history',
@@ -40,5 +42,11 @@ export class PayrollHistoryComponent {
       }
 
     },(error: any) => {})
+  }
+
+  viewSummaryReport(summaryReportModel: SummaryReportModel){
+    if(summaryReportModel.id != ""){
+      const viewSummaryReportDialogRef = this.dialog.open(ViewSummaryReportDialogComponent, {data: {summaryReportModel}, width:'100%', height: '97%'});
+    }
   }
 }

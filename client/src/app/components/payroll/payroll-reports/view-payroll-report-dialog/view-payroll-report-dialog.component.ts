@@ -6,6 +6,8 @@ import { EmployeeModel } from 'src/app/shared/data-models/Employee.model';
 import { EmployeePayItemModel } from 'src/app/shared/data-models/employee-payitem.model';
 import { PayrollReportModel } from 'src/app/shared/data-models/payroll-report.model';
 import { ViewPayrollReportsComponent } from '../view-payroll-reports/view-payroll-reports.component';
+import { OrganizationService } from 'src/app/services/organization.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-view-payroll-report-dialog',
@@ -15,12 +17,10 @@ import { ViewPayrollReportsComponent } from '../view-payroll-reports/view-payrol
 export class ViewPayrollReportDialogComponent {
   payrollReportModel: PayrollReportModel;
   employeeModel!: EmployeeModel;
-
-  organizationUrlPostfix: string = "";
   
-  organizationName: String = "Organization Name";
-  organizationEmail: String = "contact@org.com";
-  organizationAddress: String = "Gonulla, Gonawila";
+  organizationName: String = "N/A";
+  organizationEmail: String = "N/A";
+  organizationAddress: String = "N/A";
 
   additionsTableColumns: string[] = ['itemName', 'description', 'amount'];
   additionsTabledataSource = new MatTableDataSource<EmployeePayItemModel>([]);
@@ -34,16 +34,19 @@ export class ViewPayrollReportDialogComponent {
   constructor(private dialog: MatDialog,
       public popupDialogRef: MatDialogRef<ViewPayrollReportsComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
-      private employeeService: EmployeesService
+      private employeeService: EmployeesService,
+      private cookieService: AuthService,
+      private organizationService: OrganizationService
   ){
     this.payrollReportModel = data.payrollReportModel;
   }
 
   ngOnInit(): void {
-    // this.organizationService.getCurrentOrganization().subscribe(res => {
-    //   this.organizationUrlPostfix = res!.organizationUrlPostfix.toString();
-    //   this.currentOrg = res!;
-    // });
+    this.organizationService.getOrganizationById(this.cookieService.organization()).subscribe((res:any) => {
+      this.organizationName = res.organizationName;
+      this.organizationAddress = res.address;
+      this.organizationEmail = res.email;
+    });
 
     this.employeeService.getEmployeeByEmail(this.payrollReportModel.email).subscribe((res: any) => {
       this.employeeModel = res!;

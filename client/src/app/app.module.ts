@@ -103,6 +103,7 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {PickerModule} from "@ctrl/ngx-emoji-mart";
 import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
+import { ViewSummaryReportDialogComponent } from './components/payroll/payroll-reports/view-summary-report-dialog/view-summary-report-dialog.component';
 
 @NgModule({
     declarations: [
@@ -180,7 +181,8 @@ import { PayrollReportsOverviewComponent } from './components/payroll/payroll-re
         CreateDepartmentDialogComponent,
         ServerLoadingComponent,
         InProgressComponent,
-        PayrollReportsOverviewComponent
+        PayrollReportsOverviewComponent,
+        ViewSummaryReportDialogComponent
     ],
     imports: [
         BrowserModule,

@@ -46,7 +46,7 @@
                   </ng-container>
                 
                   <tr mat-header-row *matHeaderRowDef="summaryReportsTableColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: summaryReportsTableColumns;"></tr>
+                  <tr mat-row *matRowDef="let row; columns: summaryReportsTableColumns;" (click)="viewSummaryReport(row)"></tr>
                 </table>
                 <p *ngIf="summaryReportsTabledataSource.data.length == 0" style="padding: 5px; padding-top: 12px;">No any payroll history reports available to view.</p>
             </div>
