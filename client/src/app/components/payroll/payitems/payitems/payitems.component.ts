@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
 import { PayitemService } from 'src/app/services/payitem.service';
 import { EmployeeModel } from 'src/app/shared/data-models/Employee.model';
@@ -16,7 +17,8 @@ export class PayitemsComponent {
   payitemsList: PayItemModel[] = [];
   
   constructor(private payitemService: PayitemService,
-    private cookieService: AuthService
+    private cookieService: AuthService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +40,26 @@ export class PayitemsComponent {
         resolve();
       },(error: any) => {})
     })
+  }
+
+  deletePayItem(id: any) {
+    if (id){
+      if (confirm('Are you sure you want to delete this pay item?')){
+        this.payitemService.deletePayitemById(id).subscribe(data => {
+          this._snackBar.open("Deleting the payitem...", "Dismiss", {duration: 5 * 1000});
+            this.payitemService.deletePayitemById(id).subscribe((res: any) => {
+              if(res){
+                this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+                this.updatePayitemsList();
+              }
+            },(error: any) => {
+              this._snackBar.open("Failed to delete the payitem.", "Dismiss", {duration: 5 * 1000});
+            })
+        }, error => {
+          console.log(error)
+        })
+      }
+    }
   }
 
 }

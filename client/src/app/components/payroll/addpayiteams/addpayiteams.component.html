@@ -1,8 +1,9 @@
-<div class="card">
+<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" (click)="goBack()">arrow_back</mat-icon>
+<div class="card" *ngIf="!notfoundError">
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <div class="d-flex align-items-center justify-content-between">
-                <h5>New Pay Item</h5>
+                <h5>{{ title }}</h5>
             </div>
         </li>
         <li class="list-group-item">
@@ -58,7 +59,7 @@
                 
                         <div class="col-12 col-md-6"></div>
                         <div class="col-12 col-md-6">
-                            <button class="btn-1 my-4 w-100"  (click)="addNewPayitem()" [disabled]="!payitemDetailsFormGroup.valid">{{ finalizeBtnText }}</button>
+                            <button class="btn-1 my-4 w-100"  (click)="action === 'ADD' ? addNewPayitem() : editExistingPayitem()"  [disabled]="!payitemDetailsFormGroup.valid">{{ finalizeBtnText }}</button>
                         </div>
 
                     </div>
@@ -70,3 +71,6 @@
     </ul>
   </div>
   
+<div class="data-not-found" *ngIf="notfoundError">
+    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+</div>

@@ -6,7 +6,6 @@
 .paymentButton{
     float: right;
     margin: 2%;
-
 }
 
 .btn-1{
@@ -52,6 +51,10 @@
                 margin: 0;
               }
             }
+
+            .td-manage{
+              text-align: end;
+            }
           }
         }
   
@@ -73,3 +76,20 @@
     }
   }
   
+  .btn-2{
+    width: fit-content;
+  
+    &:nth-child(3){
+      background-color: #e74c3c;
+      color: white;
+  
+      &:hover{
+        background-color: #c0392b;
+      }
+    }
+  
+    &:disabled{
+      background-color: #a6a6a6;
+      cursor: not-allowed;
+    }
+  }
