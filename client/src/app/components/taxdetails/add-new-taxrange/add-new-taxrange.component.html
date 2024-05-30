@@ -1,0 +1,28 @@
+<form [formGroup]="taxDetailsFormGroup">
+  <div mat-dialog-content >
+    From &nbsp;&nbsp;&nbsp;
+    <mat-form-field appearance="outline">
+      <mat-label>Minimum Amount</mat-label>
+      <input matInput type="number" placeholder="0.00" formControlName="minValuectrl" class="inputField" [(ngModel)]="taxModel.min" required>
+      <span matTextPrefix>LKR&nbsp;</span>
+    </mat-form-field>
+
+    To &nbsp;&nbsp;&nbsp;
+      <mat-form-field appearance="outline">
+        <mat-label>Maximum Amount</mat-label>
+        <input matInput type="number" placeholder="0.00" formControlName="maxValueCtrl" class="inputField" [(ngModel)]="taxModel.max" required>
+        <span matTextPrefix>LKR&nbsp;</span>
+      </mat-form-field><br>
+
+      = &nbsp;&nbsp;&nbsp;
+      <mat-form-field appearance="outline">
+        <mat-label>Tax Rate</mat-label>
+        <input matInput type="number" placeholder="0.00" formControlName="rateCtrl" class="inputField"  [(ngModel)]="taxModel.rate" required>
+        <span matTextPrefix>LKR&nbsp;</span>
+      </mat-form-field>
+    
+      <br><button mat-raised-button >Cancel</button>&nbsp;
+      <button mat-raised-button color="primary" [mat-dialog-close]="taxModel" [disabled]="!taxDetailsFormGroup.valid" (click)="addNewTaxRange()">{{ finalizeBtnText }}</button> 
+
+  </div>
+</form>
