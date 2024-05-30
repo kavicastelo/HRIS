@@ -47,8 +47,8 @@ import {ShiftComponent} from "./components/am-lm/shift/shift.component";
 import { PayrollHistoryComponent } from './components/payroll/payroll-reports/payroll-history/payroll-history.component';
 import {MarkAttendanceComponent} from "./components/am-lm/mark-attendance/mark-attendance.component";
 import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
-
-
+import { TaxdetailsComponent } from "./components/taxdetails/taxdetails.component";
+import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";  
 const routes: Routes = [
     {path: '', redirectTo: 'feed', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
@@ -125,6 +125,11 @@ const routes: Routes = [
             {path: 'plan', component: CreatePlanComponent},
             {path: 'task', component: CreateTaskComponent},
         ]
+    },
+    {
+        path:'taxdetails' , component:TaxdetailsComponent , children:[
+       { path:'AddNewTaxrangeComponent' , component:AddNewTaxrangeComponent }
+    ]
     },
     {path: '**', component: NotFoundComponent},
 

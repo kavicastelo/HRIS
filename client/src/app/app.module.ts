@@ -104,7 +104,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {PickerModule} from "@ctrl/ngx-emoji-mart";
 import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
 import { ViewSummaryReportDialogComponent } from './components/payroll/payroll-reports/view-summary-report-dialog/view-summary-report-dialog.component';
-
+import { TaxdetailsComponent } from "./components/taxdetails/taxdetails.component";
+import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";   
 @NgModule({
     declarations: [
         AppComponent,
@@ -182,7 +183,10 @@ import { ViewSummaryReportDialogComponent } from './components/payroll/payroll-r
         ServerLoadingComponent,
         InProgressComponent,
         PayrollReportsOverviewComponent,
-        ViewSummaryReportDialogComponent
+        ViewSummaryReportDialogComponent,
+        TaxdetailsComponent,
+        AddNewTaxrangeComponent
+
     ],
     imports: [
         BrowserModule,
