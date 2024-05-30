@@ -21,16 +21,24 @@
                         <th>Item type</th>
                         <th>Payment type</th>
                         <th>Status</th>
+                        <th class="td-manage">Manage</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let payitem of payitemsList" routerLink='../assign-payitem/{{payitem.id}}'>
+                      <tr *ngFor="let payitem of payitemsList">
                         <td><mat-icon>navigate_next</mat-icon></td>
                         <td>{{ payitem.itemName }}</td>
                         <td>{{ payitem.description }}</td>
                         <td>{{ payitem.itemType }}</td>
                         <td>{{ payitem.paymentType }}</td>
                         <td>{{ payitem.status }}</td>
+                        <td class="td-manage">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-2 me-1" matTooltip="Assign Item" routerLink='../assign-payitem/{{payitem.id}}'><mat-icon>group_add</mat-icon></button>
+                                <button class="btn-2 me-1" matTooltip="Edit" routerLink='../edit-payitem/{{payitem.id}}'><mat-icon>edit</mat-icon></button>
+                                <button class="btn-2" matTooltip="Delete" (click)="deletePayItem(payitem.id)"><mat-icon>delete_forever</mat-icon></button>
+                            </div>
+                        </td>
                     </tbody>
                   </table>
             </div>

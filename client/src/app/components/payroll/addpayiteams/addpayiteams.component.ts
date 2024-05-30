@@ -29,7 +29,11 @@ export class AddpayiteamsComponent implements OnInit {
     statusCtrl: ['', Validators.required]
   });
 
+  title: String = "New Pay Item";
   finalizeBtnText: String = "Add";
+  action: String = "ADD";
+
+  notfoundError = false;
   
   constructor(
     private _formBuilder: FormBuilder,
@@ -48,23 +52,54 @@ export class AddpayiteamsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+      if(this.route.snapshot.params['payitemId']){
+        this.title = "Edit Pay Item";
+        this.finalizeBtnText = "Save changes";
+        this.action = "EDIT";
+
+        this.payitemService.getPayItemById(this.route.snapshot.params['payitemId']).subscribe((res:any) => {
+          this.payitemModel = res;
+        },(error: any) => {
+          this.notfoundError = true;
+        });
+      }
   }
 
   addNewPayitem(){
-        this._snackBar.open("Creating the payitem...", "Dismiss", {duration: 5 * 1000});
-        this.payitemModel.organizationId = this.cookieService.organization();
-        this.payitemService.savePayitem(this.payitemModel).subscribe((res: any) => {
-          if(res){
-            if(res.errorCode == "DUPLICATED_INFOMARTION"){
-              this._snackBar.open(res.message, "Ok");
-            }else{
-              this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
-              this.router.navigate(['payroll', 'payitems']);
-            }
-          }
-        },(error: any) => {
-          this._snackBar.open("Failed to create the payitem.", "Dismiss", {duration: 5 * 1000});
-        })
+    this._snackBar.open("Creating the payitem...", "Dismiss", {duration: 5 * 1000});
+    this.payitemModel.organizationId = this.cookieService.organization();
+    this.payitemService.savePayitem(this.payitemModel).subscribe((res: any) => {
+      if(res){
+        if(res.errorCode == "DUPLICATED_INFOMARTION"){
+          this._snackBar.open(res.message, "Ok");
+        }else{
+          this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+          this.router.navigate(['payroll', 'payitems']);
+        }
+      }
+    },(error: any) => {
+      this._snackBar.open("Failed to create the payitem.", "Dismiss", {duration: 5 * 1000});
+    })
+  }
+
+  editExistingPayitem(){
+    this._snackBar.open("Updating the payitem...", "Dismiss", {duration: 5 * 1000});
+
+    this.payitemService.updatePayitemById(this.payitemModel).subscribe((res: any) => {
+      if(res){
+        if(res.errorCode == "INVALID_INFOMARTION"){
+          this._snackBar.open(res.message, "Ok");
+        }else{
+          this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+          this.router.navigate(['payroll', 'payitems']);
+        }
+      }
+    },(error: any) => {
+      this._snackBar.open("Failed to update the payitem details.", "Ok");
+    })
+  }
+
+  goBack(){
+    this.router.navigate(['payroll', 'payitems']);
   }
 }
