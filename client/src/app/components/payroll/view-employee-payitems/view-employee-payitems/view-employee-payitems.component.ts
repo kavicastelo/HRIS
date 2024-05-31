@@ -24,6 +24,8 @@ export class ViewEmployeePayitemsComponent {
 
   selectedEmployeeBasicSalary: number = 0.0;
 
+  notfoundError = false;
+
   constructor(private employeePayitemService: EmployeePayitemService,
     private payitemService: PayitemService,
     private route: ActivatedRoute,
@@ -33,6 +35,8 @@ export class ViewEmployeePayitemsComponent {
   ngOnInit(): void {
       this.employeesService.getEmployeeById(this.route.snapshot.params['id']).subscribe(res => {
         this.viewEmployeePaymentDetails(res);
+      },(error: any) => {
+        this.notfoundError = true;
       });
   };
 

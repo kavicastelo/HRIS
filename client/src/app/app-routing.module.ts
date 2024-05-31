@@ -129,7 +129,7 @@ const routes: Routes = [
     },
     {
         path:'taxdetails' , component:TaxdetailsComponent , children:[
-       { path:'AddNewTaxrangeComponent' , component:AddNewTaxrangeComponent }
+       { path:'tax-details-info' , component:AddNewTaxrangeComponent }
     ]
     },
     {path: '**', component: NotFoundComponent},

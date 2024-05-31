@@ -26,6 +26,8 @@ export class AssignPayitemComponent {
   valueType: String = "Amount";
   value!: number;
 
+  notfoundError = false;
+
   assignPayitemFormGroup = this._formBuilder.group({
     typeCtrl: ['', Validators.required],
     valueCtrl: ['', Validators.required]
@@ -49,6 +51,8 @@ export class AssignPayitemComponent {
       if(this.selectedPayItem.description == ""){
         this.selectedPayItem.description = "N/A";
       }
+    },(error: any) => {
+      this.notfoundError = true;
     });
 
     this.loadAllUsers().subscribe(()=>{});
