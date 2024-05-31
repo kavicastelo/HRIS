@@ -1,4 +1,5 @@
-<div class="card">
+<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" routerLink="../../payitems">arrow_back</mat-icon>
+<div class="card" *ngIf="!notfoundError">
   <ul class="list-group list-group-flush">
       <li class="list-group-item">
           <div class="d-flex align-items-center justify-content-between">
@@ -93,3 +94,6 @@
 </div>
   
 
+<div class="data-not-found" *ngIf="notfoundError">
+  <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+</div>
