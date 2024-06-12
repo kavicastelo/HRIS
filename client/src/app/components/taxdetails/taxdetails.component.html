@@ -1,2 +1,51 @@
 
-   
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Tax Ranges</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+
+            <div class="d-flex align-items-center justify-content-end">
+                <button class="btn-1 px-2" matTooltip="New tax range" [routerLink]="'../new-tax-detail'"><mat-icon>add</mat-icon><span class="d-none d-md-block">New Tax Range</span></button>
+            </div>
+
+            <div class="table-data-list">
+                <table class="table table-hover">
+                    <!-- <thead>
+                      <tr>
+                        <th></th>
+                        <th>From</th>
+                        <th>to</th>
+                        <th>Item type</th>
+                        <th>Payment type</th>
+                        <th>Status</th>
+                        <th class="td-manage">Manage</th>
+                      </tr>
+                    </thead> -->
+                    <tbody>
+                      <tr *ngFor="let taxInfo of taxInfoList">
+                        <!-- <td><mat-icon>navigate_next</mat-icon></td> -->
+                        <td> From </td>
+                        <td><b>{{ taxInfo.min }}</b></td>
+                        <td> to </td>
+                        <td><b>{{ taxInfo.max }}</b></td>
+                        <td> = </td>
+                        <td><b>{{ taxInfo.rate }}%</b></td>
+                        <td class="td-manage">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-2 me-1" matTooltip="Edit" routerLink='../edit-payitem/'><mat-icon>edit</mat-icon></button>
+                                <button class="btn-2" matTooltip="Delete"><mat-icon>delete_forever</mat-icon></button>
+                            </div>
+                        </td>
+                    </tbody>
+                  </table>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>
+    
