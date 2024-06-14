@@ -74,7 +74,10 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let employee of employees">
-                      <td><input type="checkbox" class="form-check-input" [checked]="isSelected(employee)" (change)="toggleEmployeeSelection(employee)"></td>
+                      <td>
+                        <input type="checkbox" class="form-check-input" [checked]="isSelected(employee)" (change)="toggleEmployeeSelection(employee)" *ngIf="!employeeExceptions.includes(employee.email)">
+                        <input type="checkbox" class="form-check-input" [checked]="true" [disabled]="true" *ngIf="employeeExceptions.includes(employee.email)">
+                      </td>
                       <td>{{ employee.name }}</td>
                       <td>{{ employee.email }}</td>
                       <td>{{ employee.phone }}</td>

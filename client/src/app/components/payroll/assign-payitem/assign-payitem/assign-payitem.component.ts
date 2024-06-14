@@ -22,6 +22,7 @@ export class AssignPayitemComponent {
   employees: EmployeeModel[]=[];
   selectedPayItem: PayItemModel = new PayItemModel();
   selectedEmployees: EmployeeModel[] = [];
+  employeeExceptions: String[] = [];
 
   valueType: String = "Amount";
   value!: number;
@@ -49,11 +50,28 @@ export class AssignPayitemComponent {
       if(this.selectedPayItem.description == ""){
         this.selectedPayItem.description = "N/A";
       }
+
+      // Load employees in the organization.
+      this.loadAllUsers().subscribe(()=>{
+          this.loadAllAlreadyAssignedEmployees();
+      });
     },(error: any) => {
       this.notfoundError = true;
     });
+  }
 
-    this.loadAllUsers().subscribe(()=>{});
+  loadAllAlreadyAssignedEmployees(){
+    this.employeePayitemService.getAssignedEmployeesByPayitemId(this.selectedPayItem.id).subscribe((assignedEmployeesRes:any) =>{
+      if(assignedEmployeesRes){
+        this.employeeExceptions = assignedEmployeesRes;
+
+        for(let employee of this.employees){
+            if(assignedEmployeesRes.includes(employee.email)){
+              this.toggleEmployeeSelection(employee);
+            }
+        }
+      }
+    },(error: any) => {})
   }
 
   loadAllUsers(): Observable<any>{
@@ -90,23 +108,41 @@ export class AssignPayitemComponent {
 
     let employeePayitemsList: EmployeePayItemModel[] = [];
 
-    for(let employee of this.selectedEmployees){
-        let employeePayitem = new EmployeePayItemModel();
-        employeePayitem.email = employee.email;
-        employeePayitem.payItemId = this.selectedPayItem.id;
-        employeePayitem.type = this.valueType;
-        employeePayitem.value = this.value;
+    if(this.value === undefined || this.value < 1){
+      this._snackBar.open("Invalid or out of range value/price. Please recheck the details and try again.", "Dismiss");
+      return;
+    }
 
-        employeePayitemsList.push(employeePayitem);
+    for(let employee of this.selectedEmployees){
+        if(!this.employeeExceptions.includes(employee.email)){
+          let employeePayitem = new EmployeePayItemModel();
+          employeePayitem.email = employee.email;
+          employeePayitem.payItemId = this.selectedPayItem.id;
+          employeePayitem.type = this.valueType;
+          employeePayitem.value = this.value;
+
+          employeePayitemsList.push(employeePayitem);
+        }
     }
 
     this._snackBar.open("Assigning the payitem...", "Dismiss", {duration: 5 * 1000});
+
+    if(employeePayitemsList.length == 0){
+      this._snackBar.open("No changes exist to save.", "Dismiss", {duration: 5 * 1000});
+      return;
+    }
 
     this.employeePayitemService.assignPayItemForMultipleEmployees(employeePayitemsList).subscribe((res: any) => {
       if(res){
         if(res.errorCode == "DUPLICATED_INFOMARTION"){
           this._snackBar.open(res.message, "Ok");
         }else{
+          // Reload the content with saved changes.
+          this.selectedEmployees = [];
+          this.employeeExceptions = [];
+          this.loadAllUsers().subscribe(()=>{
+            this.loadAllAlreadyAssignedEmployees();
+          });
           this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
         }
       }

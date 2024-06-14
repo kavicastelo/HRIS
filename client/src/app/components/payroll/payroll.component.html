@@ -10,9 +10,9 @@
       <li class="nav-item">
         <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('payroll-reports-overview')" [class.active]="isActive('payroll-reports-overview')" matTooltip="View Payroll reports"><mat-icon>article</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Payroll Reports</span></a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('payroll-history')" [class.active]="isActive('payroll-history')" matTooltip="View Payroll history"><mat-icon>article</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Payroll History</span></a>
-      </li> -->
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('taxdetails')" [class.active]="isActive('taxdetails')" matTooltip="View tax settings"><mat-icon>calculate</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Tax settings</span></a>
+      </li>
   </ul>
 
   <router-outlet></router-outlet>
