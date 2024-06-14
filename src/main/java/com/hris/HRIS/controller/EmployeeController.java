@@ -36,6 +36,7 @@ public class EmployeeController {
                                                     @RequestParam("name") String name,
                                                     @RequestParam("email") String email,
                                                     @RequestParam("phone") String phone,
+                                                    @RequestParam("telephone") String telephone,
                                                     @RequestParam("address") String address,
                                                     @RequestParam("organizationId") String organizationId,
                                                     @RequestParam("departmentId") String departmentId,
@@ -44,7 +45,14 @@ public class EmployeeController {
                                                     @RequestParam("dob") String dob,
                                                     @RequestParam("nic") String nic,
                                                     @RequestParam("status") String status,
-                                                    @RequestParam("level") String level
+                                                    @RequestParam("level") String level,
+                                                    @RequestParam("maritalStatus") String maritalStatus,
+                                                    @RequestParam("nationality") String nationality,
+                                                    @RequestParam("religion") String religion,
+                                                    @RequestParam("dateOfRetirement") String dateOfRetirement,
+                                                    @RequestParam("dateOfExit") String dateOfExit,
+                                                    @RequestParam("exitReason") String exitReason,
+                                                    @RequestParam("dateOfContractEnd") String dateOfContractEnd
     ) throws IOException {
 
 //        Integer.parseInt(jobData);
@@ -55,6 +63,7 @@ public class EmployeeController {
         newEmployee.setName(name);
         newEmployee.setEmail(email);
         newEmployee.setPhone(phone);
+        newEmployee.setTelephone(telephone);
         newEmployee.setAddress(address);
         newEmployee.setOrganizationId(organizationId);
         newEmployee.setDepartmentId(departmentId);
@@ -65,6 +74,13 @@ public class EmployeeController {
         newEmployee.setPhoto(photo.getBytes());
         newEmployee.setStatus(status);
         newEmployee.setLevel(Integer.parseInt(level));
+        newEmployee.setMaritalStatus(maritalStatus);
+        newEmployee.setNationality(nationality);
+        newEmployee.setReligion(religion);
+        newEmployee.setDateOfRetirement(dateOfRetirement);
+        newEmployee.setDateOfExit(dateOfExit);
+        newEmployee.setExitReason(exitReason);
+        newEmployee.setDateOfContractEnd(dateOfContractEnd);
 
         EmployeeModel emp = employeeRepository.save(newEmployee);
 
@@ -123,6 +139,7 @@ public class EmployeeController {
                                                       @RequestParam("name") String name,
                                                       @RequestParam("email") String email,
                                                       @RequestParam("phone") String phone,
+                                                      @RequestParam("telephone") String telephone,
                                                       @RequestParam("address") String address,
                                                       @RequestParam("organizationId") String organizationId,
                                                       @RequestParam("departmentId") String departmentId,
@@ -130,7 +147,15 @@ public class EmployeeController {
                                                       @RequestParam("dob") String dob,
                                                       @RequestParam("nic") String nic,
                                                       @RequestParam("status") String status,
-                                                      @RequestParam("level") String level) throws IOException {
+                                                      @RequestParam("level") String level,
+                                                      @RequestParam("maritalStatus") String maritalStatus,
+                                                      @RequestParam("nationality") String nationality,
+                                                      @RequestParam("religion") String religion,
+                                                      @RequestParam("dateOfRetirement") String dateOfRetirement,
+                                                      @RequestParam("dateOfExit") String dateOfExit,
+                                                      @RequestParam("exitReason") String exitReason,
+                                                      @RequestParam("dateOfContractEnd") String dateOfContractEnd
+    ) throws IOException {
 
         Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
 
@@ -141,6 +166,7 @@ public class EmployeeController {
             employeeModel.setName(name);
             employeeModel.setEmail(email);
             employeeModel.setPhone(phone);
+            employeeModel.setTelephone(telephone);
             employeeModel.setAddress(address);
             employeeModel.setOrganizationId(organizationId);
             employeeModel.setDepartmentId(departmentId);
@@ -156,6 +182,13 @@ public class EmployeeController {
             employeeModel.setNic(nic);
             employeeModel.setStatus(status);
             employeeModel.setLevel(Integer.parseInt(level));
+            employeeModel.setMaritalStatus(maritalStatus);
+            employeeModel.setNationality(nationality);
+            employeeModel.setReligion(religion);
+            employeeModel.setDateOfRetirement(dateOfRetirement);
+            employeeModel.setDateOfExit(dateOfExit);
+            employeeModel.setExitReason(exitReason);
+            employeeModel.setDateOfContractEnd(dateOfContractEnd);
             systemAutomateService.updateEmployeeAndUpdateOrganization(id, employeeModel);
         }
 
@@ -169,6 +202,7 @@ public class EmployeeController {
                                                           @RequestParam("name") String name,
                                                           @RequestParam("email") String email,
                                                           @RequestParam("phone") String phone,
+                                                          @RequestParam("telephone") String telephone,
                                                           @RequestParam("address") String address,
                                                           @RequestParam("organizationId") String organizationId,
                                                           @RequestParam("departmentId") String departmentId,
@@ -177,7 +211,14 @@ public class EmployeeController {
                                                           @RequestParam("dob") String dob,
                                                           @RequestParam("nic") String nic,
                                                           @RequestParam("status") String status,
-                                                          @RequestParam(value = "level", required = false) String level
+                                                          @RequestParam(value = "level", required = false) String level,
+                                                          @RequestParam("maritalStatus") String maritalStatus,
+                                                          @RequestParam("nationality") String nationality,
+                                                          @RequestParam("religion") String religion,
+                                                          @RequestParam("dateOfRetirement") String dateOfRetirement,
+                                                          @RequestParam("dateOfExit") String dateOfExit,
+                                                          @RequestParam("exitReason") String exitReason,
+                                                          @RequestParam("dateOfContractEnd") String dateOfContractEnd
     ) throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -190,6 +231,7 @@ public class EmployeeController {
             newEmployee.setName(name);
             newEmployee.setEmail(email);
             newEmployee.setPhone(phone);
+            newEmployee.setTelephone(telephone);
             newEmployee.setAddress(address);
             newEmployee.setOrganizationId(organizationId);
             newEmployee.setDepartmentId(departmentId);
@@ -210,6 +252,14 @@ public class EmployeeController {
             else {
                 newEmployee.setLevel(newEmployee.getLevel());
             }
+
+            newEmployee.setMaritalStatus(maritalStatus);
+            newEmployee.setNationality(nationality);
+            newEmployee.setReligion(religion);
+            newEmployee.setDateOfRetirement(dateOfRetirement);
+            newEmployee.setDateOfExit(dateOfExit);
+            newEmployee.setExitReason(exitReason);
+            newEmployee.setDateOfContractEnd(dateOfContractEnd);
 
             updateChannels(newEmployee);
 
@@ -233,6 +283,21 @@ public class EmployeeController {
                 employee.getChannels().replaceAll(c -> c.getDepartmentId().equals(departmentId) ? channels.get(0) : c);
             });
         }
+    }
+
+    @PutMapping("/update/level/{id}")
+    public ResponseEntity<ApiResponse> updateEmployeeLevel(@PathVariable String id, @RequestBody EmployeeModel employeeModel) {
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+
+        if (optionalEmployeeModel.isPresent()) {
+            EmployeeModel existModel = optionalEmployeeModel.get();
+            existModel.setLevel(employeeModel.getLevel());
+
+            EmployeeModel model = employeeRepository.save(existModel);
+            systemAutomateService.updateOrganizationSingleEmployeeData(model);
+        }
+        ApiResponse apiResponse = new ApiResponse("Employee level updated successfully");
+        return ResponseEntity.ok(apiResponse);
     }
 
     @PutMapping("/update/email/{email}")
