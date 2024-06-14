@@ -24,7 +24,7 @@
     "@ctrl/ngx-emoji-mart": "^9.2.0",
     "@ngx-env/builder": "^17.3.0",
     "array-flatten": "^1.1.1",
-    "firebase": "^9.23.0",
+    "firebase": "^10.12.2",
     "markdown-it": "^14.0.0",
     "ngx-cookie-service": "^15.0.0",
     "ngx-logger": "^5.0.12",
