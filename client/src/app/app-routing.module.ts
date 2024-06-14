@@ -114,11 +114,11 @@ const routes: Routes = [
             {path:'payroll-reports-overview', component: PayrollReportsOverviewComponent},
             {path:'employee-payroll-reports', component: PayrollReportsComponent},
             {path:'view-payroll-reports/:id', component: ViewPayrollReportsComponent},
-            {path:'payroll-history', component: PayrollHistoryComponent}
+            {path:'payroll-history', component: PayrollHistoryComponent},
+            {path:'taxdetails', component: TaxdetailsComponent},
+            {path:'new-tax-detail', component: AddNewTaxrangeComponent}
         ]
     },
-    {path: 'payroll', component: PayrollComponent},
-    {path: 'addpayiteams', component: AddpayiteamsComponent},
     {
         path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard], children: [
             {path: '', redirectTo: '/onboardin/assign', pathMatch: "full"},
@@ -129,7 +129,7 @@ const routes: Routes = [
     },
     {
         path:'taxdetails' , component:TaxdetailsComponent , children:[
-       { path:'AddNewTaxrangeComponent' , component:AddNewTaxrangeComponent }
+       { path:'tax-details-info' , component:AddNewTaxrangeComponent }
     ]
     },
     {path: '**', component: NotFoundComponent},
