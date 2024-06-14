@@ -20,6 +20,7 @@ public class EmployeeModel {
     private String name;
     private String email;
     private String phone;
+    private String telephone;
     private String address;
     private String organizationId;
     private String departmentId;
@@ -32,6 +33,13 @@ public class EmployeeModel {
     private byte[] photo;
     private String status;
     private Integer level;
+    private String maritalStatus;
+    private String nationality;
+    private String religion;
+    private String dateOfRetirement;
+    private String dateOfExit;
+    private String exitReason;
+    private String dateOfContractEnd;
     private Boolean activityStatus;
     private String lastSeen;
 }

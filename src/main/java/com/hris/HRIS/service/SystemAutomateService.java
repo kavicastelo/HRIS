@@ -147,11 +147,17 @@ public class SystemAutomateService {
 
         exitListModel.setName(employeeExitModel.getName());
         exitListModel.setEmail(employeeExitModel.getEmail());
+        exitListModel.setOrganizationId(employeeExitModel.getOrganizationId());
         exitListModel.setPhone(employeeExitModel.getPhone());
+        exitListModel.setTelephone(employeeExitModel.getTelephone());
         exitListModel.setAddress(employeeExitModel.getAddress());
         exitListModel.setJobData(employeeExitModel.getJobData());
         exitListModel.setDoe(employeeExitModel.getDoe());
         exitListModel.setDoj(employeeExitModel.getDoj());
+        exitListModel.setStatus(employeeExitModel.getStatus());
+        exitListModel.setDateOfRetirement(employeeExitModel.getDateOfRetirement());
+        exitListModel.setExitReason(employeeExitModel.getExitReason());
+        exitListModel.setDateOfContractEnd(employeeExitModel.getDateOfContractEnd());
         exitListModel.setPhoto(employeeExitModel.getPhoto());
         exitListRepository.save(exitListModel);
 
@@ -323,6 +329,7 @@ public class SystemAutomateService {
             existingEmployee.setName(updatedEmployee.getName());
             existingEmployee.setEmail(updatedEmployee.getEmail());
             existingEmployee.setPhone(updatedEmployee.getPhone());
+            existingEmployee.setTelephone(updatedEmployee.getTelephone());
             existingEmployee.setAddress(updatedEmployee.getAddress());
             existingEmployee.setJobData(updatedEmployee.getJobData());
             existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
@@ -332,6 +339,13 @@ public class SystemAutomateService {
             existingEmployee.setGender(updatedEmployee.getGender());
             existingEmployee.setPhoto(updatedEmployee.getPhoto());
             existingEmployee.setStatus(updatedEmployee.getStatus());
+            existingEmployee.setMaritalStatus(updatedEmployee.getMaritalStatus());
+            existingEmployee.setNationality(updatedEmployee.getNationality());
+            existingEmployee.setReligion(updatedEmployee.getReligion());
+            existingEmployee.setDateOfRetirement(updatedEmployee.getDateOfRetirement());
+            existingEmployee.setDateOfExit(updatedEmployee.getDateOfExit());
+            existingEmployee.setExitReason(updatedEmployee.getExitReason());
+            existingEmployee.setDateOfContractEnd(updatedEmployee.getDateOfContractEnd());
 
             employeeRepository.save(existingEmployee);
 
@@ -386,6 +400,7 @@ public class SystemAutomateService {
             existingEmployee.setName(updatedEmployee.getName());
             existingEmployee.setEmail(updatedEmployee.getEmail());
             existingEmployee.setPhone(updatedEmployee.getPhone());
+            existingEmployee.setTelephone(updatedEmployee.getTelephone());
             existingEmployee.setAddress(updatedEmployee.getAddress());
             existingEmployee.setJobData(updatedEmployee.getJobData());
             existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
@@ -395,6 +410,13 @@ public class SystemAutomateService {
             existingEmployee.setGender(updatedEmployee.getGender());
             existingEmployee.setPhoto(updatedEmployee.getPhoto());
             existingEmployee.setStatus(updatedEmployee.getStatus());
+            existingEmployee.setMaritalStatus(updatedEmployee.getMaritalStatus());
+            existingEmployee.setNationality(updatedEmployee.getNationality());
+            existingEmployee.setReligion(updatedEmployee.getReligion());
+            existingEmployee.setDateOfRetirement(updatedEmployee.getDateOfRetirement());
+            existingEmployee.setDateOfExit(updatedEmployee.getDateOfExit());
+            existingEmployee.setExitReason(updatedEmployee.getExitReason());
+            existingEmployee.setDateOfContractEnd(updatedEmployee.getDateOfContractEnd());
 
             employeeRepository.save(existingEmployee);
 
