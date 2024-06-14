@@ -36,7 +36,7 @@
                             <div class="d-flex align-items-center justify-content-end">
                                 <button class="btn-2 me-1" matTooltip="Assign Item" routerLink='../assign-payitem/{{payitem.id}}'><mat-icon>group_add</mat-icon></button>
                                 <button class="btn-2 me-1" matTooltip="Edit" routerLink='../edit-payitem/{{payitem.id}}'><mat-icon>edit</mat-icon></button>
-                                <button class="btn-2" matTooltip="Delete" (click)="deletePayItem(payitem.id)"><mat-icon>delete_forever</mat-icon></button>
+                                <button class="btn-2" matTooltip="{{payitem.isDeletable?'Delete':'Delete is not allowed for already assigned items'}}" (click)="deletePayItem(payitem.id)" [disabled]="payitem.isDeletable?false:true"><mat-icon>delete_forever</mat-icon></button>
                             </div>
                         </td>
                     </tbody>

@@ -11,4 +11,5 @@ export class PayItemModel {
     itemType: String = "";
     paymentType: String = "";
     status: String = "";
+    isDeletable: Boolean = false;
 }

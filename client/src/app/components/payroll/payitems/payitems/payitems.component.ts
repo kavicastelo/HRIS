@@ -44,6 +44,16 @@ export class PayitemsComponent {
     })
   }
 
+  isPayItemDeletable(id: any): boolean{
+    this.payitemService.isPayItemDeletable(id).subscribe((res:any) =>{
+      if(res){
+          return res;
+      }
+    },(error: any) => {})
+
+    return false;
+  }
+
   deletePayItem(id: any) {
     if (id){
 
