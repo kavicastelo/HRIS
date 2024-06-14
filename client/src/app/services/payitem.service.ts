@@ -28,6 +28,10 @@ export class PayitemService {
     return this.http.put(this.baseUrl + "payitem/update/id/" + payItemModel.id, payItemModel);
   }
 
+  isPayItemDeletable(id: String){
+    return this.http.get(this.baseUrl + "is-deletable/get/id/" + id);
+  }
+
   deletePayitemById(id: String){
     return this.http.delete(this.baseUrl + "payitem/delete/id/" + id);
   }
