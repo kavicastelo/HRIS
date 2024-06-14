@@ -52,6 +52,18 @@ public class EmployeePayItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/get/assigned-employees/payItemId/{payItemId}")
+    public List<String> getAssignedEmployeesByPayitemId(@PathVariable String payItemId){
+        List<EmployeePayItemModel> employeePayitems = employeePayItemRepository.findAllByPayItemId(payItemId);
+        List<String> employees = new ArrayList<>();
+
+        for (EmployeePayItemModel employeePayItemModel : employeePayitems) {
+            employees.add(employeePayItemModel.getEmail());
+        }
+
+        return employees;
+    }
+
     @GetMapping("/get/email/{email}")
     public List<EmployeePayItemModel> getPayItemsByEmail(@PathVariable String email){
 

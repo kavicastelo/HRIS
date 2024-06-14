@@ -20,6 +20,10 @@ export class EmployeePayitemService {
     return this.http.post(this.baseUrl + "employee/payitems/assign/multiple-employees", employeePayitemsList);
   }
 
+  getAssignedEmployeesByPayitemId(payItemId: String){
+    return this.http.get(this.baseUrl + "employee/payitems/get/assigned-employees/payItemId/" + payItemId);
+  }
+  
   getPayItemsByEmail(email: String){
     return this.http.get(this.baseUrl + "employee/payitems/get/email/" + email);
   }
