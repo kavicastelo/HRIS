@@ -42,8 +42,6 @@ export class AssignPayitemComponent {
   ) { }
 
   ngOnInit(): void {
-  
-    this.employees = employeeDataStore;
     
     this.payitemService.getPayItemById(this.route.snapshot.params['payitemId']).subscribe((res:any) => {
       this.selectedPayItem = res;
@@ -65,8 +63,14 @@ export class AssignPayitemComponent {
   }
 
   toggleAllEmployeesSelection(){
-    for(let employee of this.employees){
-      this.toggleEmployeeSelection(employee);
+    if(this.selectedEmployees.length == this.employees.length){
+      this.selectedEmployees = [];
+    } else {
+      for(let employee of this.employees){
+        if(!this.selectedEmployees.includes(employee)){
+          this.selectedEmployees.push(employee);
+        }
+      }
     }
   }
 

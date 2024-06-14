@@ -66,7 +66,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th><input type="checkbox" (change)="toggleAllEmployeesSelection()"></th>
+                      <th><input type="checkbox" class="form-check-input" [checked]="this.selectedEmployees.length == this.employees.length?true:false" [indeterminate]="this.selectedEmployees.length > 0 && this.selectedEmployees.length != this.employees.length" (change)="toggleAllEmployeesSelection()"></th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>Contact</th>
@@ -74,7 +74,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let employee of employees">
-                      <td><input type="checkbox" [checked]="isSelected(employee)" (change)="toggleEmployeeSelection(employee)"></td>
+                      <td><input type="checkbox" class="form-check-input" [checked]="isSelected(employee)" (change)="toggleEmployeeSelection(employee)"></td>
                       <td>{{ employee.name }}</td>
                       <td>{{ employee.email }}</td>
                       <td>{{ employee.phone }}</td>
