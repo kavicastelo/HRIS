@@ -73,6 +73,7 @@ export class EmployeesService {
         name: form.get('name') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
+        telephone: form.get('telephone') as string,
         address: form.get('address') as string,
         organizationId: form.get('organizationId') as string,
         departmentId: form.get('departmentId') as string,
@@ -83,6 +84,13 @@ export class EmployeesService {
         photo: fileInput,
         status: form.get('status') as string,
         level: form.get('level') as string,
+        maritalStatus: form.get('maritalStatus') as string,
+        nationality: form.get('nationality') as string,
+        religion: form.get('religion') as string,
+        dateOfRetirement: form.get('dateOfRetirement') as string,
+        dateOfExit: form.get('dateOfExit') as string,
+        exitReason: form.get('exitReason') as string,
+        dateOfContractEnd: form.get('dateOfContractEnd') as string
       };
 
       this.logger.info(requestBody.jobData);
@@ -100,6 +108,7 @@ export class EmployeesService {
         name: form.get('name') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
+        telephone: form.get('telephone') as string,
         address: form.get('address') as string,
         organizationId: form.get('organizationId') as string,
         departmentId: form.get('departmentId') as string,
@@ -109,6 +118,13 @@ export class EmployeesService {
         nic: form.get('nic') as string,
         status: form.get('status') as string,
         level: form.get('level') as string,
+        maritalStatus: form.get('maritalStatus') as string,
+        nationality: form.get('nationality') as string,
+        religion: form.get('religion') as string,
+        dateOfRetirement: form.get('dateOfRetirement') as string,
+        dateOfExit: form.get('dateOfExit') as string,
+        exitReason: form.get('exitReason') as string,
+        dateOfContractEnd: form.get('dateOfContractEnd') as string
       };
 
       this.logger.info(requestBody.jobData);
@@ -144,6 +160,7 @@ export class EmployeesService {
         name: form.get('name') +" "+ form.get('lname') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
+        telephone: form.get('telephone') as string,
         address: form.get('address') as string,
         organizationId: sessionStorage.getItem('orgId') as string,
         departmentId: sessionStorage.getItem('depId') as string,
@@ -154,6 +171,13 @@ export class EmployeesService {
         photo: fileInput,
         status: form.get('status') as string,
         level: form.get('level') as string,
+        maritalStatus: form.get('maritalStatus') as string,
+        nationality: form.get('nationality') as string,
+        religion: form.get('religion') as string,
+        dateOfRetirement: form.get('dateOfRetirement') as string,
+        dateOfExit: form.get('dateOfExit') as string,
+        exitReason: form.get('exitReason') as string,
+        dateOfContractEnd: form.get('dateOfContractEnd') as string
       };
 
       const formData = new FormData();
@@ -180,6 +204,7 @@ export class EmployeesService {
         name: form.get('name') +" "+ form.get('lname') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
+        telephone: form.get('telephone') as string,
         address: form.get('address') as string,
         organizationId: sessionStorage.getItem('orgId') as string,
         departmentId: sessionStorage.getItem('depId') as string,
@@ -189,6 +214,13 @@ export class EmployeesService {
         nic: form.get('nic') as string,
         status: form.get('status') as string,
         level: form.get('level') as string,
+        maritalStatus: form.get('maritalStatus') as string,
+        nationality: form.get('nationality') as string,
+        religion: form.get('religion') as string,
+        dateOfRetirement: form.get('dateOfRetirement') as string,
+        dateOfExit: form.get('dateOfExit') as string,
+        exitReason: form.get('exitReason') as string,
+        dateOfContractEnd: form.get('dateOfContractEnd') as string
       };
 
       this.logger.info(requestBody.jobData);
@@ -260,6 +292,7 @@ export class EmployeesService {
         name: form.get('name')+ " "+ form.get('lname') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
+        telephone: form.get('telephone') as string,
         address: form.get('address') + " " + form.get('city') + " " + form.get('state') + " " + form.get('zip') as string,
         organizationId: sessionStorage.getItem('orgId') as string,
         departmentId: sessionStorage.getItem('depId') as string,
@@ -270,6 +303,13 @@ export class EmployeesService {
         photo: fileInput,
         status: form.get('status') as string,
         level: "1" as string,
+        maritalStatus: form.get('maritalStatus') as string,
+        nationality: form.get('nationality') as string,
+        religion: form.get('religion') as string,
+        dateOfRetirement: form.get('dateOfRetirement') as string,
+        dateOfExit: form.get('dateOfExit') as string,
+        exitReason: form.get('exitReason') as string,
+        dateOfContractEnd: form.get('dateOfContractEnd') as string
       };
 
       const formData = new FormData();

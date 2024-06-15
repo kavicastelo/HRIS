@@ -62,13 +62,21 @@ export class EmployeeRegisterComponent implements OnInit{
       lname: ['', Validators.required],
       email: ['', Validators.required],
       phone: ['', Validators.required],
+      telephone: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: [''],
       zip: [''],
       jobData: this.formBuilder.group({
-        position: ['', Validators.required],
+        employementType: ['', Validators.required],
+        position: ['', Validators.required], // designation
+        jobGrade: ['', Validators.required],
+        personalGrade: ['', Validators.required],
+        supervisor: ['', Validators.required],
+        businessUnit: ['', Validators.required],
         department: [sessionStorage.getItem('dep'), Validators.required],
+        location: ['', Validators.required],
+        branch: ['', Validators.required],
         salary: ['', Validators.required],
         doj: ['', Validators.required],
       }),
@@ -76,7 +84,14 @@ export class EmployeeRegisterComponent implements OnInit{
       dob: ['', Validators.required],
       nic: ['', Validators.required],
       photo: [null],
-      status: ['', Validators.required]
+      status: ['', Validators.required],
+      maritalStatus: ['', Validators.required],
+      nationality: ['', Validators.required],
+      religion: ['', Validators.required],
+      dateOfRetirement: ['', Validators.required],
+      dateOfExit: ['', Validators.required],
+      exitReason: ['', Validators.required],
+      dateOfContractEnd: ['', Validators.required]
     });
   }
 
