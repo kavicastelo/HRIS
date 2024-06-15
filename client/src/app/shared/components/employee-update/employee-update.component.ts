@@ -55,10 +55,18 @@ export class EmployeeUpdateComponent {
       lname: ['', Validators.required],
       email: ['', Validators.required],
       phone: ['', Validators.required],
+      telephone: ['', Validators.required],
       address: ['', Validators.required],
       jobData: this.formBuilder.group({
-        position: ['', Validators.required],
+        employementType: ['', Validators.required],
+        position: ['', Validators.required], // designation
+        jobGrade: ['', Validators.required],
+        personalGrade: ['', Validators.required],
+        supervisor: ['', Validators.required],
+        businessUnit: ['', Validators.required],
         department: [sessionStorage.getItem('dep'), Validators.required],
+        location: ['', Validators.required],
+        branch: ['', Validators.required],
         salary: ['', Validators.required],
         doj: ['', Validators.required],
       }),
@@ -66,7 +74,14 @@ export class EmployeeUpdateComponent {
       dob: ['', Validators.required],
       nic: ['', Validators.required],
       photo: [null],
-      status: ['', Validators.required]
+      status: ['', Validators.required],
+      maritalStatus: ['', Validators.required],
+      nationality: ['', Validators.required],
+      religion: ['', Validators.required],
+      dateOfRetirement: ['', Validators.required],
+      dateOfExit: ['', Validators.required],
+      exitReason: ['', Validators.required],
+      dateOfContractEnd: ['', Validators.required]
     });
   }
 
@@ -93,18 +108,33 @@ export class EmployeeUpdateComponent {
     const firstName = this.employee[0].name;
     this.employeeForm.get('name')?.setValue(firstName.split(' ')[0]);
     this.employeeForm.get('lname')?.setValue(firstName.split(' ')[1]);
-    this.employeeForm.get('dob')?.setValue(this.employee[0].dob);
+    this.employeeForm.get('dob')?.setValue(new Date(this.employee[0].dob));
     this.employeeForm.get('nic')?.setValue(this.employee[0].nic);
     this.employeeForm.get('gender')?.setValue(this.employee[0].gender);
     this.employeeForm.get('address')?.setValue(this.employee[0].address);
     this.employeeForm.get('email')?.setValue(this.employee[0].email);
     this.employeeForm.get('phone')?.setValue(this.employee[0].phone);
+    this.employeeForm.get('telephone')?.setValue(this.employee[0].telephone);
+    this.employeeForm.get('maritalStatus')?.setValue(this.employee[0].maritalStatus);
+    this.employeeForm.get('nationality')?.setValue(this.employee[0].nationality);
+    this.employeeForm.get('religion')?.setValue(this.employee[0].religion);
+    this.employeeForm.get('dateOfRetirement')?.setValue(new Date(this.employee[0].dateOfRetirement));
+    this.employeeForm.get('dateOfExit')?.setValue(new Date(this.employee[0].dateOfExit));
+    this.employeeForm.get('exitReason')?.setValue(this.employee[0].exitReason);
+    this.employeeForm.get('dateOfContractEnd')?.setValue(new Date(this.employee[0].dateOfContractEnd));
 
     // Access the jobData group within employeeForm and set its values
     const jobData = this.employeeForm.get('jobData') as FormGroup;
     jobData.get('department')?.setValue(this.employee[0].jobData.department);
     this.changeDetectorRef.detectChanges();
     jobData.get('position')?.setValue(this.employee[0].jobData.position);
+    jobData.get('businessUnit')?.setValue(this.employee[0].jobData.businessUnit);
+    jobData.get('supervisor')?.setValue(this.employee[0].jobData.supervisor);
+    jobData.get('location')?.setValue(this.employee[0].jobData.location);
+    jobData.get('jobGrade')?.setValue(this.employee[0].jobData.jobGrade);
+    jobData.get('personalGrade')?.setValue(this.employee[0].jobData.personalGrade);
+    jobData.get('employementType')?.setValue(this.employee[0].jobData.employementType);
+    jobData.get('branch')?.setValue(this.employee[0].jobData.branch);
     jobData.get('doj')?.setValue(this.employee[0].jobData.doj);
     jobData.get('salary')?.setValue(this.employee[0].jobData.salary);
 
