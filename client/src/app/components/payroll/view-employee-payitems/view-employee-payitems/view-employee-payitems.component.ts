@@ -26,6 +26,8 @@ export class ViewEmployeePayitemsComponent {
 
   notfoundError = false;
 
+  editEnabledItemId: String = "";
+
   constructor(private employeePayitemService: EmployeePayitemService,
     private payitemService: PayitemService,
     private route: ActivatedRoute,
@@ -83,5 +85,13 @@ export class ViewEmployeePayitemsComponent {
         }
   
       },(error: any) => {})
+    }
+
+    enableEditItem(id: any){
+      this.editEnabledItemId = id;
+    }
+
+    disableEditing(){
+      this.editEnabledItemId = "";
     }
 }
