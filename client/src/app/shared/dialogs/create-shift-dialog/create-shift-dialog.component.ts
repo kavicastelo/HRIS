@@ -33,9 +33,22 @@ export class CreateShiftDialogComponent {
 
   createForm() {
     this.onboardinTaskForm = this.formBuilder.group({
+      longName: ['', Validators.required],
       name: ['', Validators.required],
       start: ['', [Validators.required, this.timeValidator]],
       end: ['', [Validators.required, this.timeValidator]],
+      duration: ['', Validators.required],
+      earliestInTime: ['', Validators.required],
+      latestOutTime: ['', Validators.required],
+      firstHalfDuration: ['', Validators.required],
+      secondHalfDuration: ['', Validators.required],
+      shiftNature: ['', Validators.required],
+      offShift: ['', Validators.required],
+      deductingHours: ['', Validators.required],
+      minPreOTHours: ['', Validators.required],
+      minPostOTHours: ['', Validators.required],
+      maxPreOTHours: ['', Validators.required],
+      maxPostOTHours: ['', Validators.required],
       description: ['', Validators.required]
     });
   }
@@ -69,9 +82,22 @@ export class CreateShiftDialogComponent {
     if (this.onboardinTaskForm.valid){
       this.shiftService.saveShift({
         organizationId: this.receivedData.data.organizationId,
+        longName: this.onboardinTaskForm.value.longName,
         name: this.onboardinTaskForm.value.name,
         startTime: this.onboardinTaskForm.value.start,
         endTime: this.onboardinTaskForm.value.end,
+        duration: this.onboardinTaskForm.value.duration,
+        earliestInTime: this.onboardinTaskForm.value.earliestInTime,
+        latestOutTime: this.onboardinTaskForm.value.latestOutTime,
+        firstHalfDuration: this.onboardinTaskForm.value.firstHalfDuration,
+        secondHalfDuration: this.onboardinTaskForm.value.secondHalfDuration,
+        shiftNature: this.onboardinTaskForm.value.shiftNature,
+        offShift: this.onboardinTaskForm.value.offShift,
+        deductingHours: this.onboardinTaskForm.value.deductingHours,
+        minPreOTHours: this.onboardinTaskForm.value.minPreOTHours,
+        minPostOTHours: this.onboardinTaskForm.value.minPostOTHours,
+        maxPreOTHours: this.onboardinTaskForm.value.maxPreOTHours,
+        maxPostOTHours: this.onboardinTaskForm.value.maxPostOTHours,
         description: this.onboardinTaskForm.value.description
       }).subscribe(data=>{
         this.closePopup()

@@ -1,8 +1,21 @@
-export interface ShiftModel{
-    id?:any,
-    organizationId?:any,
-    name?:any,
-    startTime?:any,
-    endTime?:any,
-    description?:any
+export interface ShiftModel {
+  id?: any,
+  organizationId?: any,
+  longName?: any,
+  name?: any,
+  startTime?: any,
+  endTime?: any,
+  duration?: any,
+  earliestInTime?: any,
+  latestOutTime?: any,
+  firstHalfDuration?: any,
+  secondHalfDuration?: any,
+  shiftNature?: any,
+  offShift?: any,
+  deductingHours?: any,
+  minPreOTHours?: any,
+  minPostOTHours?: any,
+  maxPreOTHours?: any,
+  maxPostOTHours?: any,
+  description?: any
 }
