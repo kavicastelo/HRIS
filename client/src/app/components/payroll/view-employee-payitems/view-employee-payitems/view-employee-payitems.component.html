@@ -28,7 +28,7 @@
                           </ng-container>
                           <ng-container *ngIf="editEnabledItemId == element.id">
                             <div class="input-group input-group-sm">
-                              <input class="form-control form-control-sm" type="number" style="text-align: right; width: 1px;" [ngClass]="{'is-invalid': editEnabledItemValue < 0 || editEnabledItemValue === null || editEnabledItemValue === undefined}" [(ngModel)]="editEnabledItemValue">
+                              <input class="form-control form-control-sm" type="number" style="text-align: right; width: 1px;" [ngClass]="{'is-invalid': editEnabledItemValue < 0 || editEnabledItemValue === null || editEnabledItemValue === undefined}" [(ngModel)]="editEnabledItemValue" [disabled]="isEditEnabledItemInputsDisabled">
                               <span class="input-group-text" *ngIf="element.type != 'Amount'">% {{element.type == 'Hourly Rate'?'per hour':'of basic'}}</span>
                             </div>
                             <mat-icon style="font-size: 18px; cursor: pointer; color: green; font-weight: bolder;" (click)="updateEditEnabledItemDetails(element)">check</mat-icon>

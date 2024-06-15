@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
 import { EmployeePayitemService } from 'src/app/services/employee-payitem.service';
@@ -16,6 +17,7 @@ import { PayItemModel } from 'src/app/shared/data-models/payitem.model';
 export class ViewEmployeePayitemsComponent {
 
   employeePayitemModel!: EmployeePayItemModel;
+  currentEmployee!: EmployeeModel;
 
   totalSalaryOfTheSelectedEmployee: number = 0.0;
 
@@ -28,16 +30,19 @@ export class ViewEmployeePayitemsComponent {
 
   editEnabledItemId: String = "";
   editEnabledItemValue: number = 0.0;
+  isEditEnabledItemInputsDisabled: boolean = false;
 
   constructor(private employeePayitemService: EmployeePayitemService,
     private payitemService: PayitemService,
     private route: ActivatedRoute,
-    private employeesService: EmployeesService
+    private employeesService: EmployeesService,
+    private _snackBar: MatSnackBar
   ){}
 
   ngOnInit(): void {
       this.employeesService.getEmployeeById(this.route.snapshot.params['id']).subscribe(res => {
-        this.viewEmployeePaymentDetails(res);
+        this.currentEmployee = res;
+        this.viewEmployeePaymentDetails(this.currentEmployee);
       },(error: any) => {
         this.notfoundError = true;
       });
@@ -94,13 +99,43 @@ export class ViewEmployeePayitemsComponent {
     enableEditItem(assignedItem: any){
       this.editEnabledItemId = assignedItem.id;
       this.editEnabledItemValue = assignedItem.value;
+      this.isEditEnabledItemInputsDisabled = false;
     }
 
     disableEditing(){
       this.editEnabledItemId = "";
+      this.isEditEnabledItemInputsDisabled = true;
     }
 
-    updateEditEnabledItemDetails(assignedItem: any){
-      
+    updateEditEnabledItemDetails(employeePayitemModel: any){
+        this.isEditEnabledItemInputsDisabled = true;
+
+        if(employeePayitemModel.id == this.editEnabledItemId){
+          if(this.editEnabledItemValue < 0 || this.editEnabledItemValue === null || this.editEnabledItemValue === undefined){
+            this._snackBar.open("Invalid or out of range value. Please recheck the details and try again.", "Dismiss", {duration: 5 * 1000});
+            this.isEditEnabledItemInputsDisabled = false;
+            return;
+          }
+
+          this._snackBar.open("Updating the assigned items...", "Dismiss", {duration: 5 * 1000});
+
+          employeePayitemModel.value = this.editEnabledItemValue;
+
+          this.employeePayitemService.updateEmployeePayItem(employeePayitemModel).subscribe((res: any) => {
+            if(res){
+              if(res.errorCode == "INVALID_INFOMARTION"){
+                this.isEditEnabledItemInputsDisabled = false;
+                this._snackBar.open(res.message, "Ok");
+              }else{
+                this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+                this.disableEditing();
+                this.viewEmployeePaymentDetails(this.currentEmployee);
+              }
+            }
+          },(error: any) => {
+            this.isEditEnabledItemInputsDisabled = false;
+            this._snackBar.open("Failed to update the assigned items.", "Ok");
+          })
+        }
     }
 }
