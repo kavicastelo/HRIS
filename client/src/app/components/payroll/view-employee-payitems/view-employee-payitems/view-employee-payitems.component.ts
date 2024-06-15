@@ -138,4 +138,24 @@ export class ViewEmployeePayitemsComponent {
           })
         }
     }
+
+    removePayitemFromEmployee(id: any) {
+      if (id){
+        if (confirm('Are you sure you want to delete this pay item?')){
+          this._snackBar.open("Removing the payitem...", "Dismiss", {duration: 5 * 1000});
+          this.employeePayitemService.removePayItemFromEmployee(id).subscribe(data => {
+              this.payitemService.deletePayitemById(id).subscribe((res: any) => {
+                if(res){
+                  this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+                  this.viewEmployeePaymentDetails(this.currentEmployee);
+                }
+              },(error: any) => {
+                this._snackBar.open("Failed to remove the payitem form the employee.", "Dismiss", {duration: 5 * 1000});
+              })
+          }, error => {
+            console.log(error)
+          })
+        }
+      }
+    }
 }
