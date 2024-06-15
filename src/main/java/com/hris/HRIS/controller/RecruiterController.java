@@ -1,22 +1,17 @@
 package com.hris.HRIS.controller;
 
+import com.hris.HRIS.dto.ActionRequest;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.ApplyJobModel;
 import com.hris.HRIS.repository.ApplyJobRepository;
 import com.hris.HRIS.service.ApplyJobService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/recruiter")
@@ -56,5 +51,24 @@ public class RecruiterController {
     }
 
     //update action
-    
+    @PostMapping("/select")
+    public ResponseEntity<ApiResponse> selectAction(@RequestBody ActionRequest request) {
+
+        Optional<ApplyJobModel> optionalJob = applyJobRepository.findById(request.getId());
+
+        if (optionalJob.isPresent()) {
+            ApplyJobModel job = optionalJob.get();
+            job.setAction(request.isAction());
+
+            applyJobRepository.save(job);
+
+            ApiResponse apiResponse = new ApiResponse("Status updated to selected");
+            return ResponseEntity.ok(apiResponse);
+
+        } else {
+
+            ApiResponse apiResponse = new ApiResponse("Job not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
 }
