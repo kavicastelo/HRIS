@@ -27,6 +27,7 @@ export class ViewEmployeePayitemsComponent {
   notfoundError = false;
 
   editEnabledItemId: String = "";
+  editEnabledItemValue: number = 0.0;
 
   constructor(private employeePayitemService: EmployeePayitemService,
     private payitemService: PayitemService,
@@ -64,9 +65,12 @@ export class ViewEmployeePayitemsComponent {
   
                       if(employeePayitem.type == "Percentage"){
                         employeePayitem.amount = this.selectedEmployeeBasicSalary * (employeePayitem.value/100);
+                        employeePayitem.payitem.paymentType += " (" + employeePayitem.value + "% of basic)";
                       }else if(employeePayitem.type == "Hourly Rate"){              
                           // employeePayitem.amount = employeePayitem.value * parseFloat(hoursWorkedRes.toString());
-                      }else{
+                          employeePayitem.amount = 0.00;
+                          employeePayitem.payitem.paymentType += " (" + employeePayitem.value + "% Hourly Rate)";
+                        }else{
                         employeePayitem.amount = employeePayitem.value;
                       }
   
@@ -87,11 +91,16 @@ export class ViewEmployeePayitemsComponent {
       },(error: any) => {})
     }
 
-    enableEditItem(id: any){
-      this.editEnabledItemId = id;
+    enableEditItem(assignedItem: any){
+      this.editEnabledItemId = assignedItem.id;
+      this.editEnabledItemValue = assignedItem.value;
     }
 
     disableEditing(){
       this.editEnabledItemId = "";
+    }
+
+    updateEditEnabledItemDetails(assignedItem: any){
+      
     }
 }
