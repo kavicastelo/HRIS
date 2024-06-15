@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
 import { EmployeePayitemService } from 'src/app/services/employee-payitem.service';
@@ -16,6 +17,7 @@ import { PayItemModel } from 'src/app/shared/data-models/payitem.model';
 export class ViewEmployeePayitemsComponent {
 
   employeePayitemModel!: EmployeePayItemModel;
+  currentEmployee!: EmployeeModel;
 
   totalSalaryOfTheSelectedEmployee: number = 0.0;
 
@@ -26,15 +28,21 @@ export class ViewEmployeePayitemsComponent {
 
   notfoundError = false;
 
+  editEnabledItemId: String = "";
+  editEnabledItemValue: number = 0.0;
+  isEditEnabledItemInputsDisabled: boolean = false;
+
   constructor(private employeePayitemService: EmployeePayitemService,
     private payitemService: PayitemService,
     private route: ActivatedRoute,
-    private employeesService: EmployeesService
+    private employeesService: EmployeesService,
+    private _snackBar: MatSnackBar
   ){}
 
   ngOnInit(): void {
       this.employeesService.getEmployeeById(this.route.snapshot.params['id']).subscribe(res => {
-        this.viewEmployeePaymentDetails(res);
+        this.currentEmployee = res;
+        this.viewEmployeePaymentDetails(this.currentEmployee);
       },(error: any) => {
         this.notfoundError = true;
       });
@@ -62,9 +70,12 @@ export class ViewEmployeePayitemsComponent {
   
                       if(employeePayitem.type == "Percentage"){
                         employeePayitem.amount = this.selectedEmployeeBasicSalary * (employeePayitem.value/100);
+                        employeePayitem.payitem.paymentType += " (" + employeePayitem.value + "% of basic)";
                       }else if(employeePayitem.type == "Hourly Rate"){              
                           // employeePayitem.amount = employeePayitem.value * parseFloat(hoursWorkedRes.toString());
-                      }else{
+                          employeePayitem.amount = 0.00;
+                          employeePayitem.payitem.paymentType += " (" + employeePayitem.value + "% Hourly Rate)";
+                        }else{
                         employeePayitem.amount = employeePayitem.value;
                       }
   
@@ -83,5 +94,68 @@ export class ViewEmployeePayitemsComponent {
         }
   
       },(error: any) => {})
+    }
+
+    enableEditItem(assignedItem: any){
+      this.editEnabledItemId = assignedItem.id;
+      this.editEnabledItemValue = assignedItem.value;
+      this.isEditEnabledItemInputsDisabled = false;
+    }
+
+    disableEditing(){
+      this.editEnabledItemId = "";
+      this.isEditEnabledItemInputsDisabled = true;
+    }
+
+    updateEditEnabledItemDetails(employeePayitemModel: any){
+        this.isEditEnabledItemInputsDisabled = true;
+
+        if(employeePayitemModel.id == this.editEnabledItemId){
+          if(this.editEnabledItemValue < 0 || this.editEnabledItemValue === null || this.editEnabledItemValue === undefined){
+            this._snackBar.open("Invalid or out of range value. Please recheck the details and try again.", "Dismiss", {duration: 5 * 1000});
+            this.isEditEnabledItemInputsDisabled = false;
+            return;
+          }
+
+          this._snackBar.open("Updating the assigned items...", "Dismiss", {duration: 5 * 1000});
+
+          employeePayitemModel.value = this.editEnabledItemValue;
+
+          this.employeePayitemService.updateEmployeePayItem(employeePayitemModel).subscribe((res: any) => {
+            if(res){
+              if(res.errorCode == "INVALID_INFOMARTION"){
+                this.isEditEnabledItemInputsDisabled = false;
+                this._snackBar.open(res.message, "Ok");
+              }else{
+                this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+                this.disableEditing();
+                this.viewEmployeePaymentDetails(this.currentEmployee);
+              }
+            }
+          },(error: any) => {
+            this.isEditEnabledItemInputsDisabled = false;
+            this._snackBar.open("Failed to update the assigned items.", "Ok");
+          })
+        }
+    }
+
+    removePayitemFromEmployee(id: any) {
+      if (id){
+        if (confirm('Are you sure you want to delete this pay item?')){
+          this._snackBar.open("Removing the payitem...", "Dismiss", {duration: 5 * 1000});
+          this.employeePayitemService.removePayItemFromEmployee(id).subscribe(data => {
+              this.payitemService.deletePayitemById(id).subscribe((res: any) => {
+                if(res){
+                  this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+                  this.viewEmployeePaymentDetails(this.currentEmployee);
+                }
+              },(error: any) => {
+                this._snackBar.open("Failed to remove the payitem form the employee.", "Dismiss", {duration: 5 * 1000});
+              })
+          }, error => {
+            console.log(error)
+          })
+        }
+      }
     }
 }
