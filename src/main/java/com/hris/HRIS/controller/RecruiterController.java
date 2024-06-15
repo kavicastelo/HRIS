@@ -51,7 +51,7 @@ public class RecruiterController {
     }
 
     //update action
-    @PostMapping("/api/select")
+    @PostMapping("/select")
     public ResponseEntity<ApiResponse> selectAction(@RequestBody ActionRequest request) {
 
         Optional<ApplyJobModel> optionalJob = applyJobRepository.findById(request.getId());
@@ -64,8 +64,9 @@ public class RecruiterController {
 
             ApiResponse apiResponse = new ApiResponse("Status updated to selected");
             return ResponseEntity.ok(apiResponse);
-            
+
         } else {
+
             ApiResponse apiResponse = new ApiResponse("Job not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
