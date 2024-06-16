@@ -12,14 +12,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Setup environment variables
+        run: |
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > client/src/environments/environment.ts
+          echo "${{ secrets.ENV_FILE_DEV_CONTENT }}" > client/src/environments/environment.development.ts
+
       - name: Install dependencies
         run: |
           cd client
           npm install --force
+
       - name: Build frontend
         run: |
           cd client
           npm run build
+
   build-backend:
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +38,9 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
+
+      - name: Setup environment variables
+        run: echo "${{ secrets.BACKEND_ENV_FILE_CONTENT }}" > .env
 
       - name: Build backend
         run: |
