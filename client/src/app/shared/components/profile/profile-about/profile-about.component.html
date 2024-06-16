@@ -8,44 +8,120 @@
     </li>
     <li class="list-group-item">
       <div *ngFor="let e of employee">
-        <table>
-          <tr>
-            <td class="list-1"><i class="fa fa-user" aria-hidden="true"></i> &nbsp;&nbsp;Full Name</td>
-            <td class="list-2"><span>{{e.name}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;&nbsp;DOB</td>
-            <td class="list-2"><span>{{e.dob | dateFormat}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-id-card" aria-hidden="true"></i> &nbsp;&nbsp;NIC</td>
-            <td class="list-2"><span>{{e.nic}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;&nbsp;Address</td>
-            <td class="list-2"><span>{{e.address}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-envelope-o" aria-hidden="true"></i> &nbsp;&nbsp;Email</td>
-            <td class="list-2"><span>{{e.email}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-phone" aria-hidden="true"></i> &nbsp;&nbsp;Phone</td>
-            <td class="list-2"><span>{{e.phone}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-building-o" aria-hidden="true"></i> &nbsp;&nbsp;Department</td>
-            <td class="list-2"><span>{{e.jobData.department}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;&nbsp;Joined Date</td>
-            <td class="list-2"><span>{{e.jobData.doj | dateFormat}}</span></td>
-          </tr>
-          <tr>
-            <td class="list-1"><i class="fa fa-genderless" aria-hidden="true"></i> &nbsp;&nbsp;Status</td>
-            <td class="list-2"><span>{{e.status}}</span></td>
-          </tr>
-        </table>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-3 mt-lg-2">
+            <h6>Basic Details</h6>
+            <div class="h6-supporter"></div>
+            <table>
+              <tr>
+                <td class="list-1">Full Name</td>
+                <td class="list-2"><span>{{e.name}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">DOB</td>
+                <td class="list-2"><span>{{e.dob | dateFormat}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">NIC</td>
+                <td class="list-2"><span>{{e.nic}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Gender</td>
+                <td class="list-2"><span>{{e.gender}}</span></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-12 col-md-6 col-lg-3 mt-4 mt-md-2 mt-lg-2">
+            <h6>Contact Details</h6>
+            <div class="h6-supporter"></div>
+            <table>
+              <tr>
+                <td class="list-1">Email</td>
+                <td class="list-2"><span>{{e.email}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Phone</td>
+                <td class="list-2"><span>{{e.phone}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Telephone</td>
+                <td class="list-2"><span>{{e.telephone}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Address</td>
+                <td class="list-2"><span>{{e.address}}</span></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-12 col-md-6 col-lg-3 mt-4 mt-lg-2">
+            <h6>Job Details</h6>
+            <div class="h6-supporter"></div>
+            <table>
+              <tr>
+                <td class="list-1">Employee Type</td>
+                <td class="list-2"><span>{{e.jobData.employementType}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Position</td>
+                <td class="list-2"><span>{{e.jobData.position}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Job Grade</td>
+                <td class="list-2"><span>{{e.jobData.jobGrade}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Personal Grade</td>
+                <td class="list-2"><span>{{e.jobData.personalGrade}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Supervisor</td>
+                <td class="list-2"><span>{{e.jobData.supervisor}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Business Unit</td>
+                <td class="list-2"><span>{{e.jobData.businessUnit}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Department</td>
+                <td class="list-2"><span>{{e.jobData.department}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Location</td>
+                <td class="list-2"><span>{{e.jobData.location}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Branch</td>
+                <td class="list-2"><span>{{e.jobData.branch}}</span></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-12 col-md-6 col-lg-3 mt-4 mt-lg-2">
+            <h6>Other Details</h6>
+            <div class="h6-supporter"></div>
+            <table>
+              <tr>
+                <td class="list-1">Marital Status</td>
+                <td class="list-2"><span>{{e.maritalStatus}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Nationality</td>
+                <td class="list-2"><span>{{e.nationality}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Religion</td>
+                <td class="list-2"><span>{{e.religion}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Retirement</td>
+                <td class="list-2"><span>{{e.dateOfRetirement | dateFormat}}</span></td>
+              </tr>
+              <tr>
+                <td class="list-1">Contract End</td>
+                <td class="list-2"><span>{{e.dateOfContractEnd | dateFormat}}</span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
     </li>
     <li class="list-group-item">&nbsp;</li>
