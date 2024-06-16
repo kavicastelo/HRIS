@@ -12,6 +12,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Create environment directory
+        run: mkdir -p client/src/environments
+
       - name: Setup environment variables
         run: |
           echo "${{ secrets.ENV_FILE_CONTENT }}" > client/src/environments/environment.ts
