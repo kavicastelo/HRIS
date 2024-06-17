@@ -188,6 +188,14 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 
+// mat-table
+.mat-elevation-z1 {
+  background-color: var(--color-surface-mixed-200) !important;
+}
+.mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell{
+  color: var(--color-text-200);
+}
+
 // mat-drawer
 .mat-drawer-container {
   background: var(--color-surface-200) !important;
