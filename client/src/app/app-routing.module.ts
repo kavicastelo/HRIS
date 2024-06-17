@@ -48,7 +48,8 @@ import { PayrollHistoryComponent } from './components/payroll/payroll-reports/pa
 import {MarkAttendanceComponent} from "./components/am-lm/mark-attendance/mark-attendance.component";
 import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
 import { TaxdetailsComponent } from "./components/taxdetails/taxdetails.component";
-import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";  
+import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";
+import {AdminGuard} from "./guards/admin.guard";
 const routes: Routes = [
     {path: '', redirectTo: 'feed', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
@@ -73,9 +74,9 @@ const routes: Routes = [
         ]
     },
     {path: 'login', component: LogInComponent},
-    {path: 'emp-register', component: EmployeeRegisterComponent, canActivate: [AuthGuard]},
-    {path: 'emp-update/:id', component: EmployeeUpdateComponent, canActivate: [AuthGuard]},
-    {path: 'bulletins', component: BulletinsComponent, canActivate: [AuthGuard]},
+    {path: 'emp-register', component: EmployeeRegisterComponent, canActivate: [AuthGuard, AdminGuard]},
+    {path: 'emp-update/:id', component: EmployeeUpdateComponent, canActivate: [AuthGuard, AdminGuard]},
+    {path: 'bulletins', component: BulletinsComponent, canActivate: [AuthGuard, AdminGuard]},
     {path: 'reset-password', component: ResetPasswordComponent},
     {
         path: 'requests/:id', component: RequestsComponent, canActivate: [AuthGuard], children: [
@@ -86,7 +87,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard], children: [
+        path: 'employee', component: EmployeeComponent, canActivate: [AuthGuard, AdminGuard], children: [
             {path: '', redirectTo: '/employee/dashboard', pathMatch: 'full'},
             {path: 'dashboard', component: EmpDashboardComponent},
             {path: 'transfer', component: EmpTransferComponent},
@@ -94,7 +95,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'alm', component: AmLmComponent, canActivate: [AuthGuard], children: [
+        path: 'alm', component: AmLmComponent, canActivate: [AuthGuard, AdminGuard], children: [
             {path: '', redirectTo: '/alm/attendance', pathMatch: 'full'},
             {path: 'attendance', component: AttendenceComponent},
             {path: 'leave', component: LeaveComponent},
@@ -120,7 +121,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard], children: [
+        path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard, AdminGuard], children: [
             {path: '', redirectTo: '/onboardin/assign', pathMatch: "full"},
             {path: 'assign', component: AssignTaskComponent},
             {path: 'plan', component: CreatePlanComponent},
@@ -128,8 +129,8 @@ const routes: Routes = [
         ]
     },
     {
-        path:'taxdetails' , component:TaxdetailsComponent , children:[
-       { path:'tax-details-info' , component:AddNewTaxrangeComponent }
+        path:'taxdetails', component:TaxdetailsComponent, canActivate: [AuthGuard, AdminGuard], children:[
+            {path:'tax-details-info' , component:AddNewTaxrangeComponent}
     ]
     },
     {path: '**', component: NotFoundComponent},

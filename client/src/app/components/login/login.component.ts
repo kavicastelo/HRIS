@@ -16,7 +16,7 @@ export class LogInComponent implements OnInit{
   password: string='';
   errorMassage:string='';
   credentialsDataStore:any;
-  
+
   constructor(private router: Router, private credentialsService: CredentialsService, private cookieService: AuthService, private employeeService: EmployeesService) { }
 
   async ngOnInit(): Promise<any> {
@@ -35,14 +35,21 @@ export class LogInComponent implements OnInit{
     const foundUser = this.credentialsDataStore.find((user:any) => user.email === this.email && user.password === this.password);
     if (foundUser) {
       this.employeeService.getEmployeeByEmail(foundUser.email).subscribe((data:any)=>{
-        console.log(data)
         this.cookieService.createUserID(data.id);
         this.cookieService.createOrganizationID(data.organizationId);
         this.cookieService.createDepartmentID(data.departmentId);
         this.cookieService.createLevel(data.level);
-        this.router.navigate(['/feed']).then(()=>{
-          location.reload()
-        });
+
+        if (data.level == '0' || data.level == '1') {
+          this.router.navigate(['/employee']).then(()=>{
+            location.reload()
+          })
+        }
+        else{
+          this.router.navigate(['/feed']).then(()=>{
+            location.reload()
+          });
+        }
       }, error => {
         console.log(error)
       })
