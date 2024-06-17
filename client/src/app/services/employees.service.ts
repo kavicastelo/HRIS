@@ -302,7 +302,7 @@ export class EmployeesService {
         nic: form.get('nic') as string,
         photo: fileInput,
         status: form.get('status') as string,
-        level: "1" as string,
+        level: "2" as string,
         maritalStatus: form.get('maritalStatus') as string,
         nationality: form.get('nationality') as string,
         religion: form.get('religion') as string,
