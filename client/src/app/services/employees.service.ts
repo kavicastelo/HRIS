@@ -333,4 +333,11 @@ export class EmployeesService {
       this.sendToBackend(formData, headers);
     }
   }
+
+  public updateLevel(id: string, level: string): Observable<any> {
+    return this.http.put(this.baseUrl + 'employee/update/level/' + id, {
+      id: id,
+      level: level
+    });
+  }
 }

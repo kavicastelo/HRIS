@@ -1,11 +1,15 @@
+.approved, .pendingApproval, .rejected {
+  color: black;
+}
+
 .pendingApproval {
-    background-color: #FCF6C1;
+  background-color: #FCF6C1;
 }
 
 .rejected {
   background-color: #FBEDEA;
 }
-  
+
 .approved {
   background-color: #EAF3FC;
 }

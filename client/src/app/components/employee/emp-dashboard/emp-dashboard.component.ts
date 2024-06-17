@@ -166,4 +166,30 @@ export class EmpDashboardComponent implements OnInit{
       this.openSnackBar("Employee not attended today", "OK")
     }
   }
+
+  changeHierarchy(id:any, level: any) {
+    const selectedEmployee = this.employeeDataStore.find((emp: any) => emp.id === id);
+    if (selectedEmployee) {
+      if (selectedEmployee.level == level){
+        this.openSnackBar("Already at this level", "OK")
+      } else {
+        this.employeesService.updateLevel(selectedEmployee.id, level).subscribe(data => {
+          if (level == 0){
+            this.openSnackBar("Employee promoted as Administrator", "OK")
+          }
+          else if(level == 1){
+            this.openSnackBar("Employee promoted as Manager", "OK")
+          }
+          else if(level == 2){
+            this.openSnackBar("Employee demoted as Employee", "OK")
+          }
+          this.loadAllUsers().subscribe(()=>{
+            this.filterEmployees()
+          })
+        })
+      }
+    } else {
+      this.openSnackBar("Employee not found", "OK")
+    }
+  }
 }
