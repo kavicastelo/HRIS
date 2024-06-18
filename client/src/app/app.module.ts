@@ -106,7 +106,9 @@ import { PayrollReportsOverviewComponent } from './components/payroll/payroll-re
 import { ViewSummaryReportDialogComponent } from './components/payroll/payroll-reports/view-summary-report-dialog/view-summary-report-dialog.component';
 import { TaxdetailsComponent } from "./components/taxdetails/taxdetails.component";
 import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";
-import { RecruitmentComponent } from './components/recruitment/recruitment.component';   
+import { RecruitmentComponent } from './components/recruitment/recruitment.component';
+import { RecruitmentApplicantsComponent } from './components/recruitment/recruitment-applicants/recruitment-applicants.component';
+import { RecruitmentJobListComponent } from './components/recruitment/recruitment-job-list/recruitment-job-list.component';   
 @NgModule({
     declarations: [
         AppComponent,
@@ -187,7 +189,9 @@ import { RecruitmentComponent } from './components/recruitment/recruitment.compo
         ViewSummaryReportDialogComponent,
         TaxdetailsComponent,
         AddNewTaxrangeComponent,
-        RecruitmentComponent
+        RecruitmentComponent,
+        RecruitmentApplicantsComponent,
+        RecruitmentJobListComponent
 
     ],
     imports: [
