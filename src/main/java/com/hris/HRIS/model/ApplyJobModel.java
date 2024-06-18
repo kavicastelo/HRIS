@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Time;
+import java.text.DateFormat;
+
 @Getter
 @Setter
 @ToString
@@ -20,6 +23,10 @@ public class ApplyJobModel {
 
     private String name;
 
+    private String job_title;
+
+    private DateFormat apply_date;
+
     private String contact_number;
 
     private String email;
@@ -27,4 +34,17 @@ public class ApplyJobModel {
     private byte[] cv;
 
     private boolean action = false;
+
+    private boolean hire = false;
+
+    private String meeting_link;
+
+    private DateFormat meeting_date;
+
+    private Time meeting_time;
+
+    private boolean notify;
+
+    private String manager_email;
+
 }

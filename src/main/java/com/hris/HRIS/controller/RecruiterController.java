@@ -2,9 +2,11 @@ package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ActionRequest;
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.dto.MeetingRequest;
 import com.hris.HRIS.model.ApplyJobModel;
 import com.hris.HRIS.repository.ApplyJobRepository;
 import com.hris.HRIS.service.ApplyJobService;
+import com.hris.HRIS.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ public class RecruiterController {
 
     @Autowired
     ApplyJobService applyJobService;
+
+    @Autowired
+    EmailService emailService;
 
     @GetMapping("/details")
     public ModelAndView getAllDetails(){
@@ -50,25 +55,32 @@ public class RecruiterController {
                 .body(cvContent);
     }
 
-    //update action
-    @PostMapping("/select")
-    public ResponseEntity<ApiResponse> selectAction(@RequestBody ActionRequest request) {
+    // Schedule meeting and send email
+    @PostMapping("/schedule-meeting")
+    public ResponseEntity<ApiResponse> scheduleMeeting(@RequestBody MeetingRequest meetingRequest) {
 
-        Optional<ApplyJobModel> optionalJob = applyJobRepository.findById(request.getId());
+        Optional<ApplyJobModel> optionalJob = applyJobRepository.findById(meetingRequest.getId());
 
         if (optionalJob.isPresent()) {
             ApplyJobModel job = optionalJob.get();
-            job.setAction(request.isAction());
+            job.setMeeting_date(meetingRequest.getMeetingDate());
+            job.setMeeting_time(meetingRequest.getMeetingTime());
+            job.setMeeting_link(meetingRequest.getMeetingLink());
+            job.setAction(true);  // Update action to true (selected)
 
             applyJobRepository.save(job);
 
-            ApiResponse apiResponse = new ApiResponse("Status updated to selected");
+            // Send email to user and manager
+            emailService.sendMeetingDetails(job, meetingRequest.getUserEmail(), meetingRequest.getManagerEmail(), meetingRequest.isNotify());
+
+            ApiResponse apiResponse = new ApiResponse("Meeting scheduled and email sent");
             return ResponseEntity.ok(apiResponse);
 
         } else {
-
             ApiResponse apiResponse = new ApiResponse("Job not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
+
+
 }
