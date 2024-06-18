@@ -105,7 +105,8 @@ import {PickerModule} from "@ctrl/ngx-emoji-mart";
 import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
 import { ViewSummaryReportDialogComponent } from './components/payroll/payroll-reports/view-summary-report-dialog/view-summary-report-dialog.component';
 import { TaxdetailsComponent } from "./components/taxdetails/taxdetails.component";
-import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";   
+import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";
+import { RecruitmentComponent } from './components/recruitment/recruitment.component';   
 @NgModule({
     declarations: [
         AppComponent,
@@ -185,7 +186,8 @@ import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrang
         PayrollReportsOverviewComponent,
         ViewSummaryReportDialogComponent,
         TaxdetailsComponent,
-        AddNewTaxrangeComponent
+        AddNewTaxrangeComponent,
+        RecruitmentComponent
 
     ],
     imports: [
