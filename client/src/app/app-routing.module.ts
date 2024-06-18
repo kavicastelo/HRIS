@@ -59,6 +59,12 @@ import {TaxdetailsComponent} from "./components/taxdetails/taxdetails.component"
 import {AddNewTaxrangeComponent} from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";
 import {AdminGuard} from "./guards/admin.guard";
 import {RecruitmentComponent} from "./components/recruitment/recruitment.component";
+import {
+  RecruitmentApplicantsComponent
+} from "./components/recruitment/recruitment-applicants/recruitment-applicants.component";
+import {
+  RecruitmentJobListComponent
+} from "./components/recruitment/recruitment-job-list/recruitment-job-list.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'feed', pathMatch: 'full'},
@@ -143,7 +149,11 @@ const routes: Routes = [
       {path: 'tax-details-info', component: AddNewTaxrangeComponent}
     ]
   },
-  {path: 'recruitment', component: RecruitmentComponent, canActivate: [AuthGuard, AdminGuard]},
+  {path: 'recruitment', component: RecruitmentComponent, canActivate: [AuthGuard, AdminGuard], children: [
+    {path: '', redirectTo: '/recruitment/applicants', pathMatch: 'full'},
+    {path: 'applicants', component: RecruitmentApplicantsComponent},
+    {path: 'job-listing', component: RecruitmentJobListComponent},
+  ]},
   {path: '**', component: NotFoundComponent},
 
 ];
