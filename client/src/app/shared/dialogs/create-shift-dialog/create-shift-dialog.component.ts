@@ -1,9 +1,10 @@
 import {Component, Inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ShiftsService} from "../../../services/shifts.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-create-shift-dialog',
@@ -37,25 +38,43 @@ export class CreateShiftDialogComponent {
       name: ['', Validators.required],
       start: ['', [Validators.required, this.timeValidator]],
       end: ['', [Validators.required, this.timeValidator]],
-      duration: ['', Validators.required],
-      earliestInTime: ['', Validators.required],
-      latestOutTime: ['', Validators.required],
-      firstHalfDuration: ['', Validators.required],
-      secondHalfDuration: ['', Validators.required],
+      duration: ['', Validators.required, this.isValidHour],
+      earliestInTime: ['', Validators.required, this.isValidHour],
+      latestOutTime: ['', Validators.required, this.isValidHour],
+      firstHalfDuration: ['', Validators.required, this.isValidHour],
+      secondHalfDuration: ['', Validators.required, this.isValidHour],
       shiftNature: ['', Validators.required],
       offShift: ['', Validators.required],
-      deductingHours: ['', Validators.required],
-      minPreOTHours: ['', Validators.required],
-      minPostOTHours: ['', Validators.required],
-      maxPreOTHours: ['', Validators.required],
-      maxPostOTHours: ['', Validators.required],
-      description: ['', Validators.required]
+      deductingHours: ['', Validators.required, this.isValidHour],
+      minPreOTHours: ['', Validators.required, this.isValidHour],
+      minPostOTHours: ['', Validators.required, this.isValidHour],
+      maxPreOTHours: ['', Validators.required, this.isValidHour],
+      maxPostOTHours: ['', Validators.required, this.isValidHour],
+      description: ['', Validators.required, this.isDescriptionLength]
     });
   }
 
   timeValidator(control:any) {
     const valid = /^(0?[1-9]|1[0-2])\.\d{2} (AM|PM)$/.test(control.value);
     return valid ? null : { invalidTime: true };
+  }
+
+  isValidHour(control: AbstractControl):
+    Observable<ValidationErrors | null> {
+    const v: number = control.value;
+    if (v >= 0 && v <= 24 && v.toString().length <= 2) {
+      return of(null);
+    }
+    return of({ inValidValue: true});
+  }
+
+  isDescriptionLength(control: AbstractControl):
+    Observable<ValidationErrors | null> {
+    const v: string = control.value;
+    if (v.length <= 1000) {
+      return of(null);
+    }
+    return of({ inValidValue: true});
   }
 
   updateStartTime(period: string) {
@@ -105,6 +124,8 @@ export class CreateShiftDialogComponent {
       }, error => {
         console.log(error)
       })
+    } else {
+      this.onboardinTaskForm.markAllAsTouched();
     }
   }
 }

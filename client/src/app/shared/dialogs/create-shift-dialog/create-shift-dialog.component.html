@@ -1,4 +1,4 @@
-<div class="sticky-top my-2" style="background-color: #fff">
+<div class="sticky-top py-2" style="background-color: #fff">
   <div class="d-flex align-items-center justify-content-between px-2">
     <h5>Create Shift</h5>
     <mat-icon (click)="closePopup()">close</mat-icon>
@@ -9,22 +9,40 @@
 <div class="container">
   <form [formGroup]="onboardinTaskForm">
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Shift Name (long) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Shift Name (long)</mat-label>
           <input matInput id="longName" formControlName="longName" placeholder="Workday Shift">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Abbreviation (short) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Abbreviation (short)</mat-label>
-          <input matInput id="name" formControlName="name" placeholder="Workday Shift">
+          <input matInput id="name" formControlName="name" placeholder="WD">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Start at *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <div class="d-flex">
           <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Start at</mat-label>
             <input matInput id="start" formControlName="start" placeholder="8.00AM">
           </mat-form-field>
           <div class="d-flex flex-column" style="margin-bottom: 22px">
@@ -33,10 +51,16 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            End at *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <div class="d-flex">
           <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Start at</mat-label>
             <input matInput id="end" formControlName="end" placeholder="6.00PM">
           </mat-form-field>
           <div class="d-flex flex-column" style="margin-bottom: 22px">
@@ -45,81 +69,165 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Duration(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Duration</mat-label>
-          <input matInput id="duration" formControlName="duration" placeholder="9 hours" type="number">
+          <input matInput id="duration" formControlName="duration" placeholder="9" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Earliest In Time(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Earliest In Time</mat-label>
-          <input matInput id="earliestInTime" formControlName="earliestInTime" placeholder="2 hours" type="number">
+          <input matInput id="earliestInTime" formControlName="earliestInTime" placeholder="2" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Latest Out Time(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Latest Out Time</mat-label>
-          <input matInput id="latestOutTime" formControlName="latestOutTime" placeholder="6 hours" type="number">
+          <input matInput id="latestOutTime" formControlName="latestOutTime" placeholder="6" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            First Half Duration(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>First Half Duration</mat-label>
-          <input matInput id="firstHalfDuration" formControlName="firstHalfDuration" placeholder="4 hours" type="number">
+          <input matInput id="firstHalfDuration" formControlName="firstHalfDuration" placeholder="4" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Second Half Duration(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Second Half Duration</mat-label>
-          <input matInput id="secondHalfDuration" formControlName="secondHalfDuration" placeholder="4 hours" type="number">
+          <input matInput id="secondHalfDuration" formControlName="secondHalfDuration" placeholder="4" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Shift Nature *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Shift Nature</mat-label>
-          <input matInput id="shiftNature" formControlName="shiftNature" placeholder="Fixed">
+          <mat-select formControlName="shiftNature" placeholder="Fixed">
+            <mat-option value="fixed">Fixed</mat-option>
+            <mat-option value="flexible">Flexible</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Off Shift *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Off Shift</mat-label>
-          <input matInput id="offShift" formControlName="offShift" placeholder="No">
+          <mat-select formControlName="offShift" placeholder="No">
+            <mat-option value="no">No</mat-option>
+            <mat-option value="yes">Yes</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Deducting Hours(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Deducting Hours</mat-label>
-          <input matInput id="deductingHours" formControlName="deductingHours" placeholder="1 hour" type="number">
+          <input matInput id="deductingHours" formControlName="deductingHours" placeholder="1" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Minimum Pre OT Hours(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Minimum Pre OT Hours</mat-label>
-          <input matInput id="minPreOTHours" formControlName="minPreOTHours" placeholder="1 hour" type="number">
+          <input matInput id="minPreOTHours" formControlName="minPreOTHours" placeholder="1" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Minimum Post OT Hours(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Minimum Post OT Hours</mat-label>
-          <input matInput id="minPostOTHours" formControlName="minPostOTHours" placeholder="1 hour" type="number">
+          <input matInput id="minPostOTHours" formControlName="minPostOTHours" placeholder="1" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Maximum Pre OT Hours(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Maximum Pre OT Hours</mat-label>
-          <input matInput id="maxPreOTHours" formControlName="maxPreOTHours" placeholder="4 hour" type="number">
+          <input matInput id="maxPreOTHours" formControlName="maxPreOTHours" placeholder="4" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Maximum Post OT Hours(hr) *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Maximum Post OT Hours</mat-label>
-          <input matInput id="maxPostOTHours" formControlName="maxPostOTHours" placeholder="4 hour" type="number">
+          <input matInput id="maxPostOTHours" formControlName="maxPostOTHours" placeholder="4" type="number">
         </mat-form-field>
       </div>
-      <div class="col-12">
+      <div class="col-12 col-md-4">
+        <div class="d-flex align-items-center h-100">
+          <div class="label">
+            Description *
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Description</mat-label>
           <textarea matInput id="description" formControlName="description"
                     placeholder="Description to new task..."></textarea>
         </mat-form-field>
@@ -128,7 +236,7 @@
   </form>
 </div>
 
-<div class="sticky-bottom my-2" style="background-color: #fff">
+<div class="sticky-bottom py-2" style="background-color: #fff">
   <hr>
   <div class="d-flex align-items-center justify-content-end px-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
