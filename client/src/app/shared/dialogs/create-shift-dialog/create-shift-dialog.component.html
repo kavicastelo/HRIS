@@ -18,7 +18,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="longName" formControlName="longName" placeholder="Workday Shift">
+          <input matInput id="longName" formControlName="longName" placeholder="Workday Shift" #longNameInput (keydown)="focusFieldOnEnter($event, nameInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -30,7 +30,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="name" formControlName="name" placeholder="WD">
+          <input matInput id="name" formControlName="name" placeholder="WD" #nameInput (keydown)="focusFieldOnEnter($event, startInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -43,7 +43,7 @@
       <div class="col-12 col-md-8">
         <div class="d-flex">
           <mat-form-field class="w-100" appearance="outline">
-            <input matInput id="start" formControlName="start" placeholder="8.00AM">
+            <input matInput id="start" formControlName="start" placeholder="8.00AM" #startInput (keydown)="focusFieldOnEnter($event, endInput)">
           </mat-form-field>
           <div class="d-flex flex-column" style="margin-bottom: 22px">
             <button type="button" class="btn-2" (click)="updateStartTime('AM')">AM</button>
@@ -61,7 +61,7 @@
       <div class="col-12 col-md-8">
         <div class="d-flex">
           <mat-form-field class="w-100" appearance="outline">
-            <input matInput id="end" formControlName="end" placeholder="6.00PM">
+            <input matInput id="end" formControlName="end" placeholder="6.00PM" #endInput (keydown)="focusFieldOnEnter($event, durationInput)">
           </mat-form-field>
           <div class="d-flex flex-column" style="margin-bottom: 22px">
             <button type="button" class="btn-2" (click)="updateEndTime('AM')">AM</button>
@@ -78,7 +78,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="duration" formControlName="duration" placeholder="9" type="number">
+          <input matInput id="duration" formControlName="duration" placeholder="9" type="number" #durationInput (keydown)="focusFieldOnEnter($event, earlyInInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -90,7 +90,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="earliestInTime" formControlName="earliestInTime" placeholder="2" type="number">
+          <input matInput id="earliestInTime" formControlName="earliestInTime" placeholder="2" type="number" #earlyInInput (keydown)="focusFieldOnEnter($event, latestOutInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -102,7 +102,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="latestOutTime" formControlName="latestOutTime" placeholder="6" type="number">
+          <input matInput id="latestOutTime" formControlName="latestOutTime" placeholder="6" type="number" #latestOutInput (keydown)="focusFieldOnEnter($event, firstHalfInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -114,7 +114,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="firstHalfDuration" formControlName="firstHalfDuration" placeholder="4" type="number">
+          <input matInput id="firstHalfDuration" formControlName="firstHalfDuration" placeholder="4" type="number" #firstHalfInput (keydown)="focusFieldOnEnter($event, secondHalfInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -126,7 +126,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="secondHalfDuration" formControlName="secondHalfDuration" placeholder="4" type="number">
+          <input matInput id="secondHalfDuration" formControlName="secondHalfDuration" placeholder="4" type="number" #secondHalfInput (keydown)="focusFieldOnEnter($event, shiftNatureInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -138,7 +138,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-select formControlName="shiftNature" placeholder="Fixed">
+          <mat-select formControlName="shiftNature" placeholder="Fixed" #shiftNatureInput (keydown)="focusFieldOnEnter($event, offShiftInput)">
             <mat-option value="fixed">Fixed</mat-option>
             <mat-option value="flexible">Flexible</mat-option>
           </mat-select>
@@ -153,7 +153,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-select formControlName="offShift" placeholder="No">
+          <mat-select formControlName="offShift" placeholder="No" #offShiftInput (keydown)="focusFieldOnEnter($event, deductingInput)">
             <mat-option value="no">No</mat-option>
             <mat-option value="yes">Yes</mat-option>
           </mat-select>
@@ -168,7 +168,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="deductingHours" formControlName="deductingHours" placeholder="1" type="number">
+          <input matInput id="deductingHours" formControlName="deductingHours" placeholder="1" type="number" #deductingInput (keydown)="focusFieldOnEnter($event, minPreOTInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -180,7 +180,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="minPreOTHours" formControlName="minPreOTHours" placeholder="1" type="number">
+          <input matInput id="minPreOTHours" formControlName="minPreOTHours" placeholder="1" type="number" #minPreOTInput (keydown)="focusFieldOnEnter($event, minPostOTInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -192,7 +192,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="minPostOTHours" formControlName="minPostOTHours" placeholder="1" type="number">
+          <input matInput id="minPostOTHours" formControlName="minPostOTHours" placeholder="1" type="number" #minPostOTInput (keydown)="focusFieldOnEnter($event, maxPreOTInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -204,7 +204,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="maxPreOTHours" formControlName="maxPreOTHours" placeholder="4" type="number">
+          <input matInput id="maxPreOTHours" formControlName="maxPreOTHours" placeholder="4" type="number" #maxPreOTInput (keydown)="focusFieldOnEnter($event, maxPostOTInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -216,7 +216,7 @@
       </div>
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput id="maxPostOTHours" formControlName="maxPostOTHours" placeholder="4" type="number">
+          <input matInput id="maxPostOTHours" formControlName="maxPostOTHours" placeholder="4" type="number" #maxPostOTInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
         </mat-form-field>
       </div>
       <div class="col-12 col-md-4">
@@ -229,7 +229,7 @@
       <div class="col-12 col-md-8">
         <mat-form-field class="w-100" appearance="outline">
           <textarea matInput id="description" formControlName="description"
-                    placeholder="Description to new task..."></textarea>
+                    placeholder="Description to new task..." #descriptionInput (keydown)="receivedData.data.id?keyFormSubmit($event, 'edit'):keyFormSubmit($event, 'save')"></textarea>
         </mat-form-field>
       </div>
     </div>
