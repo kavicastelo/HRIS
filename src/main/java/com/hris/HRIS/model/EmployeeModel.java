@@ -40,6 +40,9 @@ public class EmployeeModel {
     private String dateOfExit;
     private String exitReason;
     private String dateOfContractEnd;
+    @Field("workShift")
+    private List<ShiftModel> workShift;
+    private String workRoster; //TODO: need to initialize
     private Boolean activityStatus;
     private String lastSeen;
 }
