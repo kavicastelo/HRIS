@@ -1,6 +1,6 @@
 <div class="sticky-top py-2" style="background-color: #fff">
   <div class="d-flex align-items-center justify-content-between px-2">
-    <h5>Create Shift</h5>
+    <h5>{{receivedData.data.id?'Edit':'Create'}} Shift</h5>
     <mat-icon (click)="closePopup()">close</mat-icon>
   </div>
   <hr>
@@ -240,6 +240,6 @@
   <hr>
   <div class="d-flex align-items-center justify-content-end px-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
-    <button class="btn" [disabled]="onboardinTaskForm.invalid" (click)="saveShift()">Save</button>
+    <button class="btn" [disabled]="onboardinTaskForm.invalid" (click)="receivedData.data.id?editShift():saveShift()">{{receivedData.data.id?'Edit':'Create'}}</button>
   </div>
 </div>

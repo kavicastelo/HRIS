@@ -5,6 +5,7 @@ import {CreateShiftDialogComponent} from "../../../shared/dialogs/create-shift-d
 import {AuthService} from "../../../services/auth.service";
 import {ShiftsService} from "../../../services/shifts.service";
 import {Observable, tap} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-shift',
@@ -17,7 +18,7 @@ export class ShiftComponent implements OnInit{
   shiftDataStore:any[] = [];
   filteredShifts:any[] = [];
 
-  constructor(private dialog: MatDialog, private cookieService: AuthService, private shiftService: ShiftsService) {
+  constructor(private dialog: MatDialog, private cookieService: AuthService, private shiftService: ShiftsService, private snackBar: MatSnackBar) {
   }
   async ngOnInit(): Promise<any> {
     this.organizationId = this.cookieService.organization();
@@ -46,6 +47,15 @@ export class ShiftComponent implements OnInit{
     this.toggleDialog('', '', data, CreateShiftDialogComponent)
   }
 
+  editShift(shift: any) {
+    const data = {
+      id: shift.id,
+      organizationId: this.organizationId,
+      shift: shift
+    }
+    this.toggleDialog('', '', data, CreateShiftDialogComponent)
+  }
+
   toggleDialog(title: any, msg: any, data: any, component: any) {
     const _popup = this.dialog.open(component, {
       maxHeight: '80vh',
@@ -62,5 +72,22 @@ export class ShiftComponent implements OnInit{
         this.filterShifts()
       })
     })
+  }
+
+  deleteShift(s: any) {
+    if (confirm('Are you sure you want to delete this shift?')) {
+      this.shiftService.deleteShift(s.id).subscribe(() => {
+        this.loadAllShifts().subscribe(()=>{
+          this.filterShifts()
+        })
+        this.snackBar.open('Shift deleted successfully', 'OK', {
+          duration: 3000
+        })
+      }, error => {
+        this.snackBar.open(error.error.message, '', {
+          duration: 3000
+        })
+      })
+    }
   }
 }
