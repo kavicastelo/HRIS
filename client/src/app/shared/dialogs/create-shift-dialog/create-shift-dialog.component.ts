@@ -30,6 +30,26 @@ export class CreateShiftDialogComponent {
     this.receivedData = this.data;
 
     this.createForm();
+
+    if (this.receivedData.data.id) {
+      this.patchValue('name', this.receivedData.data.shift.name);
+      this.patchValue('longName', this.receivedData.data.shift.longName);
+      this.patchValue('start', this.receivedData.data.shift.startTime);
+      this.patchValue('end', this.receivedData.data.shift.endTime);
+      this.patchValue('duration', this.receivedData.data.shift.duration);
+      this.patchValue('earliestInTime', this.receivedData.data.shift.earliestInTime);
+      this.patchValue('latestOutTime', this.receivedData.data.shift.latestOutTime);
+      this.patchValue('firstHalfDuration', this.receivedData.data.shift.firstHalfDuration);
+      this.patchValue('secondHalfDuration', this.receivedData.data.shift.secondHalfDuration);
+      this.patchValue('shiftNature', this.receivedData.data.shift.shiftNature);
+      this.patchValue('offShift', this.receivedData.data.shift.offShift);
+      this.patchValue('deductingHours', this.receivedData.data.shift.deductingHours);
+      this.patchValue('minPreOTHours', this.receivedData.data.shift.minPreOTHours);
+      this.patchValue('minPostOTHours', this.receivedData.data.shift.minPostOTHours);
+      this.patchValue('maxPreOTHours', this.receivedData.data.shift.maxPreOTHours);
+      this.patchValue('maxPostOTHours', this.receivedData.data.shift.maxPostOTHours);
+      this.patchValue('description', this.receivedData.data.shift.description);
+    }
   }
 
   createForm() {
@@ -97,6 +117,10 @@ export class CreateShiftDialogComponent {
     this.dialog.closeAll()
   }
 
+  patchValue(key: string, value: any) {
+    this.onboardinTaskForm.get(key).patchValue(value);
+  }
+
   saveShift() {
     if (this.onboardinTaskForm.valid){
       this.shiftService.saveShift({
@@ -126,6 +150,37 @@ export class CreateShiftDialogComponent {
       })
     } else {
       this.onboardinTaskForm.markAllAsTouched();
+    }
+  }
+
+  editShift() {
+    if (this.onboardinTaskForm.valid){
+      this.shiftService.updateShift({
+        organizationId: this.receivedData.data.organizationId,
+        id: this.receivedData.data.id,
+        longName: this.onboardinTaskForm.value.longName,
+        name: this.onboardinTaskForm.value.name,
+        startTime: this.onboardinTaskForm.value.start,
+        endTime: this.onboardinTaskForm.value.end,
+        duration: this.onboardinTaskForm.value.duration,
+        earliestInTime: this.onboardinTaskForm.value.earliestInTime,
+        latestOutTime: this.onboardinTaskForm.value.latestOutTime,
+        firstHalfDuration: this.onboardinTaskForm.value.firstHalfDuration,
+        secondHalfDuration: this.onboardinTaskForm.value.secondHalfDuration,
+        shiftNature: this.onboardinTaskForm.value.shiftNature,
+        offShift: this.onboardinTaskForm.value.offShift,
+        deductingHours: this.onboardinTaskForm.value.deductingHours,
+        minPreOTHours: this.onboardinTaskForm.value.minPreOTHours,
+        minPostOTHours: this.onboardinTaskForm.value.minPostOTHours,
+        maxPreOTHours: this.onboardinTaskForm.value.maxPreOTHours,
+        maxPostOTHours: this.onboardinTaskForm.value.maxPostOTHours,
+        description: this.onboardinTaskForm.value.description
+      }).subscribe(data=>{
+        this.closePopup()
+        this.snackBar.open("Shift Item Updated","OK", {duration:3000})
+      }, error => {
+        console.log(error)
+      })
     }
   }
 }

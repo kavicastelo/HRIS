@@ -29,8 +29,8 @@
                           </button>
 
                           <mat-menu #shift="matMenu" class="menu-item">
-                            <button mat-menu-item>Edit</button>
-                            <button mat-menu-item>Delete</button>
+                            <button mat-menu-item (click)="editShift(s)">Edit</button>
+                            <button mat-menu-item (click)="deleteShift(s)">Delete</button>
                           </mat-menu>
                         </td>
                     </tr>
