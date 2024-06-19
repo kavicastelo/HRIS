@@ -58,7 +58,9 @@ export class ShiftComponent implements OnInit{
       }
     });
     _popup.afterClosed().subscribe(item => {
-      //TODO: do something here
+      this.loadAllShifts().subscribe(()=>{
+        this.filterShifts()
+      })
     })
   }
 }

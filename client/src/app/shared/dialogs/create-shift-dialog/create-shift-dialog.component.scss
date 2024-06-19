@@ -30,3 +30,14 @@
     background-color: #99A1B7;
   }
 }
+
+.label{
+  margin-bottom: 20px;
+  padding-left: 30px;
+  font-weight: 450;
+
+  @media screen and (max-width: 767px) {
+    margin-bottom: 10px;
+    padding-left: 0;
+  }
+}
