@@ -1,10 +1,11 @@
-import {Component, Inject} from '@angular/core';
+import {Component, ElementRef, Inject, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ShiftsService} from "../../../services/shifts.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Observable, of} from "rxjs";
+import {MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-create-shift-dialog',
@@ -17,11 +18,15 @@ export class CreateShiftDialogComponent {
 
   onboardinTaskForm: FormGroup | any;
 
+  @ViewChildren('longNameInput, nameInput, startInput, endInput, durationInput, earliestInTimeInput, latestOutTimeInput, firstHalfDurationInput, secondHalfDurationInput, shiftNatureInput, offShiftInput, deductingHoursInput, minPreOTHoursInput, minPostOTHoursInput, maxPreOTHoursInput, maxPostOTHoursInput, descriptionInput')
+  inputs: QueryList<ElementRef> | any;
+
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private formBuilder: FormBuilder,
               private shiftService: ShiftsService,
               private snackBar: MatSnackBar,
+              private renderer: Renderer2,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreateShiftDialogComponent>) {
   }
@@ -181,6 +186,32 @@ export class CreateShiftDialogComponent {
       }, error => {
         console.log(error)
       })
+    }
+  }
+
+  focusFieldOnEnter(event: KeyboardEvent, nextField: any) {
+    if (event.key === 'Enter') {
+      if (nextField instanceof MatSelect) {
+        nextField.open();
+      } else {
+        this.renderer.selectRootElement(nextField).focus();
+      }
+      event.preventDefault();
+    }
+  }
+
+  keyFormSubmit(event: KeyboardEvent, method: any) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Prevent the default Enter key behavior (e.g., newline in textarea)
+      event.preventDefault();
+
+      // Perform the method
+      if (method == 'edit'){
+        this.editShift()
+      }
+      else if (method == 'save'){
+        this.saveShift()
+      }
     }
   }
 }
