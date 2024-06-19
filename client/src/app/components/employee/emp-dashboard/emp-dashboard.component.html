@@ -58,7 +58,7 @@
 
         <mat-menu #shift="matMenu">
           <button mat-menu-item *ngFor="let s of filterShifts()"
-                  (click)="assignShift(e.email, s.name)">{{s.name}}</button>
+                  (click)="assignShift(e.id, s)">{{s.name}}</button>
         </mat-menu>
 
         <mat-menu #hierarchy="matMenu">

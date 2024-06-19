@@ -5,9 +5,11 @@ import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.ChannelModel;
 import com.hris.HRIS.model.DepartmentModel;
 import com.hris.HRIS.model.EmployeeModel;
+import com.hris.HRIS.model.ShiftModel;
 import com.hris.HRIS.repository.ChannelRepository;
 import com.hris.HRIS.repository.DepartmentRepository;
 import com.hris.HRIS.repository.EmployeeRepository;
+import com.hris.HRIS.service.ShiftService;
 import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ public class EmployeeController {
 
     @Autowired
     SystemAutomateService systemAutomateService;
+
+    @Autowired
+    ShiftService shiftService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveEmployee(@RequestPart("photo") MultipartFile photo,
@@ -323,6 +328,26 @@ public class EmployeeController {
         systemAutomateService.deleteEmployeeAndUpdateOrganizationByEmail(email);
 
         ApiResponse apiResponse = new ApiResponse("Employee deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/assign/shift/{id}")
+    public ResponseEntity<ApiResponse> assignShift(@PathVariable String id, @RequestBody ShiftModel shiftModel) {
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+        if (optionalEmployeeModel.isPresent()) {
+            shiftService.assignSiftToEmployee(id, shiftModel);
+        }
+        ApiResponse apiResponse = new ApiResponse("Shift assigned successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/update/shift/{id}")
+    public ResponseEntity<ApiResponse> updateShift(@PathVariable String id, @RequestBody ShiftModel shiftModel) {
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+        if (optionalEmployeeModel.isPresent()) {
+            shiftService.updateSiftToEmployee(id, shiftModel);
+        }
+        ApiResponse apiResponse = new ApiResponse("Shift updated successfully");
         return ResponseEntity.ok(apiResponse);
     }
 }

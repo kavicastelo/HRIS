@@ -340,4 +340,12 @@ export class EmployeesService {
       level: level
     });
   }
+
+  public assignShift(id: string, shift: any): Observable<any> {
+    return this.http.post(this.baseUrl + 'employee/assign/shift/' + id, shift);
+  }
+
+  public updateShift(id: string, shift: any): Observable<any> {
+    return this.http.put(this.baseUrl + 'employee/update/shift/' + id, shift);
+  }
 }
