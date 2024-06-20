@@ -1,7 +1,7 @@
 package com.hris.HRIS.controller;
 
-import com.hris.HRIS.dto.ActionRequest;
 import com.hris.HRIS.dto.ApiResponse;
+import com.hris.HRIS.dto.HireRequest;
 import com.hris.HRIS.dto.MeetingRequest;
 import com.hris.HRIS.model.ApplyJobModel;
 import com.hris.HRIS.repository.ApplyJobRepository;
@@ -82,5 +82,47 @@ public class RecruiterController {
         }
     }
 
+    //delete candidates
+    @DeleteMapping("/delete-candidate/{id}")
+    public ResponseEntity<ApiResponse> deleteCandidate(@PathVariable("id") String id){
+
+        applyJobService.deleteById(id);
+        ApiResponse apiResponse = new ApiResponse("Candidate deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    //select candidates
+    @GetMapping ("/select-candidate/{id}")
+    public ResponseEntity<ApiResponse> selectCandidate(@PathVariable("id") String id){
+
+        String message = "Candidate selected successfully";
+
+        ApiResponse apiResponse = new ApiResponse(message);
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
+    // Hire candidates and send email
+    @PostMapping("/hire-candidates")
+    public ResponseEntity<ApiResponse> hireCandidates(@RequestBody HireRequest hireRequest) {
+
+        List<String> candidateIds = hireRequest.getCandidateIds();
+        List<ApplyJobModel> allCandidates = applyJobService.getAllDetails();
+
+        for (ApplyJobModel candidate : allCandidates) {
+            if (candidateIds.contains(candidate.getId())) {
+                candidate.setHire(true);
+                applyJobRepository.save(candidate);
+                emailService.sendHireNotification(candidate.getEmail(), candidate.getName());
+            } else {
+                candidate.setHire(false);
+                applyJobRepository.save(candidate);
+                emailService.sendRejectionNotification(candidate.getEmail(), candidate.getName());
+            }
+        }
+
+        ApiResponse apiResponse = new ApiResponse("Candidates updated and emails sent");
+        return ResponseEntity.ok(apiResponse);
+    }
 
 }

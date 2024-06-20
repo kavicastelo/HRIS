@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+
 @Getter
 @Setter
 @ToString
@@ -28,9 +30,9 @@ public class ApplyJobModel {
 
     private byte[] cv;
 
-    private boolean action;
+    private boolean action; //1st stage to 2nd stage
 
-    private boolean hire;
+    private boolean hire; //2nd stage to hiring stage
 
     private String meeting_link;
 

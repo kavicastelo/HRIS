@@ -69,5 +69,18 @@ public class EmailService {
 
         Transport.send(message);
     }
+
+    public void sendHireNotification(String to, String candidateName) {
+
+        String subject = "Congratulations, You're Hired!";
+        String body = "Dear " + candidateName + ",\n\nCongratulations! You have been hired by our company.\n\nBest regards,\nHR Team";
+        sendSimpleEmail(to, subject, body);
+    }
+
+    public void sendRejectionNotification(String to, String candidateName) {
+        String subject = "Application Status";
+        String body = "Dear " + candidateName + ",\n\nWe appreciate your interest in our company. Unfortunately, we have decided to move forward with other candidates at this time. We wish you the best of luck in your future endeavors.\n\nBest regards,\nHR Team";
+        sendSimpleEmail(to, subject, body);
+    }
 }
 
