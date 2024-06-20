@@ -1,0 +1,49 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Shift Schedule</h5>
+                <button class="btn-1 px-2" matTooltip="Create a shift" (click)="addShift()"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Create Shift</span></button>
+            </div>
+        </li>
+        <li class="list-group-item">
+
+            <div class="attendance-list">
+                <table class="table table-hover" style="min-width: 580px">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Time</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let s of filterShifts()">
+                        <td>{{s.name}}</td>
+                        <td>{{s.startTime}} - {{s.endTime}}</td>
+                        <td>{{s.description}}</td>
+                        <td>
+                          <button class="btn-2" matTooltip="More" type="button" [matMenuTriggerFor]="shift">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+
+                          <mat-menu #shift="matMenu" class="menu-item">
+                            <button mat-menu-item (click)="editShift(s)">Edit</button>
+                            <button mat-menu-item (click)="deleteShift(s)">Delete</button>
+                          </mat-menu>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="filterShifts().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>

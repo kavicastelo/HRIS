@@ -83,7 +83,7 @@ public class LettersGenerationService {
 
     public String generateOnboardingPlan(OnboardingPlanModel onboardingPlanModel) {
         Context context = new Context();
-        context.setVariable("id", onboardingPlanModel.getOnboardingId());
+        context.setVariable("id", onboardingPlanModel.getId());
         context.setVariable("description", onboardingPlanModel.getDescription());
         context.setVariable("taskDate", onboardingPlanModel.getTaskDate());
 

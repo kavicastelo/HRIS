@@ -5,6 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +17,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class OnboardingPlanModel {
     @Id
     private String id;
-    private String onboardingId; // Foreign key referencing the associated onboarding record
+    private String organizationId;
+    private String title;
+    @Field("onboarding")
+    private List<OnboardingModel> onboarding;
     private String description;
+    private String startDate;
     private String taskDate;
 }

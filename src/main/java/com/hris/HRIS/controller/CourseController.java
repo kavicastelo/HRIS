@@ -67,7 +67,7 @@ public class CourseController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PutMapping("update/status/id/{id}")
+    @PutMapping("/update/status/id/{id}")
     public ResponseEntity<ApiResponse> updateStatus(@PathVariable String id, @RequestBody CourseModel courseModel){
         Optional<CourseModel> courseModelOptional = courseRepository.findById(id);
 
@@ -82,7 +82,7 @@ public class CourseController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PutMapping("{courseId}/user/assign")
+    @PutMapping("/{courseId}/user/assign")
     public ResponseEntity<ApiResponse> assignUser(@PathVariable String courseId, @RequestBody String requestBody){
         
         ObjectMapper objectMapper = new ObjectMapper();
@@ -118,7 +118,7 @@ public class CourseController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @DeleteMapping("{courseId}/user/remove/email/{email}")
+    @DeleteMapping("/{courseId}/user/remove/email/{email}")
     public ResponseEntity<ApiResponse> removeUser(@PathVariable String courseId, @PathVariable String email){
         
         String returnMsg = "";
@@ -153,7 +153,7 @@ public class CourseController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PutMapping("{courseId}/user/chnageRole/email/{email}")
+    @PutMapping("/{courseId}/user/chnageRole/email/{email}")
     public ResponseEntity<ApiResponse> changeUserRole(@PathVariable String courseId, @PathVariable String email, @RequestBody String requestBody){
         
         ObjectMapper objectMapper = new ObjectMapper();
@@ -191,7 +191,7 @@ public class CourseController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @GetMapping("{courseId}/users/get")
+    @GetMapping("/{courseId}/users/get")
     public ResponseEntity<Object> getAllCourseUsers(@PathVariable String courseId){
         Optional<CourseModel> courseModelOptional = courseRepository.findById(courseId);
         JSONArray usersList = new JSONArray();
@@ -210,6 +210,24 @@ public class CourseController {
         }
 
         return ResponseEntity.ok(usersList.toList());
+    }
+
+    @GetMapping("/{courseId}/user/{email}/check")
+    public Boolean checkIsCourseUsersExists(@PathVariable String courseId, @PathVariable String email){
+        Optional<CourseModel> courseModelOptional = courseRepository.findById(courseId);
+        JSONArray usersList = new JSONArray();
+
+        if (courseModelOptional.isPresent()){
+            List<Context> users = (List<Context>) courseModelOptional.get().getUsers();
+
+            for(int i = 0; i < users.size(); i++){
+                if(users.get(i).getVariable("email").equals(email)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @DeleteMapping("/delete/id/{id}")

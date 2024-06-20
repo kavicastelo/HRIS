@@ -1,0 +1,357 @@
+<div class="card">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="d-flex align-items-center justify-content-start">
+        <h5 class="py-2">Edit Profile</h5>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div *ngFor="let e of employee" class="py-1">
+        <form [formGroup]="editProfileForm">
+
+          <h6>Personal Information</h6>
+          <div class="h6-supporter"></div>
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Avatar</div>
+            <div class="col-8 col-sm-9">
+              <div class="d-flex align-items-center">
+                <div class="profile-img me-2">
+                  <img id="empProfile" [src]="chosenPhoto==null?convertToSafeUrl(e.photo):onFileSelected()" alt="profile image">
+                </div>
+                <div class="profile-img-setting">
+                  <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .pjp</span>
+                  <div class="d-flex">
+                    <button class="btn-1 me-2 px-2" (click)="choosePhoto()"><mat-icon class="d-flex d-md-none">add</mat-icon><span class="d-none d-md-flex w-col">Upload Image</span></button>
+                    <button class="btn-3 px-2" (click)="removePhoto()"><mat-icon class="d-flex d-md-none">delete_sweep</mat-icon><span class="d-none d-md-flex">Remove</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Full Name</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <input type="text" class="form-control" formControlName="firstname" placeholder="First Name">
+                </div>
+                <div class="col-12 col-md-6">
+                  <input type="text" class="form-control" formControlName="lastname" placeholder="Last Name">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">DOB</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="dob" placeholder="Date of Birth">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Gender</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="gender" placeholder="Gender">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">NIC</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="nic" placeholder="NIC">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Marital Status</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="maritalStatus" placeholder="Marital Status">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Nationality</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="nationality" placeholder="Nationality">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Religion</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="religion" placeholder="Religion">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h6>Contact Information</h6>
+          <div class="h6-supporter"></div>
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Address Line 1</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="address1" placeholder="Address line 1">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Address Line 2</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="address2" placeholder="Address line 2">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Address Line 3</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="address3" placeholder="Address line 3">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Mobile Number</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="number" class="form-control" formControlName="phone" placeholder="Mobile">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Telephone Number</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="number" class="form-control" formControlName="telephone" placeholder="Telephone">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Email Address</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="email" placeholder="Email">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h6>Job Information</h6>
+          <div class="h6-supporter"></div>
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Employment Type</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="employmentType" placeholder="Employment Type">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Designation</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="designation" placeholder="Designation">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Job Grade</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="jobGrade" placeholder="Job Grade">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Personal Grade</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="personalGrade" placeholder="Personal Grade">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Supervisor</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="supervisor" placeholder="Supervisor Nam">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Business Unit</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="businessUnit" placeholder="Business Unit">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Department</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="department" placeholder="Department">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Location</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="location" placeholder="Location">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Branch</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="branch" placeholder="Branch">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Joined Date</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="doj" placeholder="Joined Date">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h6>Exit Information</h6>
+          <div class="h6-supporter"></div>
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Date of Retirement</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="dor" placeholder="Date of Retirement">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Date of Exit</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="doe" placeholder="Date of Exit">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Exit Reason</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="exitReason" placeholder="Exit Reason">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Contract End Date</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="contractEndDate" placeholder="Contract End Date">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 ps-5 title-label">Status</div>
+            <div class="col-8 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="status" placeholder="Status">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="d-flex align-items-center justify-content-end">
+        <button class="btn-3 px-3 py-2" (click)="navigateBetweenTabs('about')">Discard</button>
+        <button class="btn-1 px-3 py-2" [disabled]="editProfileForm.invalid" (click)="updateEmployee()">Save Changes</button>
+      </div>
+    </li>
+  </ul>
+</div>

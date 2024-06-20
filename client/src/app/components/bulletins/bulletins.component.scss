@@ -1,0 +1,137 @@
+.bulletin-card{
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 18px 20px;
+
+  .title-image{
+    width: 100%;
+  }
+
+  input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-align: center;
+    margin: 5px 0;
+  }
+
+  #title, .title{
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-text-100);
+
+    &::placeholder{
+      font-size: 22px;
+      font-weight: 800;
+    }
+  }
+
+  #msg, .msg{
+    text-align: left;
+    color: var(--color-text-300);
+
+    &::placeholder{
+      color: var(--color-text-300);
+    }
+  }
+
+  a{
+    text-decoration: none;
+  }
+
+  .bulletin-action-btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid var(--color-surface-mixed-100);
+    border-radius: 3px;
+    padding: 3px;
+    background-color: var(--color-surface-mixed-300);
+
+    #action{
+      font-weight: 500;
+      text-align: center;
+      color: var(--color-text-200);
+
+      &::placeholder{
+        font-weight: 500;
+      }
+    }
+  }
+
+  .bg-choose-btn, .title-choose-btn{
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    bottom: -10px;
+    right: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .mat-icon{
+      font-size: 22px;
+    }
+  }
+
+  .title-choose-btn{
+    height: 20px;
+    width: 20px;
+    right: -10px;
+    top: -10px;
+    padding: 0 !important;
+
+    .mat-icon{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+  }
+}
+
+h3{
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.btn-1{
+  &:disabled{
+    color: var(--color-text-300);
+    background-color: var(--color-surface-mixed-600);
+  }
+}
+
+.card-text{
+  font-weight: 500;
+}
+.text-body-secondary{
+  font-size: 12px;
+  color: var(--color-text-300) !important;
+}
+
+.latest-news{
+  &:hover{
+    cursor: pointer;
+    background-color: var(--color-surface-mixed-100);
+  }
+}
+
+.view-all{
+  width: 100%;
+  text-align: center;
+  color: var(--color-text-100);
+  cursor: pointer;
+  margin-top: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.3s ease;
+
+  &:hover{
+    color: var(--color-primary-200);
+  }
+}

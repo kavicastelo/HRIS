@@ -24,5 +24,20 @@ public class CourseModel {
     private String startDate;
     private String endDate;
     private String courseCreatedDate;
-    private String status;
+    private String status; // Unpublished, Available, Inprogress, Completed, Archived
 }
+
+/*
+Sample input:
+{
+    "courseCode" : "ESIP0265.1",
+    "courseName" : "Employee Skills Improvement Program",
+    "courseDescription" : "",
+    "users" : [],
+    "enrollmentLimit" : 20,
+    "gradingScale" : "PERCENTAGE",
+    "startDate" : "2024-03-16 08:11:35",
+    "endDate" : "2024-04-16 08:11:35",
+    "status" : "Available"
+}
+ */

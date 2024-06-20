@@ -1,0 +1,24 @@
+.approved, .pendingApproval, .rejected {
+  color: black;
+}
+
+.pendingApproval {
+  background-color: #FCF6C1;
+}
+
+.rejected {
+  background-color: #FBEDEA;
+}
+
+.approved {
+  background-color: #EAF3FC;
+}
+
+::ng-deep .popup-dialog {
+  z-index: 1 !important;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  opacity: 0.8;
+  cursor: pointer;
+}

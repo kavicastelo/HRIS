@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
@@ -14,9 +15,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PayItemModel {
     @Id
     private String id;
+    private String organizationId;
     private String itemName;
     private String description;
     private String itemType;
     private String paymentType;
     private String status;
+
+    @Transient
+    private Boolean isDeletable;
 }

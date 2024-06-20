@@ -9,9 +9,5 @@ public interface OnboardingRepository extends MongoRepository<OnboardingModel, S
 
     Optional <OnboardingModel> findByAdminEmail(String email);
 
-    Optional <OnboardingModel> findByEmployeeEmail(String email);
-
     Optional <OnboardingModel> deleteByAdminEmail(String email);
-
-    Optional <OnboardingModel> deleteByEmployeeEmail(String email);
 }

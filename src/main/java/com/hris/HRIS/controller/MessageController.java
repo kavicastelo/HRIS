@@ -3,9 +3,11 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.MessageModel;
 import com.hris.HRIS.repository.MessageRepository;
+import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +18,14 @@ public class MessageController {
     @Autowired
     MessageRepository messageRepository;
 
+    @Autowired
+    SystemAutomateService systemAutomateService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveMessage(@RequestBody MessageModel messageModel) {
         messageRepository.save(messageModel);
+
+        systemAutomateService.addMessagesToChat(messageModel);
 
         ApiResponse apiResponse = new ApiResponse("Message saved successfully");
         return ResponseEntity.ok(apiResponse);
@@ -54,5 +61,28 @@ public class MessageController {
 
         ApiResponse apiResponse = new ApiResponse("Message deleted successfully");
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/update/status/{id}")
+    public ResponseEntity<ApiResponse> updateStatus(@PathVariable String id, @RequestBody MessageModel messageModel) {
+        Optional<MessageModel> messageModelOptional = messageRepository.findById(id);
+        if (messageModelOptional.isPresent()) {
+            MessageModel message = messageModelOptional.get();
+            message.setStatus(messageModel.getStatus());
+            messageRepository.save(message);
+        }
+
+        systemAutomateService.updateMessageStatus(messageModel.getChatId(), messageModel.getId(), messageModel.getStatus());
+
+        ApiResponse apiResponse = new ApiResponse("Message status updated successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/upload-image")
+    public String uploadImage(@RequestParam("file") MultipartFile file) {
+        // Logic to store the image file and obtain its URL
+        // Example: Save the image to Google Drive, AWS S3, etc., and return the URL
+        String imageUrl = "https://example.com/image.jpg"; // Replace with actual image URL
+        return "{\"imageUrl\": \"" + imageUrl + "\"}";
     }
 }

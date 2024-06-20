@@ -1,0 +1,44 @@
+<div class="d-flex align-items-center justify-content-end">
+    <button class="btn-1 px-2" matTooltip="Request a letter" (click)="requestLetter()"><mat-icon>mail_outline</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Request Letter</span></button>
+</div>
+
+<div class="transfer-list">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Reason</th>
+            <th class="td-status">Status</th>
+            <th class="td-manage">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let t of filterLetters()" (click)="popupData(t.id)">
+            <td>
+                <div>
+                    <p>{{t.reason | truncate: 20}}</p>
+                    <small>{{t.timestamp | timeAgo}}</small>
+                </div>
+            </td>
+            <td class="td-status">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="status-tag" [ngStyle]="{'background-color':t.approved=='approved'?'#0CBC87':t.approved=='declined'?'rgba(230, 41, 41, 0.20)':'rgba(247, 195, 46, 0.25)'}">
+                        {{t.approved}}
+                    </div>
+                </div>
+            </td>
+            <td class="td-manage">
+                <div class="d-flex align-items-center justify-content-end">
+                    <button class="btn-2 me-1" matTooltip="Edit" [disabled]="t.approved!='pending'" (click)="editRequest(t.id, t.approved, t.reason)"><mat-icon>create</mat-icon></button>
+                    <button class="btn-2" matTooltip="Delete" (click)="deleteRequest(t.id)"><mat-icon>delete_forever</mat-icon></button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div *ngIf="filterLetters().length == 0">
+        <div class="data-not-found">
+            <p>Data not available!</p>
+        </div>
+    </div>
+</div>
+

@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SystemAutomateService {
@@ -30,6 +27,12 @@ public class SystemAutomateService {
 
     @Autowired
     ChannelRepository channelRepository;
+
+    @Autowired
+    ChatRepository chatRepository;
+
+    @Autowired
+    CredentialsRepository credentialsRepository;
 
     @Autowired
     EmailService emailService;
@@ -64,6 +67,60 @@ public class SystemAutomateService {
         }
     }
 
+    public void CreateCredentials(EmployeeModel employeeModel){
+        Optional<OrganizationModel> optionalOrganizationModel = organizationRepository.findById(employeeModel.getOrganizationId());
+        if (optionalOrganizationModel.isPresent()){
+            OrganizationModel organizationModel = optionalOrganizationModel.get();
+
+            String orgName = organizationModel.getOrganizationName();
+            String email = employeeModel.getEmail();
+            String password = String.valueOf(random_Password(10));
+            String name = employeeModel.getName().split(" ")[0];
+            String para = "Thank you for registering with "+orgName+".\n\nUse following credentials to login to the system at first time.\nEmail: "+email+"\nPassword: "+password+"\n\n";
+            String tag = "Best Regards,\n"+orgName+" Team.\n\n";
+            String footer = "Powered by SparkC";
+
+            CredentialsModel credentialsModel = new CredentialsModel();
+            credentialsModel.setEmail(employeeModel.getEmail());
+            credentialsModel.setPassword(password);
+            credentialsModel.setLevel("1");
+            credentialsRepository.save(credentialsModel);
+
+            emailService.sendSimpleEmail(employeeModel.getEmail(),"Login Credentials","Hello "+name+",\n"+para+tag+footer);
+        }
+    }
+    static char[] random_Password(int len)
+    {
+        String Capital_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String Small_chars = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String symbols = "!@#$%^&*_=+-/.?<>)";
+
+
+        String values = Capital_chars + Small_chars +
+                numbers + symbols;
+
+        // Using random method
+        Random rndm_method = new Random();
+
+        char[] password = new char[len];
+
+        for (int i = 0; i < len; i++)
+        {
+            password[i] = values.charAt(rndm_method.nextInt(values.length()));
+        }
+        return password;
+    }
+
+    public void DeleteCredentials(String id){
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel employeeModel = optionalEmployeeModel.get();
+            credentialsRepository.deleteByEmail(employeeModel.getEmail());
+        }
+    }
+
     public Float CalculateGratuity(ExitListModel exitListModel) {
         String date1 = exitListModel.getDoj();
         String date2 = exitListModel.getDoe();
@@ -90,11 +147,17 @@ public class SystemAutomateService {
 
         exitListModel.setName(employeeExitModel.getName());
         exitListModel.setEmail(employeeExitModel.getEmail());
+        exitListModel.setOrganizationId(employeeExitModel.getOrganizationId());
         exitListModel.setPhone(employeeExitModel.getPhone());
+        exitListModel.setTelephone(employeeExitModel.getTelephone());
         exitListModel.setAddress(employeeExitModel.getAddress());
         exitListModel.setJobData(employeeExitModel.getJobData());
         exitListModel.setDoe(employeeExitModel.getDoe());
         exitListModel.setDoj(employeeExitModel.getDoj());
+        exitListModel.setStatus(employeeExitModel.getStatus());
+        exitListModel.setDateOfRetirement(employeeExitModel.getDateOfRetirement());
+        exitListModel.setExitReason(employeeExitModel.getExitReason());
+        exitListModel.setDateOfContractEnd(employeeExitModel.getDateOfContractEnd());
         exitListModel.setPhoto(employeeExitModel.getPhoto());
         exitListRepository.save(exitListModel);
 
@@ -266,14 +329,23 @@ public class SystemAutomateService {
             existingEmployee.setName(updatedEmployee.getName());
             existingEmployee.setEmail(updatedEmployee.getEmail());
             existingEmployee.setPhone(updatedEmployee.getPhone());
+            existingEmployee.setTelephone(updatedEmployee.getTelephone());
             existingEmployee.setAddress(updatedEmployee.getAddress());
             existingEmployee.setJobData(updatedEmployee.getJobData());
             existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
             existingEmployee.setChannels(updatedEmployee.getChannels());
             existingEmployee.setDob(updatedEmployee.getDob());
+            existingEmployee.setNic(updatedEmployee.getNic());
             existingEmployee.setGender(updatedEmployee.getGender());
             existingEmployee.setPhoto(updatedEmployee.getPhoto());
             existingEmployee.setStatus(updatedEmployee.getStatus());
+            existingEmployee.setMaritalStatus(updatedEmployee.getMaritalStatus());
+            existingEmployee.setNationality(updatedEmployee.getNationality());
+            existingEmployee.setReligion(updatedEmployee.getReligion());
+            existingEmployee.setDateOfRetirement(updatedEmployee.getDateOfRetirement());
+            existingEmployee.setDateOfExit(updatedEmployee.getDateOfExit());
+            existingEmployee.setExitReason(updatedEmployee.getExitReason());
+            existingEmployee.setDateOfContractEnd(updatedEmployee.getDateOfContractEnd());
 
             employeeRepository.save(existingEmployee);
 
@@ -291,7 +363,29 @@ public class SystemAutomateService {
                     existingOrganization.getEmployees()
                             .replaceAll(e -> e.getId().equals(updatedEmployee.getId()) ? updatedEmployee : e);
                 }
+
+                organizationRepository.save(existingOrganization);
             }
+        }
+    }
+
+    public void updateOrganizationSingleEmployeeData(EmployeeModel updatedEmployee) {
+        // Update the organization
+        Optional<OrganizationModel> organizationOptional = organizationRepository.findById(updatedEmployee.getOrganizationId());
+
+        if (organizationOptional.isPresent()) {
+            OrganizationModel existingOrganization = organizationOptional.get();
+
+            // Check if employees list is null, and initialize it if necessary
+            if (existingOrganization.getEmployees() == null) {
+                existingOrganization.setEmployees(new ArrayList<>());
+            } else {
+                // Find and replace the existing employee with the updated one
+                existingOrganization.getEmployees()
+                        .replaceAll(e -> e.getId().equals(updatedEmployee.getId()) ? updatedEmployee : e);
+            }
+
+            organizationRepository.save(existingOrganization);
         }
     }
 
@@ -306,14 +400,23 @@ public class SystemAutomateService {
             existingEmployee.setName(updatedEmployee.getName());
             existingEmployee.setEmail(updatedEmployee.getEmail());
             existingEmployee.setPhone(updatedEmployee.getPhone());
+            existingEmployee.setTelephone(updatedEmployee.getTelephone());
             existingEmployee.setAddress(updatedEmployee.getAddress());
             existingEmployee.setJobData(updatedEmployee.getJobData());
             existingEmployee.setDepartmentId(updatedEmployee.getDepartmentId());
             existingEmployee.setChannels(updatedEmployee.getChannels());
             existingEmployee.setDob(updatedEmployee.getDob());
+            existingEmployee.setNic(updatedEmployee.getNic());
             existingEmployee.setGender(updatedEmployee.getGender());
             existingEmployee.setPhoto(updatedEmployee.getPhoto());
             existingEmployee.setStatus(updatedEmployee.getStatus());
+            existingEmployee.setMaritalStatus(updatedEmployee.getMaritalStatus());
+            existingEmployee.setNationality(updatedEmployee.getNationality());
+            existingEmployee.setReligion(updatedEmployee.getReligion());
+            existingEmployee.setDateOfRetirement(updatedEmployee.getDateOfRetirement());
+            existingEmployee.setDateOfExit(updatedEmployee.getDateOfExit());
+            existingEmployee.setExitReason(updatedEmployee.getExitReason());
+            existingEmployee.setDateOfContractEnd(updatedEmployee.getDateOfContractEnd());
 
             employeeRepository.save(existingEmployee);
 
@@ -349,5 +452,51 @@ public class SystemAutomateService {
         Optional<List<ChannelModel>> channelModel = channelRepository.findAllByDepartmentId(departmentId);
 
         channelModel.ifPresent(channelModels -> channelRepository.deleteAll(channelModels));
+    }
+
+    public void assignChannelsToEmployee(String employeeId) {
+        Optional<EmployeeModel> employee = employeeRepository.findById(employeeId);
+        if (employee.isPresent()) {
+            EmployeeModel employeeModel = employee.get();
+
+            Optional<List<ChannelModel>> channelModel = channelRepository.findAllByDepartmentId(employeeModel.getDepartmentId());
+
+            employeeModel.setChannels(channelModel.get());
+
+            employeeRepository.save(employeeModel);
+        }
+    }
+
+    public void addMessagesToChat(MessageModel messages) {
+        Optional<ChatModel> chat =  chatRepository.findById(messages.getChatId());
+
+        if (chat.isPresent()) {
+            ChatModel existingChat = chat.get();
+
+            if (existingChat.getMessages() == null) {
+                existingChat.setMessages(new ArrayList<>());
+            }
+
+            existingChat.getMessages().add(messages);
+
+            chatRepository.save(existingChat);
+        } else {
+            ChatModel chatModel = new ChatModel();
+            chatModel.setId(messages.getChatId());
+            chatModel.setMessages(List.of(messages));
+            chatRepository.save(chatModel);
+        }
+    }
+
+    public void updateMessageStatus(String chatId, String messageId, String status) {
+        Optional<ChatModel> chat = chatRepository.findById(chatId);
+        if (chat.isPresent()) {
+            ChatModel existingChat = chat.get();
+            Optional<MessageModel> message = existingChat.getMessages().stream().filter(m -> m.getId().equals(messageId)).findFirst();
+            if (message.isPresent()) {
+                message.get().setStatus(status);
+                chatRepository.save(existingChat);
+            }
+        }
     }
 }

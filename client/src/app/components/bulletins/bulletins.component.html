@@ -1,0 +1,145 @@
+<div class="container">
+    <div class="row pt-3 pb-3">
+        <div class="col-12 col-md-6">
+            <h3>Create New Bulletin Card</h3>
+            <form [formGroup]="bulletinForm">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>DEPARTMENT</mat-label>
+                            <mat-select id="depId" formControlName="depId" [(value)]="selectedDepartment">
+                                <mat-option *ngFor="let d of departmentDataStore" [value]="d.id">{{d.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>REDIRECT URL</mat-label>
+                            <input matInput id="re-url" formControlName="reUrl" placeholder="Redirect URL (blog)">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div id="bulletinCard" class="card bulletin-card" [ngStyle]="{'background-image':bulletinForm.value.stringBg != ''?'url('+bulletinForm.value.stringBg+')':''}">
+                    <div style="width: 100%; position: relative; margin: 10px 0">
+                        <img [src]="titleImg==null?'https://www.freepnglogos.com/uploads/avengers-png-logo/avengers-emblem-png-logo-7.png':onTitleBgSelected()" alt="title image" class="title-image" id="titleImage">
+                        <button type="button" class="btn-1 me-2 px-2 title-choose-btn" (click)="chooseBulletinTitle()" matTooltip="Choose Title Image"><mat-icon>edit</mat-icon></button>
+                    </div>
+
+                    <input type="text" id="title" formControlName="title" placeholder="Click to add title" [ngStyle]="{'color':fontChecked?'#000':'#fff'}">
+
+                    <input type="text" id="msg" formControlName="msg" placeholder="Click to add description" [ngStyle]="{'color':fontChecked?'#4b6a86':'#bfbfbf'}">
+
+                    <div class="bulletin-action-btn">
+                        <input type="text" id="action" formControlName="action" placeholder="Click to add action">
+                    </div>
+
+                    <button type="button" class="btn-1 me-2 px-2 bg-choose-btn" (click)="chooseBulletinBg()" matTooltip="Choose Custom Background Image"><mat-icon>edit</mat-icon></button>
+
+                </div>
+
+                <div class="row">
+                    <p>Choose default background</p>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://indieground.net/wp-content/uploads/2023/03/Freebie-GradientTextures-Preview-06.jpg')">
+                            <img src="https://indieground.net/wp-content/uploads/2023/03/Freebie-GradientTextures-Preview-06.jpg"
+                                 alt="bg-1" style="width: 100%">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg')">
+                            <img src="https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg"
+                                 alt="bg-2" style="width: 100%">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709856000&semt=ais')">
+                            <img src="https://img.freepik.com/free-vector/dark-gradient-background-with-copy-space_53876-99548.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709856000&semt=ais"
+                                 alt="bg-3" style="width: 100%">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card" style="overflow: hidden; cursor: pointer" (click)="chooseDefaultImage('https://i0.wp.com/backgroundabstract.com/wp-content/uploads/edd/2021/09/gradient-blue-pink-abstract-art-wallpaper-preview-e1656162284223.jpg?fit=728%2C410&ssl=1')">
+                            <img src="https://i0.wp.com/backgroundabstract.com/wp-content/uploads/edd/2021/09/gradient-blue-pink-abstract-art-wallpaper-preview-e1656162284223.jpg?fit=728%2C410&ssl=1"
+                                 alt="bg-4" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="d-flex align-items-center justify-content-around">
+                <p class="m-0">Change Text Color</p>
+                <mat-slide-toggle class="font-chooser" [(ngModel)]="fontChecked" [disabled]="fontCheckDisabled">{{fontChecked?'Dark':'Light'}}</mat-slide-toggle>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn-1 px-2" (click)="addBulletin()" [disabled]="bulletinForm.invalid">Save</button>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="container">
+                <h3>Current Bulletins</h3>
+                <div *ngFor="let bulletin of filterBulletins()">
+                    <div class="card bulletin-card" [ngStyle]="getBackgroundStyle(bulletin)">
+                        <div style="width: 100%; margin: 10px 0" *ngIf="bulletin.titleImage">
+                            <img [src]="convertToSafeUrl(bulletin.titleImage)" alt="title image" class="title-image">
+                        </div>
+
+                        <h2 class="title" [ngStyle]="{'color':bulletin.fontColor=='true'?'#000':bulletin.fontColor=='false'?'#fff':''}">{{bulletin.title}}</h2>
+
+                        <p class="msg" [ngStyle]="{'color':bulletin.fontColor=='true'?'#4b6a86':bulletin.fontColor=='false'?'#bfbfbf':''}">{{bulletin.messages}}</p>
+
+                        <a href="{{bulletin.redirectUrl}}" target="_blank"><button class="btn-1 w-100">{{bulletin.action}}</button></a>
+                    </div>
+                </div>
+                <div *ngIf="filterBulletins().length == 0">
+                    <div class="data-not-found">
+                        <p>Current bulletins are not available!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="color: var(--color-primary-400); margin: 15px 0">
+
+        <div class="col-12 col-md-6">
+            <div class="container">
+                <h3>Latest News for Whole Organization</h3>
+                <form [formGroup]="newsForm" (ngSubmit)="addNews()">
+                    <div class="row">
+                        <div class="col-12">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>REDIRECT URL</mat-label>
+                                <input matInput id="news-re-url" formControlName="newsReUrl" placeholder="Redirect URL (blog)">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                            <mat-form-field class="w-100" appearance="outline">
+                                <mat-label>SUMMARY</mat-label>
+                                <textarea matInput id="news-des" formControlName="newsDes" placeholder="News description (summary)"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn-1 px-2" [disabled]="newsForm.invalid">Add New</button>
+                    </div>
+                </form>
+
+                <hr style="color: var(--color-primary-400); margin: 15px 0">
+
+                <div *ngFor="let news of filterNews() | truncateComments:maxNewsDisplayed">
+                    <div class="latest-news mb-3">
+                        <p class="card-text" style="margin-bottom: 0" [title]="news.description">{{news.description | truncate:100}}</p>
+                        <small class="text-body-secondary">{{news.timestamp | timeAgo}}</small>
+                    </div>
+                </div>
+                <p class="view-all" *ngIf="filterNews().length>3" (click)="toggleNews()">... {{showAllNews?'Collapse':'View All'}} Latest News</p>
+                <div *ngIf="filterNews().length == 0">
+                    <div class="data-not-found">
+                        <p>Current latest news are not available!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

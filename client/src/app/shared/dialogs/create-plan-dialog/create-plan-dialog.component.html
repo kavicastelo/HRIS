@@ -1,0 +1,32 @@
+<div class="d-flex align-items-center justify-content-between px-2 my-2">
+    <h5>Initialize Onboarding Plan</h5>
+    <mat-icon (click)="closePopup()">close</mat-icon>
+</div>
+<hr>
+<div class="container">
+    <form [formGroup]="onboardinPlanForm">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>TITLE</mat-label>
+            <input matInput id="titlePlan" formControlName="titlePlan" placeholder="New task title..." #titleInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DESCRIPTION</mat-label>
+            <textarea matInput id="descriptionPlan" formControlName="descriptionPlan" placeholder="Description to new task..." #descriptionInput (keydown)="focusFieldOnEnter($event, startInput)"></textarea>
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DATE RANGE</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date" formControlName="startDatePlan" #startInput (keydown)="focusFieldOnEnter($event, endInput)">
+                <input matEndDate placeholder="End date" formControlName="endDatePlan" #endInput (keydown)="keyFormSubmit($event, 'save')">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+    </form>
+</div>
+<hr>
+<div class="d-flex align-items-center justify-content-end px-2 my-2">
+    <button class="btn me-2" (click)="closePopup()">Cancel</button>
+    <button class="btn" [disabled]="onboardinPlanForm.invalid" (click)="submitPlan()">Create</button>
+</div>

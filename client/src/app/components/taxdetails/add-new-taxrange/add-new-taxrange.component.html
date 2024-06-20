@@ -1,0 +1,50 @@
+<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" (click)="goBack()">arrow_back</mat-icon>
+<div class="card" *ngIf="!notfoundError">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>{{ title }}</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="table-data-list">
+
+              <form [formGroup]="taxDetailsFormGroup" style="margin-top: 10px;">
+
+                From &nbsp;&nbsp;&nbsp;
+                <mat-form-field appearance="outline" floatLabel="always" style="width: 170px;">
+                    <mat-label>Minimum Amount</mat-label>
+                    <input matInput type="number" placeholder="0.00" formControlName="minValueCtrl" class="inputField" [(ngModel)]="taxModel.min" required>
+                    <span matTextPrefix>LKR&nbsp;</span>
+                </mat-form-field>&nbsp;&nbsp;&nbsp;
+        
+                To &nbsp;&nbsp;&nbsp;
+                <mat-form-field appearance="outline" floatLabel="always" style="width: 170px;">
+                    <mat-label>Maximum Amount</mat-label>
+                    <input matInput type="number" placeholder="0.00" formControlName="maxValueCtrl" class="inputField" [(ngModel)]="taxModel.max" required>
+                    <span matTextPrefix>LKR&nbsp;</span>
+                </mat-form-field>&nbsp;&nbsp;&nbsp;
+        
+                = &nbsp;&nbsp;&nbsp;
+                <mat-form-field appearance="outline" floatLabel="always" style="width: 160px;">
+                    <mat-label>Tax Rate</mat-label>
+                    <input matInput type="number" placeholder="0.00" formControlName="rateCtrl" class="inputField" [(ngModel)]="taxModel.rate" required>
+                    <span matSuffix>%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </mat-form-field><br>
+        
+                <ul style="color: red;">
+                    <li *ngFor="let error of taxDetailsFormErrorsList">{{error}}</li>
+                </ul>
+        
+                <button class="btn-1 my-4" style="width: 100px;" (click)="addNewTaxRange()" [disabled]="isFormValid()">{{ finalizeBtnText }}</button>
+            </form>
+            </div>
+  
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+  </div>
+  
+<div class="data-not-found" *ngIf="notfoundError">
+    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+</div>

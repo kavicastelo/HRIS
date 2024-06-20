@@ -1,0 +1,56 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Employee Attendance</h5>
+                <button class="btn-1 px-3" routerLink="/alm/mark-attendance">Mark Attendance</button>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="d-flex justify-content-end">
+                <div class="input-group px-2" style="width: 350px">
+                    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+                    <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)">
+                </div>
+            </div>
+
+            <div class="attendance-list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>In</th>
+                        <th>Out</th>
+                        <th>No. Hours</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let a of filterAttendance()">
+                        <td>{{a.name}}</td>
+                        <td>{{a.recordInTime | dateFormat}}</td>
+                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red':'var(--color-text-200)'}">
+                            {{a.recordInTime | timeFormat}}
+                        </td>
+                        <td>{{a.recordOutTime==null ? '-' : a.recordOutTime | timeFormat}}</td>
+                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red' : 'var(--color-text-200)'}">
+                            {{a.recordOutTime==null ? '-' : calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
+                        </td>
+                        <td><div class="d-flex align-items-center justify-content-around">
+                            <button class="btn-2" matTooltip="Edit Attendance" (click)="editAttendance(a)"><mat-icon>create</mat-icon></button>
+                        </div></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="filterAttendance().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>

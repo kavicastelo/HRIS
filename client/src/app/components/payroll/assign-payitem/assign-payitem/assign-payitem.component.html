@@ -1,0 +1,102 @@
+<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" routerLink="../../payitems">arrow_back</mat-icon>
+<div class="card" *ngIf="!notfoundError">
+  <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+          <div class="d-flex align-items-center justify-content-between">
+              <h5>Assign Pay Item</h5>
+          </div>
+      </li>
+      <li class="list-group-item">
+        <div class="formsection">
+            <form [formGroup]="assignPayitemFormGroup">
+              <div class="mb-3 row">
+                  <div class="col-4">
+                      <label>Pay Item Name</label>
+                  </div>
+                  <div class="col-8">
+                      <input type="text" class="form-control" [value]="selectedPayItem.itemName" disabled placeholder=" ">
+                  </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Description</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" [value]="selectedPayItem.description" disabled placeholder=" ">
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Item Type</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" [value]="selectedPayItem.itemType" disabled placeholder=" ">
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Payment Type</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" [value]="selectedPayItem.paymentType" disabled placeholder=" ">
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Type</label>
+                </div>
+                <div class="col-8">
+                    <select formControlName="typeCtrl" class="form-control" [(ngModel)]="valueType" placeholder="0.00">
+                      <option value="Percentage">Percentage</option>
+                      <option value="Hourly Rate">Hourly Rate</option>
+                      <option value="Amount" selected>Amount</option>
+                    </select>
+                </div>
+              </div>
+              <div class="mb-3 row ">
+                <div class="col-4">
+                    <label class="form-label">Value</label>
+                </div>
+                <div class="col-8">
+                    <input type="number" formControlName="valueCtrl" class="form-control" [(ngModel)]="value" placeholder="0.00">
+                </div>
+              </div>
+              <br>              
+              <div class="table-data-list">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th><input type="checkbox" class="form-check-input" [checked]="this.selectedEmployees.length == this.employees.length?true:false" [indeterminate]="this.selectedEmployees.length > 0 && this.selectedEmployees.length != this.employees.length" (change)="toggleAllEmployeesSelection()"></th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Contact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let employee of employees">
+                      <td>
+                        <input type="checkbox" class="form-check-input" [checked]="isSelected(employee)" (change)="toggleEmployeeSelection(employee)" *ngIf="!employeeExceptions.includes(employee.email)">
+                        <input type="checkbox" class="form-check-input" [checked]="true" [disabled]="true" *ngIf="employeeExceptions.includes(employee.email)">
+                      </td>
+                      <td>{{ employee.name }}</td>
+                      <td>{{ employee.email }}</td>
+                      <td>{{ employee.phone }}</td>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button class="btn-1 my-4" style="padding-left: 10px; padding-right: 10px;" (click)="assignPayItemForMultipleEmployees()" [disabled]="!assignPayitemFormGroup.valid && selectedEmployees.length == 0">Save Changes</button>        
+                </div>
+            </div>
+            </form>
+        </div>
+      </li>
+      <li class="list-group-item">&nbsp;</li>
+  </ul>
+</div>
+  
+
+<div class="data-not-found" *ngIf="notfoundError">
+  <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+</div>

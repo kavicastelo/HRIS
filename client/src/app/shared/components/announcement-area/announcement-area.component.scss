@@ -32,6 +32,49 @@
   }
 }
 
+.bulletin-card{
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 18px 20px;
+
+  .title-image{
+    width: 100%;
+  }
+
+  input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-align: center;
+    margin: 5px 0;
+  }
+
+  #title, .title{
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-text-100);
+
+    &::placeholder{
+      font-size: 22px;
+      font-weight: 800;
+    }
+  }
+
+  #msg, .msg{
+    text-align: left;
+    color: var(--color-text-300);
+
+    &::placeholder{
+      color: var(--color-text-300);
+    }
+  }
+
+  a{
+    text-decoration: none;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 0;
 }

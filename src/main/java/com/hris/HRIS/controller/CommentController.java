@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.CommentModel;
 import com.hris.HRIS.repository.CommentRepository;
+import com.hris.HRIS.service.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,14 @@ public class CommentController {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    MultimediaService multimediaService;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveComment(@RequestBody CommentModel commentModel){
-        commentRepository.save(commentModel);
+        CommentModel savedComment = commentRepository.save(commentModel);
+
+        multimediaService.saveComment(savedComment.getMultimediaId(), savedComment.getId());
 
         ApiResponse apiResponse = new ApiResponse("Comment saved successfully");
         return ResponseEntity.ok(apiResponse);
@@ -63,7 +69,15 @@ public class CommentController {
 
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteComment(@PathVariable String id){
-        commentRepository.deleteById(id);
+        Optional<CommentModel> commentModelOptional = commentRepository.findById(id);
+
+        if (commentModelOptional.isPresent()){
+            CommentModel existingCommentInfo = commentModelOptional.get();
+
+            multimediaService.deleteComment(existingCommentInfo.getMultimediaId(), existingCommentInfo.getId());
+
+            commentRepository.deleteById(id);
+        }
 
         ApiResponse apiResponse = new ApiResponse("Comment deleted successfully");
         return ResponseEntity.ok(apiResponse);

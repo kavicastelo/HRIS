@@ -1,0 +1,53 @@
+<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" routerLink="../../../employee-payments">arrow_back</mat-icon>
+<div class="card" *ngIf="!notfoundError">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Employee Payments</h5>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="table-data-list">
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Item Name</th>
+                        <th>Item Type</th>
+                        <th>Payment Type</th>
+                        <th style="display: flex; text-align: right; justify-content: right;">Amount (LKR)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let element of employeePayitemsList">
+                        <td>{{ element.payitem.itemName }}</td>
+                        <td>{{ element.payitem.itemType }}</td>
+                        <td>{{ element.payitem.paymentType }}</td>
+                        <td style="display: flex; text-align: right; justify-content: right;">
+                          <ng-container *ngIf="editEnabledItemId != element.id">{{element.amount.toFixed(2)}}
+                            <mat-icon style="font-size: 18px; cursor: pointer;" (click)="enableEditItem(element)">edit</mat-icon>
+                            <mat-icon style="font-size: 18px; cursor: pointer; color: #E74C3C;" (click)="removePayitemFromEmployee(element.id)">delete</mat-icon>
+                          </ng-container>
+                          <ng-container *ngIf="editEnabledItemId == element.id">
+                            <div class="input-group input-group-sm">
+                              <input class="form-control form-control-sm" type="number" style="text-align: right; width: 1px;" [ngClass]="{'is-invalid': editEnabledItemValue < 0 || editEnabledItemValue === null || editEnabledItemValue === undefined}" [(ngModel)]="editEnabledItemValue" [disabled]="isEditEnabledItemInputsDisabled">
+                              <span class="input-group-text" *ngIf="element.type != 'Amount'">% {{element.type == 'Hourly Rate'?'per hour':'of basic'}}</span>
+                            </div>
+                            <mat-icon style="font-size: 18px; cursor: pointer; color: green; font-weight: bolder;" (click)="updateEditEnabledItemDetails(element)">check</mat-icon>
+                            <mat-icon style="font-size: 18px; cursor: pointer; color: red; font-weight: bolder;" (click)="disableEditing()">close</mat-icon>
+                          </ng-container>
+                        </td>
+                    </tbody>
+                  </table>
+                  <div style="width: 100%; height: 1.4px; background-color: #A3A3A3;"></div>
+                    <div style="text-align: right; width: 100%; padding-top: 5px; padding-bottom: 5px; font-weight: bold;">Monthly Salary: {{ totalSalaryOfTheSelectedEmployee.toFixed(2) }} &nbsp;&nbsp;&nbsp; </div>
+                  <div style="width: 100%; height: 1.4px; background-color: #A3A3A3;"></div>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>
+    
+<div class="data-not-found" *ngIf="notfoundError">
+  <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true" alt="sorry data not available">
+</div>

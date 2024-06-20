@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Ephesis&family=Poppins&family=Red+Hat+Display:wght@300&family=Roboto+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Rubik+Maps&display=swap');
+@import '@ctrl/ngx-emoji-mart/picker';
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -10,6 +11,16 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+
+  ::-moz-selection { /* Code for Firefox */
+    color: #fff;
+    background: var(--color-primary-200);
+  }
+
+  ::selection {
+    color: #fff;
+    background: var(--color-primary-200);
+  }
 }
 
 .theme-light {
@@ -105,10 +116,29 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
 }
 
+.data-not-found{
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  color: var(--color-text-100);
+
+  img{
+    width: 60%;
+    @media screen and (max-width: 768px){
+      width: 100%;
+    }
+  }
+}
+
 // cards
 .card{
   margin: 8px 0;
   background-color: var(--color-surface-mixed-200);
+  border-color: var(--color-surface-mixed-500);
 
   .card-title{
     color: var(--color-text-200);
@@ -158,9 +188,141 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 
+// mat-table
+.mat-elevation-z1 {
+  background-color: var(--color-surface-mixed-200) !important;
+}
+.mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell{
+  color: var(--color-text-200);
+}
+
+// mat-drawer
+.mat-drawer-container {
+  background: var(--color-surface-200) !important;
+}
+.mat-drawer-inner-container {
+  background: var(--color-surface-200) !important;
+}
+
+// mat form field
+.mat-mdc-form-field{
+  background-color: var(--color-surface-mixed-200);
+}
+.mdc-text-field--filled:not(.mdc-text-field--disabled){
+  background-color: unset!important;
+  color: var(--color-text-300) !important;
+}
+.mat-form-field-hide-placeholder .mat-mdc-select-placeholder{
+  color: var(--color-text-200) !important;
+}
+.mat-mdc-slide-toggle .mdc-form-field{
+  color: var(--color-text-200) !important;
+}
+.mat-mdc-slide-toggle .mdc-switch--disabled+label{
+  color: var(--color-text-300) !important;
+}
+.mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label{
+  color: var(--color-text-300) !important;
+}
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label{
+  color: var(--color-text-300) !important;
+}
+.mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-text-field__input{
+  color: var(--color-text-200) !important;
+}
+
+// expansion panels
+.mat-expansion-panel{
+  background-color: var(--color-surface-mixed-200);
+  background: var(--color-surface-mixed-200);
+}
+.mat-expansion-panel-header:not([aria-disabled=true]), .mat-expansion-panel-header{
+  background-color: var(--color-surface-mixed-200);
+}
+.mat-expansion-panel-header-title, .mat-expansion-panel-header-description{
+  color: var(--color-text-200);
+}
+.mat-expansion-panel-body{
+  background-color: var(--color-surface-mixed-300);
+  padding: 0 18px 4px 18px!important;
+}
+.mat-expansion-panel-header-description, .mat-expansion-indicator::after{
+  color: var(--color-text-200);
+}
+
+// bootstrap dropdown
+.dropdown-menu{
+  button{
+    color: var(--color-text-100);
+    font-size: 14px;
+
+    &:hover{
+      background-color: var(--color-primary-600);
+      color: var(--color-text-100);
+    }
+  }
+}
+.dropdown-menu.show{
+  background-color: var(--color-surface-mixed-100);
+  border: none;
+}
+
+// bootstrap offCanvas
+.offcanvas-body, .offcanvas-header{
+  background-color: var(--color-surface-mixed-100);
+}
+.btn-close{
+  background: transparent (url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='blue'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e")) center/1em auto no-repeat;
+  color: var(--color-text-100);
+}
+
+// markdown
+.message-content{
+  min-width: 100px;
+  p {
+    width: 100%;
+    margin-bottom: 0;
+    img, svg{
+      width: 100%;
+      border-radius: 5px;
+    }
+  }
+}
+
+// emoji-mart
+.emoji-mart{
+  width: 100% !important;
+  background-color: var(--color-surface-mixed-200);
+  border: none;
+  border-radius: 0;
+}
+.emoji-mart-dark .emoji-mart-category-label span{
+  background-color: var(--color-surface-mixed-200);
+  font-size: 12px;
+  color: var(--color-text-200);
+}
+.emoji-mart-dark .emoji-mart-search input{
+  background-color: var(--color-surface-mixed-100);
+  color: var(--color-text-300);
+  border: none;
+  border-radius: 0;
+  margin-bottom: 2px;
+}
+.emoji-mart-dark .emoji-mart-search-icon svg{
+  fill: var(--color-text-300);
+}
+.emoji-mart-anchor-selected .emoji-mart-anchor-bar{
+  background-color: var(--color-primary-400)!important;
+}
+.emoji-mart-dark .emoji-mart-anchor:hover, .emoji-mart-dark .emoji-mart-anchor:focus, .emoji-mart-dark .emoji-mart-anchor-selected{
+  color: var(--color-primary-400)!important;
+}
+
+
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 10px;
   height: 0;
+  transition: all .3s ease;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-surface-mixed-300);
@@ -170,8 +332,15 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-600);
+  background: var(--color-primary-300);
 }
 ::-webkit-scrollbar-thumb:active {
-  background: var(--color-primary-600);
+  background: var(--color-primary-300);
+}
+.mat-dialog-container {
+  z-index: 2000 !important;
+}
+
+.cdk-overlay-container {
+  z-index: 2000 !important;
 }

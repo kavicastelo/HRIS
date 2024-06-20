@@ -1,10 +1,13 @@
 package com.hris.HRIS.model;
 
+import com.hris.HRIS.dto.PayrollReportItem;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,12 +17,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PayrollReportModel {
     @Id
     private String id;
+    private String organizationId;
     private String email;
     private String reportDescription;
     private String reportType;
     private Integer workedDays;
-    private Object payItems;
-    private Object deductions;
+    private List<PayrollReportItem> payItems;
+    private List<PayrollReportItem> deductions;
     private double totalEarnings;
     private double totalDeductions;
     private double netPay;

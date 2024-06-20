@@ -1,0 +1,152 @@
+<div class="card" *ngFor="let post of feedPost; index as i">
+    <div class="card-body" *ngIf="post.id != ''">
+        <div *ngIf="post.sharedUserCaption != null && post.sharedUserTimestamp != null">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="author-wrapper d-flex align-items-center justify-content-start">
+                    <div class="profile-pic">
+                        <img [src]="post.sharedUserImage" alt="profile image" (click)="navigateUrl(post.sharedUserId)">
+                    </div>
+                    <div class="author-name d-flex flex-column">
+                        <div class="d-flex align-items-center">
+                            <h6 (click)="navigateUrl(post.sharedUserId)">{{post.sharedUser}}</h6> &nbsp;&dot;&nbsp;
+                            <p>{{post.sharedUserTimestamp | timeAgo}}</p>
+                        </div>
+                        <p>{{post.sharedUserPosition}}</p>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn-2" type="button" matTooltip="Options" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="post.sharedUserId==userId">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" (click)="editPost(post.id, true)">Edit</button></li>
+                        <li><button class="dropdown-item" (click)="deletePost(post.id)">Delete</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="my-3">
+                <p class="post-description">{{post.sharedUserCaption.split('⚬')[0]}} <small>{{post.sharedUserCaption.split('⚬')[1]}}</small></p>
+            </div>
+            <hr style="color: var(--color-primary-400)" class="mb-3">
+        </div>
+
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <div class="w-100" [ngClass]="post.sharedUser?'shared-post':''">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="author-wrapper d-flex align-items-center justify-content-start">
+                        <div class="profile-pic">
+                            <img [src]="post.userPhoto" alt="profile image" (click)="navigateUrl(post.userId)">
+                        </div>
+                        <div class="author-name d-flex flex-column">
+                            <div class="d-flex align-items-center">
+                                <h6 (click)="navigateUrl(post.userId)">{{post.user}}</h6> &nbsp;&dot;&nbsp;
+                                <p>{{post.time | timeAgo}}</p>
+                            </div>
+                            <p>{{post.userPosition}}</p>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn-2" type="button" matTooltip="Options" data-bs-toggle="dropdown" aria-expanded="false" *ngIf="post.sharedUserId?false:post.userId==userId">
+                            <mat-icon>more_horiz</mat-icon>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><button class="dropdown-item" (click)="editPost(post.id, false)">Edit</button></li>
+                            <li><button class="dropdown-item" (click)="deletePost(post.id)">Delete</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="my-3">
+                    <p class="post-description" [ngStyle]="{'font-size':post.file != null && post.file != ''?'normal':'18px'}">{{post.message.split('⚬')[0]}} <small style="font-size: 11px">{{post.message.split('⚬')[1]}}</small></p>
+                </div>
+
+                <div class="posted-content">
+                    <img [src]="post.file" alt="post" *ngIf="post.type == 'image/jpeg'">
+                    <video [src]="post.file" controls *ngIf="post.type == 'video/mp4'" style="width: 100%">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-3 d-flex align-items-center justify-content-between" *ngIf="commentSection">
+            <div class="d-flex align-items-center">
+                <div class="post-reaction d-flex align-items-center">
+                    <span class="clickable-span" (click)="likePost(post.id, post.user, post.sharedUserCaption?post.sharedUserCaption:post.message, post.userId)" [ngStyle]="{'color':post.isLiked?'var(--color-primary-300)':''}">{{post.isLiked?'Liked':'Like'}}</span>
+                    <span class="clickable-span" (click)="openLikes(post.likers)">&nbsp;<span
+                            *ngIf="post.likes != null && post.likes != 0">({{post.likes}})</span></span>
+                </div>
+                <div class="post-reaction d-flex align-items-center mx-3">
+                    <span class="clickable-span">Comment</span>
+                    <span class="clickable-span" (click)="openComments(post.commenters)">&nbsp;<span
+                            *ngIf="post.comments != null && post.comments != 0">({{post.comments}})</span></span>
+                </div>
+            </div>
+            <div>
+                <div class="post-reaction d-flex align-items-center">
+                    <span class="clickable-span" (click)="sharePost(post)">Share</span>
+                    <span class="clickable-span" (click)="openShares(post.sharing)">&nbsp;<span
+                            *ngIf="post.shares != null && post.shares != 0">({{post.shares}})</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-start" *ngIf="commentSection">
+            <div class="profile-pic">
+                <img [src]="convertToSafeUrl(employee.photo)" alt="profile image">
+            </div>
+            <div class="d-flex flex-column w-100">
+                <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                   aria-controls="collapseExample" class="commentAreaLink">
+                    <div class="form-floating w-100">
+                        <form [formGroup]="commentForm">
+                            <textarea role="textbox" formControlName="comment" class="form-control"
+                                      placeholder="Comment as {{employee.name}}" id="comment-post{{i}}"
+                                      style="height: 60px; width: 100%"></textarea>
+                            <label for="comment-post{{i}}"></label>
+                        </form>
+                    </div>
+                </a>
+                <div class="collapse" id="collapseExample">
+                    <div class="d-flex justify-content-end my-2">
+                        <button class="btn-1" [disabled]="commentForm.invalid" (click)="addComment(post.id, post.user, post.sharedUserCaption?post.sharedUserCaption:post.message, post.userId)">Comment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-2" *ngIf="commentSection" style="max-height: 60vh; overflow-y: auto">
+            <div class="my-2 d-flex align-items-start justify-content-between"
+                 *ngFor="let c of commentsForPost(post.id) | truncateComments: maxCommentsDisplayed">
+                <div class="profile-pic">
+                    <img [src]="c.userProfile" alt="profile image" (click)="navigateUrl(c.userId)">
+                </div>
+                <div class="comment w-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 (click)="c.userId">{{c.user}}</h6>
+                        <p>{{c.time | timeAgo}}</p>
+                    </div>
+                    <p>{{c.comment}}</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between see-more"
+                 *ngIf="commentsForPost(post.id).length>2">
+                <div class="flex-1 w-100">
+                    <hr>
+                </div>
+                <button class="see-more-btn" (click)="toggleComments()">
+                    See {{ showAllComments ? 'less' : 'more' }}</button>
+                <div class="flex-1 w-100">
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card feed-not-found" *ngIf="feedPost.length == 0">
+    <h2>Your News Feed is empty</h2>
+</div>

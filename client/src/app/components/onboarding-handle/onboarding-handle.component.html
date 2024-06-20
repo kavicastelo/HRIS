@@ -1,0 +1,18 @@
+<div class="container">
+
+    <ul class="nav nav-pills my-3">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('assign')" [class.active]="isActive('assign')" matTooltip="Assign Employees to Tasks"><mat-icon>ballot</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Assign</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" (click)="navigateBetweenTabs('plan')" [class.active]="isActive('plan')" matTooltip="Create Onboarding Plan"><mat-icon>swap_horiz</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Plan</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" (click)="navigateBetweenTabs('task')" [class.active]="isActive('task')" matTooltip="Create Onboarding Task"><mat-icon>stars</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Task</span></a>
+        </li>
+    </ul>
+
+    <router-outlet></router-outlet>
+
+</div>
+

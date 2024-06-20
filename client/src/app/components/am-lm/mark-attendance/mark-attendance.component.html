@@ -1,0 +1,50 @@
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5>Employee Attendance</h5>
+                <button class="btn-1 px-3" routerLink="/alm/attendance">Attendance Record</button>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="d-flex-align-items-center justify-content-end">
+                <div class="input-group px-2" style="width: 350px">
+                    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+                    <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)">
+                </div>
+            </div>
+            <div class="attendance-list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th><div class="d-flex align-items-center justify-content-end">
+                            Actions
+                        </div></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let e of filterEmployees()">
+                        <td>{{e.name}}</td>
+                        <td>{{e.email}}</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn-2 px2 me-2" (click)="markIn(e)">Arrive</button>
+                                <button class="btn-2 px2" (click)="depart(e)">Depart</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="filterEmployees().length == 0">
+                    <div class="data-not-found">
+                        <p>Data not available!</p>
+                    </div>
+                </div>
+            </div>
+
+        </li>
+        <li class="list-group-item">&nbsp;</li>
+    </ul>
+</div>

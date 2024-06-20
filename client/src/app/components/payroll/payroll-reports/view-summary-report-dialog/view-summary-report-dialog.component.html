@@ -1,0 +1,80 @@
+<div style="padding: 30px;">
+    <table style="width: 100%; border-width: 0px;">
+        <tr style="background-color: #DAF2FD; color: #3086B1;">
+            <td style="padding: 10px;">
+                <div>
+                    <h1 style="font-weight: bold; font-size: 34px;">{{ organizationName }}</h1>
+                    <h3 style="font-size: 20px;"> {{ organizationAddress }} </h3>
+                </div>
+            </td>
+
+            <td>
+                <div style="top: 0px; text-align: right; padding: 10px;">
+                    <h1 style="font-weight: bold; font-size: 45px;">Summary Report</h1>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="font-size: 17px;">
+                <p>{{ summaryReportModel.reportDescription }}</p>
+            </td>
+
+            <td style="font-size: 17px; text-align: right;">
+                <br>
+                <p style="font-weight: bold; font-size: 20px;">Report Details</p>
+                <p>Pay Period: {{ summaryReportModel.payPeriod }} </p>
+                <p>Report Date: {{ summaryReportModel.reportGeneratedDate }}</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <table mat-table [dataSource]="employeePaymentsTabledataSource" class="mat-elevation-z1">
+                    
+                    <ng-container matColumnDef="employeeName">
+                    <th mat-header-cell *matHeaderCellDef> Employee Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.employeeName}} </td>
+                    <td mat-footer-cell *matFooterCellDef style="font-weight: bold;"> Salary Distribution: </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="earnings">
+                    <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Earnings (LKR) </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;"> {{ element.earnings.toFixed(2) }} </td>
+                    <td mat-footer-cell *matFooterCellDef style="text-align: right; font-weight: bold;"> {{ summaryReportModel.totalEarnings.toFixed(2) }} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="deductions">
+                    <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Deductions (LKR) </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;"> {{ element.deductions.toFixed(2) }} </td>
+                    <td mat-footer-cell *matFooterCellDef style="text-align: right; font-weight: bold;"> {{summaryReportModel.totalDeductions.toFixed(2)}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="netPay">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Net Pay (LKR) </th>
+                        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{ element.netPay.toFixed(2) }} </td>
+                        <td mat-footer-cell *matFooterCellDef style="text-align: right; font-weight: bold;"> {{summaryReportModel.netPayTotal.toFixed(2)}} </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="employeePaymentsTableColumns" style="background-color: #E7E9EA;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: employeePaymentsTableColumns;"></tr>
+                    <tr mat-footer-row *matFooterRowDef="employeePaymentsTableColumns" style="background-color: #E7E9EA;"></tr>
+                </table>
+                <div style="width: 100%; height: 0.8px; background-color: #A3A3A3;"></div>
+                <!-- <div style="background-color: #E7E9EA; text-align: right; width: 100%; padding-top: 5px; padding-bottom: 5px; font-weight: bold;">Gross Pay: {{ payrollReportModel.totalEarnings.toFixed(2) }} &nbsp;&nbsp;&nbsp; </div> -->
+                <div style="width: 100%; height: 1.4px; background-color: #A3A3A3;"></div><br><br>
+            </td>
+        </tr>
+
+        
+
+        <tr>
+            <td></td>
+            <td>
+                <div style="width: 100%; height: 1.4px; background-color: #A3A3A3;"></div>
+                <div style="background-color: #E7E9EA; text-align: right; width: 100%; padding-top: 5px; padding-bottom: 5px; font-weight: bold;">Grand Total: LKR {{ summaryReportModel.netPayTotal.toFixed(2) }} &nbsp;&nbsp;&nbsp; </div>
+                <div style="width: 100%; height: 1.4px; background-color: #A3A3A3;"></div><br><br>
+            </td>
+        </tr>
+    </table>
+    </div>

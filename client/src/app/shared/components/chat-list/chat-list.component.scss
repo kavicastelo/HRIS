@@ -1,3 +1,15 @@
+.c-main-canvas{
+  background-image: url("https://splendid-hr.com/wp-content/uploads/2023/10/h4_banner_img.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center right;
+  .c-main{
+    max-height: calc(100vh - 70px);
+    max-width: 600px;
+    overflow-y: auto;
+  }
+}
+
 .card{
   .card-body{
     .input-group{
@@ -35,6 +47,8 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
+    position: relative;
+
     .chat-icon{
       width: 35px;
       height: 35px;
@@ -45,9 +59,21 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      position: relative;
 
       img{
         width: 100%;
+      }
+
+      .active-btn{
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 10px;
+        height: 10px;
+        background-color: chartreuse;
+        border: 2px solid var(--color-surface-mixed-200);
+        border-radius: 50%;
       }
     }
 
@@ -65,10 +91,41 @@
       }
     }
 
+    .active-chat-count{
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      top: 50%;
+      right: 10px;
+      background-color: var(--color-primary-300);
+    }
+    .chat-time{
+      position: absolute;
+      bottom: 50%;
+      right: 10px;
+    }
+
     &:hover{
       background-color: var(--color-surface-mixed-200);
     }
   }
+}
+
+.lnr-plus-circle {
+  color: var(--color-text-300);
+  font-size: 40px;
+  margin-right: 10px;
+}
+.lnr-cross{
+  color: var(--color-text-200);
+  font-size: 15px;
+  cursor: pointer;
+  margin: 10px 10px 0 0;
+}
+
+.direct-messages-chat-area.all-contacts{
+  padding: 0 20px;
 }
 
 .mat-expansion-panel{
@@ -84,9 +141,9 @@
 .mat-expansion-indicator::after, .mat-expansion-indicator::before {
   color: var(--color-text-200) !important;
 }
-.mat-expansion-panel-body {
-  padding: 0 !important;
-  background-color: var(--color-surface-mixed-300) !important;
+.mat-expansion-panel-body{
+  background-color: var(--color-surface-mixed-300);
+  padding: 0 0 4px 0!important;
 }
 .mat-expansion-panel-header.mat-expanded:focus, .mat-expansion-panel-header.mat-expanded:hover {
   background-color: var(--color-surface-mixed-200);

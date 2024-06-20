@@ -1,0 +1,40 @@
+<div class="transfer-list">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Reason</th>
+            <th class="td-status">Status</th>
+            <th class="td-manage">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let t of filterLetters()" (click)="popupData(t.id)">
+            <td>
+                <div>
+                    <p>{{t.reason | truncate: 20}}</p>
+                    <small>{{t.timestamp | timeAgo}}</small>
+                </div>
+            </td>
+            <td class="td-status">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="status-tag" [ngStyle]="{'background-color':t.approved=='approved'?'#0CBC87':t.approved=='declined'?'rgba(230, 41, 41, 0.20)':'rgba(247, 195, 46, 0.25)'}">
+                        {{t.approved}}
+                    </div>
+                </div>
+            </td>
+            <td class="td-manage">
+                <div class="d-flex align-items-center justify-content-end">
+                    <button class="btn-2 me-1" matTooltip="Approve" (click)="approveRequest(t.id, t.jobData)"><mat-icon>done</mat-icon></button>
+                    <button class="btn-2" matTooltip="Reject" (click)="rejectRequest(t.id)"><mat-icon>clear</mat-icon></button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div *ngIf="filterLetters().length == 0">
+        <div class="data-not-found">
+            <p>Data not available!</p>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,40 @@
+.card{
+  .list-group{
+    background-color: var(--color-surface-mixed-200);
+    .list-group-item{
+      background-color: var(--color-surface-mixed-200);
+
+      .transfer-list{
+        overflow: auto;
+        max-height: calc(100vh - 200px);
+
+        .table{
+          margin-top: 15px;
+          border-radius: 5px;
+          overflow: hidden;
+
+          th{
+            background-color: var(--color-surface-mixed-300);
+            color: var(--color-text-200);
+          }
+
+          td{
+            background-color: transparent;
+            color: var(--color-text-200);
+          }
+
+          .td-status{
+            text-align: center;
+
+            .status-tag{
+              text-transform: uppercase;
+              font-size: 14px;
+              padding: 3px 10px;
+              border-radius: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
