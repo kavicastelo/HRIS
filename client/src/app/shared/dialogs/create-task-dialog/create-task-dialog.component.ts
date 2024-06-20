@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, Renderer2} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {OnboardinService} from "../../../services/onboardin.service";
 import {MultimediaService} from "../../../services/multimedia.service";
@@ -7,6 +7,7 @@ import {Observable, tap} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationsService} from "../../../services/notifications.service";
 import {EmployeesService} from "../../../services/employees.service";
+import {MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-create-task-dialog',
@@ -37,6 +38,7 @@ export class CreateTaskDialogComponent {
               private dialog: MatDialog,
               private onboardinService: OnboardinService,
               private snackbar: MatSnackBar,
+              private renderer: Renderer2,
               private employeesService: EmployeesService,
               private notificationsService: NotificationsService,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -163,6 +165,31 @@ export class CreateTaskDialogComponent {
       }, error => {
         console.log(error)
       })
+    }
+  }
+
+  focusFieldOnEnter(event: KeyboardEvent, nextField: any) {
+    if (event.key === 'Enter') {
+      if (nextField instanceof MatSelect) {
+        nextField.open();
+      } else {
+        this.renderer.selectRootElement(nextField).focus();
+      }
+      event.preventDefault();
+    }
+  }
+
+  keyFormSubmit(event: KeyboardEvent, method: any) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Prevent the default Enter key behavior (e.g., newline in textarea)
+      event.preventDefault();
+
+      // Perform the method
+      if (method == 'create') {
+        this.submitTask()
+      } else if (method == 'edit') {
+        this.editTask()
+      }
     }
   }
 }

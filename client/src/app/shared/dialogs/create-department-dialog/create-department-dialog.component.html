@@ -7,11 +7,11 @@
     <form [formGroup]="onboardinPlanForm">
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>NAME</mat-label>
-            <input matInput id="name" formControlName="name" placeholder="HR Department" >
+            <input matInput id="name" formControlName="name" placeholder="HR Department" #nameInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>DESCRIPTION</mat-label>
-            <textarea matInput id="description" formControlName="description" placeholder="Description to new department..." ></textarea>
+            <textarea matInput id="description" formControlName="description" placeholder="Description to new department..." #descriptionInput (keydown)="keyFormSubmit($event, 'save')"></textarea>
         </mat-form-field>
     </form>
 </div>

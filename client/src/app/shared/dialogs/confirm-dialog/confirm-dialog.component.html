@@ -4,5 +4,5 @@
 </div>
 <div mat-dialog-actions>
     <button (click)="closePopup()" mat-raised-button color="secondary">Cancel</button>
-    <button (click)="receivedData.data.id?deleteItem():discardChanges()" mat-raised-button color="warn">{{receivedData.data.id?'Delete':'Discard'}}</button>
+    <button (click)="receivedData.data.id?deleteItem():discardChanges()" mat-raised-button color="warn" (keydown)="keyFormSubmit($event, receivedData.data.id?'delete':'discard')">{{receivedData.data.id?'Delete':'Discard'}}</button>
 </div>

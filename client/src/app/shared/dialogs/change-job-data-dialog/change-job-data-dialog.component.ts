@@ -90,9 +90,9 @@ export class ChangeJobDataDialogComponent {
         approved: "approved"
       }).subscribe(data => {
         this.closePopup()
-
+        this.snackBar.open("Transfer request Approved!", "OK", {duration:3000})
       }, error => {
-        console.log(error)
+        this.snackBar.open("Transfer request not Approved!", "OK", {duration:3000})
       })
     }
     else if (this.receivedData.data.type == 'promotion'){
@@ -101,8 +101,9 @@ export class ChangeJobDataDialogComponent {
         approved: "approved"
       }).subscribe(data => {
         this.closePopup()
+        this.snackBar.open("Promotion request Approved!", "OK", {duration:3000})
       }, error => {
-        console.log(error)
+        this.snackBar.open("Promotion request not Approved!", "OK", {duration:3000})
       })
     }
   }

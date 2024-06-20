@@ -7,19 +7,19 @@
     <form [formGroup]="onboardinTaskForm">
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>CHOOSE PLAN</mat-label>
-            <mat-select id="onboardingPlanId" formControlName="onboardingPlanId" [(value)]="selectedPlan">
+            <mat-select id="onboardingPlanId" formControlName="onboardingPlanId" [(value)]="selectedPlan" #planInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
                 <mat-option *ngFor="let f of filterPlans()" [value]="f.id">{{f.title}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>DESCRIPTION</mat-label>
-            <textarea matInput id="descriptionTask" formControlName="descriptionTask" placeholder="Description to new task..." ></textarea>
+            <textarea matInput id="descriptionTask" formControlName="descriptionTask" placeholder="Description to new task..." #descriptionInput (keydown)="focusFieldOnEnter($event, startInput)"></textarea>
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>DATE RANGE</mat-label>
             <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date" formControlName="startDateTask">
-                <input matEndDate placeholder="End date" formControlName="endDateTask">
+                <input matStartDate placeholder="Start date" formControlName="startDateTask" #startInput (keydown)="focusFieldOnEnter($event, endInput)">
+                <input matEndDate placeholder="End date" formControlName="endDateTask" #endInput (keydown)="focusFieldOnEnter($event, startInput)">
             </mat-date-range-input>
             <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -27,7 +27,7 @@
         </mat-form-field>
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>CHOOSE STATUS</mat-label>
-            <mat-select id="leaveTYpe" formControlName="statusTask" [(value)]="selectedStatus">
+            <mat-select id="leaveTYpe" formControlName="statusTask" [(value)]="selectedStatus" #statusInput (keydown)="keyFormSubmit($event, receivedData.data.taskId?'edit':'create')">
                 <mat-option *ngFor="let s of statusTypes" [value]="s">{{s}}</mat-option>
             </mat-select>
         </mat-form-field>

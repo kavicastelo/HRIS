@@ -1,10 +1,11 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, Renderer2} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {OnboardinService} from "../../../services/onboardin.service";
 import {DepartmentService} from "../../../services/department.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-create-department-dialog',
@@ -23,6 +24,7 @@ export class CreateDepartmentDialogComponent {
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private snackBar: MatSnackBar,
+              private renderer: Renderer2,
               private departmentService: DepartmentService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreateDepartmentDialogComponent>) {
@@ -48,6 +50,29 @@ export class CreateDepartmentDialogComponent {
       }, error => {
         console.log(error)
       })
+    }
+  }
+
+  focusFieldOnEnter(event: KeyboardEvent, nextField: any) {
+    if (event.key === 'Enter') {
+      if (nextField instanceof MatSelect) {
+        nextField.open();
+      } else {
+        this.renderer.selectRootElement(nextField).focus();
+      }
+      event.preventDefault();
+    }
+  }
+
+  keyFormSubmit(event: KeyboardEvent, method: any) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Prevent the default Enter key behavior (e.g., newline in textarea)
+      event.preventDefault();
+
+      // Perform the method
+      if (method == 'save') {
+        this.submitPlan()
+      }
     }
   }
 }
