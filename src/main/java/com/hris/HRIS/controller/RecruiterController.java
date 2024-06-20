@@ -92,7 +92,7 @@ public class RecruiterController {
     }
 
     //select candidates
-    @GetMapping ("select-candidate/{id}")
+    @GetMapping ("/select-candidate/{id}")
     public ResponseEntity<ApiResponse> selectCandidate(@PathVariable("id") String id){
 
         String message = "Candidate selected successfully";
