@@ -1,6 +1,5 @@
 package com.hris.HRIS.controller;
 
-import com.hris.HRIS.dto.ActionRequest;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.dto.MeetingRequest;
 import com.hris.HRIS.model.ApplyJobModel;
@@ -82,5 +81,24 @@ public class RecruiterController {
         }
     }
 
+    //delete candidates
+    @DeleteMapping("/delete-candidate/{id}")
+    public ResponseEntity<ApiResponse> deleteCandidate(@PathVariable("id") String id){
+
+        applyJobService.deleteById(id);
+        ApiResponse apiResponse = new ApiResponse("Candidate deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    //select candidates
+    @GetMapping ("select-candidate/{id}")
+    public ResponseEntity<ApiResponse> selectCandidate(@PathVariable("id") String id){
+
+        String message = "Candidate selected successfully";
+
+        ApiResponse apiResponse = new ApiResponse(message);
+        return ResponseEntity.ok(apiResponse);
+
+    }
 
 }

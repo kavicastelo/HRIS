@@ -27,4 +27,7 @@ public class ApplyJobService {
 
     }
 
+    public void deleteById(String id) {
+        applyJobRepository.deleteById(id);
+    }
 }

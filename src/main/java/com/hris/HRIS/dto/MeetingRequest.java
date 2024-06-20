@@ -5,14 +5,15 @@ import lombok.Setter;
 
 import java.sql.Time;
 import java.text.DateFormat;
+import java.util.Date;
 
 @Getter
 @Setter
 public class MeetingRequest {
 
     private String id;
-    private DateFormat meetingDate;
-    private Time meetingTime;
+    private Date meetingDate;
+    private Date meetingTime;
     private String meetingLink;
     private String userEmail;
     private String managerEmail;

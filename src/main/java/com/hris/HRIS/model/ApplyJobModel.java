@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Time;
 import java.text.DateFormat;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class ApplyJobModel {
 
     private String job_title;
 
-    private DateFormat apply_date;
+    private Date apply_date;
 
     private String contact_number;
 
@@ -33,15 +34,15 @@ public class ApplyJobModel {
 
     private byte[] cv;
 
-    private boolean action = false;
+    private boolean action = false; //1st stage to 2nd stage
 
-    private boolean hire = false;
+    private boolean hire = false; //2nd stage to hiring stage
 
     private String meeting_link;
 
-    private DateFormat meeting_date;
+    private Date meeting_date;
 
-    private Time meeting_time;
+    private Date meeting_time;
 
     private boolean notify;
 
