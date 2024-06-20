@@ -1,16 +1,30 @@
 <h1 mat-dialog-title>{{receivedData.title}}</h1>
 <div mat-dialog-content>
-    <p>{{receivedData.msg}}</p>
-    <form [formGroup]="textForm">
-        <label for="text1">Position</label>
-        <input id="text1" type="text" formControlName="text1" class="form-control">
-        <label for="text2">Department</label>
-        <input id="text2" type="text" formControlName="text2" class="form-control">
-        <label for="text3">Salary</label>
-        <input id="text3" type="text" formControlName="text3" class="form-control">
-    </form>
+  <p>{{receivedData.msg}}</p>
+  <form [formGroup]="textForm">
+    <label for="text1">Position</label>
+    <input id="text1" type="text" formControlName="text1" class="form-control" #positionInput (keydown)="focusFieldOnEnter($event, departmentInput)">
+    <label for="text2">Department</label>
+    <input id="text2" type="text" formControlName="text2" class="form-control"  #departmentInput (keydown)="focusFieldOnEnter($event, salaryInput)">
+    <label for="text3">Salary</label>
+    <input id="text3" type="text" formControlName="text3" class="form-control" #salaryInput (keydown)="focusFieldOnEnter($event, typeInput)">
+    <label for="text4">Employment Type</label>
+    <input id="text4" type="text" formControlName="text4" class="form-control" #typeInput (keydown)="focusFieldOnEnter($event, jobGradeInput)">
+    <label for="text5">Job Grade</label>
+    <input id="text5" type="text" formControlName="text5" class="form-control" #jobGradeInput (keydown)="focusFieldOnEnter($event, personalGradeInput)">
+    <label for="text6">Personal Grade</label>
+    <input id="text6" type="text" formControlName="text6" class="form-control" #personalGradeInput (keydown)="focusFieldOnEnter($event, supervisorInput)">
+    <label for="text7">Supervisor</label>
+    <input id="text7" type="text" formControlName="text7" class="form-control" #supervisorInput (keydown)="focusFieldOnEnter($event, unitInput)">
+    <label for="text8">Business Unit</label>
+    <input id="text8" type="text" formControlName="text8" class="form-control" #unitInput (keydown)="focusFieldOnEnter($event, locationInput)">
+    <label for="text9">Location</label>
+    <input id="text9" type="text" formControlName="text9" class="form-control" #locationInput (keydown)="focusFieldOnEnter($event, branchInput)">
+    <label for="text10">Branch</label>
+    <input id="text10" type="text" formControlName="text10" class="form-control" #branchInput (keydown)="keyFormSubmit($event, 'save')">
+  </form>
 </div>
 <div mat-dialog-actions>
-    <button (click)="closePopup()" mat-raised-button color="secondary">Cancel</button>
-    <button (click)="confirm()" [disabled]="textForm.invalid" mat-raised-button color="primary">Confirm</button>
+  <button (click)="closePopup()" mat-raised-button color="secondary">Cancel</button>
+  <button (click)="confirm()" [disabled]="textForm.invalid" mat-raised-button color="primary">Confirm</button>
 </div>
