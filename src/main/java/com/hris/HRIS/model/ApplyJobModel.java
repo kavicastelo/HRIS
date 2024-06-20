@@ -5,11 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.sql.Time;
-import java.text.DateFormat;
 
 @Getter
 @Setter
@@ -25,7 +20,7 @@ public class ApplyJobModel {
 
     private String job_title;
 
-    private DateFormat apply_date;
+    private String apply_date;
 
     private String contact_number;
 
@@ -33,15 +28,15 @@ public class ApplyJobModel {
 
     private byte[] cv;
 
-    private boolean action = false;
+    private boolean action;
 
-    private boolean hire = false;
+    private boolean hire;
 
     private String meeting_link;
 
-    private DateFormat meeting_date;
+    private String meeting_date;
 
-    private Time meeting_time;
+    private String meeting_time;
 
     private boolean notify;
 
