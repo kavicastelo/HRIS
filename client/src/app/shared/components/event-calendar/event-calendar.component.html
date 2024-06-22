@@ -1,24 +1,24 @@
-<div class="demo-app">
+<div class="event-calendar">
   <div>
     <div class="row text-center">
       <div class="col-12">
         <div class="btn-group">
           <div
-            class="btn btn-primary"
+            class="btn btn-1"
             (click)="setView(CalendarView.Month)"
             [class.active]="view === CalendarView.Month"
           >
             Month
           </div>
           <div
-            class="btn btn-primary"
+            class="btn btn-1"
             (click)="setView(CalendarView.Week)"
             [class.active]="view === CalendarView.Week"
           >
             Week
           </div>
           <div
-            class="btn btn-primary"
+            class="btn btn-1"
             (click)="setView(CalendarView.Day)"
             [class.active]="view === CalendarView.Day"
           >
@@ -32,7 +32,7 @@
       <div class="col-12">
         <div class="btn-group">
           <div
-            class="btn btn-primary"
+            class="btn btn-1"
             mwlCalendarPreviousView
             [(viewDate)]="viewDate"
             [view]="view"
@@ -47,7 +47,7 @@
             Today
           </div>
           <div
-            class="btn btn-primary"
+            class="btn btn-1"
             mwlCalendarNextView
             [(viewDate)]="viewDate"
             [view]="view"

@@ -1,8 +1,9 @@
-.cal-month-view .cal-header .cal-cell{
-  font-weight: 450;
-  color: var(--color-text-200) !important;
-}
+.event-calendar{
+  color: #3498db;
+  font-size: 12px;
+  font-weight: 400;
 
-.cal-month-view .cal-cell-top{
-  min-height: 50px!important;
+  .cal-month-view .cal-day-number{
+    color: #3498db;
+  }
 }

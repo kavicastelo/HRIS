@@ -13,10 +13,10 @@ export class EventService {
   constructor(private http: HttpClient) { }
 
   getEvents(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+    return this.http.get(this.apiUrl+'event/get/all');
   }
 
   saveEvent(event: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, event);
+    return this.http.post(this.apiUrl+'event/save', event);
   }
 }
