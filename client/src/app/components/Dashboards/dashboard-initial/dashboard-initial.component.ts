@@ -22,7 +22,10 @@ export class DashboardInitialComponent implements OnInit {
 
   // test data for profile
   employeeDataStore: any;
-  employee: any
+  employee: any = {
+    name: '',
+    photo: ''
+  }
 
   empLabels: any[] = ['Permanent', 'Contract', 'Trainees'];
   empData: any[] = [25, 50, 75];

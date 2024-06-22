@@ -344,3 +344,17 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 .cdk-overlay-container {
   z-index: 2000 !important;
 }
+
+
+.event-calendar{
+  color: #3498db;
+  font-size: 12px;
+
+  .cal-month-view .cal-header .cal-cell{
+    font-weight: 400;
+  }
+
+  .cal-month-view .cal-day-number{
+    color: #000;
+  }
+}

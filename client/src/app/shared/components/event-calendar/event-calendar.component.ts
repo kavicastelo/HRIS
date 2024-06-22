@@ -15,7 +15,21 @@ export class EventCalendarComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
-  events: CalendarEvent[] = [];
+  events: CalendarEvent[] = [
+    {
+      start: new Date(),
+      title: 'Event 1',
+      color: { primary: '#ad2121', secondary: '#FAE3E3' },
+      // Add other properties if needed
+    },
+    {
+      start: new Date(),
+      end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+      title: 'Event 2',
+      color: { primary: '#1e90ff', secondary: '#D1E8FF' },
+      // Add other properties if needed
+    }
+  ];
   activeDayIsOpen: boolean = true;
   refresh: Subject<any> = new Subject();
 
@@ -73,20 +87,5 @@ export class EventCalendarComponent implements OnInit {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
-  }
-
-  addEvent(): void {
-    const dialogRef = this.dialog.open(EventDialogComponent, {
-      width: '250px',
-      data: { event: { title: '', start: new Date(), end: new Date(), allDay: false } }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.eventService.saveEvent(result).subscribe(() => {
-          this.fetchEvents();
-        });
-      }
-    });
   }
 }
