@@ -1,0 +1,16 @@
+<!--  news -->
+<div class="card ln">
+  <div class="card-body">
+    <h5 class="card-title">Latest News</h5>
+    <div *ngFor="let news of filterNews() | truncateComments:maxNewsDisplayed">
+      <div class="latest-news mb-3" (click)="openURL(news.redirectUrl)">
+        <p class="card-text" style="margin-bottom: 0" [title]="news.description">{{news.description | truncate:100}}</p>
+        <small class="text-body-secondary">{{news.timestamp | timeAgo}}</small>
+      </div>
+    </div>
+    <p class="view-all" *ngIf="filterNews().length>3" (click)="toggleNews()">... {{showAllNews?'Collapse':'View All'}} Latest News</p>
+    <div class="data-not-found" *ngIf="filterNews().length == 0">
+      <p>No Data Available</p>
+    </div>
+  </div>
+</div>

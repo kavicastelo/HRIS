@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Event</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Title" [(ngModel)]="data.event.title">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="startPicker" placeholder="Start Date" [(ngModel)]="data.event.start">
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="data.event.end">
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+  </mat-form-field>
+  <mat-checkbox [(ngModel)]="data.event.allDay">All Day</mat-checkbox>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.event">Save</button>
+</div>
