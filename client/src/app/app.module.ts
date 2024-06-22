@@ -108,7 +108,8 @@ import { TaxdetailsComponent } from "./components/taxdetails/taxdetails.componen
 import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";
 import { RecruitmentComponent } from './components/recruitment/recruitment.component';
 import { RecruitmentApplicantsComponent } from './components/recruitment/recruitment-applicants/recruitment-applicants.component';
-import { RecruitmentJobListComponent } from './components/recruitment/recruitment-job-list/recruitment-job-list.component';   
+import { RecruitmentJobListComponent } from './components/recruitment/recruitment-job-list/recruitment-job-list.component';
+import { DashboardInitialComponent } from './components/Dashboards/dashboard-initial/dashboard-initial.component';   
 @NgModule({
     declarations: [
         AppComponent,
@@ -191,7 +192,8 @@ import { RecruitmentJobListComponent } from './components/recruitment/recruitmen
         AddNewTaxrangeComponent,
         RecruitmentComponent,
         RecruitmentApplicantsComponent,
-        RecruitmentJobListComponent
+        RecruitmentJobListComponent,
+        DashboardInitialComponent
 
     ],
     imports: [
