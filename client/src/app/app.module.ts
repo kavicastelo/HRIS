@@ -109,7 +109,12 @@ import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrang
 import { RecruitmentComponent } from './components/recruitment/recruitment.component';
 import { RecruitmentApplicantsComponent } from './components/recruitment/recruitment-applicants/recruitment-applicants.component';
 import { RecruitmentJobListComponent } from './components/recruitment/recruitment-job-list/recruitment-job-list.component';
-import { DashboardInitialComponent } from './components/Dashboards/dashboard-initial/dashboard-initial.component';   
+import { DashboardInitialComponent } from './components/Dashboards/dashboard-initial/dashboard-initial.component';
+import { LatestNewsComponent } from './shared/components/latest-news/latest-news.component';
+import { EventCalendarComponent } from './shared/components/event-calendar/event-calendar.component';
+import {CalendarModule, DateAdapter} from "angular-calendar";
+import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
+import { EventDialogComponent } from './shared/dialogs/event-dialog/event-dialog.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -193,7 +198,10 @@ import { DashboardInitialComponent } from './components/Dashboards/dashboard-ini
         RecruitmentComponent,
         RecruitmentApplicantsComponent,
         RecruitmentJobListComponent,
-        DashboardInitialComponent
+        DashboardInitialComponent,
+        LatestNewsComponent,
+        EventCalendarComponent,
+        EventDialogComponent
 
     ],
     imports: [
@@ -227,7 +235,8 @@ import { DashboardInitialComponent } from './components/Dashboards/dashboard-ini
         AngularFirestoreModule,
         AngularFireAuthModule,
         MatProgressBarModule,
-        PickerModule
+        PickerModule,
+      CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory})
     ],
     providers: [],
     bootstrap: [AppComponent]
