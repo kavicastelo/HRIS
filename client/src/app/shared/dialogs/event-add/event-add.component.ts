@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import {CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarEventAction} from 'angular-calendar';
+import {ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import { CalendarView, CalendarEvent, CalendarEventAction } from 'angular-calendar';
+import { EventColor } from 'calendar-utils';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import {addDays, addHours, endOfDay, endOfMonth, isSameDay, isSameMonth, startOfDay, subDays} from "date-fns";
-import {EventService} from "../../../services/event.service";
-import {EventDialogComponent} from "../../dialogs/event-dialog/event-dialog.component";
-import { EventColor } from 'calendar-utils';
+import { EventDialogComponent } from '../event-dialog/event-dialog.component';
+import { EventService } from '../../../services/event.service';
+import { startOfDay, endOfDay, subDays, addDays, addHours, endOfMonth } from 'date-fns';
 
 @Component({
-  selector: 'app-event-calendar',
-  templateUrl: './event-calendar.component.html',
-  styleUrls: ['./event-calendar.component.scss']
+  selector: 'app-event-add',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './event-add.component.html',
+  styleUrls: ['./event-add.component.scss']
 })
-export class EventCalendarComponent implements OnInit {
+export class EventAddComponent implements OnInit {
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | any;
+
   view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
-  viewDate: Date = new Date();
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
@@ -87,10 +88,13 @@ export class EventCalendarComponent implements OnInit {
       draggable: true,
     },
   ];
-  activeDayIsOpen: boolean = true;
   refresh: Subject<any> = new Subject();
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  } | any;
 
-  constructor(private eventService: EventService, public dialog: MatDialog) {}
+  constructor(private eventService: EventService, public dialog: MatDialog) { }
 
   ngOnInit() {
     // this.fetchEvents();
@@ -109,44 +113,29 @@ export class EventCalendarComponent implements OnInit {
     });
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
-    }
+  addEvent(): void {
+    this.events = [
+      ...this.events,
+      {
+        title: 'New event',
+        start: startOfDay(new Date()),
+        end: endOfDay(new Date()),
+        color: this.colors['red'],
+        draggable: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true,
+        },
+      },
+    ];
   }
 
-  eventTimesChanged({
-                      event,
-                      newStart,
-                      newEnd,
-                    }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map((iEvent) => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd,
-        };
-      }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);
+  deleteEvent(eventToDelete: CalendarEvent) {
+    this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
   setView(view: CalendarView) {
     this.view = view;
-  }
-
-  closeOpenMonthViewDay() {
-    this.activeDayIsOpen = false;
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
