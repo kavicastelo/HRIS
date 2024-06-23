@@ -62,7 +62,18 @@
                     <span>MENU</span>
                     <div class="accordian">
                         <mat-accordion>
-                            <mat-expansion-panel expanded>
+                          <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                Tools
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ul>
+                              <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard">Dashboard</li>
+                              <li routerLink="/event-calendar">Calendar</li>
+                            </ul>
+                          </mat-expansion-panel>
+                            <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Employee

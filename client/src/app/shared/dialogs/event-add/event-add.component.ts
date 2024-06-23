@@ -110,6 +110,7 @@ export class EventAddComponent implements OnInit {
     this.eventService.getEvents().subscribe(data => {
       this.events = data.map((event: any) => {
         return {
+          id: event.id,
           title: event.title,
           start: new Date(event.start),
           end: event.end ? new Date(event.end) : null,
@@ -128,6 +129,7 @@ export class EventAddComponent implements OnInit {
 
   addEvent(): void {
     const newEvent: CalendarEvent = {
+      id: undefined,
       title: 'New event',
       start: startOfDay(new Date()),
       end: endOfDay(new Date()),
@@ -153,6 +155,18 @@ export class EventAddComponent implements OnInit {
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
+  }
+
+  updateEvent(event: CalendarEvent<any>) {
+    this.eventService.updateEvent(event).subscribe(updatedEvent => {
+      this.events = this.events.map((event) => {
+        if (event.id === updatedEvent.id) {
+          return updatedEvent;
+        }
+        return event;
+      });
+      this.refresh.next(undefined);
+    });
   }
 
   setView(view: CalendarView) {

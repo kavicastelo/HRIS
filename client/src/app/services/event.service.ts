@@ -22,10 +22,10 @@ export class EventService {
   }
 
   updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
-    return this.http.put<CalendarEvent>(`${this.apiUrl}events/${event.id}`, event);
+    return this.http.put<CalendarEvent>(`${this.apiUrl}event/update/${event.id}`, event);
   }
 
   deleteEvent(eventId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}events/${eventId}`);
+    return this.http.delete<void>(`${this.apiUrl}event/delete/${eventId}`);
   }
 }
