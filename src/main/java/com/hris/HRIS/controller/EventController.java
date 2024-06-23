@@ -2,7 +2,7 @@ package com.hris.HRIS.controller;
 
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.EventModel;
-import com.hris.HRIS.repository.EventRepository;
+import com.hris.HRIS.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +15,31 @@ import java.util.Optional;
 public class EventController {
 
     @Autowired
-    EventRepository eventRepository;
+    private EventService eventService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveEvent(@RequestBody EventModel eventModel) {
-        eventRepository.save(eventModel);
-
+        eventService.saveEvent(eventModel);
         ApiResponse apiResponse = new ApiResponse("Event saved successfully");
         return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping("/get/all")
     public List<EventModel> getAllEvents() {
-        try {
-            return eventRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return eventService.getAllEvents();
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<EventModel> getEventById(@PathVariable String id) {
+        Optional<EventModel> event = eventService.getEventById(id);
+        return event.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteEvent(@PathVariable String id) {
+        eventService.deleteEvent(id);
+        ApiResponse apiResponse = new ApiResponse("Event deleted successfully");
+        return ResponseEntity.ok(apiResponse);
     }
 }

@@ -48,44 +48,44 @@ export class EventCalendarComponent implements OnInit {
     },
   };
   events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: { ...this.colors['red'] },
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: { ...this.colors['yellow'] },
-      actions: this.actions,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: { ...this.colors['blue'] },
-      allDay: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: { ...this.colors['yellow'] },
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
+    // {
+    //   start: subDays(startOfDay(new Date()), 1),
+    //   end: addDays(new Date(), 1),
+    //   title: 'A 3 day event',
+    //   color: { ...this.colors['red'] },
+    //   actions: this.actions,
+    //   allDay: true,
+    //   resizable: {
+    //     beforeStart: true,
+    //     afterEnd: true,
+    //   },
+    //   draggable: true,
+    // },
+    // {
+    //   start: startOfDay(new Date()),
+    //   title: 'An event with no end date',
+    //   color: { ...this.colors['yellow'] },
+    //   actions: this.actions,
+    // },
+    // {
+    //   start: subDays(endOfMonth(new Date()), 3),
+    //   end: addDays(endOfMonth(new Date()), 3),
+    //   title: 'A long event that spans 2 months',
+    //   color: { ...this.colors['blue'] },
+    //   allDay: true,
+    // },
+    // {
+    //   start: addHours(startOfDay(new Date()), 2),
+    //   end: addHours(new Date(), 2),
+    //   title: 'A draggable and resizable event',
+    //   color: { ...this.colors['yellow'] },
+    //   actions: this.actions,
+    //   resizable: {
+    //     beforeStart: true,
+    //     afterEnd: true,
+    //   },
+    //   draggable: true,
+    // },
   ];
   activeDayIsOpen: boolean = true;
   refresh: Subject<any> = new Subject();
@@ -93,7 +93,7 @@ export class EventCalendarComponent implements OnInit {
   constructor(private eventService: EventService, public dialog: MatDialog) {}
 
   ngOnInit() {
-    // this.fetchEvents();
+    this.fetchEvents();
   }
 
   fetchEvents() {
@@ -103,6 +103,13 @@ export class EventCalendarComponent implements OnInit {
           title: event.title,
           start: new Date(event.start),
           end: event.end ? new Date(event.end) : null,
+          color: event.color,
+          draggable: event.draggable,
+          resizable: {
+            beforeStart: event.beforeStart,
+            afterEnd: event.afterEnd
+          },
+          actions: event.actions,
           allDay: event.allDay
         };
       });
