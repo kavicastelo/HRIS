@@ -85,6 +85,9 @@
           <button class="btn btn-danger" (click)="deleteEvent(event)">
             Delete
           </button>
+          <button class="btn btn-primary" (click)="addToDB(event)">
+            {{event.id ? 'Update' : 'Add'}}
+          </button>
         </td>
       </tr>
       </tbody>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from "../../environments/environment";
+import {CalendarEvent} from "angular-calendar";
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,18 @@ export class EventService {
   constructor(private http: HttpClient) { }
 
   getEvents(): Observable<any> {
-    return this.http.get(this.apiUrl+'event/get/all');
+    return this.http.get<CalendarEvent[]>(`${this.apiUrl}event/get/all`);
   }
 
-  saveEvent(event: any): Observable<any> {
-    return this.http.post(this.apiUrl+'event/save', event);
+  saveEvent(event: CalendarEvent): Observable<CalendarEvent> {
+    return this.http.post<CalendarEvent>(`${this.apiUrl}event/save`, event);
+  }
+
+  updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
+    return this.http.put<CalendarEvent>(`${this.apiUrl}events/${event.id}`, event);
+  }
+
+  deleteEvent(eventId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}events/${eventId}`);
   }
 }
