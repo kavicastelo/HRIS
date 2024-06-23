@@ -69,7 +69,7 @@ import {DashboardInitialComponent} from "./components/Dashboards/dashboard-initi
 import {EventCalendarComponent} from "./shared/components/event-calendar/event-calendar.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: 'feed', pathMatch: 'full'},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {
     path: 'feed', component: FeedWrapperComponent, canActivate: [AuthGuard], children: [
@@ -156,7 +156,7 @@ const routes: Routes = [
     {path: 'applicants', component: RecruitmentApplicantsComponent},
     {path: 'job-listing', component: RecruitmentJobListComponent},
   ]},
-  {path: 'event-calendar', component: EventCalendarComponent, canActivate: [AuthGuard, AdminGuard]},
+  {path: 'event-calendar', component: EventCalendarComponent, canActivate: [AuthGuard]},
   {path: 'dashboard', component: DashboardInitialComponent, canActivate: [AuthGuard, AdminGuard]},
   {path: '**', component: NotFoundComponent},
 

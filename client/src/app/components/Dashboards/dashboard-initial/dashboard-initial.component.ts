@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {EmployeesService} from "../../../services/employees.service";
@@ -18,7 +18,7 @@ Chart.register(...registerables);
   templateUrl: './dashboard-initial.component.html',
   styleUrls: ['./dashboard-initial.component.scss']
 })
-export class DashboardInitialComponent implements OnInit {
+export class DashboardInitialComponent implements OnInit, OnDestroy {
 
   userId: any;
   loggedUserId: any;
@@ -87,6 +87,12 @@ export class DashboardInitialComponent implements OnInit {
     this.renderEmpChart();
     this.renderAttendChart();
     this.renderPayrollChart();
+  }
+
+  ngOnDestroy() {
+    this.empChartCanvas.destroy();
+    this.attendChartCanvas.destroy();
+    this.payrollChartCanvas.destroy();
   }
 
   loadAllUsers(): Observable<any> {
