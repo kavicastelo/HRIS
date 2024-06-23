@@ -1,15 +1,14 @@
-import {ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { CalendarView, CalendarEvent, CalendarEventAction } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
 import { Subject } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { EventDialogComponent } from '../event-dialog/event-dialog.component';
 import { EventService } from '../../../services/event.service';
 import { startOfDay, endOfDay, subDays, addDays, addHours, endOfMonth } from 'date-fns';
 
 @Component({
   selector: 'app-event-add',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './event-add.component.html',
   styleUrls: ['./event-add.component.scss']
 })
@@ -94,10 +93,17 @@ export class EventAddComponent implements OnInit {
     event: CalendarEvent;
   } | any;
 
-  constructor(private eventService: EventService, public dialog: MatDialog) { }
+  constructor(private eventService: EventService,
+              public dialog: MatDialog,
+              public dialogRef: MatDialogRef<EventAddComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
     // this.fetchEvents();
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
   fetchEvents() {

@@ -260,6 +260,7 @@ export class DashboardInitialComponent implements OnInit {
   openCreateDialog() {
 
     const dialogRef = this.dialog.open(EventAddComponent, {
+      maxHeight: '90vh',
       data: {
         title: 'Add Event',
         event: null
