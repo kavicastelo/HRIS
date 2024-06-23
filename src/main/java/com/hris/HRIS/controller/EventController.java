@@ -19,7 +19,7 @@ public class EventController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveEvent(@RequestBody EventModel eventModel) {
-        eventService.saveEvent(eventModel);
+        EventModel savedEvent = eventService.saveEvent(eventModel);
         ApiResponse apiResponse = new ApiResponse("Event saved successfully");
         return ResponseEntity.ok(apiResponse);
     }
@@ -40,6 +40,13 @@ public class EventController {
     public ResponseEntity<ApiResponse> deleteEvent(@PathVariable String id) {
         eventService.deleteEvent(id);
         ApiResponse apiResponse = new ApiResponse("Event deleted successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse> updateEvent(@PathVariable String id, @RequestBody EventModel eventModel) {
+        EventModel updatedEvent = eventService.updateEvent(id, eventModel);
+        ApiResponse apiResponse = new ApiResponse("Event updated successfully");
         return ResponseEntity.ok(apiResponse);
     }
 }

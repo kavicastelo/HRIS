@@ -7,3 +7,19 @@
     color: #3498db;
   }
 }
+
+.calendar-options{
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+
+    .col-4{
+      display: flex;
+      align-items: center;
+    }
+  }
+}

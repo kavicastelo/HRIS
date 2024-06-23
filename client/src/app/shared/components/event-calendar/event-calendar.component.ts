@@ -109,8 +109,9 @@ export class EventCalendarComponent implements OnInit {
             beforeStart: event.beforeStart,
             afterEnd: event.afterEnd
           },
-          actions: event.actions,
-          allDay: event.allDay
+          actions: event.actions?this.actions:null,
+          allDay: event.allDay,
+          cssClass: 'calendar-event'
         };
       });
     });
@@ -163,9 +164,7 @@ export class EventCalendarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.eventService.saveEvent(result).subscribe(() => {
-          this.fetchEvents();
-        });
+        this.fetchEvents();
       }
     });
   }

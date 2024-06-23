@@ -29,4 +29,23 @@ public class EventService {
     public void deleteEvent(String id) {
         eventRepository.deleteById(id);
     }
+
+    public EventModel updateEvent(String id, EventModel eventModel) {
+        Optional<EventModel> optionalEventModel = eventRepository.findById(id);
+
+        if (optionalEventModel.isPresent()) {
+            EventModel event = optionalEventModel.get();
+            event.setTitle(eventModel.getTitle());
+            event.setStart(eventModel.getStart());
+            event.setEnd(eventModel.getEnd());
+            event.setAllDay(eventModel.isAllDay());
+            event.setDraggable(eventModel.isDraggable());
+            event.setColor(eventModel.getColor());
+            event.setResizable(eventModel.getResizable());
+            event.setActions(eventModel.getActions());
+
+            return eventRepository.save(event);
+        }
+        return null;
+    }
 }

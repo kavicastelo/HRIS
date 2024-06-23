@@ -263,9 +263,9 @@ import {FlatpickrModule} from "angularx-flatpickr";
     AngularFireAuthModule,
     MatProgressBarModule,
     PickerModule,
-    CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
     NgbModalModule,
     FlatpickrModule.forRoot(),
+    CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
   ],
   providers: [],
   bootstrap: [AppComponent]
