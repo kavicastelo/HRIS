@@ -112,7 +112,11 @@
         <div class="card-2-title"><mat-icon> offline_bolt</mat-icon> Quick Access</div>
       </div>
       <div class="card-2">
-        <div class="card-2-title"><mat-icon> today</mat-icon> Events</div>
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="card-2-title"><mat-icon> today</mat-icon> Events</div>
+          <button class="btn-1" (click)="openCreateDialog()">Add new</button>
+        </div>
+
         <app-event-calendar></app-event-calendar>
       </div>
       <app-latest-news></app-latest-news>

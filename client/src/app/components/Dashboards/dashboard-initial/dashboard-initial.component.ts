@@ -7,6 +7,8 @@ import {AuthService} from "../../../services/auth.service";
 import {Chart, registerables} from "chart.js";
 import _default from "chart.js/dist/plugins/plugin.legend";
 import position = _default.defaults.position;
+import {EventAddComponent} from "../../../shared/dialogs/event-add/event-add.component";
+import {MatDialog} from "@angular/material/dialog";
 
 Chart.register(...registerables);
 
@@ -48,6 +50,7 @@ export class DashboardInitialComponent implements OnInit {
   constructor(
     private employeeService: EmployeesService,
     private multimediaService: MultimediaService,
+    private dialog: MatDialog,
     private cookieService: AuthService) {
   }
 
@@ -254,4 +257,13 @@ export class DashboardInitialComponent implements OnInit {
     }
   }
 
+  openCreateDialog() {
+
+    const dialogRef = this.dialog.open(EventAddComponent, {
+      data: {
+        title: 'Add Event',
+        event: null
+      }
+    });
+  }
 }

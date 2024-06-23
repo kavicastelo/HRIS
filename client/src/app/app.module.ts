@@ -46,9 +46,13 @@ import {EditTextDialogComponent} from './shared/dialogs/edit-text-dialog/edit-te
 import {RequestsComponent} from './components/requests/requests.component';
 import {TransferRequestComponent} from './components/requests/transfer-request/transfer-request.component';
 import {PromotionRequestComponent} from './components/requests/promotion-request/promotion-request.component';
-import {RequestTransferDialogComponent} from './shared/dialogs/request-transfer-dialog/request-transfer-dialog.component';
+import {
+  RequestTransferDialogComponent
+} from './shared/dialogs/request-transfer-dialog/request-transfer-dialog.component';
 import {LetterDataDialogComponent} from './shared/dialogs/letter-data-dialog/letter-data-dialog.component';
-import {RequestPromotionDialogComponent} from './shared/dialogs/request-promotion-dialog/request-promotion-dialog.component';
+import {
+  RequestPromotionDialogComponent
+} from './shared/dialogs/request-promotion-dialog/request-promotion-dialog.component';
 import {EmployeeComponent} from './components/employee/employee.component';
 import {EmpDashboardComponent} from './components/employee/emp-dashboard/emp-dashboard.component';
 import {EmpTransferComponent} from './components/employee/emp-transfer/emp-transfer.component';
@@ -70,27 +74,37 @@ import {TimeFormatPipe} from "./DTO/TimeFormatPipe";
 import {HourMinuteFormatPipe} from "./DTO/HourMinuteFormatPipe";
 import {LeaveRequestComponent} from './components/requests/leave-request/leave-request.component';
 import {RequestLeaveComponent} from './shared/dialogs/request-leave/request-leave.component';
-import {EmployeePaymentsComponent} from './components/payroll/employee-payments/employee-payments/employee-payments.component';
-import {ViewEmployeePayitemsComponent} from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
+import {
+  EmployeePaymentsComponent
+} from './components/payroll/employee-payments/employee-payments/employee-payments.component';
+import {
+  ViewEmployeePayitemsComponent
+} from './components/payroll/view-employee-payitems/view-employee-payitems/view-employee-payitems.component';
 import {PayitemsComponent} from './components/payroll/payitems/payitems/payitems.component';
 import {AssignPayitemComponent} from './components/payroll/assign-payitem/assign-payitem/assign-payitem.component';
 import {ProfileAttendanceComponent} from './shared/components/profile/profile-attendance/profile-attendance.component';
 import {AssignTaskComponent} from './components/onboarding-handle/assign-task/assign-task.component';
 import {CreatePlanComponent} from './components/onboarding-handle/create-plan/create-plan.component';
 import {CreateTaskComponent} from './components/onboarding-handle/create-task/create-task.component';
-import {ViewPayrollReportsComponent} from './components/payroll/payroll-reports/view-payroll-reports/view-payroll-reports.component';
+import {
+  ViewPayrollReportsComponent
+} from './components/payroll/payroll-reports/view-payroll-reports/view-payroll-reports.component';
 import {PayrollReportsComponent} from './components/payroll/payroll-reports/payroll-reports/payroll-reports.component';
 import {MatTableModule} from '@angular/material/table';
 import {CreatePlanDialogComponent} from './shared/dialogs/create-plan-dialog/create-plan-dialog.component';
 import {CreateTaskDialogComponent} from './shared/dialogs/create-task-dialog/create-task-dialog.component';
 import {ShiftComponent} from './components/am-lm/shift/shift.component';
 import {CreateShiftDialogComponent} from './shared/dialogs/create-shift-dialog/create-shift-dialog.component';
-import {ViewPayrollReportDialogComponent} from './components/payroll/payroll-reports/view-payroll-report-dialog/view-payroll-report-dialog.component';
+import {
+  ViewPayrollReportDialogComponent
+} from './components/payroll/payroll-reports/view-payroll-report-dialog/view-payroll-report-dialog.component';
 import {PayrollHistoryComponent} from './components/payroll/payroll-reports/payroll-history/payroll-history.component';
 import {MarkAttendanceComponent} from './components/am-lm/mark-attendance/mark-attendance.component';
 import {EditAttendanceComponent} from './shared/dialogs/edit-attendance/edit-attendance.component';
 import {ApproveLeaveComponent} from './shared/dialogs/approve-leave/approve-leave.component';
-import {CreateDepartmentDialogComponent} from './shared/dialogs/create-department-dialog/create-department-dialog.component';
+import {
+  CreateDepartmentDialogComponent
+} from './shared/dialogs/create-department-dialog/create-department-dialog.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {ServerLoadingComponent} from './shared/effects/server-loading/server-loading.component';
 import {InProgressComponent} from './shared/effects/in-progress/in-progress.component';
@@ -102,144 +116,159 @@ import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {PickerModule} from "@ctrl/ngx-emoji-mart";
-import { PayrollReportsOverviewComponent } from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
-import { ViewSummaryReportDialogComponent } from './components/payroll/payroll-reports/view-summary-report-dialog/view-summary-report-dialog.component';
-import { TaxdetailsComponent } from "./components/taxdetails/taxdetails.component";
-import { AddNewTaxrangeComponent } from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";
-import { RecruitmentComponent } from './components/recruitment/recruitment.component';
-import { RecruitmentApplicantsComponent } from './components/recruitment/recruitment-applicants/recruitment-applicants.component';
-import { RecruitmentJobListComponent } from './components/recruitment/recruitment-job-list/recruitment-job-list.component';
-import { DashboardInitialComponent } from './components/Dashboards/dashboard-initial/dashboard-initial.component';
-import { LatestNewsComponent } from './shared/components/latest-news/latest-news.component';
-import { EventCalendarComponent } from './shared/components/event-calendar/event-calendar.component';
+import {
+  PayrollReportsOverviewComponent
+} from './components/payroll/payroll-reports/payroll-reports-overview/payroll-reports-overview.component';
+import {
+  ViewSummaryReportDialogComponent
+} from './components/payroll/payroll-reports/view-summary-report-dialog/view-summary-report-dialog.component';
+import {TaxdetailsComponent} from "./components/taxdetails/taxdetails.component";
+import {AddNewTaxrangeComponent} from "./components/taxdetails/add-new-taxrange/add-new-taxrange.component";
+import {RecruitmentComponent} from './components/recruitment/recruitment.component';
+import {
+  RecruitmentApplicantsComponent
+} from './components/recruitment/recruitment-applicants/recruitment-applicants.component';
+import {
+  RecruitmentJobListComponent
+} from './components/recruitment/recruitment-job-list/recruitment-job-list.component';
+import {DashboardInitialComponent} from './components/Dashboards/dashboard-initial/dashboard-initial.component';
+import {LatestNewsComponent} from './shared/components/latest-news/latest-news.component';
+import {EventCalendarComponent} from './shared/components/event-calendar/event-calendar.component';
 import {CalendarModule, DateAdapter} from "angular-calendar";
 import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
-import { EventDialogComponent } from './shared/dialogs/event-dialog/event-dialog.component';
-@NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        NotFoundComponent,
-        ProfileComponent,
-        EmptyDialogComponent,
-        PostComponent,
-        FeedWrapperComponent,
-        FeedComponent,
-        ChatListComponent,
-        AnnouncementAreaComponent,
-        LogInComponent,
-        ProfileAboutComponent,
-        ProfileActivityComponent,
-        ProfilePostsComponent,
-        EmployeeRegisterComponent,
-        ResetPasswordComponent,
-        EditProfileComponent,
-        FeedPostsComponent,
-        ChatAreaComponent,
-        TimeAgoPipe,
-        TruncatePipe,
-        TimeFormatPipe,
-        HourMinuteFormatPipe,
-        TruncateCommentsPipe,
-        DateFormatPipe,
-        ConfirmDialogComponent,
-        PostingOptionsComponent,
-        PostShareDialogComponent,
-        EditTextDialogComponent,
-        RequestsComponent,
-        TransferRequestComponent,
-        PromotionRequestComponent,
-        RequestTransferDialogComponent,
-        LetterDataDialogComponent,
-        RequestPromotionDialogComponent,
-        EmployeeComponent,
-        EmpDashboardComponent,
-        EmpTransferComponent,
-        EmpPromotionComponent,
-        ChangeJobDataDialogComponent,
-        BulletinsComponent,
-        PayrollComponent,
-        AddpayiteamsComponent,
-        PayrollnavbarComponent,
-        EmployeeUpdateComponent,
-        OnboardingHandleComponent,
-        AmLmComponent,
-        AttendenceComponent,
-        LeaveComponent,
-        LeaveRequestComponent,
-        RequestLeaveComponent,
-        EmployeePaymentsComponent,
-        ViewEmployeePayitemsComponent,
-        PayitemsComponent,
-        AssignPayitemComponent,
-        ProfileAttendanceComponent,
-        ProfileAttendanceComponent,
-        AssignTaskComponent,
-        CreatePlanComponent,
-        CreateTaskComponent,
-        PayrollReportsComponent,
-        ViewPayrollReportsComponent,
-        CreatePlanDialogComponent,
-        CreateTaskDialogComponent,
-        ShiftComponent,
-        CreateShiftDialogComponent,
-        ViewPayrollReportDialogComponent,
-        PayrollHistoryComponent,
-        MarkAttendanceComponent,
-        EditAttendanceComponent,
-        ApproveLeaveComponent,
-        CreateDepartmentDialogComponent,
-        ServerLoadingComponent,
-        InProgressComponent,
-        PayrollReportsOverviewComponent,
-        ViewSummaryReportDialogComponent,
-        TaxdetailsComponent,
-        AddNewTaxrangeComponent,
-        RecruitmentComponent,
-        RecruitmentApplicantsComponent,
-        RecruitmentJobListComponent,
-        DashboardInitialComponent,
-        LatestNewsComponent,
-        EventCalendarComponent,
-        EventDialogComponent
+import {EventDialogComponent} from './shared/dialogs/event-dialog/event-dialog.component';
+import {EventAddComponent} from './shared/dialogs/event-add/event-add.component';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import {FlatpickrModule} from "angularx-flatpickr";
 
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        FormsModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatExpansionModule,
-        HttpClientModule,
-        LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
-        ReactiveFormsModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatSnackBarModule,
-        MatTooltipModule,
-        MatSelectModule,
-        MatSlideToggleModule,
-        _MatSlideToggleRequiredValidatorModule,
-        MatCheckboxModule,
-        MatTableModule,
-        MatMenuModule,
-        MarkdownModule.forRoot(),
-        AngularFireModule.initializeApp(environment.firebaseConfig),
-        AngularFireStorageModule,
-        AngularFirestoreModule,
-        AngularFireAuthModule,
-        MatProgressBarModule,
-        PickerModule,
-      CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory})
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    NotFoundComponent,
+    ProfileComponent,
+    EmptyDialogComponent,
+    PostComponent,
+    FeedWrapperComponent,
+    FeedComponent,
+    ChatListComponent,
+    AnnouncementAreaComponent,
+    LogInComponent,
+    ProfileAboutComponent,
+    ProfileActivityComponent,
+    ProfilePostsComponent,
+    EmployeeRegisterComponent,
+    ResetPasswordComponent,
+    EditProfileComponent,
+    FeedPostsComponent,
+    ChatAreaComponent,
+    TimeAgoPipe,
+    TruncatePipe,
+    TimeFormatPipe,
+    HourMinuteFormatPipe,
+    TruncateCommentsPipe,
+    DateFormatPipe,
+    ConfirmDialogComponent,
+    PostingOptionsComponent,
+    PostShareDialogComponent,
+    EditTextDialogComponent,
+    RequestsComponent,
+    TransferRequestComponent,
+    PromotionRequestComponent,
+    RequestTransferDialogComponent,
+    LetterDataDialogComponent,
+    RequestPromotionDialogComponent,
+    EmployeeComponent,
+    EmpDashboardComponent,
+    EmpTransferComponent,
+    EmpPromotionComponent,
+    ChangeJobDataDialogComponent,
+    BulletinsComponent,
+    PayrollComponent,
+    AddpayiteamsComponent,
+    PayrollnavbarComponent,
+    EmployeeUpdateComponent,
+    OnboardingHandleComponent,
+    AmLmComponent,
+    AttendenceComponent,
+    LeaveComponent,
+    LeaveRequestComponent,
+    RequestLeaveComponent,
+    EmployeePaymentsComponent,
+    ViewEmployeePayitemsComponent,
+    PayitemsComponent,
+    AssignPayitemComponent,
+    ProfileAttendanceComponent,
+    ProfileAttendanceComponent,
+    AssignTaskComponent,
+    CreatePlanComponent,
+    CreateTaskComponent,
+    PayrollReportsComponent,
+    ViewPayrollReportsComponent,
+    CreatePlanDialogComponent,
+    CreateTaskDialogComponent,
+    ShiftComponent,
+    CreateShiftDialogComponent,
+    ViewPayrollReportDialogComponent,
+    PayrollHistoryComponent,
+    MarkAttendanceComponent,
+    EditAttendanceComponent,
+    ApproveLeaveComponent,
+    CreateDepartmentDialogComponent,
+    ServerLoadingComponent,
+    InProgressComponent,
+    PayrollReportsOverviewComponent,
+    ViewSummaryReportDialogComponent,
+    TaxdetailsComponent,
+    AddNewTaxrangeComponent,
+    RecruitmentComponent,
+    RecruitmentApplicantsComponent,
+    RecruitmentJobListComponent,
+    DashboardInitialComponent,
+    LatestNewsComponent,
+    EventCalendarComponent,
+    EventDialogComponent,
+    EventAddComponent
+
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatExpansionModule,
+    HttpClientModule,
+    LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    _MatSlideToggleRequiredValidatorModule,
+    MatCheckboxModule,
+    MatTableModule,
+    MatMenuModule,
+    MarkdownModule.forRoot(),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    MatProgressBarModule,
+    PickerModule,
+    CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
+    NgbModalModule,
+    FlatpickrModule.forRoot(),
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
