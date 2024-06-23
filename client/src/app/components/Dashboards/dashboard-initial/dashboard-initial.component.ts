@@ -9,6 +9,7 @@ import _default from "chart.js/dist/plugins/plugin.legend";
 import position = _default.defaults.position;
 import {EventAddComponent} from "../../../shared/dialogs/event-add/event-add.component";
 import {MatDialog} from "@angular/material/dialog";
+import {EventService} from "../../../services/event.service";
 
 Chart.register(...registerables);
 
@@ -29,6 +30,11 @@ export class DashboardInitialComponent implements OnInit {
     photo: ''
   }
 
+  eventDataStore: any;
+  quickAccessDataStore: any;
+  pendingDataStore: any;
+  completedDataStore: any;
+
   empLabels: any[] = ['Permanent', 'Contract', 'Trainees'];
   empData: any[] = [25, 50, 75];
   empChartCanvas: any;
@@ -47,8 +53,18 @@ export class DashboardInitialComponent implements OnInit {
   pageSize: number = 5;
   currentPage: number = 0;
 
+  isLoadingEvent: boolean = false;
+  isFoundEvent: boolean = false;
+  isLoadingPTask: boolean = false;
+  isFoundPTask: boolean = false;
+  isLoadingCTask: boolean = false;
+  isFoundCTask: boolean = false;
+  isLoadingQuickAccess: boolean = false;
+  isFoundQuickAccess: boolean = false;
+
   constructor(
     private employeeService: EmployeesService,
+    private eventService: EventService,
     private multimediaService: MultimediaService,
     private dialog: MatDialog,
     private cookieService: AuthService) {
@@ -59,6 +75,13 @@ export class DashboardInitialComponent implements OnInit {
 
     await this.loadAllUsers().subscribe(() => {
       this.getUser();
+    })
+
+    await this.loadAllEvents().subscribe(() => {
+      this.isLoadingEvent = false;
+      if(this.eventDataStore.length > 0) {
+        this.isFoundEvent = true;
+      }
     })
 
     this.renderEmpChart();
@@ -75,6 +98,14 @@ export class DashboardInitialComponent implements OnInit {
   getUser() {
     this.userId = this.cookieService.userID().toString();
     return this.employee = this.employeeDataStore.find((emp: any) => emp.id === this.userId);
+  }
+
+  loadAllEvents(): Observable<any> {
+    this.isFoundEvent = false;
+    this.isLoadingEvent = true;
+    return this.eventService.getEvents().pipe(
+      tap(data => this.eventDataStore = data)
+    );
   }
 
   convertToSafeUrl(url: any): SafeResourceUrl {

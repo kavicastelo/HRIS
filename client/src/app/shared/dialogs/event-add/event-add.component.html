@@ -1,4 +1,4 @@
-<div class="container mt-2 mb-2">
+<div class="container mt-2 mb-2" style="position: relative">
   <h3 class="sticky-top py-2" style="background-color: #fff">
     Edit events
     <button class="btn btn-primary float-end" (click)="addEvent()">
@@ -20,8 +20,8 @@
       </tr>
       </thead>
 
-      <tbody>
-      <tr *ngFor="let event of events">
+      <tbody *ngFor="let event of events">
+      <tr>
         <td>
           <input
             type="text"
@@ -90,6 +90,11 @@
         </td>
       </tr>
       </tbody>
+      <tfoot *ngIf="!isFound">
+      <tr>
+        <td colspan="6" class="text-center">No events found</td>
+      </tr>
+      </tfoot>
     </table>
   </div>
 
@@ -116,4 +121,9 @@
       </button>
     </div>
   </ng-template>
+
+  <div *ngIf="isLoadingResults">
+<!--    TODO: add loading-->
+    <app-server-loading></app-server-loading>
+  </div>
 </div>
