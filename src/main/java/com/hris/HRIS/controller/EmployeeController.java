@@ -300,6 +300,7 @@ public class EmployeeController {
 
             EmployeeModel model = employeeRepository.save(existModel);
             systemAutomateService.updateOrganizationSingleEmployeeData(model);
+            systemAutomateService.updateCredentialLevel(id, model);
         }
         ApiResponse apiResponse = new ApiResponse("Employee level updated successfully");
         return ResponseEntity.ok(apiResponse);

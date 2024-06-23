@@ -6,6 +6,7 @@ import {addDays, addHours, endOfDay, endOfMonth, isSameDay, isSameMonth, startOf
 import {EventService} from "../../../services/event.service";
 import {EventDialogComponent} from "../../dialogs/event-dialog/event-dialog.component";
 import { EventColor } from 'calendar-utils';
+import {EventAddComponent} from "../../dialogs/event-add/event-add.component";
 
 @Component({
   selector: 'app-event-calendar',
@@ -128,6 +129,7 @@ export class EventCalendarComponent implements OnInit {
         this.activeDayIsOpen = true;
       }
       this.viewDate = date;
+      this.openCreateDialog()
     }
   }
 
@@ -165,6 +167,17 @@ export class EventCalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.fetchEvents();
+      }
+    });
+  }
+
+  openCreateDialog() {
+
+    const dialogRef = this.dialog.open(EventAddComponent, {
+      maxHeight: '90vh',
+      data: {
+        title: 'Add Event',
+        event: null
       }
     });
   }
