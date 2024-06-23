@@ -6,6 +6,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import { EventDialogComponent } from '../event-dialog/event-dialog.component';
 import { EventService } from '../../../services/event.service';
 import { startOfDay, endOfDay, subDays, addDays, addHours, endOfMonth } from 'date-fns';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-event-add',
@@ -92,9 +93,12 @@ export class EventAddComponent implements OnInit {
     action: string;
     event: CalendarEvent;
   } | any;
+  isFound: boolean = false;
+  isLoadingResults: boolean = false;
 
   constructor(private eventService: EventService,
               public dialog: MatDialog,
+              public snackBar: MatSnackBar,
               public dialogRef: MatDialogRef<EventAddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
@@ -107,7 +111,13 @@ export class EventAddComponent implements OnInit {
   }
 
   fetchEvents() {
+    this.isLoadingResults = true
+    this.isFound = false
     this.eventService.getEvents().subscribe(data => {
+      this.isLoadingResults = false
+      if (data.length > 0) {
+        this.isFound = true
+      }
       this.events = data.map((event: any) => {
         return {
           id: event.id,
@@ -150,11 +160,26 @@ export class EventAddComponent implements OnInit {
     this.eventService.saveEvent(event).subscribe(savedEvent => {
       this.events = [...this.events, savedEvent];
       this.refresh.next(undefined);
+      this.onNoClick();
+      this.snackBar.open(`Event ${event.title} added!`, 'Close', {duration: 3000});
+    }, error => {
+      this.snackBar.open("Failed to create the event.", 'Close', {duration: 3000});
     });
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
+
+    if(eventToDelete.id) {
+      const id = eventToDelete.id.toString();
+      this.eventService.deleteEvent(id).subscribe(() => {
+        this.refresh.next(undefined);
+        this.fetchEvents();
+        this.snackBar.open(`Event ${eventToDelete.title} deleted!`, 'Close', {duration: 3000});
+      }, error => {
+        this.snackBar.open("Failed to delete the event.", 'Close', {duration: 3000});
+      });
+    }
   }
 
   updateEvent(event: CalendarEvent<any>) {
@@ -166,6 +191,10 @@ export class EventAddComponent implements OnInit {
         return event;
       });
       this.refresh.next(undefined);
+      this.fetchEvents();
+      this.snackBar.open(`Event ${event.title} updated!`, 'Close', {duration: 3000});
+    }, error => {
+      this.snackBar.open("Failed to update the event.", 'Close', {duration: 3000});
     });
   }
 
