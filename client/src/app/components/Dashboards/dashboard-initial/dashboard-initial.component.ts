@@ -35,9 +35,9 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
   eventDataStore: any;
   quickAccessDataStore: any;
 
-  taskDataStore: any;
-  pendingTasks: any;
-  completedTasks: any;
+  taskDataStore: any[] = [];
+  pendingTasks: any[] = [];
+  completedTasks: any[] = [];
 
   empLabels: any[] = ['Permanent', 'Contract', 'Trainees'];
   empData: any[] = [25, 50, 75];
