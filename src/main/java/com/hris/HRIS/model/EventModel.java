@@ -16,6 +16,10 @@ import java.util.List;
 public class EventModel {
     @Id
     private String id;
+
+    @Field("meta")
+    private Meta meta;
+
     private String title;
     private String start;
     private String end;
@@ -32,6 +36,13 @@ public class EventModel {
     private List<EventAction> actions;
 
     // Embedded classes for complex types
+    @Getter
+    @Setter
+    @ToString
+    public static class Meta {
+        private String userId;
+    }
+
     @Getter
     @Setter
     @ToString

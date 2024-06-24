@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarEventAction} from 'angular-calendar';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,13 +7,15 @@ import {EventService} from "../../../services/event.service";
 import {EventDialogComponent} from "../../dialogs/event-dialog/event-dialog.component";
 import { EventColor } from 'calendar-utils';
 import {EventAddComponent} from "../../dialogs/event-add/event-add.component";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-event-calendar',
   templateUrl: './event-calendar.component.html',
   styleUrls: ['./event-calendar.component.scss']
 })
-export class EventCalendarComponent implements OnInit {
+export class EventCalendarComponent implements OnInit, AfterViewInit {
+  @ViewChild('scrollable') scrollable!: ElementRef | any;
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
@@ -91,16 +93,28 @@ export class EventCalendarComponent implements OnInit {
   activeDayIsOpen: boolean = true;
   refresh: Subject<any> = new Subject();
 
-  constructor(private eventService: EventService, public dialog: MatDialog) {}
+  userId: any;
+
+  constructor(private eventService: EventService,
+              public dialog: MatDialog,
+              public renderer: Renderer2,
+              private cookieService: AuthService) {}
 
   ngOnInit() {
+    this.userId = this.cookieService.userID().toString();
     this.fetchEvents();
+  }
+
+  ngAfterViewInit() {
+    this.addPassiveEventListener()
   }
 
   fetchEvents() {
     this.eventService.getEvents().subscribe(data => {
       this.events = data.map((event: any) => {
+        let uid = event.meta.userId ? event.meta.userId : '000000000000000000000000';
         return {
+          meta: event.meta?event.meta:{},
           title: event.title,
           start: new Date(event.start),
           end: event.end ? new Date(event.end) : null,
@@ -110,7 +124,7 @@ export class EventCalendarComponent implements OnInit {
             beforeStart: event.beforeStart,
             afterEnd: event.afterEnd
           },
-          actions: event.actions?this.actions:null,
+          actions: uid === this.userId && event.actions?this.actions:null,
           allDay: event.allDay,
           cssClass: 'calendar-event'
         };
@@ -125,11 +139,11 @@ export class EventCalendarComponent implements OnInit {
         events.length === 0
       ) {
         this.activeDayIsOpen = false;
+        this.openCreateDialog(date)
       } else {
         this.activeDayIsOpen = true;
       }
       this.viewDate = date;
-      this.openCreateDialog()
     }
   }
 
@@ -165,20 +179,32 @@ export class EventCalendarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.fetchEvents();
-      }
+      this.fetchEvents();
     });
   }
 
-  openCreateDialog() {
+  openCreateDialog(date: any) {
 
     const dialogRef = this.dialog.open(EventAddComponent, {
       maxHeight: '90vh',
       data: {
         title: 'Add Event',
-        event: null
+        event: null,
+        userId: this.userId,
+        startDate: date
       }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.fetchEvents();
+    });
+  }
+
+  addPassiveEventListener() {
+    this.scrollable.nativeElement.addEventListener('touchstart', this.handleTouchStart, { passive: true });
+  }
+
+  handleTouchStart(event: TouchEvent) {
+    //TODO: add touch support
   }
 }

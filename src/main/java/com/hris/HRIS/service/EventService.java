@@ -35,6 +35,7 @@ public class EventService {
 
         if (optionalEventModel.isPresent()) {
             EventModel event = optionalEventModel.get();
+            event.setMeta(eventModel.getMeta());
             event.setTitle(eventModel.getTitle());
             event.setStart(eventModel.getStart());
             event.setEnd(eventModel.getEnd());
