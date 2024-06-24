@@ -1,1 +1,73 @@
-<p>recruitment-applicants works!</p>
+<div class="d-flex align-items-center justify-content-between">
+  <div class="input-group px-2" style="max-width: 300px">
+    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+    <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username"
+           aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)">
+  </div>
+
+  <div class="d-flex align-items-center">
+    <form [formGroup]="filterForm">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Filter by:</mat-label>
+        <mat-select formControlName="filter" [(value)]="selectedFilter">
+          <mat-option>option 1</mat-option>
+          <mat-option>option 1</mat-option>
+          <mat-option>option 1</mat-option>
+          <mat-option>option 1</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+  </div>
+</div>
+
+<div class="transfer-list">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>
+        <mat-checkbox (change)="toggleAllSelection($event.checked)"></mat-checkbox>
+      </th>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Job Title</th>
+      <th>CV</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let e of filterEmployees(); let i = index">
+      <td>
+        <mat-checkbox [checked]="isChecked[i]" [disabled]="isChecked[i]" (change)="toggleSelection($event.checked, e.id)"></mat-checkbox>
+      </td>
+      <td (click)="navigateToProfile(e.id)"><span class="d-flex align-items-center h-100">{{e.name}}&nbsp;&nbsp;<mat-icon *ngIf="e.isFavorite" style="color: #F6C000;">star</mat-icon></span></td>
+      <td (click)="navigateToProfile(e.id)">{{e.jobData.position}}</td>
+      <td (click)="navigateToProfile(e.id)">{{e.nic}}</td>
+      <td></td>
+      <td>
+        <div class="d-flex d-md-block">
+          <p matTooltip="Click to send an email">
+            <a href="mailto:{{e.email}}" class="d-flex"><span class="d-none d-md-flex">{{e.email}}</span></a>
+          </p>
+        </div>
+      </td>
+      <td>
+        <button class="btn-2" matTooltip="More" type="button">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div *ngIf="filterEmployees().length == 0">
+    <div class="data-not-found">
+      <p>Data not available!</p>
+    </div>
+  </div>
+  <div class="data-not-found" *ngIf="filterEmployees().length == 0">
+    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true"
+         alt="sorry data not available">
+  </div>
+</div>
+
