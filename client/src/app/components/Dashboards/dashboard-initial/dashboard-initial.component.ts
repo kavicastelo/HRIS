@@ -10,6 +10,7 @@ import position = _default.defaults.position;
 import {EventAddComponent} from "../../../shared/dialogs/event-add/event-add.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EventService} from "../../../services/event.service";
+import {OnboardinService} from "../../../services/onboardin.service";
 
 Chart.register(...registerables);
 
@@ -22,6 +23,7 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
 
   userId: any;
   loggedUserId: any;
+  organizationId: any;
 
   // test data for profile
   employeeDataStore: any;
@@ -32,8 +34,10 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
 
   eventDataStore: any;
   quickAccessDataStore: any;
-  pendingDataStore: any;
-  completedDataStore: any;
+
+  taskDataStore: any;
+  pendingTasks: any;
+  completedTasks: any;
 
   empLabels: any[] = ['Permanent', 'Contract', 'Trainees'];
   empData: any[] = [25, 50, 75];
@@ -65,6 +69,7 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
   constructor(
     private employeeService: EmployeesService,
     private eventService: EventService,
+    private onboardingService: OnboardinService,
     private multimediaService: MultimediaService,
     private dialog: MatDialog,
     private cookieService: AuthService) {
@@ -72,6 +77,7 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<any> {
     this.loggedUserId = this.cookieService.userID().toString();
+    this.organizationId = this.cookieService.organization().toString();
 
     await this.loadAllUsers().subscribe(() => {
       this.getUser();
@@ -82,6 +88,14 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
       if(this.eventDataStore.length > 0) {
         this.isFoundEvent = true;
       }
+    })
+
+    await this.loadAllTasks().subscribe(() => {
+      this.isLoadingPTask = false;
+      this.isLoadingCTask = false;
+
+      this.filteredCompletedTasks();
+      this.filteredPendingTasks();
     })
 
     this.renderEmpChart();
@@ -112,6 +126,36 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
     return this.eventService.getEvents().pipe(
       tap(data => this.eventDataStore = data)
     );
+  }
+
+  loadAllTasks(): Observable<any> {
+    this.isFoundPTask = false;
+    this.isLoadingPTask = true;
+    this.isFoundCTask = false;
+    this.isLoadingCTask = true;
+    return this.onboardingService.getAllTasks().pipe(
+      tap(data => this.taskDataStore = data)
+    );
+  }
+
+  filteredCompletedTasks() {
+    this.completedTasks = this.taskDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    this.completedTasks = this.completedTasks.filter((data:any)=> data.status == 'Completed');
+
+    if (this.completedTasks.length > 0) {
+      this.isFoundCTask = true;
+    }
+    return this.completedTasks
+  }
+
+  filteredPendingTasks() {
+    this.pendingTasks = this.taskDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    this.pendingTasks = this.pendingTasks.filter((data:any)=> data.status == 'Pending Review');
+
+    if (this.pendingTasks.length > 0) {
+      this.isFoundPTask = true;
+    }
+    return this.pendingTasks
   }
 
   convertToSafeUrl(url: any): SafeResourceUrl {
