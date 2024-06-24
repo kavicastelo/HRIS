@@ -1,6 +1,19 @@
 .card.ln{
   margin-top: 20px;
 
+  .card-title{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text-400);
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .mat-icon{
+      margin-right: 5px;
+    }
+  }
+
   .card-text{
     font-weight: 500;
   }

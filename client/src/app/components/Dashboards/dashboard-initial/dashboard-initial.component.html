@@ -14,12 +14,11 @@
         </div>
         <div class="col-12 col-md-4">
           <div class="card-2">
-            <div class="card-2-title"><mat-icon> list_alt</mat-icon> Pending Tasks</div>
+            <div class="card-2-title"><mat-icon style="color: #F6C000"> list_alt</mat-icon> Pending Tasks</div>
             <table class="table table-hover">
               <tbody>
-              <tr *ngFor="let pTask of pendingDataStore">
-                <td matTooltip="View on calendar" class="d-none d-md-table-cell" routerLink="/event-calendar">{{pTask.title}}</td>
-                <td matTooltip="View on calendar" class="d-none d-md-table-cell">{{pTask.start | date}}</td>
+              <tr *ngFor="let pTask of filteredPendingTasks()">
+                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{pTask.description}}</td>
               </tr>
               </tbody>
               <tfoot *ngIf="!isFoundPTask">
@@ -32,12 +31,11 @@
         </div>
         <div class="col-12 col-md-4">
           <div class="card-2">
-            <div class="card-2-title"><mat-icon> assignment_turned_in</mat-icon> Completed Tasks</div>
+            <div class="card-2-title"><mat-icon style="color: #0CBC87"> assignment_turned_in</mat-icon> Completed Tasks</div>
             <table class="table table-hover">
               <tbody>
-              <tr *ngFor="let cTask of completedDataStore">
-                <td matTooltip="View on calendar" class="d-none d-md-table-cell" routerLink="/event-calendar">{{cTask.title}}</td>
-                <td matTooltip="View on calendar" class="d-none d-md-table-cell">{{cTask.start | date}}</td>
+              <tr *ngFor="let cTask of filteredCompletedTasks()">
+                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{cTask.description}}</td>
               </tr>
               </tbody>
               <tfoot *ngIf="!isFoundCTask">
@@ -69,6 +67,7 @@
               </div>
               <div class="col-12 col-md-5">
                 <div class="row">
+                  <div class="card-2-title">On Today..</div>
                   <div class="col-6">
                     <div class="card-3">
                       <div class="card-3-sm-text">Recruitments</div>
@@ -135,7 +134,7 @@
     </div>
     <div class="col-12 col-md-4">
       <div class="card-2 mb-4">
-        <div class="card-2-title"><mat-icon> offline_bolt</mat-icon> Quick Access</div>
+        <div class="card-2-title"><mat-icon style="color: #3498db"> offline_bolt</mat-icon> Quick Access</div>
 
         <div class="quick-access-list">
           <table class="table table-hover">
@@ -155,7 +154,7 @@
       </div>
       <div class="card-2">
         <div class="d-flex align-items-center justify-content-between">
-          <div class="card-2-title"><mat-icon> today</mat-icon> Events</div>
+          <div class="card-2-title"><mat-icon style="color: #7a5af5"> today</mat-icon> Events</div>
           <button class="btn-1" (click)="openCreateDialog()">Add new</button>
         </div>
 

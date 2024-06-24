@@ -1,7 +1,7 @@
 <!--  news -->
 <div class="card ln">
   <div class="card-body">
-    <h5 class="card-title">Latest News</h5>
+    <h5 class="card-title"><mat-icon style="color: #5faee3"> publish</mat-icon>Latest News</h5>
     <div *ngFor="let news of filterNews() | truncateComments:maxNewsDisplayed">
       <div class="latest-news mb-3" (click)="openURL(news.redirectUrl)">
         <p class="card-text" style="margin-bottom: 0" [title]="news.description">{{news.description | truncate:100}}</p>
