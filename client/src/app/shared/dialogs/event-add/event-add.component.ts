@@ -96,6 +96,8 @@ export class EventAddComponent implements OnInit {
   isFound: boolean = false;
   isLoadingResults: boolean = false;
 
+  receivedData: any;
+
   constructor(private eventService: EventService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
@@ -103,6 +105,7 @@ export class EventAddComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.receivedData = this.data
     this.fetchEvents();
   }
 
@@ -119,8 +122,10 @@ export class EventAddComponent implements OnInit {
         this.isFound = true
       }
       this.events = data.map((event: any) => {
+        let uid = event.meta.userId ? event.meta.userId : '000000000000000000000000';
         return {
           id: event.id,
+          meta: event.meta?event.meta:{},
           title: event.title,
           start: new Date(event.start),
           end: event.end ? new Date(event.end) : null,
@@ -130,7 +135,7 @@ export class EventAddComponent implements OnInit {
             beforeStart: event.beforeStart,
             afterEnd: event.afterEnd
           },
-          actions: event.actions,
+          actions: uid === this.receivedData.userId && event.actions?this.actions:null,
           allDay: event.allDay
         };
       });
@@ -140,8 +145,10 @@ export class EventAddComponent implements OnInit {
   addEvent(): void {
     const newEvent: CalendarEvent = {
       id: undefined,
+      meta: {
+        userId: this.receivedData.userId ? this.receivedData.userId:null},
       title: 'New event',
-      start: startOfDay(new Date()),
+      start: startOfDay(new Date(this.receivedData.startDate)),
       end: endOfDay(new Date()),
       color: { ...this.colors['red'] },
       draggable: true,

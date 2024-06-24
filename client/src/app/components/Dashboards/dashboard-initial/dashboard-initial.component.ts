@@ -300,7 +300,8 @@ export class DashboardInitialComponent implements OnInit, OnDestroy {
       maxHeight: '90vh',
       data: {
         title: 'Add Event',
-        event: null
+        event: null,
+        userId: this.userId
       }
     });
   }

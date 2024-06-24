@@ -80,7 +80,10 @@
             placeholder="Not set"
           />
         </td>
-        <td class="d-flex align-items-center justify-content-around">
+        <td *ngIf="!event.actions">
+          Unauthorized
+        </td>
+        <td class="d-flex align-items-center justify-content-around" *ngIf="event.actions">
           <button class="btn btn-danger" (click)="deleteEvent(event)">
             <mat-icon>delete</mat-icon>
           </button>
