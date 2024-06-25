@@ -1,12 +1,12 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - '*'
+  pull_request_review:
+    types: [submitted, edited]
 
 jobs:
   build-frontend:
+    if: ${{ github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,8 +17,11 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          echo '${{ secrets.ENV_FILE_CONTENT }}' > client/src/environments/environment.ts
-          echo '${{ secrets.ENV_FILE_DEV_CONTENT }}' > client/src/environments/environment.development.ts
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > client/src/environments/environment.ts
+          echo "${{ secrets.ENV_FILE_DEV_CONTENT }}" > client/src/environments/environment.development.ts
+
+      - name: List environment files for debugging
+        run: ls -al client/src/environments
 
       - name: Install dependencies
         run: |
@@ -31,6 +34,7 @@ jobs:
           npm run build
 
   build-backend:
+    if: ${{ github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
