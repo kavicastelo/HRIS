@@ -17,11 +17,17 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          echo "${{ secrets.ENV_FILE_CONTENT }}" > client/src/environments/environment.ts
-          echo "${{ secrets.ENV_FILE_DEV_CONTENT }}" > client/src/environments/environment.development.ts
+          echo $'${{ secrets.ENV_FILE_CONTENT }}' > client/src/environments/environment.ts
+          echo $'${{ secrets.ENV_FILE_DEV_CONTENT }}' > client/src/environments/environment.development.ts
 
       - name: List environment files for debugging
         run: ls -al client/src/environments
+
+      - name: Print environment.ts contents for debugging
+        run: cat client/src/environments/environment.ts
+
+      - name: Print environment.development.ts contents for debugging
+        run: cat client/src/environments/environment.development.ts
 
       - name: Install dependencies
         run: |
