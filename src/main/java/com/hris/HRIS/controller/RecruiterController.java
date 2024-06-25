@@ -29,9 +29,8 @@ public class RecruiterController {
     EmailService emailService;
 
     @GetMapping("/details")
-    public ModelAndView getAllDetails(){
-        List<ApplyJobModel> list = applyJobService.getAllDetails();
-        return new ModelAndView("CandidateDetails","candidate_details",list);
+    public List<ApplyJobModel> getAllDetails(){
+        return applyJobRepository.findAll();
     }
 
     //download cv
@@ -122,6 +121,20 @@ public class RecruiterController {
         }
 
         ApiResponse apiResponse = new ApiResponse("Candidates updated and emails sent");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/favorite/{id}")
+    public ResponseEntity<ApiResponse> favorite(@PathVariable String id) {
+        Optional<ApplyJobModel> optionalJob = applyJobRepository.findById(id);
+
+        if (optionalJob.isPresent()) {
+            ApplyJobModel job = optionalJob.get();
+
+            job.setFavorite(!job.isFavorite());
+            applyJobRepository.save(job);
+        }
+        ApiResponse apiResponse = new ApiResponse("Candidate added to favorites");
         return ResponseEntity.ok(apiResponse);
     }
 
