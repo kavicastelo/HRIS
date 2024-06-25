@@ -26,7 +26,7 @@
     <thead>
     <tr>
       <th>
-        <mat-checkbox (change)="toggleAllSelection($event.checked)"></mat-checkbox>
+        <mat-checkbox id="topCheck" (change)="toggleAllSelection($event.checked)"></mat-checkbox>
       </th>
       <th>Name</th>
       <th>Date</th>
@@ -39,12 +39,17 @@
     <tbody>
     <tr *ngFor="let e of filterEmployees(); let i = index">
       <td>
-        <mat-checkbox [checked]="isChecked[i]" [disabled]="isChecked[i]" (change)="toggleSelection($event.checked, e.id)"></mat-checkbox>
+        <mat-checkbox [checked]="isChecked[i]" (change)="toggleSelection($event.checked, e.id)"></mat-checkbox>
       </td>
-      <td (click)="navigateToProfile(e.id)"><span class="d-flex align-items-center h-100">{{e.name}}&nbsp;&nbsp;<mat-icon *ngIf="e.isFavorite" style="color: #F6C000;">star</mat-icon></span></td>
-      <td (click)="navigateToProfile(e.id)">{{e.jobData.position}}</td>
-      <td (click)="navigateToProfile(e.id)">{{e.nic}}</td>
-      <td></td>
+      <td><span class="d-flex align-items-center h-100">{{e.name}}&nbsp;&nbsp;<mat-icon *ngIf="e.favorite" style="color: #F6C000;">star</mat-icon></span></td>
+      <td>{{e.apply_date | date}}</td>
+      <td>{{e.job_title}}</td>
+      <td>
+        <button class="btn-2" (click)="downloadCv(e.id)">
+          <mat-icon>file_download</mat-icon>
+          <span class="d-none d-md-flex">Download</span>
+        </button>
+      </td>
       <td>
         <div class="d-flex d-md-block">
           <p matTooltip="Click to send an email">
@@ -53,9 +58,16 @@
         </div>
       </td>
       <td>
-        <button class="btn-2" matTooltip="More" type="button">
+        <button class="btn-2" matTooltip="More" type="button" [matMenuTriggerFor]="applicant">
           <mat-icon>more_vert</mat-icon>
         </button>
+
+        <mat-menu #applicant="matMenu">
+          <button mat-menu-item type="button" (click)="favRecruiter(e.id)">{{e.favorite?'unfavored':'Favorite'}}</button>
+          <button mat-menu-item type="button" (click)="nextLevelRecruiter(e.id)">Next Stage</button>
+          <button mat-menu-item type="button" (click)="editRecruiter(e.id)">Edit</button>
+          <button mat-menu-item type="button" (click)="deleteRecruiter(e.id)">Delete</button>
+        </mat-menu>
       </td>
     </tr>
     </tbody>
@@ -64,10 +76,6 @@
     <div class="data-not-found">
       <p>Data not available!</p>
     </div>
-  </div>
-  <div class="data-not-found" *ngIf="filterEmployees().length == 0">
-    <img src="https://github.com/kavicastelo/web_assets/blob/main/data_not_found.png?raw=true"
-         alt="sorry data not available">
   </div>
 </div>
 

@@ -18,6 +18,8 @@ public class ApplyJobModel {
     @Id
     private String id;
 
+    private String organizationId;
+
     private String name;
 
     private String job_title;
@@ -33,6 +35,8 @@ public class ApplyJobModel {
     private boolean action; //1st stage to 2nd stage
 
     private boolean hire; //2nd stage to hiring stage
+
+    private boolean favorite; // select applicant as favorite
 
     private String meeting_link;
 

@@ -10,6 +10,7 @@ import {MultimediaService} from "../../../services/multimedia.service";
 import {Observable, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
+import {RecruitmentService} from "../../../services/recruitment.service";
 
 @Component({
   selector: 'app-recruitment-applicants',
@@ -46,7 +47,7 @@ export class RecruitmentApplicantsComponent implements OnInit{
               private snackBar: MatSnackBar,
               private shiftService: ShiftsService,
               private attendanceService: AttendanceService,
-              private employeesService: EmployeesService,
+              private employeesService: RecruitmentService,
               private multimediaService: MultimediaService) {
   }
 
@@ -62,7 +63,7 @@ export class RecruitmentApplicantsComponent implements OnInit{
   }
 
   loadAllUsers(): Observable<any>{
-    return this.employeesService.getAllEmployees().pipe(
+    return this.employeesService.getAllApplicants().pipe(
       tap(data => this.employeeDataStore = data)
     );
   }
@@ -96,10 +97,6 @@ export class RecruitmentApplicantsComponent implements OnInit{
     this.snackBar.open(message, action, {duration:3000})
   }
 
-  navigateToProfile(id: any) {
-    this.router.navigate([`/profile/${id}/about/${id}`]);
-  }
-
   initializeCheckboxes() {
     this.isChecked = Array(this.filteredEmployees.length).fill(false);
   }
@@ -111,6 +108,11 @@ export class RecruitmentApplicantsComponent implements OnInit{
       const index = this.selectedEmployeeIds.indexOf(employeeId);
       if (index !== -1) {
         this.selectedEmployeeIds.splice(index, 1); // Remove employee ID if the checkbox is unchecked
+
+        const topCheckbox = document.querySelector('input[type="checkbox"]:checked') as HTMLInputElement;
+        if (topCheckbox) {
+          topCheckbox.checked = false;
+        }
       }
     }
   }
@@ -122,5 +124,42 @@ export class RecruitmentApplicantsComponent implements OnInit{
     } else {
       this.selectedEmployeeIds = [];
     }
+  }
+
+  downloadCv(id:any) {
+    if (id){
+      this.employeesService.downloadCV(id).subscribe((data: any) => {
+        const url = URL.createObjectURL(data);
+        window.open(url);
+      })
+    }
+    else {
+      this.openSnackBar("Applicant not found", "OK")
+    }
+  }
+
+  favRecruiter(id:any) {
+    if (id){
+      this.employeesService.setFavorite(id).subscribe((data: any) => {
+        this.loadAllUsers().subscribe(() => {
+          this.filterEmployees();
+        })
+      })
+    }
+    else {
+      this.openSnackBar("Applicant not found", "OK")
+    }
+  }
+
+  nextLevelRecruiter(id:any) {
+
+  }
+
+  editRecruiter(id:any) {
+
+  }
+
+  deleteRecruiter(id:any) {
+
   }
 }
