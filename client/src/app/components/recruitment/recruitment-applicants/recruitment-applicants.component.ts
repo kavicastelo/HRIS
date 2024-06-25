@@ -39,6 +39,7 @@ export class RecruitmentApplicantsComponent implements OnInit{
   filterForm = new FormGroup({
     filter: new FormControl(''),
   })
+  filteredJobTitles: any[] = [];
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
@@ -57,6 +58,7 @@ export class RecruitmentApplicantsComponent implements OnInit{
 
     await this.loadAllUsers().subscribe(()=>{
       this.filterEmployees();
+      this.filterJobTitles();
       this.getUser();
       this.initializeCheckboxes();
     })
@@ -73,7 +75,25 @@ export class RecruitmentApplicantsComponent implements OnInit{
       this.filteredEmployees = this.employeeDataStore.filter((data:any)=> data.organizationId == this.organizationId);
     }
 
+    if (this.selectedFilter){
+      if (this.selectedFilter == 'all'){
+        return  this.filteredEmployees;
+      } else if (this.selectedFilter == 'favorite'){
+        this.filteredEmployees = this.filteredEmployees.filter((data:any)=> data.favorite == true);
+      } else {
+        this.filteredEmployees = this.filteredEmployees.filter((data:any)=> data.job_title == this.selectedFilter);
+      }
+    }
+
     return this.filteredEmployees;
+  }
+
+  filterJobTitles(){
+    this.filteredEmployees.forEach(applicant => {
+      if (!this.filteredJobTitles.includes(applicant.job_title)) {
+        this.filteredJobTitles.push(applicant.job_title);
+      }
+    })
   }
 
   handleSearch(data: any): void {
@@ -81,10 +101,10 @@ export class RecruitmentApplicantsComponent implements OnInit{
     const value = this.targetInput.value
     if (value) {
       this.filteredEmployees = this.employeeDataStore.filter((data: any) =>
-        data.organizationId === this.employee.organizationId && data.name.toLowerCase().includes(value.toLowerCase())
+        data.organizationId === this.organizationId && data.name.toLowerCase().includes(value.toLowerCase())
       );
     } else {
-      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.employee.organizationId);
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId);
     }
   }
 
@@ -160,6 +180,15 @@ export class RecruitmentApplicantsComponent implements OnInit{
   }
 
   deleteRecruiter(id:any) {
-
+    if (id){
+      this.employeesService.deleteApplicantById(id).subscribe((data: any) => {
+        this.loadAllUsers().subscribe(() => {
+          this.filterEmployees();
+        })
+      })
+    }
+    else {
+      this.openSnackBar("Applicant not found", "OK")
+    }
   }
 }
