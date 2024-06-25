@@ -250,6 +250,10 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   color: var(--color-text-200);
 }
 
+.recruitment-form .mat-mdc-form-field-subscript-wrapper{
+  display: none;
+}
+
 // bootstrap dropdown
 .dropdown-menu{
   button{

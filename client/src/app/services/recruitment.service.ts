@@ -22,4 +22,8 @@ export class RecruitmentService {
   setFavorite(id: any): Observable<any> {
     return this.http.post(`${this.baseUrl}recruiter/favorite/${id}`, {});
   }
+
+  deleteApplicantById(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}recruiter/delete-candidate/${id}`);
+  }
 }
