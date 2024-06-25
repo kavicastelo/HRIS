@@ -302,7 +302,7 @@ export class EmployeesService {
         nic: form.get('nic') as string,
         photo: fileInput,
         status: form.get('status') as string,
-        level: "1" as string,
+        level: "2" as string,
         maritalStatus: form.get('maritalStatus') as string,
         nationality: form.get('nationality') as string,
         religion: form.get('religion') as string,
@@ -332,5 +332,20 @@ export class EmployeesService {
       // Call backend API to save employee data
       this.sendToBackend(formData, headers);
     }
+  }
+
+  public updateLevel(id: string, level: string): Observable<any> {
+    return this.http.put(this.baseUrl + 'employee/update/level/' + id, {
+      id: id,
+      level: level
+    });
+  }
+
+  public assignShift(id: string, shift: any): Observable<any> {
+    return this.http.post(this.baseUrl + 'employee/assign/shift/' + id, shift);
+  }
+
+  public updateShift(id: string, shift: any): Observable<any> {
+    return this.http.put(this.baseUrl + 'employee/update/shift/' + id, shift);
   }
 }

@@ -33,4 +33,18 @@ export class ConfirmDialogComponent implements OnInit{
       console.log(error)
     })
   }
+
+  keyFormSubmit(event: KeyboardEvent, method: any) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Prevent the default Enter key behavior (e.g., newline in textarea)
+      event.preventDefault();
+
+      // Perform the method
+      if (method == 'delete') {
+        this.deleteItem()
+      } else if (method == 'discard') {
+        this.discardChanges()
+      }
+    }
+  }
 }

@@ -1,0 +1,17 @@
+<div class="container">
+
+  <ul class="nav nav-pills my-3">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('applicants')" [class.active]="isActive('applicants')" matTooltip="List of Applicants"><mat-icon>assignment_ind</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Applicants</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('job-listing')" [class.active]="isActive('job-listing')" matTooltip="List of Jobs"><mat-icon>assignment</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Job Listing</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" (click)="navigateBetweenTabs('more')" [class.active]="isActive('more')" matTooltip="More Options"><mat-icon>more_horiz</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;More</span></a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
+
+</div>

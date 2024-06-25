@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, Renderer2} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {OnboardinService} from "../../../services/onboardin.service";
 import {EmployeesService} from "../../../services/employees.service";
@@ -11,6 +11,7 @@ import {NotificationsService} from "../../../services/notifications.service";
 import {Observable, tap} from "rxjs";
 import {TimeFormatPipe} from "../../../DTO/TimeFormatPipe";
 import {DateFormatPipe} from "../../../DTO/DateFormatPipe";
+import {MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-create-plan-dialog',
@@ -35,6 +36,7 @@ export class CreatePlanDialogComponent {
               private snackBar: MatSnackBar,
               private employeesService: EmployeesService,
               private notificationsService: NotificationsService,
+              private renderer: Renderer2,
               private onboardinService: OnboardinService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreatePlanDialogComponent>) {
@@ -98,6 +100,29 @@ export class CreatePlanDialogComponent {
       }, error => {
         console.log(error)
       })
+    }
+  }
+
+  focusFieldOnEnter(event: KeyboardEvent, nextField: any) {
+    if (event.key === 'Enter') {
+      if (nextField instanceof MatSelect) {
+        nextField.open();
+      } else {
+        this.renderer.selectRootElement(nextField).focus();
+      }
+      event.preventDefault();
+    }
+  }
+
+  keyFormSubmit(event: KeyboardEvent, method: any) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Prevent the default Enter key behavior (e.g., newline in textarea)
+      event.preventDefault();
+
+      // Perform the method
+      if (method == 'save') {
+        this.submitPlan()
+      }
     }
   }
 }

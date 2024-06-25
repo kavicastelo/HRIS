@@ -62,7 +62,18 @@
                     <span>MENU</span>
                     <div class="accordian">
                         <mat-accordion>
-                            <mat-expansion-panel expanded>
+                          <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                Tools
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ul>
+                              <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard">Dashboard</li>
+                              <li routerLink="/event-calendar">Calendar</li>
+                            </ul>
+                          </mat-expansion-panel>
+                            <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Employee
@@ -72,7 +83,7 @@
                                     <li routerLink="/profile/{{e.id}}/about/{{e.id}}">Profile</li>
                                     <li routerLink="/feed">News Feed</li>
                                     <li routerLink="/chat-list">Connections</li>
-                                    <li routerLink="/employee">Manage Employees</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/employee">Manage Employees</li>
                                 </ul>
                             </mat-expansion-panel>
                             <mat-expansion-panel>
@@ -99,11 +110,11 @@
                                 <ul>
                                     <li routerLink="/profile/{{e.id}}/attendance/{{e.id}}">My Attendance</li>
                                     <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">My Leaves</li>
-                                    <li routerLink="/alm">Manage Attendance & Leaves</li>
-                                    <li routerLink="/alm/mark-attendance">Mark attendance</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm">Manage Attendance & Leaves</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm/mark-attendance">Mark attendance</li>
                                 </ul>
                             </mat-expansion-panel>
-                            <mat-expansion-panel>
+                            <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Ongoing Processes
@@ -118,17 +129,18 @@
                             <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        Payroll Management
+                                        Payroll
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <ul>
-                                    <li routerLink="/payroll/payitems">Manage pay items</li>
-                                    <li routerLink="/payroll/employee-payments">Employee pay items</li>
-                                    <li routerLink="/payroll/payroll-reports-overview">Payroll Reports</li>
-                                    <li routerLink="/payroll/payroll-history">Payroll History</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payitems">Manage pay items</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/employee-payments">Employee pay items</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payroll-reports-overview">Payroll Reports</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payroll-history">Payroll History</li>
+                                    <li routerLink="/payroll/view-payroll-reports/{{e.id}}">My Pay Slips</li>
                                 </ul>
                             </mat-expansion-panel>
-                            <mat-expansion-panel>
+                            <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Bulletins & News

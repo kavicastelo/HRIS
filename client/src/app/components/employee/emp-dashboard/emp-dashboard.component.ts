@@ -149,21 +149,51 @@ export class EmpDashboardComponent implements OnInit{
     );
   }
 
-  assignShift(email: any, shift: any) {
-    this.filteredAttendance = this.attendanceDataStore.filter((data: any) => data.organizationId === this.employee.organizationId && data.email == email)
-    this.filteredAttendance.sort((a:any, b:any) => {
-      return new Date(b.recordInTime).getTime() - new Date(a.recordInTime).getTime()
-    })
-
-    if (this.filteredAttendance[0]){
-      this.attendanceService.assignShift(this.filteredAttendance[0].id, shift).subscribe(data => {
-        this.openSnackBar("Shift Assigned", "OK")
-      }, error => {
-        this.openSnackBar("Somethings Wrong! Try again!", "OK")
+  assignShift(id: any, shift: any) {
+    if (id){
+      this.employeesService.getEmployeeById(id).subscribe(data =>{
+        data.workShift.map((data: any) => {
+          if (data.id === shift.id){
+            this.openSnackBar("Already assigned", "OK")
+          }
+          else {
+            this.employeesService.assignShift(id, shift).subscribe(data =>{
+              this.loadAllUsers().subscribe(()=>{
+                this.filterEmployees()
+              })
+              this.openSnackBar("Shift Assigned", "OK")
+            }, error => {
+              this.openSnackBar("Error assigning shift", "OK")
+            })
+          }
+        })
       })
     }
-    else {
-      this.openSnackBar("Employee not attended today", "OK")
+  }
+
+  changeHierarchy(id:any, level: any) {
+    const selectedEmployee = this.employeeDataStore.find((emp: any) => emp.id === id);
+    if (selectedEmployee) {
+      if (selectedEmployee.level == level){
+        this.openSnackBar("Already at this level", "OK")
+      } else {
+        this.employeesService.updateLevel(selectedEmployee.id, level).subscribe(data => {
+          if (level == 0){
+            this.openSnackBar("Employee promoted as Administrator", "OK")
+          }
+          else if(level == 1){
+            this.openSnackBar("Employee promoted as Manager", "OK")
+          }
+          else if(level == 2){
+            this.openSnackBar("Employee demoted as Employee", "OK")
+          }
+          this.loadAllUsers().subscribe(()=>{
+            this.filterEmployees()
+          })
+        })
+      }
+    } else {
+      this.openSnackBar("Employee not found", "OK")
     }
   }
 }

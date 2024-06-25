@@ -41,15 +41,9 @@
             background-color: transparent;
             color: var(--color-text-200);
 
-            .text-btn{
-              margin: 0;
-              cursor: pointer;
-              text-decoration: underline;
-              font-weight: 500;
-
-              &:hover{
-                color: var(--color-text-300);
-              }
+            .btn-2{
+              width: auto;
+              margin-top: 0;
             }
           }
         }

@@ -89,6 +89,20 @@ public class SystemAutomateService {
             emailService.sendSimpleEmail(employeeModel.getEmail(),"Login Credentials","Hello "+name+",\n"+para+tag+footer);
         }
     }
+
+    public void updateCredentialLevel(String empId, EmployeeModel employeeModel){
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(empId);
+        if (optionalEmployeeModel.isPresent()){
+            EmployeeModel employee = optionalEmployeeModel.get();
+
+            Optional<CredentialsModel> optionalCredentialsModel = credentialsRepository.findByEmail(employee.getEmail());
+            if (optionalCredentialsModel.isPresent()){
+                CredentialsModel credentialsModel = optionalCredentialsModel.get();
+                credentialsModel.setLevel(String.valueOf(employeeModel.getLevel()));
+                credentialsRepository.save(credentialsModel);
+            }
+        }
+    }
     static char[] random_Password(int len)
     {
         String Capital_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

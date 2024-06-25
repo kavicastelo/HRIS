@@ -19,4 +19,12 @@ export class ShiftsService {
   public saveShift(shift: ShiftModel): Observable<any> {
     return this.http.post(this.baseUrl+'shifts/save',shift)
   }
+
+  public updateShift(shift: ShiftModel): Observable<any> {
+    return this.http.put(this.baseUrl+'shifts/update/'+shift.id,shift)
+  }
+
+  deleteShift(id: any) {
+    return this.http.delete(this.baseUrl+'shifts/delete/'+id)
+  }
 }
