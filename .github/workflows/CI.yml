@@ -1,12 +1,14 @@
 name: CI
 
 on:
-  push:
+  pull_request_review:
+    types: [submitted, edited]
     branches:
       - '*'
 
 jobs:
   build-frontend:
+    if: ${{ github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -31,6 +33,7 @@ jobs:
           npm run build
 
   build-backend:
+    if: ${{ github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
