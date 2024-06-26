@@ -135,7 +135,8 @@ const routes: Routes = [
       {path: 'view-payroll-reports/:id', component: ViewPayrollReportsComponent},
       {path: 'payroll-history', component: PayrollHistoryComponent},
       {path: 'taxdetails', component: TaxdetailsComponent},
-      {path: 'new-tax-detail', component: AddNewTaxrangeComponent}
+      {path: 'taxdetails/new-tax-detail', component: AddNewTaxrangeComponent},
+      {path: 'taxdetails/edit-tax-detail/:taxdetailId', component: AddNewTaxrangeComponent}
     ]
   },
   {
@@ -144,11 +145,6 @@ const routes: Routes = [
       {path: 'assign', component: AssignTaskComponent},
       {path: 'plan', component: CreatePlanComponent},
       {path: 'task', component: CreateTaskComponent},
-    ]
-  },
-  {
-    path: 'taxdetails', component: TaxdetailsComponent, canActivate: [AuthGuard, AdminGuard], children: [
-      {path: 'tax-details-info', component: AddNewTaxrangeComponent}
     ]
   },
   {path: 'recruitment', component: RecruitmentComponent, canActivate: [AuthGuard, AdminGuard], children: [

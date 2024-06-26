@@ -20,6 +20,10 @@ export class TaxService {
     return this.http.get(this.baseUrl + "tax/get/all/organizationId/" + organizationId);
   }
 
+  getTaxInfoById(id: any){
+    return this.http.get(this.baseUrl + "tax/get/id/" + id);
+  }
+
   updateTaxInfo(taxModel: TaxModel){
     return this.http.put(this.baseUrl + "tax/update/id/" + taxModel.id, taxModel);
   }
