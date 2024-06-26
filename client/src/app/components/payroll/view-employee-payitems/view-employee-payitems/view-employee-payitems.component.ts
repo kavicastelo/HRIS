@@ -32,6 +32,8 @@ export class ViewEmployeePayitemsComponent {
   editEnabledItemValue: number = 0.0;
   isEditEnabledItemInputsDisabled: boolean = false;
 
+  isDisplayAssignNewItemForm = true;
+
   constructor(private employeePayitemService: EmployeePayitemService,
     private payitemService: PayitemService,
     private route: ActivatedRoute,
@@ -153,5 +155,9 @@ export class ViewEmployeePayitemsComponent {
           })
         }
       }
+    }
+
+    displayAssignNewItemForm(){
+        this.isDisplayAssignNewItemForm = true;
     }
 }

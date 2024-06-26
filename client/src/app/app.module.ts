@@ -142,6 +142,7 @@ import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {FlatpickrModule} from "angularx-flatpickr";
 import { JobPostComponent } from './shared/dialogs/job-post/job-post.component';
 import { JobPostViewComponent } from './shared/dialogs/job-post-view/job-post-view.component';
+import { PayrollConfigurationComponent } from './components/payroll/payroll-configuration/payroll-configuration.component';
 
 @NgModule({
   declarations: [
@@ -232,7 +233,8 @@ import { JobPostViewComponent } from './shared/dialogs/job-post-view/job-post-vi
     EventDialogComponent,
     EventAddComponent,
     JobPostComponent,
-    JobPostViewComponent
+    JobPostViewComponent,
+    PayrollConfigurationComponent
 
   ],
   imports: [
