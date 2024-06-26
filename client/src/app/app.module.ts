@@ -141,6 +141,7 @@ import {EventAddComponent} from './shared/dialogs/event-add/event-add.component'
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {FlatpickrModule} from "angularx-flatpickr";
 import { JobPostComponent } from './shared/dialogs/job-post/job-post.component';
+import { JobPostViewComponent } from './shared/dialogs/job-post-view/job-post-view.component';
 
 @NgModule({
   declarations: [
@@ -230,7 +231,8 @@ import { JobPostComponent } from './shared/dialogs/job-post/job-post.component';
     EventCalendarComponent,
     EventDialogComponent,
     EventAddComponent,
-    JobPostComponent
+    JobPostComponent,
+    JobPostViewComponent
 
   ],
   imports: [

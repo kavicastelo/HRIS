@@ -1,0 +1,46 @@
+<div class="d-flex align-items-center justify-content-between">
+  <h2 mat-dialog-title>{{receivedData.data.caption}}</h2>
+  <button mat-icon-button (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content style="max-width: 600px">
+  <div class="container job-post-view">
+    <div class="mb-2">
+      <span class="bold-text">Job Title:</span> {{receivedData.data.caption}}<br>
+      <span class="bold-text">Contact Email:</span> {{receivedData.data.contact_email}}<br>
+      <span class="bold-text">Closing Date:</span> {{receivedData.data.end_date | date}}<br>
+    </div>
+    <div class="mb-2">
+      <span class="bold-text">About Job:</span> <br>
+      {{receivedData.data.about_job}}
+    </div>
+    <div class="mb-2">
+      <span class="bold-text">Technical Requirements:</span> <br>
+      <ul>
+        <li *ngFor="let t_r of technical_requirements">{{t_r}}</li>
+      </ul>
+    </div>
+    <div class="mb-2">
+      <span class="bold-text">Educational Requirements:</span> <br>
+      <ul>
+        <li *ngFor="let e_r of educational_requirements">{{e_r}}</li>
+      </ul>
+    </div>
+    <div class="mb-2">
+      <span class="bold-text">Responsibilities:</span> <br>
+      <ul>
+        <li *ngFor="let r of responsibilities">{{r}}</li>
+      </ul>
+    </div>
+    <div class="mb-2">
+      <span class="bold-text">Experience Level:</span> <br>
+      {{receivedData.data.experience_level}}
+    </div>
+    <div>
+      <span class="bold-text">Description:</span> <br>
+      {{receivedData.data.description}}
+    </div>
+  </div>
+</div>
