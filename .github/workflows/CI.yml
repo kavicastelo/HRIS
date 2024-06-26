@@ -4,6 +4,10 @@ on:
   pull_request_review:
     types: [submitted, edited]
 
+  push:
+    branches:
+      - '*'
+
 jobs:
   build-frontend:
     if: ${{ github.event.pull_request.base.ref == 'main' }}
