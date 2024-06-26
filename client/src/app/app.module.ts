@@ -143,6 +143,9 @@ import {FlatpickrModule} from "angularx-flatpickr";
 import { JobPostComponent } from './shared/dialogs/job-post/job-post.component';
 import { JobPostViewComponent } from './shared/dialogs/job-post-view/job-post-view.component';
 import { PayrollConfigurationComponent } from './components/payroll/payroll-configuration/payroll-configuration.component';
+import { DashboardMainComponent } from './components/Dashboards/dashboard-initial/dashboard-main/dashboard-main.component';
+import { DashboardOnboardinMainComponent } from './components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -235,44 +238,46 @@ import { PayrollConfigurationComponent } from './components/payroll/payroll-conf
     JobPostComponent,
     JobPostViewComponent,
     PayrollConfigurationComponent
-
+    DashboardMainComponent,
+    DashboardOnboardinMainComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    HttpClientModule,
-    LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    _MatSlideToggleRequiredValidatorModule,
-    MatCheckboxModule,
-    MatTableModule,
-    MatMenuModule,
-    MarkdownModule.forRoot(),
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireStorageModule,
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    MatProgressBarModule,
-    PickerModule,
-    NgbModalModule,
-    FlatpickrModule.forRoot(),
-    CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        HttpClientModule,
+        LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        _MatSlideToggleRequiredValidatorModule,
+        MatCheckboxModule,
+        MatTableModule,
+        MatMenuModule,
+        MarkdownModule.forRoot(),
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireStorageModule,
+        AngularFirestoreModule,
+        AngularFireAuthModule,
+        MatProgressBarModule,
+        PickerModule,
+        NgbModalModule,
+        FlatpickrModule.forRoot(),
+        CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
+        MatPaginatorModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
