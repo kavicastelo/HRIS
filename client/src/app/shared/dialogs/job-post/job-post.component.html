@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-between">
-  <h2 mat-dialog-title>Create Job Post</h2>
+  <h2 mat-dialog-title>{{this.receivedData.data.id?'Edit':'Create'}} Job Post</h2>
   <button mat-icon-button (click)="onNoClick()">
     <mat-icon>close</mat-icon>
   </button>
@@ -71,7 +71,7 @@
 
     <div class="d-flex align-items-center justify-content-end">
       <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button color="primary" [disabled]="jobForm.invalid" (click)="postJob()">Post Job</button>
+      <button mat-button color="primary" [disabled]="jobForm.invalid" (click)="this.receivedData.data.id?updateJob() : postJob()">{{this.receivedData.data.id?'Edit Job':'Post Job'}}</button>
     </div>
   </div>
 </div>

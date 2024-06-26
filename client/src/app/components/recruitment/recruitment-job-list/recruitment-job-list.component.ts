@@ -9,6 +9,7 @@ import {AttendanceService} from "../../../services/attendance.service";
 import {RecruitmentService} from "../../../services/recruitment.service";
 import {Observable, tap} from "rxjs";
 import {JobPostComponent} from "../../../shared/dialogs/job-post/job-post.component";
+import {JobPostViewComponent} from "../../../shared/dialogs/job-post-view/job-post-view.component";
 
 @Component({
   selector: 'app-recruitment-job-list',
@@ -81,7 +82,7 @@ export class RecruitmentJobListComponent {
       }
     });
     _popup.afterClosed().subscribe(item => {
-
+      this.filterJobPosts()
     })
   }
 
@@ -90,5 +91,31 @@ export class RecruitmentJobListComponent {
       organizationId: this.organizationId
     }
     this.toggleDialog("Create Job Post", "", data, JobPostComponent)
+  }
+
+  viewJobPost(e: any) {
+    this.toggleDialog("Job Post Details", "", e, JobPostViewComponent)
+  }
+
+  editJobPost(e: any) {
+    const data = {
+      organizationId: this.organizationId,
+      id: e.id,
+      data: e
+    }
+    this.toggleDialog("Edit Job Post", "", data, JobPostComponent)
+  }
+
+  deleteJobPost(e: any) {
+    if (e.id){
+      this.jobsService.deleteJobPost(e.id).subscribe((data: any) => {
+        this.openSnackBar("Job Post deleted successfully", "Close");
+        this.loadAllJobPosts().subscribe(()=>{
+          this.filterJobPosts();
+        })
+      })
+    } else {
+      this.openSnackBar("Job Post not found", "Close");
+    }
   }
 }

@@ -36,4 +36,12 @@ export class RecruitmentService {
   getAllJobPosts(): Observable<any> {
     return this.http.get(`${this.baseUrl}jobPost/get/all`);
   }
+
+  updateJobPost(id: any, jobPost: JobPostModel): Observable<any> {
+    return this.http.put(`${this.baseUrl}jobPost/update/id/`+id, jobPost)
+  }
+
+  deleteJobPost(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}jobPost/delete/id/`+id)
+  }
 }

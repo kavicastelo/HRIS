@@ -33,15 +33,20 @@
     </thead>
     <tbody>
     <tr *ngFor="let e of filterJobPosts(); let i = index">
-      <td>{{e.caption}}</td>
-      <td>{{e.open_date | date}}</td>
-      <td>{{e.end_date | date}}</td>
+      <td (click)="viewJobPost(e)">{{e.caption}}</td>
+      <td (click)="viewJobPost(e)">{{e.open_date | date}}</td>
+      <td (click)="viewJobPost(e)">{{e.end_date | date}}</td>
       <td>-</td>
       <td>-</td>
       <td>
-        <button class="btn-2" matTooltip="More" type="button">
+        <button class="btn-2" matTooltip="More" type="button" [matMenuTriggerFor]="more">
           <mat-icon>more_vert</mat-icon>
         </button>
+
+        <mat-menu #more="matMenu">
+          <button mat-menu-item (click)="editJobPost(e)">Edit</button>
+          <button mat-menu-item (click)="deleteJobPost(e)" style="color: red!important;">Delete</button>
+        </mat-menu>
       </td>
     </tr>
     </tbody>

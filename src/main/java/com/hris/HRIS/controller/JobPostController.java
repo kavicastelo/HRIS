@@ -36,7 +36,7 @@ public class JobPostController {
 
     //update details by id
     @PutMapping("/update/id/{id}")
-    public ResponseEntity<ApiResponse> updateJobPost(@PathVariable String id,@RequestBody JobPostModel jobPostModel){
+    public ResponseEntity<ApiResponse> updateJobPost(@PathVariable String id, @RequestBody JobPostModel jobPostModel){
 
         Optional<JobPostModel> jobPostModelOptional = jobPostRepository.findById(id);
 
