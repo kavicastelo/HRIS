@@ -3,8 +3,6 @@ name: CI
 on:
   pull_request_review:
     types: [submitted, edited]
-
-  push:
     branches:
       - '*'
 
@@ -15,50 +13,57 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
       - name: Create environment directory
         run: mkdir -p client/src/environments
-
       - name: Setup environment variables
         run: |
-          echo $'${{ secrets.ENV_FILE_CONTENT }}' > client/src/environments/environment.ts
-          echo $'${{ secrets.ENV_FILE_DEV_CONTENT }}' > client/src/environments/environment.development.ts
-
-      - name: List environment files for debugging
-        run: ls -al client/src/environments
-
-      - name: Print environment.ts contents for debugging
-        run: cat client/src/environments/environment.ts
-
-      - name: Print environment.development.ts contents for debugging
-        run: cat client/src/environments/environment.development.ts
-
+          echo 'export const environment = {
+            production: true,
+            firebaseConfig: {
+              apiKey: "FAKE_API_KEY",
+              authDomain: "fake-auth-domain.firebaseapp.com",
+              projectId: "fake-project-id",
+              storageBucket: "fake-project-id.appspot.com",
+              messagingSenderId: "1234567890",
+              appId: "1:1234567890:web:fakeappid",
+              measurementId: "G-FAKEMEASUREID"
+            },
+            baseUrl: "http://localhost:3269/api/v1/"
+          };' > client/src/environments/environment.ts
+          echo 'export const environment = {
+            production: true,
+            firebaseConfig: {
+              apiKey: "FAKE_API_KEY",
+              authDomain: "fake-auth-domain.firebaseapp.com",
+              projectId: "fake-project-id",
+              storageBucket: "fake-project-id.appspot.com",
+              messagingSenderId: "1234567890",
+              appId: "1:1234567890:web:fakeappid",
+              measurementId: "G-FAKEMEASUREID"
+            },
+            baseUrl: "http://localhost:3269/api/v1/"
+          };' > client/src/environments/environment.development.ts
       - name: Install dependencies
         run: |
           cd client
           npm install --force
-
       - name: Build frontend
         run: |
           cd client
           npm run build
-
   build-backend:
     if: ${{ github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '17'
-
       - name: Setup environment variables
-        run: echo "${{ secrets.BACKEND_ENV_FILE_CONTENT }}" > .env
-
+        run: echo "FAKE_ENV_VARIABLES" > .env
       - name: Build backend
         run: |
           chmod +x ./mvnw
