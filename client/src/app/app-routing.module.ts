@@ -67,6 +67,12 @@ import {
 } from "./components/recruitment/recruitment-job-list/recruitment-job-list.component";
 import {DashboardInitialComponent} from "./components/Dashboards/dashboard-initial/dashboard-initial.component";
 import {EventCalendarComponent} from "./shared/components/event-calendar/event-calendar.component";
+import {
+  DashboardMainComponent
+} from "./components/Dashboards/dashboard-initial/dashboard-main/dashboard-main.component";
+import {
+  DashboardOnboardinMainComponent
+} from "./components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -153,7 +159,11 @@ const routes: Routes = [
     {path: 'job-listing', component: RecruitmentJobListComponent},
   ]},
   {path: 'event-calendar', component: EventCalendarComponent, canActivate: [AuthGuard]},
-  {path: 'dashboard', component: DashboardInitialComponent, canActivate: [AuthGuard, AdminGuard]},
+  {path: 'dashboard', component: DashboardInitialComponent, canActivate: [AuthGuard, AdminGuard], children: [
+    {path: '', redirectTo: '/dashboard/main', pathMatch: 'full'},
+    {path: 'main', component: DashboardMainComponent},
+    {path: 'onboarding', component: DashboardOnboardinMainComponent},
+  ]},
   {path: '**', component: NotFoundComponent},
 
 ];
