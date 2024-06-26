@@ -19,7 +19,7 @@ public class JobPostController {
 
     //save details
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveJobPost(JobPostModel jobPostModel){
+    public ResponseEntity<ApiResponse> saveJobPost(@RequestBody JobPostModel jobPostModel){
 
         jobPostRepository.save(jobPostModel);
 
@@ -43,12 +43,14 @@ public class JobPostController {
         if(jobPostModelOptional.isPresent()){
 
             JobPostModel existingJobPost = jobPostModelOptional.get();
+            existingJobPost.setOrganizationId(jobPostModel.getOrganizationId());
             existingJobPost.setCaption(jobPostModel.getCaption());
             existingJobPost.setAbout_job(jobPostModel.getAbout_job());
             existingJobPost.setTechnical_requirements(jobPostModel.getTechnical_requirements());
             existingJobPost.setEducation_requirements(jobPostModel.getEducation_requirements());
             existingJobPost.setResponsibilities(jobPostModel.getResponsibilities());
             existingJobPost.setExperience_level(jobPostModel.getExperience_level());
+            existingJobPost.setOpen_date(jobPostModel.getOpen_date());
             existingJobPost.setEnd_date(jobPostModel.getEnd_date());
             existingJobPost.setContact_email(jobPostModel.getContact_email());
             existingJobPost.setDescription(jobPostModel.getDescription());
