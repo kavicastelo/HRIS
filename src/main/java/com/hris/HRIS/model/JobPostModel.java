@@ -16,6 +16,8 @@ public class JobPostModel {
     @Id
     private String Id;
 
+    private String organizationId;
+
     private String caption;
 
     private String about_job;
@@ -27,6 +29,8 @@ public class JobPostModel {
     private String responsibilities;
 
     private String experience_level;
+
+    private String open_date;
 
     private String end_date;
 
