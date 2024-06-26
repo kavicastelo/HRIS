@@ -237,7 +237,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     EventAddComponent,
     JobPostComponent,
     JobPostViewComponent,
-    PayrollConfigurationComponent
+    PayrollConfigurationComponent,
     DashboardMainComponent,
     DashboardOnboardinMainComponent
   ],
