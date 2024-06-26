@@ -1,0 +1,66 @@
+<div class="row mt-2 mb-2">
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="card-2">
+      <div class="card-2-title">Offer Acceptance</div>
+      <div class="chart-div">
+        <canvas id="offerChartCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="card-2">
+      <div class="card-2-title">Onboarding Process Status</div>
+      <div class="chart-div">
+        <canvas id="onboardingChartCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="card-2">
+      <div class="card-2-title">Retention Rate</div>
+      <div class="chart-div">
+        <canvas id="retentionChartCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div>
+      <table mat-table [dataSource]="paginatedEvents" class="mat-elevation-z1">
+        <!-- Define columns -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let event"> {{event.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="designation">
+          <th mat-header-cell *matHeaderCellDef> Designation </th>
+          <td mat-cell *matCellDef="let event"> {{event.jobData.position}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="doj">
+          <th mat-header-cell *matHeaderCellDef> Date of Join </th>
+          <td mat-cell *matCellDef="let event"> {{event.jobData.doj | date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let event">
+            <button class="btn-2 px-2">Create Plan</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [length]="totalEvents"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     (page)="changePage($event)">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
