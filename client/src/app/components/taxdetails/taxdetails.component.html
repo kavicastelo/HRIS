@@ -9,7 +9,7 @@
         <li class="list-group-item">
 
             <div class="d-flex align-items-center justify-content-end">
-                <button class="btn-1 px-2" matTooltip="New tax range" [routerLink]="'../new-tax-detail'"><mat-icon>add</mat-icon><span class="d-none d-md-block">New Tax Range</span></button>
+                <button class="btn-1 px-2" matTooltip="New tax range" [routerLink]="'../taxdetails/new-tax-detail'"><mat-icon>add</mat-icon><span class="d-none d-md-block">New Tax Range</span></button>
             </div>
 
             <div class="table-data-list">
@@ -29,19 +29,25 @@
                       <tr *ngFor="let taxInfo of taxInfoList">
                         <!-- <td><mat-icon>navigate_next</mat-icon></td> -->
                         <td> From </td>
-                        <td><b>{{ taxInfo.min }}</b></td>
+                        <td style="text-align: right;"><b>{{ taxInfo.min.toFixed(2) }}</b></td>
                         <td> to </td>
-                        <td><b>{{ taxInfo.max }}</b></td>
+                        <td style="text-align: right;"><b>{{ taxInfo.max.toFixed(2) }}</b></td>
                         <td> = </td>
-                        <td><b>{{ taxInfo.rate }}%</b></td>
+                        <td style="text-align: right;"><b>{{ taxInfo.rate }}%</b></td>
                         <td class="td-manage" style="display: flex; text-align: right; justify-content: right;">
                             <div class="d-flex align-items-center justify-content-end">
-                                <button class="btn-2 me-1" matTooltip="Edit" routerLink='../edit-payitem/'><mat-icon>edit</mat-icon></button>
-                                <button class="btn-2" matTooltip="Delete"><mat-icon>delete_forever</mat-icon></button>
+                                <!-- <button class="btn-2 me-1" matTooltip="Edit" routerLink='../edit-payitem/'><mat-icon>edit</mat-icon></button>
+                                <button class="btn-2" matTooltip="Delete"><mat-icon>delete_forever</mat-icon></button> -->
+                                <mat-icon style="font-size: 18px; cursor: pointer;" matTooltip="Edit" routerLink='../taxdetails/edit-tax-detail/{{taxInfo.id}}'>edit</mat-icon>
+                                <mat-icon style="font-size: 18px; cursor: pointer; color: #E74C3C;" matTooltip="Delete" (click)="deleteTaxInfo(taxInfo.id)">delete</mat-icon>
                             </div>
                         </td>
                     </tbody>
                   </table>
+
+                  <div class="alert alert-info" role="alert" *ngIf="taxInfoList.length == 0">
+                    Click the "+" button to get started configuring the tax details.
+                  </div>
             </div>
 
         </li>

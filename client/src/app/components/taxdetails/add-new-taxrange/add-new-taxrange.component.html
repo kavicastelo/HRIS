@@ -36,7 +36,10 @@
                     <li *ngFor="let error of taxDetailsFormErrorsList">{{error}}</li>
                 </ul>
         
-                <button class="btn-1 my-4" style="width: 100px;" (click)="addNewTaxRange()" [disabled]="isFormValid()">{{ finalizeBtnText }}</button>
+                <button class="btn-1 my-4" [style.width.px]="action === 'ADD' ? 100 : null"
+                            [style.paddingLeft.px]="action === 'EDIT' ? 10 : null"
+                            [style.paddingRight.px]="action === 'EDIT' ? 10 : null"
+                            (click)="action === 'ADD' ? addNewTaxRange() : editTaxRange()" [disabled]="isFormValid()">{{ finalizeBtnText }}</button>
             </form>
             </div>
   

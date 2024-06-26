@@ -44,4 +44,20 @@ export class TaxdetailsComponent {
       },(error: any) => {})
     })
   }
+
+  deleteTaxInfo(id: any) {
+    if (id){
+      if (confirm('Are you sure you want to delete this tax detail?')){
+          this._snackBar.open("Deleting a tax detail...", "Dismiss", {duration: 5 * 1000});
+          this.taxService.deleteTaxInfo(id).subscribe((res: any) => {
+            if(res){
+              this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+              this.updateTaxInfoList();
+            }
+          },(error: any) => {
+            this._snackBar.open("Failed to delete the selected tax detail.", "Dismiss", {duration: 5 * 1000});
+          })
+      }
+    }
+  }
 }
