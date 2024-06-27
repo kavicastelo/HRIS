@@ -2,15 +2,11 @@ import {Component, Inject, Renderer2} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {OnboardinService} from "../../../services/onboardin.service";
 import {EmployeesService} from "../../../services/employees.service";
-import {AuthService} from "../../../services/auth.service";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {LeaveService} from "../../../services/leave.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationsService} from "../../../services/notifications.service";
 import {Observable, tap} from "rxjs";
-import {TimeFormatPipe} from "../../../DTO/TimeFormatPipe";
-import {DateFormatPipe} from "../../../DTO/DateFormatPipe";
 import {MatSelect} from "@angular/material/select";
 
 @Component({
@@ -24,11 +20,23 @@ export class CreatePlanDialogComponent {
   planDataStore:any[] = [];
   employeeDataStore:any[] = [];
 
+  taskTitles: any[] = [];
+
   onboardinPlanForm = new FormGroup({
-    titlePlan: new FormControl(null, [Validators.required]),
-    descriptionPlan: new FormControl(null, [Validators.required]),
-    startDatePlan: new FormControl(null, [Validators.required]),
-    endDatePlan: new FormControl(null, [Validators.required])
+    empName: new FormControl('', [Validators.required]),
+    empId: new FormControl('', [Validators.required]),
+    empEmail: new FormControl('', [Validators.required]),
+    titlePlan: new FormControl('', [Validators.required]),
+    departmentPlan: new FormControl('', [Validators.required]),
+    managerPlan: new FormControl('', [Validators.required]),
+    startDatePlan: new FormControl('', [Validators.required]),
+    endDatePlan: new FormControl('', [Validators.required]),
+    locationPlan: new FormControl('', [Validators.required]),
+    descriptionPlan: new FormControl('', [Validators.required]),
+  })
+
+  taskTitleForm = new FormGroup({
+    taskTitleName: new FormControl('', [Validators.required])
   })
 
   constructor(private multimediaService: MultimediaService,
@@ -67,11 +75,18 @@ export class CreatePlanDialogComponent {
   submitPlan(){
     if (this.onboardinPlanForm.valid){
       this.onboardinService.saveOnboardingPlan({
-        title: this.onboardinPlanForm.value.titlePlan,
         organizationId: this.receivedData.data.organizationId,
-        description: this.onboardinPlanForm.value.descriptionPlan,
+        empName: this.onboardinPlanForm.value.empName,
+        empId: this.onboardinPlanForm.value.empId,
+        empEmail: this.onboardinPlanForm.value.empEmail,
+        title: this.onboardinPlanForm.value.titlePlan,
+        department: this.onboardinPlanForm.value.departmentPlan,
+        manager: this.onboardinPlanForm.value.managerPlan,
         startDate: this.onboardinPlanForm.value.startDatePlan,
-        taskDate: this.onboardinPlanForm.value.endDatePlan
+        taskDate: this.onboardinPlanForm.value.endDatePlan,
+        location: this.onboardinPlanForm.value.locationPlan,
+        description: this.onboardinPlanForm.value.descriptionPlan,
+        taskTitles: this.taskTitles
       }).subscribe(data=>{
         this.closePopup();
         this.snackBar.open("Please wait a moment...!");
@@ -123,6 +138,17 @@ export class CreatePlanDialogComponent {
       if (method == 'save') {
         this.submitPlan()
       }
+    }
+  }
+
+  removeTaskTitle(i: number) {
+    this.taskTitles.splice(i, 1);
+  }
+
+  addTaskTitle() {
+    if (this.taskTitleForm.valid) {
+      this.taskTitles.push(this.taskTitleForm.value.taskTitleName);
+      this.taskTitleForm.reset();
     }
   }
 }

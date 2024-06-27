@@ -58,8 +58,21 @@ public class OnboardingPlanController {
 
         if (onboardingPlanModelOptional.isPresent()) {
             OnboardingPlanModel existingOnboardingPlan = onboardingPlanModelOptional.get();
+
+            existingOnboardingPlan.setOrganizationId(onboardingPlanModel.getOrganizationId());
+            existingOnboardingPlan.setEmpName(onboardingPlanModel.getEmpName());
+            existingOnboardingPlan.setEmpId(onboardingPlanModel.getEmpId());
+            existingOnboardingPlan.setEmpEmail(onboardingPlanModel.getEmpEmail());
+            existingOnboardingPlan.setTitle(onboardingPlanModel.getTitle());
+            existingOnboardingPlan.setDepartment(onboardingPlanModel.getDepartment());
+            existingOnboardingPlan.setManager(onboardingPlanModel.getManager());
+            existingOnboardingPlan.setLocation(onboardingPlanModel.getLocation());
+            existingOnboardingPlan.setOnboarding(onboardingPlanModel.getOnboarding());
             existingOnboardingPlan.setDescription(onboardingPlanModel.getDescription());
+            existingOnboardingPlan.setStartDate(onboardingPlanModel.getStartDate());
             existingOnboardingPlan.setTaskDate(onboardingPlanModel.getTaskDate());
+            existingOnboardingPlan.setTaskTitles(onboardingPlanModel.getTaskTitles());
+            existingOnboardingPlan.setStatus(onboardingPlanModel.getStatus());
 
             onboardingPlanRepository.save(existingOnboardingPlan);
 

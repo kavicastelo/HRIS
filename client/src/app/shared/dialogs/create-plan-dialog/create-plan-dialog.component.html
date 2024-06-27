@@ -1,32 +1,99 @@
-<div class="d-flex align-items-center justify-content-between px-2 my-2">
+<div class="sticky-top" style="background-color: #fff">
+  <div class="d-flex align-items-center justify-content-between px-2 py-2">
     <h5>Initialize Onboarding Plan</h5>
     <mat-icon (click)="closePopup()">close</mat-icon>
+  </div>
+  <hr>
 </div>
-<hr>
+
 <div class="container">
     <form [formGroup]="onboardinPlanForm">
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>TITLE</mat-label>
-            <input matInput id="titlePlan" formControlName="titlePlan" placeholder="New task title..." #titleInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>DESCRIPTION</mat-label>
-            <textarea matInput id="descriptionPlan" formControlName="descriptionPlan" placeholder="Description to new task..." #descriptionInput (keydown)="focusFieldOnEnter($event, startInput)"></textarea>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput id="empName" formControlName="empName" placeholder="Employee name..." #nameInput (keydown)="focusFieldOnEnter($event, titleInput)">
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Employee ID</mat-label>
+            <input matInput id="empId" formControlName="empId" placeholder="Employee ID..." #idInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Employee Email</mat-label>
+            <input matInput id="empEmail" formControlName="empEmail" placeholder="Employee Email..." #emailInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput id="titlePlan" formControlName="titlePlan" placeholder="Title to new task..." #titleInput (keydown)="focusFieldOnEnter($event, managerInput)">
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Department</mat-label>
+            <input matInput id="departmentPlan" formControlName="departmentPlan" placeholder="Department to new task..." #departmentInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Manager</mat-label>
+            <input matInput id="managerPlan" formControlName="managerPlan" placeholder="Manager to new task..." #managerInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
             <mat-label>DATE RANGE</mat-label>
             <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date" formControlName="startDatePlan" #startInput (keydown)="focusFieldOnEnter($event, endInput)">
-                <input matEndDate placeholder="End date" formControlName="endDatePlan" #endInput (keydown)="keyFormSubmit($event, 'save')">
+              <input matStartDate placeholder="Start date" formControlName="startDatePlan" #startInput (keydown)="focusFieldOnEnter($event, endInput)">
+              <input matEndDate placeholder="End date" formControlName="endDatePlan" #endInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
             </mat-date-range-input>
             <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Location</mat-label>
+            <input matInput id="locationPlan" formControlName="locationPlan" placeholder="Location to new task..." #locationInput>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>DESCRIPTION</mat-label>
+            <textarea matInput id="descriptionPlan" formControlName="descriptionPlan" placeholder="Description to new task..." #descriptionInput (keydown)="focusFieldOnEnter($event, startInput)"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
     </form>
+
+  <h5>Add Task Titles</h5>
+  <hr>
+  <div *ngFor="let tt of taskTitles; index as i">
+    <div class="d-flex align-items-center justify-content-between">
+      <p>{{tt}}</p>
+      <button class="btn" style="background-color: red!important" (click)="removeTaskTitle(i)"><mat-icon>delete</mat-icon></button>
+    </div>
+  </div>
+  <form [formGroup]="taskTitleForm">
+    <div class="d-flex align-items-center">
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>Task Title</mat-label>
+        <input matInput placeholder="Week 1 Activities" formControlName="taskTitleName">
+      </mat-form-field>
+      <button class="btn" [disabled]="taskTitleForm.invalid" (click)="addTaskTitle()"><mat-icon>add</mat-icon></button>
+    </div>
+  </form>
 </div>
-<hr>
-<div class="d-flex align-items-center justify-content-end px-2 my-2">
+<div class="sticky-bottom" style="background-color: #fff">
+  <hr>
+  <div class="d-flex align-items-center justify-content-end px-2 py-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
     <button class="btn" [disabled]="onboardinPlanForm.invalid" (click)="submitPlan()">Create</button>
+  </div>
 </div>
