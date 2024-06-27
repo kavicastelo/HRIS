@@ -1,4 +1,9 @@
-<div class="d-flex align-items-center justify-content-end">
+<div class="d-flex align-items-center justify-content-between">
+  <div class="input-group px-2" style="max-width: 400px">
+    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+    <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username"
+           aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)">
+  </div>
     <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()"><mat-icon>add</mat-icon><span class="d-none d-md-block">&nbsp;&nbsp;Create Plan</span></button>
 </div>
 
@@ -9,8 +14,44 @@
                 <h5>Onboarding Plan</h5>
             </div>
         </li>
+      <li class="list-group-item">
+        <div class="transfer-list">
+          <span class="title-span">Templates</span>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="card-2">
+                <div class="d-flex align-items-center text-center py-4 px-4">
+                  <h3>Sales Manager</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="card-2">
+                <div class="d-flex align-items-center text-center py-4 px-4">
+                  <h3>HR Manager</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="card-2">
+                <div class="d-flex align-items-center text-center py-4 px-4">
+                  <h3>Employee</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="card-2">
+                <div class="d-flex align-items-center text-center py-4 px-4">
+                  <h3>Administrator</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
         <li class="list-group-item">
             <div class="transfer-list">
+              <span class="title-span">Ongoing Plans</span>
                 <table class="table table-hover">
                     <thead>
                     <tr>

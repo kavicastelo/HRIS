@@ -1,4 +1,4 @@
-<div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}">
+<div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}" style="max-height: 100vh; overflow: hidden">
 
     <div class="w-100 main-body"  *ngFor="let e of employee">
         <button class="theme-btn" (click)="toggleTheme()" title="Theme">

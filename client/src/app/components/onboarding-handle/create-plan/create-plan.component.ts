@@ -30,6 +30,8 @@ export class CreatePlanComponent {
   plansStore: any[] = [];
   filteredPlans: any;
 
+  targetInput:any;
+
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
               private cookieService: AuthService,
@@ -60,8 +62,23 @@ export class CreatePlanComponent {
     );
   }
 
+  handleSearch(data: any): void {
+    this.targetInput = data as HTMLInputElement;
+    const value = this.targetInput.value
+    if (value) {
+      this.filteredPlans = this.plansStore.filter((data: any) =>
+        data.organizationId === this.employee.organizationId && data.title.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      this.filteredPlans = this.plansStore.filter((data: any) => data.organizationId === this.employee.organizationId);
+    }
+  }
+
   filterPlans(): any[]{
-    this.filteredPlans = this.plansStore.filter((data:any) => data.organizationId == this.employee.organizationId? this.filteredPlans = [data]: this.filteredPlans = null)
+    if (this.targetInput == undefined){
+      this.filteredPlans = this.plansStore.filter((data:any) => data.organizationId == this.employee.organizationId? this.filteredPlans = [data]: this.filteredPlans = null)
+    }
+
     this.filteredPlans.sort((a:any, b:any) => {
       return new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
     })
@@ -86,9 +103,9 @@ export class CreatePlanComponent {
 
   toggleDialog(title: any, msg: any, data: any, component: any) {
     const _popup = this.dialog.open(component, {
-      width: '350px',
-      enterAnimationDuration: '500ms',
+      enterAnimationDuration: '400ms',
       exitAnimationDuration: '500ms',
+      maxHeight: '80vh',
       data: {
         data: data,
         title: title,
