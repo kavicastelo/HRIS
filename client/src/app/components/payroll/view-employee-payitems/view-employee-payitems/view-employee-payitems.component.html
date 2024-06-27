@@ -42,21 +42,39 @@
                       </tr>
                       <tr *ngIf="isDisplayAssignNewItemForm">
                         <td>
-                          <input class="form-control form-control-sm" type="text" style="text-align: left;">
+                          <select placeholder="PayItem" class="form-select form-select-sm" (click)="updatePayitemsList()" [(ngModel)]="employeePayitemModel.payItemId" (change)="updateAssignItemInputFieldsWithSelectedItem()" required>
+                            <option [attr.selected]="!employeePayitemModel.payItemId ? 'selected' : null" value="" disabled>Select an item</option>
+                            <option *ngIf="employeePayitemsList.length == 0 && payItemsList.length > 0" value="{{payItemsList[0].id}}">{{ payItemsList[0].itemName }}</option>
+                            <ng-container *ngIf="employeePayitemsList.length > 0">
+                              <option *ngFor="let element of payItemsList" value="{{element.id}}">{{ element.itemName }}</option>
+                            </ng-container>
+                            <!-- <option *ngIf="employeePayitemsList.length == 0 && currentEmployee.employeeType == 'Permanent' && payItemsList.length > 0" value="{{payItemsList[0].id}}">{{ payItemsList[0].itemName }}</option>
+                            <ng-container *ngIf="employeePayitemsList.length > 0 || currentEmployee.employeeType == 'Temporary'">
+                              <option *ngFor="let element of payItemsList" value="{{element.id}}">{{ element.itemName }}</option>
+                            </ng-container> -->
+                          </select>
                         </td>
                         <td>
-                          <input class="form-control form-control-sm" type="text" style="text-align: left;">
+                          <input class="form-control form-control-sm" type="text" style="text-align: left;" [value]="employeePayitemModel.payitem.itemType" disabled>
                         </td>
                         <td>
-                          <input class="form-control form-control-sm" type="text" style="text-align: left;">
+                          <input class="form-control form-control-sm" type="text" style="text-align: left;" [value]="employeePayitemModel.payitem.paymentType" disabled>
                         </td>
                         <td style="text-align: right; justify-content: right;">
                           <div class="row g-3" style="text-align: right; justify-content: right;">
                             <div class="col-auto">
-                              <input class="form-control form-control-sm" type="number" style="text-align: right; width: 100%;">
+                              <select placeholder="Type" class="form-select form-select-sm" [(ngModel)]="employeePayitemModel.type" required>
+                                <option [attr.selected]="!employeePayitemModel.type ? 'selected' : null" value="" disabled>Select a type</option>
+                                <option value="Percentage" [disabled]="employeePayitemsList.length === 0">Percentage</option>
+                                <!-- <option value="Hourly Rate" [disabled]="employeePayitemTabledataSource.data.length === 0 && selectedRow.employeeType == 'Permanent'">Hourly Rate</option> -->
+                                <option value="Amount" selected>Amount</option>
+                            </select>
                             </div>
                             <div class="col-auto">
-                              <button class="btn-1 btn-primary mb-3">Assign</button>
+                              <input class="form-control form-control-sm" type="number" placeholder="0.00" [(ngModel)]="employeePayitemModel.value" style="text-align: right; width: 100%;" [ngClass]="{'is-invalid': employeePayitemModel.value < 0 || employeePayitemModel.value === null || employeePayitemModel.value === undefined}" required>
+                            </div>
+                            <div class="col-auto">
+                              <button class="btn-1 btn-primary mb-3" (click)="assignPayitem()">Assign</button>
                             </div>
                           </div>
                           <!-- <input class="form-control form-control-sm" type="number" style="text-align: right; width:100px;">
