@@ -16,10 +16,9 @@ import {CreatePlanDialogComponent} from "../../../shared/dialogs/create-plan-dia
 export class CreatePlanComponent {
 
   userId: any
+  organizationId: any
   employeeDataStore: any
-  employee: any = {
-    id: ''
-  }
+  employee: any
   plansStore: any[] = [];
   filteredPlans: any;
   filteredTemplates: any[] = [];
@@ -35,6 +34,7 @@ export class CreatePlanComponent {
   }
 
   async ngOnInit(): Promise<any> {
+    this.organizationId = this.cookieService.organization().toString();
     this.loadAllUsers().subscribe(() => {
       this.getUser();
     })
@@ -62,16 +62,16 @@ export class CreatePlanComponent {
     const value = this.targetInput.value
     if (value) {
       this.filteredPlans = this.plansStore.filter((data: any) =>
-        data.organizationId === this.employee.organizationId && data.title.toLowerCase().includes(value.toLowerCase())
+        data.organizationId === this.organizationId && data.title.toLowerCase().includes(value.toLowerCase())
       );
     } else {
-      this.filteredPlans = this.plansStore.filter((data: any) => data.organizationId === this.employee.organizationId);
+      this.filteredPlans = this.plansStore.filter((data: any) => data.organizationId === this.organizationId);
     }
   }
 
   filterPlans(): any[] {
     if (this.targetInput == undefined) {
-      this.filteredPlans = this.plansStore.filter((data: any) => data.organizationId == this.employee.organizationId && data.template == 'no' ? this.filteredPlans = [data] : this.filteredPlans = null)
+      this.filteredPlans = this.plansStore.filter((data: any) => data.organizationId == this.organizationId && data.template == 'no' ? this.filteredPlans = [data] : this.filteredPlans = null)
     }
 
     this.filteredPlans.sort((a: any, b: any) => {
@@ -83,7 +83,7 @@ export class CreatePlanComponent {
 
   filterTemplates(): any[] {
     if (this.targetInput == undefined) {
-      this.filteredTemplates = this.plansStore.filter((data: any) => data.organizationId == this.employee.organizationId && data.template == 'yes' ? this.filteredPlans = [data] : this.filteredPlans = null)
+      this.filteredTemplates = this.plansStore.filter((data: any) => data.organizationId == this.organizationId && data.template == 'yes' ? this.filteredPlans = [data] : this.filteredPlans = null)
     }
 
     this.filteredTemplates.sort((a: any, b: any) => {
@@ -104,12 +104,12 @@ export class CreatePlanComponent {
 
   cratePlan() {
     const data = {
-      organizationId: this.employee.organizationId,
-      userId: this.employee.id,
-      userName: this.employee.name,
-      userEmail: this.employee.email,
-      department: this.employee.jobData.department,
-      location: this.employee.jobData.location,
+      organizationId: this.organizationId,
+      userId: this.employee?this.employee.id:'',
+      userName: this.employee?this.employee.name:'',
+      userEmail: this.employee?this.employee.email:'',
+      department: this.employee?this.employee.jobData.department:'',
+      location: this.employee?this.employee.jobData.location:'',
     }
 
     this.toggleDialog('', '', data, CreatePlanDialogComponent)
@@ -128,12 +128,17 @@ export class CreatePlanComponent {
     });
     _popup.afterClosed().subscribe(item => {
       this.loadAllPlans().subscribe(() => {
-        // this.openSnackBar('Requests reloaded!', 'OK')
+        this.filterTemplates();
+        this.filterPlans();
       });
     })
   }
 
   openSnackBar(message: any, action: any) {
     this.snackBar.open(message, action, {duration: 3000})
+  }
+
+  editTemplate(tp: any) {
+    this.toggleDialog('', '', tp, CreatePlanDialogComponent)
   }
 }

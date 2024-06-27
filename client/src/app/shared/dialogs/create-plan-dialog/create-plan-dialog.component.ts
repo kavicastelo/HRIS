@@ -8,6 +8,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationsService} from "../../../services/notifications.service";
 import {Observable, tap} from "rxjs";
 import {MatSelect} from "@angular/material/select";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-create-plan-dialog',
@@ -19,8 +20,14 @@ export class CreatePlanDialogComponent {
   receivedData:any;
   planDataStore:any[] = [];
   employeeDataStore:any[] = [];
+  filteredEmployees:any[] = [];
+  filteredManagers:any[] = [];
 
   taskTitles: any[] = [];
+
+  organizationId: any;
+  targetInput:any;
+  targetManagerInput:any;
 
   onboardinPlanForm = new FormGroup({
     empName: new FormControl('', [Validators.required]),
@@ -45,6 +52,7 @@ export class CreatePlanDialogComponent {
               private employeesService: EmployeesService,
               private notificationsService: NotificationsService,
               private renderer: Renderer2,
+              private cookieService: AuthService,
               private onboardinService: OnboardinService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<CreatePlanDialogComponent>) {
@@ -52,11 +60,14 @@ export class CreatePlanDialogComponent {
 
   async ngOnInit(): Promise<any> {
     this.receivedData = this.data;
+    this.organizationId = this.cookieService.organization().toString();
 
     await this.loadAllUsers().subscribe(()=>{})
 
     if (this.receivedData.data.userId){
       this.patchValues()
+    } else if (this.receivedData.data.id){
+      this.patchTemplateValues()
     }
   }
 
@@ -71,9 +82,25 @@ export class CreatePlanDialogComponent {
   }
 
   filterEmployees(): any[]{
-    this.employeeDataStore = this.employeeDataStore.filter((data:any) => data.organizationId == this.receivedData.data.organizationId? this.employeeDataStore = [data]: this.employeeDataStore = [])
+    if (this.targetInput === undefined){
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId)
+    }
+    this.filteredEmployees.sort((a:any, b:any) => {
+      return new Date(b.jobData.doj).getTime() - new Date(a.jobData.doj).getTime()
+    })
 
-    return this.employeeDataStore;
+    return this.filteredEmployees;
+  }
+
+  filterManagers(): any[]{
+    if (this.targetManagerInput === undefined){
+      this.filteredManagers = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId && data.level === 1)
+    }
+    this.filteredManagers.sort((a:any, b:any) => {
+      return new Date(b.jobData.doj).getTime() - new Date(a.jobData.doj).getTime()
+    })
+
+    return this.filteredManagers;
   }
 
   submitPlan(){
@@ -187,5 +214,73 @@ export class CreatePlanDialogComponent {
     this.onboardinPlanForm.get('empEmail')?.setValue(this.receivedData.data.userEmail);
     this.onboardinPlanForm.get('departmentPlan')?.setValue(this.receivedData.data.department);
     this.onboardinPlanForm.get('locationPlan')?.setValue(this.receivedData.data.location);
+  }
+
+  patchTemplateValues() {
+    this.onboardinPlanForm.get('empName')?.setValue(this.receivedData.data.userName);
+    this.onboardinPlanForm.get('empId')?.setValue(this.receivedData.data.userId);
+    this.onboardinPlanForm.get('empEmail')?.setValue(this.receivedData.data.userEmail);
+    this.onboardinPlanForm.get('titlePlan')?.setValue(this.receivedData.data.title);
+    this.onboardinPlanForm.get('managerPlan')?.setValue(this.receivedData.data.manager);
+    this.onboardinPlanForm.get('startDatePlan')?.setValue(this.receivedData.data.startDate);
+    this.onboardinPlanForm.get('endDatePlan')?.setValue(this.receivedData.data.taskDate);
+    this.onboardinPlanForm.get('descriptionPlan')?.setValue(this.receivedData.data.description);
+    this.onboardinPlanForm.get('departmentPlan')?.setValue(this.receivedData.data.department);
+    this.onboardinPlanForm.get('locationPlan')?.setValue(this.receivedData.data.location);
+
+    if (this.receivedData.data.taskTitles) {
+      this.taskTitles = this.receivedData.data.taskTitles
+    }
+  }
+
+  handleSearch(data: any): void {
+    const dp = document.getElementById('nameDropdown') as HTMLElement;
+
+
+    this.targetInput = data as HTMLInputElement;
+    const value = this.targetInput.value
+    if (value) {
+      dp.style.display = 'block';
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) =>
+        data.organizationId === this.organizationId && data.name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      dp.style.display = 'block';
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId);
+    }
+  }
+
+  handleManagerSearch(data: any): void {
+    const dp = document.getElementById('managerDropdown') as HTMLElement;
+
+
+    this.targetManagerInput = data as HTMLInputElement;
+    const value = this.targetManagerInput.value
+    if (value) {
+      dp.style.display = 'block';
+      this.filteredManagers = this.employeeDataStore.filter((data: any) =>
+        data.organizationId === this.organizationId && data.level === 1 && data.name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      dp.style.display = 'block';
+      this.filteredManagers = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId && data.level === 1);
+    }
+  }
+
+  chooseName(employee:any) {
+    this.onboardinPlanForm.get('empName')?.setValue(employee.name);
+    this.onboardinPlanForm.get('empId')?.setValue(employee.id);
+    this.onboardinPlanForm.get('empEmail')?.setValue(employee.email);
+    this.onboardinPlanForm.get('departmentPlan')?.setValue(employee.jobData.department);
+    this.onboardinPlanForm.get('locationPlan')?.setValue(employee.jobData.location);
+
+    const dp = document.getElementById('nameDropdown') as HTMLElement;
+    dp.style.display = 'none';
+  }
+
+  chooseManager(manager:any) {
+    this.onboardinPlanForm.get('managerPlan')?.setValue(manager.name);
+    const dp = document.getElementById('managerDropdown') as HTMLElement;
+    dp.style.display = 'none';
   }
 }
