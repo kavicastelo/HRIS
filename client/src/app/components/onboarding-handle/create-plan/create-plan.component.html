@@ -17,34 +17,18 @@
       <li class="list-group-item">
         <div class="transfer-list">
           <span class="title-span">Templates</span>
-          <div class="row">
+          <div class="row" *ngFor="let tp of filterTemplates()">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
               <div class="card-2">
                 <div class="d-flex align-items-center text-center py-4 px-4">
-                  <h3>Sales Manager</h3>
+                  <h3>{{tp.empName}}</h3>
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="card-2">
-                <div class="d-flex align-items-center text-center py-4 px-4">
-                  <h3>HR Manager</h3>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="card-2">
-                <div class="d-flex align-items-center text-center py-4 px-4">
-                  <h3>Employee</h3>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="card-2">
-                <div class="d-flex align-items-center text-center py-4 px-4">
-                  <h3>Administrator</h3>
-                </div>
-              </div>
+          </div>
+          <div *ngIf="filterTemplates().length == 0">
+            <div class="data-not-found">
+              <p>Data not available!</p>
             </div>
           </div>
         </div>
@@ -55,20 +39,22 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
+                        <th>Employee</th>
                         <th>Title</th>
-                        <th>Description</th>
                         <th>Date Range</th>
+                        <th>Manager</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let p of filterPlans()">
-                        <td [title]="p.title">{{p.title | truncate:18}}</td>
-                        <td [title]="p.description">{{p.description | truncate:40}}</td>
+                        <td [title]="p.empName">{{p.empName}}</td>
+                        <td [title]="p.title">{{p.title | truncate:10}}</td>
                         <td>
                             <div class="d-flex align-items-center">
                                 {{p.startDate | dateFormat}}&nbsp;-&nbsp;{{p.taskDate | dateFormat}}
                             </div>
                         </td>
+                        <td [title]="p.manager">{{p.manager}}</td>
                     </tr>
                     </tbody>
                 </table>

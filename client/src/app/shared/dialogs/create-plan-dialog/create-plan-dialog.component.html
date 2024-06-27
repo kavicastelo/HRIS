@@ -95,5 +95,6 @@
   <div class="d-flex align-items-center justify-content-end px-2 py-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
     <button class="btn" [disabled]="onboardinPlanForm.invalid" (click)="submitPlan()">Create</button>
+    <button mat-button [disabled]="onboardinPlanForm.invalid" (click)="saveAsTemplate()">Save as Template</button>
   </div>
 </div>

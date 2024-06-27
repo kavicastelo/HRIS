@@ -6,6 +6,7 @@ import { EmployeeModel } from '../../../../shared/data-models/Employee.model';
 import { Observable, tap } from 'rxjs';
 import { EmployeesService } from '../../../../services/employees.service';
 import { AuthService } from '../../../../services/auth.service';
+import {Router} from "@angular/router";
 
 Chart.register(...registerables);
 
@@ -40,6 +41,7 @@ export class DashboardOnboardinMainComponent implements OnInit, AfterViewInit, O
 
   constructor(private employeeService: EmployeesService,
               private cdr: ChangeDetectorRef,
+              private router: Router,
               private cookieService: AuthService) {}
 
   ngOnInit() {
@@ -219,5 +221,11 @@ export class DashboardOnboardinMainComponent implements OnInit, AfterViewInit, O
   changePage(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.paginateEvents(event.pageIndex, event.pageSize);
+  }
+
+  createPlan(id: any) {
+    if (id) {
+      this.router.navigate(['/onboardin/plan'], { queryParams: { id: id } });
+    }
   }
 }

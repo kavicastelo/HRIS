@@ -48,7 +48,7 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let event">
-            <button class="btn-2 px-2">Create Plan</button>
+            <button class="btn-2 px-2" (click)="createPlan(event.id)">Create Plan</button>
           </td>
         </ng-container>
 

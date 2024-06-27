@@ -24,14 +24,14 @@ export class CreatePlanDialogComponent {
 
   onboardinPlanForm = new FormGroup({
     empName: new FormControl('', [Validators.required]),
-    empId: new FormControl('', [Validators.required]),
-    empEmail: new FormControl('', [Validators.required]),
+    empId: new FormControl({value:'', disabled: true}, [Validators.required]),
+    empEmail: new FormControl({value:'', disabled: true}),
     titlePlan: new FormControl('', [Validators.required]),
-    departmentPlan: new FormControl('', [Validators.required]),
+    departmentPlan: new FormControl({value:'', disabled: true}, [Validators.required]),
     managerPlan: new FormControl('', [Validators.required]),
     startDatePlan: new FormControl('', [Validators.required]),
     endDatePlan: new FormControl('', [Validators.required]),
-    locationPlan: new FormControl('', [Validators.required]),
+    locationPlan: new FormControl({value:'', disabled: true}),
     descriptionPlan: new FormControl('', [Validators.required]),
   })
 
@@ -54,6 +54,10 @@ export class CreatePlanDialogComponent {
     this.receivedData = this.data;
 
     await this.loadAllUsers().subscribe(()=>{})
+
+    if (this.receivedData.data.userId){
+      this.patchValues()
+    }
   }
 
   closePopup(){
@@ -86,7 +90,9 @@ export class CreatePlanDialogComponent {
         taskDate: this.onboardinPlanForm.value.endDatePlan,
         location: this.onboardinPlanForm.value.locationPlan,
         description: this.onboardinPlanForm.value.descriptionPlan,
-        taskTitles: this.taskTitles
+        taskTitles: this.taskTitles,
+        status: 'Open',
+        template: 'no'
       }).subscribe(data=>{
         this.closePopup();
         this.snackBar.open("Please wait a moment...!");
@@ -150,5 +156,36 @@ export class CreatePlanDialogComponent {
       this.taskTitles.push(this.taskTitleForm.value.taskTitleName);
       this.taskTitleForm.reset();
     }
+  }
+
+  saveAsTemplate() {
+    this.onboardinService.saveOnboardingPlan({
+      organizationId: this.receivedData.data.organizationId,
+      empName: this.onboardinPlanForm.value.empName,
+      empId: this.onboardinPlanForm.value.empId,
+      empEmail: this.onboardinPlanForm.value.empEmail,
+      title: this.onboardinPlanForm.value.titlePlan,
+      department: this.onboardinPlanForm.value.departmentPlan,
+      manager: this.onboardinPlanForm.value.managerPlan,
+      startDate: this.onboardinPlanForm.value.startDatePlan,
+      taskDate: this.onboardinPlanForm.value.endDatePlan,
+      location: this.onboardinPlanForm.value.locationPlan,
+      description: this.onboardinPlanForm.value.descriptionPlan,
+      taskTitles: this.taskTitles,
+      status: 'Open',
+      template: 'yes'
+    }).subscribe(data=>{
+      this.snackBar.open("Template Save!","Ok", {duration:3000})
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  patchValues() {
+    this.onboardinPlanForm.get('empName')?.setValue(this.receivedData.data.userName);
+    this.onboardinPlanForm.get('empId')?.setValue(this.receivedData.data.userId);
+    this.onboardinPlanForm.get('empEmail')?.setValue(this.receivedData.data.userEmail);
+    this.onboardinPlanForm.get('departmentPlan')?.setValue(this.receivedData.data.department);
+    this.onboardinPlanForm.get('locationPlan')?.setValue(this.receivedData.data.location);
   }
 }

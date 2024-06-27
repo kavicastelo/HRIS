@@ -73,6 +73,7 @@ public class OnboardingPlanController {
             existingOnboardingPlan.setTaskDate(onboardingPlanModel.getTaskDate());
             existingOnboardingPlan.setTaskTitles(onboardingPlanModel.getTaskTitles());
             existingOnboardingPlan.setStatus(onboardingPlanModel.getStatus());
+            existingOnboardingPlan.setTemplate(onboardingPlanModel.getTemplate());
 
             onboardingPlanRepository.save(existingOnboardingPlan);
 

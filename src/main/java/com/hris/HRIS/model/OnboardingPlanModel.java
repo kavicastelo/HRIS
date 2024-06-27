@@ -32,4 +32,5 @@ public class OnboardingPlanModel {
     private String taskDate;
     private List<String> taskTitles;
     private String status;
+    private String template;
 }
