@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { EmployeePayitemService } from 'src/app/services/employee-payitem.service';
 import { EmployeesService } from 'src/app/services/employees.service';
 import { PayitemService } from 'src/app/services/payitem.service';
@@ -16,7 +17,7 @@ import { PayItemModel } from 'src/app/shared/data-models/payitem.model';
 })
 export class ViewEmployeePayitemsComponent {
 
-  employeePayitemModel!: EmployeePayItemModel;
+  employeePayitemModel = new EmployeePayItemModel();
   currentEmployee!: EmployeeModel;
 
   totalSalaryOfTheSelectedEmployee: number = 0.0;
@@ -33,12 +34,14 @@ export class ViewEmployeePayitemsComponent {
   isEditEnabledItemInputsDisabled: boolean = false;
 
   isDisplayAssignNewItemForm = true;
+  
 
   constructor(private employeePayitemService: EmployeePayitemService,
     private payitemService: PayitemService,
     private route: ActivatedRoute,
     private employeesService: EmployeesService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private cookieService: AuthService
   ){}
 
   ngOnInit(): void {
@@ -50,6 +53,31 @@ export class ViewEmployeePayitemsComponent {
       });
   };
 
+  updatePayitemsList(){
+    this.payitemService.getAllPayitems(this.cookieService.organization()).subscribe((res: any) => {
+
+      let loadedPayitemsList: PayItemModel[] = [];
+
+      for(let payitem of res){
+        if(payitem.status != "Unavailable" && !this.isPayItemIdInEmployeePayitemsList(payitem.id)){
+          loadedPayitemsList.push(payitem);
+        }
+      }
+      
+      if(JSON.stringify(this.payItemsList) !== JSON.stringify(loadedPayitemsList)){
+        this.payItemsList = loadedPayitemsList;
+      }  
+    });
+  }
+
+  isPayItemIdInEmployeePayitemsList(payItemId: String): boolean {
+    for (let empPayitem of this.employeePayitemsList) {
+      if (empPayitem.payItemId === payItemId) {
+        return true;
+      }
+    }
+    return false;
+  }
 
     viewEmployeePaymentDetails(employeeModel: EmployeeModel){
       this.totalSalaryOfTheSelectedEmployee = 0.0;
@@ -159,5 +187,50 @@ export class ViewEmployeePayitemsComponent {
 
     displayAssignNewItemForm(){
         this.isDisplayAssignNewItemForm = true;
+    }
+
+    updateAssignItemInputFieldsWithSelectedItem(){
+      const selectedPayitem = this.payItemsList.find(item => item.id === this.employeePayitemModel.payItemId);
+
+      this.employeePayitemModel.payitem.itemType = selectedPayitem?.itemType ?? '';
+      this.employeePayitemModel.payitem.paymentType = selectedPayitem?.paymentType ?? '';
+    }
+
+    resetAssignItemInputFields(){
+      this.employeePayitemModel = new EmployeePayItemModel();
+    }
+
+    assignPayitem(){
+      this._snackBar.open("Assigning the payitem...", "Dismiss", {duration: 5 * 1000});
+      this.employeePayitemModel.email = this.currentEmployee.email;
+
+      if(this.employeePayitemModel.payItemId == "" || this.employeePayitemModel.payItemId == null){
+        this._snackBar.open("Please select an available pay item to assign.", "Dismiss", {duration: 5 * 1000});
+        return
+      }
+
+      if(this.employeePayitemModel.type == "" || this.employeePayitemModel.type == null){
+        this._snackBar.open("Please select a type for the pay item which is going to be assigned.", "Dismiss", {duration: 5 * 1000});
+        return
+      }
+
+      if(this.employeePayitemModel.value < 0 || this.employeePayitemModel.value === null || this.employeePayitemModel.value === undefined){
+        this._snackBar.open("Invalid or out of range value. Please recheck the details and try again.", "Dismiss", {duration: 5 * 1000});
+        return;
+      }
+
+      this.employeePayitemService.assignPayItem(this.employeePayitemModel).subscribe((res: any) => {
+        if(res){
+          if(res.errorCode == "DUPLICATED_INFOMARTION"){
+            this._snackBar.open(res.message, "Ok");
+          }else{
+            this.viewEmployeePaymentDetails(this.currentEmployee);
+            this.resetAssignItemInputFields();
+            this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+          }
+        }
+      },(error: any) => {
+        this._snackBar.open("Failed to assign the payitem.", "Dismiss", {duration: 5 * 1000});
+      })
     }
 }
