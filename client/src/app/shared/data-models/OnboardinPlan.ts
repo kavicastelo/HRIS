@@ -12,5 +12,7 @@ export interface OnboardinPlan {
     description: any,
     startDate: any,
     taskDate: any,
-    taskTitles?: any //list of task titles
+    taskTitles?: any, //list of task titles
+    status?: any,
+    template?: any //yes or no
 }
