@@ -142,6 +142,7 @@ import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {FlatpickrModule} from "angularx-flatpickr";
 import { JobPostComponent } from './shared/dialogs/job-post/job-post.component';
 import { JobPostViewComponent } from './shared/dialogs/job-post-view/job-post-view.component';
+import { PayrollConfigurationComponent } from './components/payroll/payroll-configuration/payroll-configuration.component';
 import { DashboardMainComponent } from './components/Dashboards/dashboard-initial/dashboard-main/dashboard-main.component';
 import { DashboardOnboardinMainComponent } from './components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
@@ -236,9 +237,9 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     EventAddComponent,
     JobPostComponent,
     JobPostViewComponent,
+    PayrollConfigurationComponent,
     DashboardMainComponent,
     DashboardOnboardinMainComponent
-
   ],
     imports: [
         BrowserModule,
