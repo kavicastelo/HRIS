@@ -129,7 +129,6 @@ public class AttendanceController {
         // TODO: Temporary added a fixed value as the total hours allowed.
         lateMinuteRecord.put("totalHoursAllowed", 240);
         lateMinuteRecord.put("lateMinutes", lateMinutes);
-        System.out.println("LM: " + lateMinutes);
 
         employeePayItemController.addLateMinuteDeductions(attendanceModel.getEmail(), lateMinuteRecord.toString());
 
