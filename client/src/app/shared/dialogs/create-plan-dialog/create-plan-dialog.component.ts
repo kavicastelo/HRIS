@@ -24,6 +24,8 @@ export class CreatePlanDialogComponent {
   filteredManagers:any[] = [];
 
   taskTitles: any[] = [];
+  taskNames: any[] = [{taskTitle: '', taskName: ''}];
+  filteredTaskNames: any[] = [];
 
   organizationId: any;
   targetInput:any;
@@ -46,6 +48,10 @@ export class CreatePlanDialogComponent {
     taskTitleName: new FormControl('', [Validators.required])
   })
 
+  tasksForm = new FormGroup({
+    taskName: new FormControl('', [Validators.required])
+  })
+
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private snackBar: MatSnackBar,
@@ -64,9 +70,9 @@ export class CreatePlanDialogComponent {
 
     await this.loadAllUsers().subscribe(()=>{})
 
-    if (this.receivedData.data.userId){
+    if (this.receivedData.data.userId && !this.receivedData.data.data.id){
       this.patchValues()
-    } else if (this.receivedData.data.id){
+    } else if (this.receivedData.data.data.id){
       this.patchTemplateValues()
     }
   }
@@ -121,6 +127,7 @@ export class CreatePlanDialogComponent {
         status: 'Open',
         template: 'no'
       }).subscribe(data=>{
+        this.submitTasks();
         this.closePopup();
         this.snackBar.open("Please wait a moment...!");
         this.filterEmployees().forEach((emp)=>{
@@ -136,6 +143,16 @@ export class CreatePlanDialogComponent {
         })
         this.snackBar.dismiss();
         this.snackBar.open("New Plan Create!","Ok", {duration:3000})
+      }, error => {
+        console.log(error)
+      })
+    }
+  }
+
+  submitTasks(){
+    if (this.taskNames.length > 0){
+      this.onboardinService.saveTasksList(this.taskNames).subscribe(data=>{
+        //TODO: add notification
       }, error => {
         console.log(error)
       })
@@ -174,8 +191,18 @@ export class CreatePlanDialogComponent {
     }
   }
 
-  removeTaskTitle(i: number) {
+  removeTaskTitle(title: any, i: number) {
+    this.taskNames.forEach(data => {
+      if (data.taskTitle === title) {
+        this.removeTask(data.taskName)
+      }
+    })
     this.taskTitles.splice(i, 1);
+  }
+
+  removeTask(task:any) {
+    const index = this.taskNames.findIndex((data: any) => data.taskName === task)
+    this.taskNames.splice(index, 1);
   }
 
   addTaskTitle() {
@@ -183,6 +210,18 @@ export class CreatePlanDialogComponent {
       this.taskTitles.push(this.taskTitleForm.value.taskTitleName);
       this.taskTitleForm.reset();
     }
+  }
+
+  addTask(taskTitle:any) {
+    if (this.tasksForm.valid) {
+      this.taskNames.push({taskTitle: taskTitle, taskName: this.tasksForm.value.taskName});
+      this.tasksForm.reset();
+    }
+  }
+
+  filterTasksNames(title:any) {
+    this.filteredTaskNames = this.taskNames.filter((data: any) => data.taskTitle === title)
+    return this.filteredTaskNames;
   }
 
   saveAsTemplate() {
@@ -220,16 +259,16 @@ export class CreatePlanDialogComponent {
     this.onboardinPlanForm.get('empName')?.setValue(this.receivedData.data.userName);
     this.onboardinPlanForm.get('empId')?.setValue(this.receivedData.data.userId);
     this.onboardinPlanForm.get('empEmail')?.setValue(this.receivedData.data.userEmail);
-    this.onboardinPlanForm.get('titlePlan')?.setValue(this.receivedData.data.title);
-    this.onboardinPlanForm.get('managerPlan')?.setValue(this.receivedData.data.manager);
-    this.onboardinPlanForm.get('startDatePlan')?.setValue(this.receivedData.data.startDate);
-    this.onboardinPlanForm.get('endDatePlan')?.setValue(this.receivedData.data.taskDate);
-    this.onboardinPlanForm.get('descriptionPlan')?.setValue(this.receivedData.data.description);
+    this.onboardinPlanForm.get('titlePlan')?.setValue(this.receivedData.data.data.title);
+    this.onboardinPlanForm.get('managerPlan')?.setValue(this.receivedData.data.data.manager);
+    this.onboardinPlanForm.get('startDatePlan')?.setValue(this.receivedData.data.data.startDate);
+    this.onboardinPlanForm.get('endDatePlan')?.setValue(this.receivedData.data.data.taskDate);
+    this.onboardinPlanForm.get('descriptionPlan')?.setValue(this.receivedData.data.data.description);
     this.onboardinPlanForm.get('departmentPlan')?.setValue(this.receivedData.data.department);
     this.onboardinPlanForm.get('locationPlan')?.setValue(this.receivedData.data.location);
 
-    if (this.receivedData.data.taskTitles) {
-      this.taskTitles = this.receivedData.data.taskTitles
+    if (this.receivedData.data.data.taskTitles) {
+      this.taskTitles = this.receivedData.data.data.taskTitles
     }
   }
 

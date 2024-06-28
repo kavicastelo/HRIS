@@ -110,6 +110,7 @@ export class CreatePlanComponent {
       userEmail: this.employee?this.employee.email:'',
       department: this.employee?this.employee.jobData.department:'',
       location: this.employee?this.employee.jobData.location:'',
+      data:{id:''}
     }
 
     this.toggleDialog('', '', data, CreatePlanDialogComponent)
@@ -139,6 +140,16 @@ export class CreatePlanComponent {
   }
 
   editTemplate(tp: any) {
-    this.toggleDialog('', '', tp, CreatePlanDialogComponent)
+    const data = {
+      organizationId: this.organizationId,
+      id: tp.id,
+      userId: this.employee?this.employee.id:tp.empId,
+      userName: this.employee?this.employee.name:tp.empName,
+      userEmail: this.employee?this.employee.email:tp.empEmail,
+      department: this.employee?this.employee.jobData.department:tp.department,
+      location: this.employee?this.employee.jobData.location:tp.location,
+      data:tp
+    }
+    this.toggleDialog('', '', data, CreatePlanDialogComponent)
   }
 }

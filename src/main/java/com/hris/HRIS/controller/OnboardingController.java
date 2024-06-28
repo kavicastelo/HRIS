@@ -70,6 +70,8 @@ public class OnboardingController {
             OnboardingModel existingOnboarding = onboardingModelOptional.get();
             existingOnboarding.setOrganizationId(onboardingModel.getOrganizationId());
             existingOnboarding.setOnBoardingPlanId(onboardingModel.getOnBoardingPlanId());
+            existingOnboarding.setTaskTitle(onboardingModel.getTaskTitle());
+            existingOnboarding.setTaskName(onboardingModel.getTaskName());
             existingOnboarding.setAdminEmail(onboardingModel.getAdminEmail());
             existingOnboarding.setDescription(onboardingModel.getDescription());
             existingOnboarding.setStartdate(onboardingModel.getStartdate());
@@ -116,5 +118,11 @@ public class OnboardingController {
 
         ApiResponse apiResponse = new ApiResponse("Onboarding deleted successfully");
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/save/tasks")
+    public ResponseEntity<ApiResponse> saveTasks(@RequestBody List<OnboardingModel> onboardingModel) {
+        onboardingRepository.saveAll(onboardingModel);
+        return ResponseEntity.ok(new ApiResponse("Saved all tasks to onboarding plan"));
     }
 }
