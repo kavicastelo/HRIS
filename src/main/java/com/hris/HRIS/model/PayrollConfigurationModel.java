@@ -15,7 +15,7 @@ public class PayrollConfigurationModel {
     @Id
     private String id;
     private String organizationId;
-    private String payrollFrequency;
+    private String payrollFrequency; // Monthly,  Biweekly or Weekly
     private String payrollPeriodStartDate;
     private String payrollPeriodEndDate;
     private String deadlineToRunPayroll;

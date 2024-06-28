@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { PayrollConfigurationService } from 'src/app/services/payroll-configuration.service';
 import { PayrollReportService } from 'src/app/services/payroll-report.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class PayrollConfigurationComponent {
 
   constructor(private payrollReportService: PayrollReportService,
     private cookieService: AuthService,
+    private payrollConfigurationService: PayrollConfigurationService
   ){
     const today = new Date();
     this.currentMonth = this.getMonthName(today.getMonth());
@@ -28,6 +30,16 @@ export class PayrollConfigurationComponent {
     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     this.endDate = this.formatDate(endOfMonth);
   }
+
+  ngOnInit(): void {
+    this.payrollConfigurationService.getPayrollConfigurationByOrganizationId(this.cookieService.organization()).subscribe((res:any) => {
+      if(res){
+        console.log(res);
+      }
+    },(error: any) => {
+      
+    });
+}
 
   private getMonthName(monthIndex: number): string {
     const monthNames = [
