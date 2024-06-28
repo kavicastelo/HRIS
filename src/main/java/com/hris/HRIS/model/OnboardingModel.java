@@ -19,6 +19,8 @@ public class OnboardingModel {
     private String id;
     private String organizationId;
     private String onBoardingPlanId;
+    private String taskTitle;
+    private String taskName;
     @Field("employees")
     private List<EmployeeModel> employees;
     private String adminEmail;    // Foreign key to EmployeeModel with level 0

@@ -92,19 +92,41 @@
     </div>
   </form>
 
-  <h5>Add Task Titles</h5>
+  <h5>Add Tasks</h5>
   <hr>
   <div *ngFor="let tt of taskTitles; index as i">
     <div class="d-flex align-items-center justify-content-between">
-      <p>{{tt}}</p>
-      <button class="btn" style="background-color: red!important" (click)="removeTaskTitle(i)">
+      <p class="task-title">{{tt}}</p>
+      <button class="btn" style="background-color: red!important" (click)="removeTaskTitle(tt,i)">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
+
+    <div *ngFor="let tn of filterTasksNames(tt); index as i">
+      <div class="d-flex align-items-center justify-content-between">
+        <p class="task-item">{{tn.taskName}}</p>
+        <button mat-button style="color: red!important" (click)="removeTask(tn.taskName)">
+          x
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="tasksForm">
+      <div class="d-flex align-items-center">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Task Name</mat-label>
+          <input matInput placeholder="Meet the manager" formControlName="taskName" #taskInput>
+        </mat-form-field>
+        <button mat-button [disabled]="tasksForm.invalid" (click)="addTask(tt)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </form>
   </div>
+
   <form [formGroup]="taskTitleForm">
     <div class="d-flex align-items-center">
-      <mat-form-field class="w-100" appearance="fill">
+      <mat-form-field class="w-100" appearance="outline">
         <mat-label>Task Title</mat-label>
         <input matInput placeholder="Week 1 Activities" formControlName="taskTitleName" #taskTitleInput>
       </mat-form-field>
