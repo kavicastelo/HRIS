@@ -1,1 +1,13 @@
-<p>payroll-configuration works!</p>
+<div class="runPayrollSection">
+    <p *ngIf="isReportsGeneratingProcessInProgress" style="padding: 10px;">Monthly payroll process may take some time depending on the organization's size. You can leave this page and come back later.</p>
+    <!-- <div class="row" *ngIf="!isReportsGeneratingProcessInProgress">
+        <div class="col-12 col-md-6" style="display: flex; align-items: center; justify-content: center;"><p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p></div>
+        <div class="col-12 col-md-6"><button class="btn-1 my-4" (click)="runMonthlyPayrollProcess()" >Run Payroll</button></div>
+    </div> -->
+    <div *ngIf="!isReportsGeneratingProcessInProgress">
+        <h4>Regular Payroll</h4>
+        <p style="font-weight: 200;">Pay period: {{ currentMonth }} {{ currentYear }} ({{ startDate }} - {{ endDate }})</p>
+        <p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p>
+        <button class="btn-1" style="padding-right:10px;" (click)="runMonthlyPayrollProcess()" ><mat-icon>play_arrow</mat-icon> Run Payroll</button>
+    </div>
+</div>

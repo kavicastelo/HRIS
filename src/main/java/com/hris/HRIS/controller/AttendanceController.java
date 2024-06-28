@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.AttendanceModel;
-import com.hris.HRIS.model.CredentialsModel;
 import com.hris.HRIS.repository.AttendanceRepository;
 import com.hris.HRIS.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/attendance")
@@ -126,6 +129,7 @@ public class AttendanceController {
         // TODO: Temporary added a fixed value as the total hours allowed.
         lateMinuteRecord.put("totalHoursAllowed", 240);
         lateMinuteRecord.put("lateMinutes", lateMinutes);
+        System.out.println("LM: " + lateMinutes);
 
         employeePayItemController.addLateMinuteDeductions(attendanceModel.getEmail(), lateMinuteRecord.toString());
 
@@ -144,6 +148,45 @@ public class AttendanceController {
 
         long earlyDepartureMinutes = attendanceService.calculateEarlyDepartureMinutes(attendanceModel, expectedOutTime);
         return new ResponseEntity<>(earlyDepartureMinutes, HttpStatus.OK);
+    }
+
+    public List<AttendanceModel> getAllAttendanceRecordsByEmailAndDateRange(String email, String startDate, String endDate){
+        SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            Date start = inputFormatter.parse(startDate);
+            Date end = inputFormatter.parse(endDate);
+
+            List<AttendanceModel> records = attendanceRepository.findByEmail(email);
+
+            return records.stream()
+                    .filter(record -> isWithinRange(record.getRecordInTime(), start, end))
+                    .collect(Collectors.toList());
+
+        }catch (ParseException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    private boolean isWithinRange(String recordDate, Date start, Date end) {
+        SimpleDateFormat isoFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat altFormatter = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT'Z (z)");
+
+        Date recordDateFormatted;
+        try {
+            recordDateFormatted = isoFormatter.parse(recordDate);
+        } catch (ParseException e) {
+            try {
+                recordDateFormatted = altFormatter.parse(recordDate);
+            } catch (Exception exception){
+                return false;
+            }
+        }
+
+        if (recordDate == null) {
+            return false;
+        }
+        return !recordDateFormatted.before(start) && !recordDateFormatted.after(end);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.hris.HRIS.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -63,6 +64,19 @@ public class PayrollReportsGenerationService {
         employeePayItemController.addEPFDeductions(email);
         employeePayItemController.addETFDeductions(email);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDate now = LocalDate.now();
+        LocalDate firstDayOfMonth = now.withDayOfMonth(1);
+        LocalDate lastDayOfMonth = now.withDayOfMonth(now.lengthOfMonth());
+
+        String beginDate = firstDayOfMonth.atStartOfDay().format(formatter);
+        String endDate = lastDayOfMonth.atTime(23, 59, 59).format(formatter);
+
+        System.out.println(attendanceController.getAllAttendanceRecordsByEmailAndDateRange(email, beginDate, endDate));
+
+        //TODO: Temporarily disabled generating the payroll reports and summary reports since the service method is improving to handle the payroll process based on payroll periods.
+
         // Calculate earnings for the pay items.
         for(int i = 0; i < employeePayItemsList.size(); i++){
             PayItemModel payItemModel = payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody();
@@ -118,9 +132,9 @@ public class PayrollReportsGenerationService {
         String generatedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         payrollReportModel.setReportGeneratedDate(generatedDateTime);
 
-        payrollReportRepository.save(payrollReportModel);
+//        payrollReportRepository.save(payrollReportModel);
 
-        employeePayItemController.resetCommonPayItems(email);
+//        employeePayItemController.resetCommonPayItems(email);
     }
 
     public void generateSummaryReport(String reportType, String payPeriod, String organizationId){
@@ -171,6 +185,6 @@ public class PayrollReportsGenerationService {
 
         summaryReportModel.setStatus("Available");
 
-        summaryReportRepository.save(summaryReportModel);
+//        summaryReportRepository.save(summaryReportModel);
     }
 }

@@ -22,7 +22,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let employee of employees" routerLink='../employee/{{employee.id}}/payitems'>
+                      <tr *ngFor="let employee of employees" routerLink='../employee/{{employee.id}}/payitems' style="cursor: pointer;">
                         <td><mat-icon>navigate_next</mat-icon></td>
                         <td>{{ employee.name }}</td>
                         <td>{{ employee.email }}</td>
