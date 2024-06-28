@@ -1,5 +1,6 @@
 package com.hris.HRIS.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hris.HRIS.controller.AttendanceController;
 import com.hris.HRIS.dto.PayrollReportItem;
 import com.hris.HRIS.dto.SummaryReportItem;
@@ -63,6 +66,19 @@ public class PayrollReportsGenerationService {
         employeePayItemController.addEPFDeductions(email);
         employeePayItemController.addETFDeductions(email);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDate now = LocalDate.now();
+        LocalDate firstDayOfMonth = now.withDayOfMonth(1);
+        LocalDate lastDayOfMonth = now.withDayOfMonth(now.lengthOfMonth());
+
+        String beginDate = firstDayOfMonth.atStartOfDay().format(formatter);
+        String endDate = lastDayOfMonth.atTime(23, 59, 59).format(formatter);
+
+        calculatePaymentsRelatedToAttendanceRecords(email, beginDate, endDate);
+
+        //TODO: Temporarily disabled generating the payroll reports and summary reports since the service method is improving to handle the payroll process based on payroll periods.
+
         // Calculate earnings for the pay items.
         for(int i = 0; i < employeePayItemsList.size(); i++){
             PayItemModel payItemModel = payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody();
@@ -118,9 +134,9 @@ public class PayrollReportsGenerationService {
         String generatedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         payrollReportModel.setReportGeneratedDate(generatedDateTime);
 
-        payrollReportRepository.save(payrollReportModel);
+//        payrollReportRepository.save(payrollReportModel);
 
-        employeePayItemController.resetCommonPayItems(email);
+//        employeePayItemController.resetCommonPayItems(email);
     }
 
     public void generateSummaryReport(String reportType, String payPeriod, String organizationId){
@@ -171,6 +187,37 @@ public class PayrollReportsGenerationService {
 
         summaryReportModel.setStatus("Available");
 
-        summaryReportRepository.save(summaryReportModel);
+//        summaryReportRepository.save(summaryReportModel);
+    }
+
+    public void calculatePaymentsRelatedToAttendanceRecords(String email, String startDate, String endDate){
+        List<AttendanceModel> attendanceRecords = attendanceController.getAllAttendanceRecordsByEmailAndDateRange(email, startDate, endDate);
+
+        double totalLateMinutes = 0.0;
+        double totalEarlyDepartureMinutes = 0.0;
+        double totalNoPayHours = 0.0;
+        double totalOvertimeHours = 0.0;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        for(AttendanceModel attendanceModel : attendanceRecords){
+            totalLateMinutes += attendanceModel.getLateMinutes();
+            totalEarlyDepartureMinutes += attendanceModel.getEarlyDepartureMinutes();
+            totalOvertimeHours += attendanceModel.getOvertimeHours();
+        }
+
+        employeePayItemController.resetCommonPayItems(email);
+
+        // TODO: Temporary added a fixed value as the total hours allowed.
+
+        ObjectNode lateMinuteRecord = objectMapper.createObjectNode();
+        lateMinuteRecord.put("totalHoursAllowed", 240);
+        lateMinuteRecord.put("lateMinutes", totalLateMinutes);
+        employeePayItemController.addLateMinuteDeductions(email, lateMinuteRecord.toString());
+
+        ObjectNode overtimeHoursRecord = objectMapper.createObjectNode();
+        overtimeHoursRecord.put("totalHoursAllowed", 240);
+        overtimeHoursRecord.put("lateMinutes", totalOvertimeHours);
+        employeePayItemController.addOvertimePayments(email, overtimeHoursRecord.toString());
     }
 }

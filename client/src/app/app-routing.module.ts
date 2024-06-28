@@ -73,6 +73,7 @@ import {
 import {
   DashboardOnboardinMainComponent
 } from "./components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component";
+import { PayrollConfigurationComponent } from './components/payroll/payroll-configuration/payroll-configuration.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -142,7 +143,8 @@ const routes: Routes = [
       {path: 'payroll-history', component: PayrollHistoryComponent},
       {path: 'taxdetails', component: TaxdetailsComponent},
       {path: 'taxdetails/new-tax-detail', component: AddNewTaxrangeComponent},
-      {path: 'taxdetails/edit-tax-detail/:taxdetailId', component: AddNewTaxrangeComponent}
+      {path: 'taxdetails/edit-tax-detail/:taxdetailId', component: AddNewTaxrangeComponent},
+      {path: 'payroll-configuration', component: PayrollConfigurationComponent}
     ]
   },
   {
