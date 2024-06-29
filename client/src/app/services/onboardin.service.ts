@@ -19,6 +19,10 @@ export class OnboardinService {
     return this.http.post(this.baseUrl+'onboardingPlan/save',plan);
   }
 
+  public deleteOnboardingPlan(id:any):Observable<any> {
+    return this.http.delete(this.baseUrl+'onboardingPlan/delete/id/'+id);
+  }
+
   public saveOnboardin(onboarding: Onboardin): Observable<any> {
     return this.http.post(this.baseUrl+'onboarding/save', onboarding);
   }
