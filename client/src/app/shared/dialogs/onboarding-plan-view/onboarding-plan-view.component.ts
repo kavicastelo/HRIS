@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {AuthService} from "../../../services/auth.service";
 import {OnboardinService} from "../../../services/onboardin.service";
 import {tap} from "rxjs";
+import {CreatePlanDialogComponent} from "../create-plan-dialog/create-plan-dialog.component";
 
 @Component({
   selector: 'app-onboarding-plan-view',
@@ -68,4 +69,37 @@ export class OnboardingPlanViewComponent implements OnInit {
     this.dialog.closeAll()
   }
 
+  EditPlan() {
+    const data = {
+      organizationId: this.organizationId,
+      id: this.receivedData.data.id,
+      userId: this.receivedData.data.empId,
+      userName: this.receivedData.data.empName,
+      userEmail: this.receivedData.data.empEmail,
+      department: this.receivedData.data.department,
+      location: this.receivedData.data.location,
+      data:this.receivedData.data
+    }
+    this.toggleDialog('', '', data, CreatePlanDialogComponent)
+  }
+
+  editTasks() {
+    //TODO: edit tasks
+  }
+
+  toggleDialog(title: any, msg: any, data: any, component: any) {
+    const _popup = this.dialog.open(component, {
+      enterAnimationDuration: '400ms',
+      exitAnimationDuration: '500ms',
+      maxHeight: '80vh',
+      data: {
+        data: data,
+        title: title,
+        msg: msg
+      }
+    });
+    _popup.afterClosed().subscribe(item => {
+      //TODO: load all onboarding plans
+    })
+  }
 }

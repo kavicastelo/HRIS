@@ -101,32 +101,43 @@
       </div>
     </div>
     <hr>
-    <table class="table table-hover">
-      <thead>
-      <tr>
-        <th>Activity Type</th>
-        <th>Closed</th>
-        <th>Status</th>
-        <th>Activity Monitored By</th>
-        <th>Activity Notes</th>
-        <th>Status Notes</th>
-      </tr>
-      </thead>
-      <tbody *ngFor="let tt of p.taskTitles">
-      <tr>
-        <td colspan="6" class="task-title">
-          {{tt}}
-        </td>
-      </tr>
-      <tr *ngFor="let t of filterOnBoardingTasks(tt)">
-        <td>{{t.taskName}}</td>
-        <td>{{t.closed}}</td>
-        <td>{{t.status}}</td>
-        <td>{{t.monitoredBy}}</td>
-        <td>{{t.activityNotes}}</td>
-        <td>{{t.statusNotes}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div style="width: 100%; overflow-x: auto">
+      <table class="table table-hover" style="min-width: 600px;">
+        <thead>
+        <tr>
+          <th>Activity Type</th>
+          <th>Closed</th>
+          <th>Status</th>
+          <th>Activity Monitored By</th>
+          <th>Activity Notes</th>
+          <th>Status Notes</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let tt of p.taskTitles">
+        <tr>
+          <td colspan="6" class="task-title">
+            {{tt}}
+          </td>
+        </tr>
+        <tr *ngFor="let t of filterOnBoardingTasks(tt)">
+          <td>{{t.taskName}}</td>
+          <td>{{t.closed}}</td>
+          <td>{{t.status}}</td>
+          <td>{{t.monitoredBy}}</td>
+          <td>{{t.activityNotes}}</td>
+          <td>{{t.statusNotes}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="sticky-bottom" style="background-color: #fff">
+  <hr>
+  <div class="d-flex align-items-center justify-content-end px-2 py-2">
+    <button class="btn btn-primary" (click)="EditPlan()">Edit Plan</button>
+    <button class="btn btn-primary mx-2" (click)="editTasks()">Edit Tasks</button>
+    <button class="btn btn-danger" (click)="editTasks()">Delete Plan</button>
   </div>
 </div>

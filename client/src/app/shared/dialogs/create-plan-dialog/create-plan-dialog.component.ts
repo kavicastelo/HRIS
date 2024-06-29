@@ -30,6 +30,9 @@ export class CreatePlanDialogComponent {
   taskNames: any[] = [{taskTitle: '', taskName: '', organizationId: '', onBoardingPlanId: '', adminEmail: '', description: '', startdate: '', taskdate: '', closed: '', status: '', monitoredBy: '', activityNotes: '', statusNotes: ''}];
   filteredTaskNames: any[] = [];
 
+  loadTaskNames: any[] = [];
+  filteredLoadTaskNames: any[] = [];
+
   organizationId: any;
   targetInput:any;
   targetManagerInput:any;
@@ -76,6 +79,10 @@ export class CreatePlanDialogComponent {
       this.getCurrentUser();
     })
 
+    await this.loadAllTasks().subscribe(()=>{
+      this.filterLoadTasks(this.receivedData.data.data.id.toString());
+    })
+
     if (this.receivedData.data.userId && !this.receivedData.data.data.id){
       this.patchValues()
     } else if (this.receivedData.data.data.id){
@@ -95,6 +102,17 @@ export class CreatePlanDialogComponent {
 
   getCurrentUser(): Observable<any> {
     return this.thisUser = this.employeeDataStore.find((emp: any) => emp.id === this.thisUserId);
+  }
+
+  loadAllTasks(): Observable<any> {
+    return this.onboardinService.getAllTasks().pipe(
+        tap(data => this.loadTaskNames = data)
+    );
+  }
+
+  filterLoadTasks(planId: any): any[]{
+    this.filteredLoadTaskNames = this.loadTaskNames.filter((data: any) => data.organizationId === this.organizationId && data.onBoardingPlanId == planId)
+    return this.filteredLoadTaskNames;
   }
 
   filterEmployees(): any[]{
@@ -140,17 +158,17 @@ export class CreatePlanDialogComponent {
         this.submitTasks(data.message);
         this.closePopup();
         this.snackBar.open("Please wait a moment...!");
-        // this.filterEmployees().forEach((emp)=>{
-        //   const notificationData = {
-        //     userId: emp.id,
-        //     notification: this.receivedData.data.userName + ' created a new onboarding plan',
-        //     timestamp: new Date(),
-        //     router: '/onboardin/plan',
-        //     status: true
-        //   }
-        //
-        //   this.pushNotification(notificationData);
-        // })
+        this.filterEmployees().forEach((emp)=>{
+          const notificationData = {
+            userId: emp.id,
+            notification: this.receivedData.data.userName + ' created a new onboarding plan',
+            timestamp: new Date(),
+            router: '/onboardin/plan',
+            status: true
+          }
+
+          this.pushNotification(notificationData);
+        })
         this.snackBar.dismiss();
         this.snackBar.open("New Plan Create!","Ok", {duration:3000})
       }, error => {
@@ -265,6 +283,8 @@ export class CreatePlanDialogComponent {
       status: 'Open',
       template: 'yes'
     }).subscribe(data=>{
+      this.submitTasks(data.message);
+      this.closePopup();
       this.snackBar.open("Template Save!","Ok", {duration:3000})
     }, error => {
       console.log(error)
@@ -293,6 +313,13 @@ export class CreatePlanDialogComponent {
 
     if (this.receivedData.data.data.taskTitles) {
       this.taskTitles = this.receivedData.data.data.taskTitles
+      this.loadAllTasks().subscribe(()=>{
+        this.taskNames = this.filterLoadTasks(this.receivedData.data.data.id.toString())
+
+        this.taskTitles.forEach((data: any) => {
+          this.filterTasksNames(data)
+        })
+      })
     }
   }
 
