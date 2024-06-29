@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.OnboardingPlanModel;
 import com.hris.HRIS.repository.OnboardingPlanRepository;
+import com.hris.HRIS.service.OnboardingPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ import java.util.Optional;
 public class OnboardingPlanController {
     @Autowired
     OnboardingPlanRepository onboardingPlanRepository;
+
+    @Autowired
+    OnboardingPlanService onboardingPlanService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveOnboardingPlan(@RequestBody OnboardingPlanModel onboardingPlanModel) {
@@ -38,6 +42,7 @@ public class OnboardingPlanController {
 
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteOnboardingPlan(@PathVariable String id) {
+        onboardingPlanService.deleteAllTasksByPlanId(id);
         onboardingPlanRepository.deleteById(id);
 
         ApiResponse apiResponse = new ApiResponse("Onboarding plan deleted successfully.");

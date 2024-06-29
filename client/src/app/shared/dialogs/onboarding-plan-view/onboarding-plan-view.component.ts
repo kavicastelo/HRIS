@@ -4,6 +4,7 @@ import {AuthService} from "../../../services/auth.service";
 import {OnboardinService} from "../../../services/onboardin.service";
 import {tap} from "rxjs";
 import {CreatePlanDialogComponent} from "../create-plan-dialog/create-plan-dialog.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-onboarding-plan-view',
@@ -24,6 +25,7 @@ export class OnboardingPlanViewComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
               private cookieService: AuthService,
+              private snackBar: MatSnackBar,
               private onboardingService: OnboardinService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<OnboardingPlanViewComponent>) {
@@ -101,5 +103,18 @@ export class OnboardingPlanViewComponent implements OnInit {
     _popup.afterClosed().subscribe(item => {
       //TODO: load all onboarding plans
     })
+  }
+
+  deletePlan() {
+    if (this.receivedData.data.id){
+      if (confirm('Are you sure you want to delete this plan?')) {
+        this.onboardingService.deleteOnboardingPlan(this.receivedData.data.id).subscribe(() => {
+          this.closePopup();
+          this.snackBar.open('Plan deleted successfully', 'Close', {
+            duration: 3000
+          })
+        })
+      }
+    }
   }
 }
