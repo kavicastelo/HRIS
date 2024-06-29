@@ -146,6 +146,7 @@ import { PayrollConfigurationComponent } from './components/payroll/payroll-conf
 import { DashboardMainComponent } from './components/Dashboards/dashboard-initial/dashboard-main/dashboard-main.component';
 import { DashboardOnboardinMainComponent } from './components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { OnboardingPlanViewComponent } from './shared/dialogs/onboarding-plan-view/onboarding-plan-view.component';
 
 @NgModule({
   declarations: [
@@ -239,7 +240,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     JobPostViewComponent,
     PayrollConfigurationComponent,
     DashboardMainComponent,
-    DashboardOnboardinMainComponent
+    DashboardOnboardinMainComponent,
+    OnboardingPlanViewComponent
   ],
     imports: [
         BrowserModule,

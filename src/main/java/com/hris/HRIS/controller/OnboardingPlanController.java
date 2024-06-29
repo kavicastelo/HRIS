@@ -18,9 +18,9 @@ public class OnboardingPlanController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveOnboardingPlan(@RequestBody OnboardingPlanModel onboardingPlanModel) {
-        onboardingPlanRepository.save(onboardingPlanModel);
+        OnboardingPlanModel savedOnboardingPlan = onboardingPlanRepository.save(onboardingPlanModel);
 
-        ApiResponse apiResponse = new ApiResponse("Onboarding plan saved successfully.");
+        ApiResponse apiResponse = new ApiResponse(savedOnboardingPlan.getId());
         return ResponseEntity.ok(apiResponse);
     }
 

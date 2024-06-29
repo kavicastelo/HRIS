@@ -76,7 +76,11 @@ public class OnboardingController {
             existingOnboarding.setDescription(onboardingModel.getDescription());
             existingOnboarding.setStartdate(onboardingModel.getStartdate());
             existingOnboarding.setTaskdate(onboardingModel.getTaskdate());
+            existingOnboarding.setClosed(onboardingModel.getClosed());
             existingOnboarding.setStatus(onboardingModel.getStatus());
+            existingOnboarding.setMonitoredBy(onboardingModel.getMonitoredBy());
+            existingOnboarding.setActivityNotes(onboardingModel.getActivityNotes());
+            existingOnboarding.setStatusNotes(onboardingModel.getStatusNotes());
 
             onboardingRepository.save(existingOnboarding);
 
@@ -120,8 +124,9 @@ public class OnboardingController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping("/save/tasks")
-    public ResponseEntity<ApiResponse> saveTasks(@RequestBody List<OnboardingModel> onboardingModel) {
+    @PostMapping("/save/tasks/{planId}")
+    public ResponseEntity<ApiResponse> saveTasks(@PathVariable String planId, @RequestBody List<OnboardingModel> onboardingModel) {
+        onboardingModel.forEach(onboarding -> onboarding.setOnBoardingPlanId(planId));
         onboardingRepository.saveAll(onboardingModel);
         return ResponseEntity.ok(new ApiResponse("Saved all tasks to onboarding plan"));
     }

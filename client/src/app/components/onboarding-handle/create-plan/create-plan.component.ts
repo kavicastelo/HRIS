@@ -7,6 +7,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CreatePlanDialogComponent} from "../../../shared/dialogs/create-plan-dialog/create-plan-dialog.component";
+import {OnboardingPlanViewComponent} from "../../../shared/dialogs/onboarding-plan-view/onboarding-plan-view.component";
 
 @Component({
   selector: 'app-create-plan',
@@ -151,5 +152,9 @@ export class CreatePlanComponent {
       data:tp
     }
     this.toggleDialog('', '', data, CreatePlanDialogComponent)
+  }
+
+  viewPlan(p: any) {
+    this.toggleDialog('', '', p, OnboardingPlanViewComponent)
   }
 }

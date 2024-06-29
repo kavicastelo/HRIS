@@ -46,7 +46,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let p of filterPlans()">
+                    <tr *ngFor="let p of filterPlans()" (click)="viewPlan(p)">
                         <td [title]="p.empName">{{p.empName}}</td>
                         <td [title]="p.title">{{p.title | truncate:10}}</td>
                         <td>
