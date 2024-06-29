@@ -5,9 +5,17 @@
         <div class="col-12 col-md-6"><button class="btn-1 my-4" (click)="runMonthlyPayrollProcess()" >Run Payroll</button></div>
     </div> -->
     <div *ngIf="!isReportsGeneratingProcessInProgress">
-        <h4>Regular Payroll</h4>
-        <p style="font-weight: 200;">Pay period: {{ currentMonth }} {{ currentYear }} ({{ startDate }} - {{ endDate }})</p>
+        <h4>Regular Payroll <span class="badge rounded-pill bg-warning text-dark" style="font-size: 15px;"> Due in {{ datesLeftForThePayrollDeadline }} {{datesLeftForThePayrollDeadline == 1?'day':'days'}} </span></h4>
+        <p style="font-weight: 200;">Pay period: {{ currentMonth }} {{ currentYear }} ({{ payrollStartDate }} - {{ payrollEndDate }})</p>
         <p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p>
         <button class="btn-1" style="padding-right:10px;" (click)="runMonthlyPayrollProcess()" ><mat-icon>play_arrow</mat-icon> Run Payroll</button>
     </div>
+</div>
+
+<br><br>
+<h4>Payroll Schedule</h4>
+<P>{{ payrollConfigurationModel.payrollPeriodStartDate }}</P>
+
+<div class="icon-text-group" (click)="editPayrollSchedule(payrollConfigurationModel)">
+    <span style="color: blue;">Edit Payroll Schedule</span>&nbsp;<mat-icon style="font-size: 18px;">edit</mat-icon>
 </div>

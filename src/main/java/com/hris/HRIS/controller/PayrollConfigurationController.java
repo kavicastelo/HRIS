@@ -27,9 +27,9 @@ public class PayrollConfigurationController {
 
             existingPayrollConfiguration.setPayrollFrequency(payrollConfigurationModel.getPayrollFrequency());
             existingPayrollConfiguration.setPayrollPeriodStartDate(payrollConfigurationModel.getPayrollPeriodStartDate());
-            existingPayrollConfiguration.setPayrollPeriodEndDate(payrollConfigurationModel.getPayrollPeriodEndDate());
-            existingPayrollConfiguration.setDeadlineToRunPayroll(payrollConfigurationModel.getDeadlineToRunPayroll());
-            existingPayrollConfiguration.setPayDay(payrollConfigurationModel.getPayDay());
+            existingPayrollConfiguration.setPayrollPeriodInDays(payrollConfigurationModel.getPayrollPeriodInDays());
+            existingPayrollConfiguration.setDaysToRunPayroll(payrollConfigurationModel.getDaysToRunPayroll());
+            existingPayrollConfiguration.setDaysToPayday(payrollConfigurationModel.getDaysToPayday());
 
             payrollConfigurationRepository.save(existingPayrollConfiguration);
         }else{

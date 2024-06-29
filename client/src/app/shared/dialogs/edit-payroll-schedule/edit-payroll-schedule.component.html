@@ -1,0 +1,49 @@
+<div class="d-flex align-items-center justify-content-between px-2 my-2">
+    <h5>Edit Payroll Schedule</h5>
+    <mat-icon (click)="onNoClick()">close</mat-icon>
+</div>
+<hr>
+<div class="container" style="overflow: auto; padding-top: 10px;">
+    <form [formGroup]="payrollScheduleFormGroup">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Payroll frequency</mat-label>
+            <mat-select matNativeControl placeholder="Monthly" formControlName="payrollFrequencyCtrl" [(ngModel)]="payrollConfigurationModel.payrollFrequency" required>
+                <mat-option value="Monthly">Monthly</mat-option>
+                <mat-option value="Biweekly">Biweekly</mat-option>
+                <mat-option value="Weekly">Weekly</mat-option>
+            </mat-select>
+        </mat-form-field><br>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Payroll period start date</mat-label>
+            <input matInput placeholder="e.g. 02/27/2024" formControlName="payrollPeriodStartDateCtrl" [matDatepicker]="picker" (dateInput)="formatDate()" (dateChange)="formatDate()" required>
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field><br><br>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Payroll period in days</mat-label>
+            <mat-select matNativeControl placeholder="1 - 31" formControlName="payrollPeriodInDaysCtrl" [(ngModel)]="payrollConfigurationModel.payrollPeriodInDays" required>
+                <mat-option value="{{day}}" *ngFor="let day of days">{{day}}</mat-option>
+            </mat-select>
+        </mat-form-field><br>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>No. of days to run payroll</mat-label>
+            <mat-select matNativeControl placeholder="1 - 31" formControlName="daysToRunPayrollCtrl" [(ngModel)]="payrollConfigurationModel.daysToRunPayroll" required>
+                <mat-option value="{{day}}" *ngFor="let day of days">{{day}}</mat-option>
+            </mat-select>
+            <mat-hint>Days left to run payroll after the payroll period.</mat-hint>
+        </mat-form-field><br><br>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>No. of days for the payday</mat-label>
+            <mat-select matNativeControl placeholder="1 - 31" formControlName="daysToPaydayCtrl" [(ngModel)]="payrollConfigurationModel.daysToPayday" required>
+                <mat-option value="{{day}}" *ngFor="let day of days">{{day}}</mat-option>
+            </mat-select>
+            <mat-hint>Days left for the payday after the payroll execution.</mat-hint>
+        </mat-form-field>
+    </form>
+</div>
+<hr>
+<div class="d-flex align-items-center justify-content-end px-2 my-2">
+    <button class="btn me-2" (click)="onNoClick()">Cancel</button>
+    <button class="btn" [disabled]="payrollScheduleFormGroup.invalid" [mat-dialog-close]="payrollConfigurationModel">Edit</button>
+</div>
