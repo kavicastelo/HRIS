@@ -12,7 +12,7 @@ export class PayrollConfigurationService {
   
   constructor(private http : HttpClient) { }
 
-  PayrollConfigurationController(payrollConfigurationModel: PayrollConfigurationModel){
+  savePayrollConfiguration(payrollConfigurationModel: PayrollConfigurationModel){
     return this.http.post(this.baseUrl + "payroll-configuration/save", payrollConfigurationModel);
   }
 
