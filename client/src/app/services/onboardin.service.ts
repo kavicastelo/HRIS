@@ -23,8 +23,8 @@ export class OnboardinService {
     return this.http.post(this.baseUrl+'onboarding/save', onboarding);
   }
 
-  public saveTasksList(onboarding: any): Observable<any> {
-    return this.http.post(this.baseUrl+'onboarding/save/tasks', onboarding);
+  public saveTasksList(planId:any, onboarding: any): Observable<any> {
+    return this.http.post(this.baseUrl+'onboarding/save/tasks/'+planId, onboarding);
   }
 
   public getAllPlans(): Observable<any> {

@@ -27,5 +27,9 @@ public class OnboardingModel {
     private String description;
     private String startdate;
     private String taskdate;
+    private String closed;
     private String status; //onboarding offboarding hold
+    private String monitoredBy;
+    private String activityNotes;
+    private String statusNotes;
 }

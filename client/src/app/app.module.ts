@@ -147,6 +147,7 @@ import { DashboardMainComponent } from './components/Dashboards/dashboard-initia
 import { DashboardOnboardinMainComponent } from './components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { EditPayrollScheduleComponent } from './shared/dialogs/edit-payroll-schedule/edit-payroll-schedule.component';
+import { OnboardingPlanViewComponent } from './shared/dialogs/onboarding-plan-view/onboarding-plan-view.component';
 
 @NgModule({
   declarations: [
@@ -241,7 +242,8 @@ import { EditPayrollScheduleComponent } from './shared/dialogs/edit-payroll-sche
     PayrollConfigurationComponent,
     DashboardMainComponent,
     DashboardOnboardinMainComponent,
-    EditPayrollScheduleComponent
+    EditPayrollScheduleComponent,
+    OnboardingPlanViewComponent
   ],
     imports: [
         BrowserModule,

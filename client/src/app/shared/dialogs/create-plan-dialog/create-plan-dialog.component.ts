@@ -17,6 +17,9 @@ import {AuthService} from "../../../services/auth.service";
 })
 export class CreatePlanDialogComponent {
 
+  thisUserId:any;
+  thisUser:any;
+
   receivedData:any;
   planDataStore:any[] = [];
   employeeDataStore:any[] = [];
@@ -24,7 +27,7 @@ export class CreatePlanDialogComponent {
   filteredManagers:any[] = [];
 
   taskTitles: any[] = [];
-  taskNames: any[] = [{taskTitle: '', taskName: ''}];
+  taskNames: any[] = [{taskTitle: '', taskName: '', organizationId: '', onBoardingPlanId: '', adminEmail: '', description: '', startdate: '', taskdate: '', closed: '', status: '', monitoredBy: '', activityNotes: '', statusNotes: ''}];
   filteredTaskNames: any[] = [];
 
   organizationId: any;
@@ -33,14 +36,14 @@ export class CreatePlanDialogComponent {
 
   onboardinPlanForm = new FormGroup({
     empName: new FormControl('', [Validators.required]),
-    empId: new FormControl({value:'', disabled: true}, [Validators.required]),
-    empEmail: new FormControl({value:'', disabled: true}),
+    empId: new FormControl('', [Validators.required]),
+    empEmail: new FormControl('', [Validators.required, Validators.email]),
     titlePlan: new FormControl('', [Validators.required]),
-    departmentPlan: new FormControl({value:'', disabled: true}, [Validators.required]),
+    departmentPlan: new FormControl('', [Validators.required]),
     managerPlan: new FormControl('', [Validators.required]),
     startDatePlan: new FormControl('', [Validators.required]),
     endDatePlan: new FormControl('', [Validators.required]),
-    locationPlan: new FormControl({value:'', disabled: true}),
+    locationPlan: new FormControl(''),
     descriptionPlan: new FormControl('', [Validators.required]),
   })
 
@@ -67,8 +70,11 @@ export class CreatePlanDialogComponent {
   async ngOnInit(): Promise<any> {
     this.receivedData = this.data;
     this.organizationId = this.cookieService.organization().toString();
+    this.thisUserId = this.cookieService.userID().toString();
 
-    await this.loadAllUsers().subscribe(()=>{})
+    await this.loadAllUsers().subscribe(()=>{
+      this.getCurrentUser();
+    })
 
     if (this.receivedData.data.userId && !this.receivedData.data.data.id){
       this.patchValues()
@@ -85,6 +91,10 @@ export class CreatePlanDialogComponent {
     return this.employeesService.getAllEmployees().pipe(
         tap(data => this.employeeDataStore = data)
     );
+  }
+
+  getCurrentUser(): Observable<any> {
+    return this.thisUser = this.employeeDataStore.find((emp: any) => emp.id === this.thisUserId);
   }
 
   filterEmployees(): any[]{
@@ -127,20 +137,20 @@ export class CreatePlanDialogComponent {
         status: 'Open',
         template: 'no'
       }).subscribe(data=>{
-        this.submitTasks();
+        this.submitTasks(data.message);
         this.closePopup();
         this.snackBar.open("Please wait a moment...!");
-        this.filterEmployees().forEach((emp)=>{
-          const notificationData = {
-            userId: emp.id,
-            notification: this.receivedData.data.userName + ' created a new onboarding plan',
-            timestamp: new Date(),
-            router: '/onboardin/plan',
-            status: true
-          }
-
-          this.pushNotification(notificationData);
-        })
+        // this.filterEmployees().forEach((emp)=>{
+        //   const notificationData = {
+        //     userId: emp.id,
+        //     notification: this.receivedData.data.userName + ' created a new onboarding plan',
+        //     timestamp: new Date(),
+        //     router: '/onboardin/plan',
+        //     status: true
+        //   }
+        //
+        //   this.pushNotification(notificationData);
+        // })
         this.snackBar.dismiss();
         this.snackBar.open("New Plan Create!","Ok", {duration:3000})
       }, error => {
@@ -149,9 +159,9 @@ export class CreatePlanDialogComponent {
     }
   }
 
-  submitTasks(){
+  submitTasks(planId: any){
     if (this.taskNames.length > 0){
-      this.onboardinService.saveTasksList(this.taskNames).subscribe(data=>{
+      this.onboardinService.saveTasksList(planId, this.taskNames).subscribe(data=>{
         //TODO: add notification
       }, error => {
         console.log(error)
@@ -214,7 +224,21 @@ export class CreatePlanDialogComponent {
 
   addTask(taskTitle:any) {
     if (this.tasksForm.valid) {
-      this.taskNames.push({taskTitle: taskTitle, taskName: this.tasksForm.value.taskName});
+      this.taskNames.push({
+        organizationId: this.organizationId,
+        onBoardingPlanId: "N/A",
+        taskTitle: taskTitle,
+        taskName: this.tasksForm.value.taskName,
+        adminEmail: this.thisUser.email,
+        description: "N/A",
+        startdate: "N/A",
+        taskdate: "N/A",
+        closed: "N/A",
+        status: "Open",
+        monitoredBy: "N/A",
+        activityNotes: "N/A",
+        statusNotes: "N/A"
+      });
       this.tasksForm.reset();
     }
   }
