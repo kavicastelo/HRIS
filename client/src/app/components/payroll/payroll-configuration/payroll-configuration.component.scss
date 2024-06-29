@@ -7,3 +7,11 @@
     justify-content: flex-start;
     padding: 20px;
 }
+
+.icon-text-group{
+    display: flex;
+    align-items: center;
+    color: blue;
+    // text-decoration: underline;
+    cursor: pointer;
+}

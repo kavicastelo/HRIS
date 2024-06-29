@@ -17,7 +17,7 @@ public class PayrollConfigurationModel {
     private String organizationId;
     private String payrollFrequency; // Monthly,  Biweekly or Weekly
     private String payrollPeriodStartDate;
-    private String payrollPeriodEndDate;
-    private String deadlineToRunPayroll;
-    private String payDay; // The day where thr employees receives the payments + payslip.
+    private String payrollPeriodInDays;
+    private String daysToRunPayroll;
+    private String daysToPayday; // The day where the employees receives the payments + payslip.
 }
