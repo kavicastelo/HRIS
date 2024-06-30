@@ -55,12 +55,17 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-6" style="position: relative">
           <p>Monitor By</p>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Monitor by</mat-label>
-            <input matInput id="monitorBy" formControlName="monitorBy" placeholder="Monitor by..." #monitorByInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
+            <input matInput id="monitorBy" formControlName="monitorBy" placeholder="Monitor by..." #monitorByInput (keydown)="focusFieldOnEnter($event, descriptionInput)" (keyup)="handleManagerSearch($event.target)">
           </mat-form-field>
+          <div class="dropdown-visible" id="managerDropdown">
+            <ul>
+              <li *ngFor="let e of filterEmployees()" (click)="chooseManager(e)">{{e.name}}</li>
+            </ul>
+          </div>
         </div>
         <div class="col-12">
           <p>Description</p>

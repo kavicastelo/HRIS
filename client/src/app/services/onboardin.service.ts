@@ -23,6 +23,10 @@ export class OnboardinService {
     return this.http.delete(this.baseUrl+'onboardingPlan/delete/id/'+id);
   }
 
+  public deleteOnboarding(id:any):Observable<any> {
+    return this.http.delete(this.baseUrl+'onboarding/delete/id/'+id);
+  }
+
   public updatePlan(plan: OnboardinPlan): Observable<any> {
     return this.http.put(this.baseUrl+'onboardingPlan/update/id/'+plan.id, plan);
   }
