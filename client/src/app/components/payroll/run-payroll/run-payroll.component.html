@@ -1,0 +1,47 @@
+<h4>Run Payroll</h4>
+
+<div id="step1" *ngIf="isDisplayEmployeePayments">
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h5>Employee Payments</h5>
+                </div>
+            </li>
+            <li class="list-group-item">
+
+                <div class="table-data-list">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let employee of employees" (click)="displayEmployeePayitems(employee.id)" style="cursor: pointer;">
+                            <td><mat-icon>navigate_next</mat-icon></td>
+                            <td>{{ employee.name }}</td>
+                            <td>{{ employee.email }}</td>
+                            <td>{{ employee.phone }}</td>
+                        </tbody>
+                    </table>
+                </div>
+
+            </li>
+            <li class="list-group-item">&nbsp;</li>
+        </ul>
+    </div>
+</div>    
+
+<div *ngIf="isDisplayEmployeePayItems">
+    <mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" (click)="unselectEmployeeViewPayItems()">arrow_back</mat-icon>
+    <app-view-employee-payitems [employeeId]="selectedEmployeeId"></app-view-employee-payitems>
+</div>
+
+<div style="width: 100%; height: 110px;"></div>
+<div style="background-color: white; width: 100%; height: 100px; position: fixed; bottom: 0px; left: 0px;">
+
+</div>

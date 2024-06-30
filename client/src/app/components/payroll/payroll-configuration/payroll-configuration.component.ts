@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PayrollConfigurationService } from 'src/app/services/payroll-configuration.service';
 import { PayrollReportService } from 'src/app/services/payroll-report.service';
@@ -38,7 +39,9 @@ export class PayrollConfigurationComponent {
     private cookieService: AuthService,
     private payrollConfigurationService: PayrollConfigurationService,
     private dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router
   ){
     const today = new Date();
     this.currentMonth = this.getMonthName(today.getMonth());
@@ -76,7 +79,6 @@ export class PayrollConfigurationComponent {
         const currentDate = new Date();
         const timeDiff = this.payrollDeadline.getTime() - currentDate.getTime();
         this.datesLeftForThePayrollDeadline = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        // this.datesLeftForThePayrollDeadline = 5;
       }
     },(error: any) => {
       
@@ -96,9 +98,11 @@ export class PayrollConfigurationComponent {
   }
 
   runMonthlyPayrollProcess(){
-    this.isReportsGeneratingProcessInProgress = true;
+    // this.isReportsGeneratingProcessInProgress = true;
 
-    this.payrollReportService.generateAllPayrollReportsByOrganizationId(this.cookieService.organization()).subscribe((res: any) => {},(error: any) => {})
+    // this.payrollReportService.generateAllPayrollReportsByOrganizationId(this.cookieService.organization()).subscribe((res: any) => {},(error: any) => {})
+
+    this.router.navigate(['payroll', 'run-payroll']);
   }
 
   editPayrollSchedule(payrollConfigurationModel: PayrollConfigurationModel){

@@ -74,6 +74,7 @@ import {
   DashboardOnboardinMainComponent
 } from "./components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component";
 import { PayrollConfigurationComponent } from './components/payroll/payroll-configuration/payroll-configuration.component';
+import { RunPayrollComponent } from './components/payroll/run-payroll/run-payroll.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -144,7 +145,8 @@ const routes: Routes = [
       {path: 'taxdetails', component: TaxdetailsComponent},
       {path: 'taxdetails/new-tax-detail', component: AddNewTaxrangeComponent},
       {path: 'taxdetails/edit-tax-detail/:taxdetailId', component: AddNewTaxrangeComponent},
-      {path: 'payroll-configuration', component: PayrollConfigurationComponent}
+      {path: 'payroll-configuration', component: PayrollConfigurationComponent},
+      {path: 'run-payroll', component: RunPayrollComponent}
     ]
   },
   {
