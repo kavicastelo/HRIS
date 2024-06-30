@@ -77,4 +77,14 @@ public class OnboardingPlanService {
         }
     }
 
+    public void deleteAllTasksAndSaveAll(String planId, List<OnboardingModel> onboardingModels) {
+        Optional<List<OnboardingModel>> onboardingModelOptional = onboardingRepository.findAllByOnBoardingPlanId(planId);
+
+        if (onboardingModelOptional.isPresent()) {
+            List<OnboardingModel> onboardingModelsList = onboardingModelOptional.get();
+            onboardingRepository.deleteAll(onboardingModelsList);
+            onboardingRepository.saveAll(onboardingModels);
+        }
+    }
+
 }

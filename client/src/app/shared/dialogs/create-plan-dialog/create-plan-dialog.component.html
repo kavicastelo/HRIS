@@ -140,7 +140,7 @@
   <hr>
   <div class="d-flex align-items-center justify-content-end px-2 py-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
-    <button class="btn" [disabled]="onboardinPlanForm.invalid" (click)="submitPlan()">Create</button>
-    <button mat-button [disabled]="onboardinPlanForm.invalid" (click)="saveAsTemplate()">Save as Template</button>
+    <button *ngIf="receivedData.data.data.template == 'no'||!receivedData.data.data.id" class="btn" [disabled]="onboardinPlanForm.invalid" (click)="receivedData.data.data.id?updatePlan():submitPlan()">{{receivedData.data.data.id?'Update':'Create'}}</button>
+    <button *ngIf="receivedData.data.data.template == 'yes'||!receivedData.data.data.id" mat-button [disabled]="onboardinPlanForm.invalid" (click)="receivedData.data.data.id?updateTemplate():saveAsTemplate()">{{receivedData.data.data.id?'Update Template':'Save as Template'}}</button>
   </div>
 </div>
