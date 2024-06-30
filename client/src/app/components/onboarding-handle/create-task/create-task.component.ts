@@ -100,8 +100,7 @@ export class CreateTaskComponent {
 
     toggleDialog(title: any, msg: any, data: any, component: any) {
         const _popup = this.dialog.open(component, {
-            width: '350px',
-            maxHeight: '70%',
+            maxHeight: '80vh',
             enterAnimationDuration: '500ms',
             exitAnimationDuration: '500ms',
             data: {

@@ -119,7 +119,7 @@
             {{tt}}
           </td>
         </tr>
-        <tr *ngFor="let t of filterOnBoardingTasks(tt)">
+        <tr *ngFor="let t of filterOnBoardingTasks(tt)" (click)="editTask(t, p)">
           <td>{{t.taskName}}</td>
           <td>{{t.closed}}</td>
           <td>{{t.status}}</td>

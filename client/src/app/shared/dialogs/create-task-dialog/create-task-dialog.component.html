@@ -1,40 +1,96 @@
-<div class="d-flex align-items-center justify-content-between px-2 my-2">
-    <h5>{{receivedData.data.taskId?'Edit':'Initialize'}} Onboarding Plan</h5>
+<div class="sticky-top" style="background-color: #fff">
+  <div class="d-flex align-items-center justify-content-between px-2 py-2">
+    <h5>{{receivedData.data.taskId?'Edit':'Initialize'}} Onboarding Task</h5>
     <mat-icon (click)="closePopup()">close</mat-icon>
+  </div>
+  <hr>
 </div>
-<hr>
+
 <div class="container" style="overflow: auto">
     <form [formGroup]="onboardinTaskForm">
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>CHOOSE PLAN</mat-label>
-            <mat-select id="onboardingPlanId" formControlName="onboardingPlanId" [(value)]="selectedPlan" #planInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
-                <mat-option *ngFor="let f of filterPlans()" [value]="f.id">{{f.title}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>DESCRIPTION</mat-label>
-            <textarea matInput id="descriptionTask" formControlName="descriptionTask" placeholder="Description to new task..." #descriptionInput (keydown)="focusFieldOnEnter($event, startInput)"></textarea>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>DATE RANGE</mat-label>
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <p>Task Name</p>
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput id="nameTask" formControlName="nameTask" placeholder="Name of new task..." #nameInput (keydown)="focusFieldOnEnter($event, startInput)">
+            </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p>Admin Email</p>
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Admin Email</mat-label>
+              <input matInput id="adminEmail" formControlName="adminEmail" placeholder="Email of Administrator..." #adminEmailInput>
+            </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p>Date Range</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Date range</mat-label>
             <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date" formControlName="startDateTask" #startInput (keydown)="focusFieldOnEnter($event, endInput)">
-                <input matEndDate placeholder="End date" formControlName="endDateTask" #endInput (keydown)="focusFieldOnEnter($event, startInput)">
+              <input matStartDate placeholder="Start date" formControlName="startDateTask" #startInput (keydown)="focusFieldOnEnter($event, endInput)">
+              <input matEndDate placeholder="End date" formControlName="endDateTask" #endInput (keydown)="focusFieldOnEnter($event, closeInput)">
             </mat-date-range-input>
             <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>CHOOSE STATUS</mat-label>
-            <mat-select id="leaveTYpe" formControlName="statusTask" [(value)]="selectedStatus" #statusInput (keydown)="keyFormSubmit($event, receivedData.data.taskId?'edit':'create')">
-                <mat-option *ngFor="let s of statusTypes" [value]="s">{{s}}</mat-option>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p>Closed Status</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Closed</mat-label>
+            <mat-select id="close" formControlName="close" [(value)]="selectedCloseStatus" #closeInput (keydown)="focusFieldOnEnter($event, statusInput)">
+              <mat-option value="no">no</mat-option>
+              <mat-option value="yes">yes</mat-option>
             </mat-select>
-        </mat-form-field>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p>Task Status</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Choose status</mat-label>
+            <mat-select id="statusTask" formControlName="statusTask" [(value)]="selectedStatus" #statusInput (keydown)="focusFieldOnEnter($event, monitorByInput)">
+              <mat-option *ngFor="let s of statusTypes" [value]="s">{{s}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-6">
+          <p>Monitor By</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Monitor by</mat-label>
+            <input matInput id="monitorBy" formControlName="monitorBy" placeholder="Monitor by..." #monitorByInput (keydown)="focusFieldOnEnter($event, descriptionInput)">
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Description</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput id="descriptionTask" formControlName="descriptionTask" placeholder="Description to new task..." #descriptionInput (keydown)="focusFieldOnEnter($event, activityNotesInput)"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Activity Notes</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Activity notes</mat-label>
+            <textarea matInput id="activityNotes" formControlName="activityNotes" placeholder="Activity notes..." #activityNotesInput (keydown)="focusFieldOnEnter($event, statusNotesInput)"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Status Notes</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Status Notes</mat-label>
+            <textarea matInput id="statusNotes" formControlName="statusNotes" placeholder="Status notes..." #statusNotesInput (keydown)="keyFormSubmit($event, receivedData.data.taskId?'Edit':'Create')"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
     </form>
 </div>
-<hr>
-<div class="d-flex align-items-center justify-content-end px-2 my-2">
+
+<div class="sticky-bottom" style="background-color: #fff">
+  <hr>
+  <div class="d-flex align-items-center justify-content-end px-2 py-2">
     <button class="btn me-2" (click)="closePopup()">Cancel</button>
     <button class="btn" [disabled]="onboardinTaskForm.invalid" (click)="receivedData.data.taskId?editTask():submitTask()">{{receivedData.data.taskId?'Edit':'Create'}}</button>
+  </div>
 </div>
