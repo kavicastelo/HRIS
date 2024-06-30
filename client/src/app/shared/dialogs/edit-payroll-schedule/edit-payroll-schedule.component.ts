@@ -20,6 +20,7 @@ export class EditPayrollScheduleComponent {
   calendar1SelectedDates: number[] = [];
   calendar2SelectedDates: number[] = [];
 
+
   payrollScheduleFormGroup = this._formBuilder.group({
     payrollFrequencyCtrl: ['', Validators.required],
     payrollPeriodStartDateCtrl: ['', Validators.required],
@@ -73,12 +74,50 @@ export class EditPayrollScheduleComponent {
       this.calendar2Matrix = this.generateCalendarMatrix(date.getFullYear(), date.getMonth() + 1);
 
       const endDate = new Date(date);
-      console.log(this.payrollConfigurationModel.payrollPeriodInDays);
       endDate.setDate(date.getDate() + Number(this.payrollConfigurationModel.payrollPeriodInDays) - 1);
 
       const datesArray = this.generateDateRangeArrays(date, endDate);
       this.calendar1SelectedDates = datesArray[0];
       this.calendar2SelectedDates = datesArray[1];
+  }
+
+  getEndDateOfMonth(dateString: string): Date {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return new Date(year, month + 1, 0);
+  }
+
+  getCalenderDateClass(calendarNumber: number, day: number){
+    if(calendarNumber == 1){
+      if(this.calendar1SelectedDates.includes(day)){
+        return "payPeriodClass";
+      }
+    }else{
+      if(this.calendar2SelectedDates.includes(day)){
+        return "payPeriodClass";
+      }
+    }
+
+    // if(this.payrollConfigurationModel.daysToRunPayroll !== null || this.payrollConfigurationModel.daysToRunPayroll !== ""){
+    //   if(this.calendar2SelectedDates.length > 0){
+    //     if(day == this.calendar2SelectedDates[this.calendar2SelectedDates.length - 1] + Number(this.payrollConfigurationModel.daysToRunPayroll)){
+    //         return "payrollDeadlineClass";
+    //     }
+    //   }else if(this.calendar1SelectedDates[this.calendar1SelectedDates.length - 1] == this.getEndDateOfMonth(this.payrollConfigurationModel.payrollPeriodStartDate).getDate()){
+    //       if(calendarNumber == 2){
+    //         if(day == 0 + Number(this.payrollConfigurationModel.daysToRunPayroll)){
+    //             return "payrollDeadlineClass";
+    //         }
+    //       }
+    //   }else{
+    //       if(day == this.calendar1SelectedDates[this.calendar1SelectedDates.length - 1] + Number(this.payrollConfigurationModel.daysToRunPayroll)){
+    //         return "payrollDeadlineClass";
+    //       }
+    //   }
+    // }
+
+    return "";
   }
 
   generateDateRangeArrays(startDate: Date, endDate: Date): [number[], number[]] {

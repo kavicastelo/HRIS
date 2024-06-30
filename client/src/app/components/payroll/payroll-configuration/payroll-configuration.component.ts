@@ -22,8 +22,13 @@ export class PayrollConfigurationComponent {
   endDate: string;
 
   payrollConfigurationModel: PayrollConfigurationModel = new PayrollConfigurationModel();
-  payrollStartDate: string = "";
-  payrollEndDate: string = "";
+  payrollStartDateFormatted: string = "";
+  payrollEndDateFormatted: string = "";
+
+  payrollStartDate: Date = new Date();
+  payrollEndDate: Date = new Date();
+  payrollDeadline: Date = new Date();
+  payDay: Date = new Date();
 
   datesLeftForThePayrollDeadline = 0;
 
@@ -55,27 +60,30 @@ export class PayrollConfigurationComponent {
       if(res){
         this.payrollConfigurationModel = res;
 
-        // this.payrollStartDate = this.formatDate(
-        //   new Date(this.today.getFullYear(), this.today.getMonth()-1, this.payrollConfigurationModel.payrollPeriodStartDate)
-        // );
+        this.payrollStartDate = new Date(this.payrollConfigurationModel.payrollPeriodStartDate);
+        this.payrollStartDateFormatted = this.formatDate(this.payrollStartDate);
 
-        // this.payrollEndDate = this.formatDate(
-        //   new Date(this.today.getFullYear(), this.today.getMonth(), this.payrollConfigurationModel.payrollPeriodStartDate)
-        // );
-
-        // const differenceInDays = Math.floor((new Date(this.today.getFullYear(), this.today.getMonth(), this.payrollConfigurationModel.payrollPeriodStartDate).getTime() 
-        //   - new Date(this.today.getFullYear(), this.today.getMonth() - 1, this.payrollConfigurationModel.payrollPeriodStartDate).getTime()) / (1000 * 60 * 60 * 24));
-
-        // console.log('Difference in days:', differenceInDays);
-
-        // this.datesLeftForThePayrollDeadline = this.payrollConfigurationModel.deadlineToRunPayroll - this.today.getDate();
+        this.payrollEndDate = new Date(this.payrollConfigurationModel.payrollPeriodStartDate);
+        this.payrollEndDate.setDate(this.payrollEndDate.getDate() + Number(this.payrollConfigurationModel.payrollPeriodInDays) - 1);
+        this.payrollEndDateFormatted = this.formatDate(this.payrollEndDate);
+        
+        this.payrollDeadline = new Date(this.payrollEndDate);
+        this.payrollDeadline.setDate(this.payrollDeadline.getDate() + Number(this.payrollConfigurationModel.daysToRunPayroll));
+        
+        this.payDay = new Date(this.payrollDeadline);
+        this.payDay.setDate(this.payDay.getDate() + Number(this.payrollConfigurationModel.daysToPayday));
+        
+        const currentDate = new Date();
+        const timeDiff = this.payrollDeadline.getTime() - currentDate.getTime();
+        this.datesLeftForThePayrollDeadline = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        // this.datesLeftForThePayrollDeadline = 5;
       }
     },(error: any) => {
       
     });
   }
 
-  private getMonthName(monthIndex: number): string {
+  getMonthName(monthIndex: number): string {
     const monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June', 
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -83,7 +91,7 @@ export class PayrollConfigurationComponent {
     return monthNames[monthIndex];
   }
 
-  private formatDate(date: Date): string {
+  formatDate(date: Date): string {
     return `${this.getMonthName(date.getMonth())} ${date.getDate()}, ${date.getFullYear()}`;
   }
 
