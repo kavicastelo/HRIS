@@ -30,3 +30,49 @@
     background-color: #99A1B7;
   }
 }
+
+.container {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.calendarDate{
+  // padding: 5px;
+  // border: 1px solid gray;
+}
+
+.calendar, td, th {
+  border: 1px solid #C4C0B8;
+  background-color: #FBFBFB;
+  padding: 3px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.calendar {
+  border-collapse: collapse;
+}
+
+.payPeriodClass{
+  background-color: #D5F0F9;
+}
+
+.payrollDeadlineClass{
+  background-color: #FECECE;
+}
