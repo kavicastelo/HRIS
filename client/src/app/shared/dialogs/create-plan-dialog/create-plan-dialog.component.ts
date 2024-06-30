@@ -187,6 +187,66 @@ export class CreatePlanDialogComponent {
     }
   }
 
+  updateTemplate(){
+    this.onboardinService.updatePlan({
+      id: this.receivedData.data.data.id,
+      organizationId: this.receivedData.data.organizationId,
+      empName: this.onboardinPlanForm.value.empName,
+      empId: this.onboardinPlanForm.value.empId,
+      empEmail: this.onboardinPlanForm.value.empEmail,
+      title: this.onboardinPlanForm.value.titlePlan,
+      department: this.onboardinPlanForm.value.departmentPlan,
+      manager: this.onboardinPlanForm.value.managerPlan,
+      startDate: this.onboardinPlanForm.value.startDatePlan,
+      taskDate: this.onboardinPlanForm.value.endDatePlan,
+      location: this.onboardinPlanForm.value.locationPlan,
+      description: this.onboardinPlanForm.value.descriptionPlan,
+      taskTitles: this.taskTitles,
+      status: 'Open',
+      template: 'yes'
+    }).subscribe(data=>{
+      this.updateTasks();
+      this.closePopup();
+      this.snackBar.open("Template Update!","Ok", {duration:3000})
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  updatePlan(){
+    this.onboardinService.updatePlan({
+      id: this.receivedData.data.data.id,
+      organizationId: this.receivedData.data.organizationId,
+      empName: this.onboardinPlanForm.value.empName,
+      empId: this.onboardinPlanForm.value.empId,
+      empEmail: this.onboardinPlanForm.value.empEmail,
+      title: this.onboardinPlanForm.value.titlePlan,
+      department: this.onboardinPlanForm.value.departmentPlan,
+      manager: this.onboardinPlanForm.value.managerPlan,
+      startDate: this.onboardinPlanForm.value.startDatePlan,
+      taskDate: this.onboardinPlanForm.value.endDatePlan,
+      location: this.onboardinPlanForm.value.locationPlan,
+      description: this.onboardinPlanForm.value.descriptionPlan,
+      taskTitles: this.taskTitles,
+      status: 'Open',
+      template: 'no'
+    }).subscribe(data=>{
+      this.updateTasks();
+      this.closePopup();
+      this.snackBar.open("Plan Update!","Ok", {duration:3000})
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  updateTasks(){
+    this.onboardinService.updateTasksList(this.receivedData.data.data.id, this.taskNames).subscribe(data=>{
+      //TODO: add notification
+    }, error => {
+      console.log(error)
+    })
+  }
+
   pushNotification(data:any){
     if (data){
       this.notificationsService.saveNotification(data).subscribe(data=>{

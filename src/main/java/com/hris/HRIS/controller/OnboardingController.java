@@ -130,4 +130,11 @@ public class OnboardingController {
         onboardingRepository.saveAll(onboardingModel);
         return ResponseEntity.ok(new ApiResponse("Saved all tasks to onboarding plan"));
     }
+
+    @PutMapping("/update/tasks/{planId}")
+    public ResponseEntity<ApiResponse> updatePlan(@PathVariable String planId, @RequestBody List<OnboardingModel> onboardingModels) {
+        onboardingModels.forEach(onboarding -> onboarding.setOnBoardingPlanId(planId));
+        onboardingPlanService.deleteAllTasksAndSaveAll(planId, onboardingModels);
+        return ResponseEntity.ok(new ApiResponse("Plan updated successfully"));
+    }
 }
