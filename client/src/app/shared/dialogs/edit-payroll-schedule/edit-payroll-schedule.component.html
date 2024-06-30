@@ -3,7 +3,46 @@
     <mat-icon (click)="onNoClick()">close</mat-icon>
 </div>
 <hr>
-<div class="container" style="overflow: auto; padding-top: 10px;">
+<div class="row">
+    <div class="col">
+        <div style="padding: 10px;">
+            <table class="calendar">
+                <tr>
+                    <td><span class="calendarDate">Su</span></td>
+                    <td><span class="calendarDate">Mo</span></td>
+                    <td><span class="calendarDate">Tu</span></td>
+                    <td><span class="calendarDate">We</span></td>
+                    <td><span class="calendarDate">Th</span></td>
+                    <td><span class="calendarDate">Fr</span></td>
+                    <td><span class="calendarDate">Sa</span></td>
+                </tr>
+                <tr *ngFor="let week of calendar1Matrix">
+                    <td *ngFor="let day of week" [ngStyle]="calendar1SelectedDates.includes(day) ? { 'background-color': '#D5F0F9' } : {}"><span class="calendarDate">{{day}}</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="col">
+        <div style="padding: 10px;">
+            <table class="calendar">
+                <tr>
+                    <td><span class="calendarDate">Su</span></td>
+                    <td><span class="calendarDate">Mo</span></td>
+                    <td><span class="calendarDate">Tu</span></td>
+                    <td><span class="calendarDate">We</span></td>
+                    <td><span class="calendarDate">Th</span></td>
+                    <td><span class="calendarDate">Fr</span></td>
+                    <td><span class="calendarDate">Sa</span></td>
+                </tr>
+                <tr *ngFor="let week of calendar2Matrix">
+                    <td *ngFor="let day of week" [ngStyle]="calendar2SelectedDates.includes(day) ? { 'background-color': '#D5F0F9' } : {}"><span class="calendarDate">{{day}}</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-top: 10px; height: 230px;">
     <form [formGroup]="payrollScheduleFormGroup">
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>Payroll frequency</mat-label>
@@ -22,7 +61,7 @@
         </mat-form-field><br><br>
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>Payroll period in days</mat-label>
-            <mat-select matNativeControl placeholder="1 - 31" formControlName="payrollPeriodInDaysCtrl" [(ngModel)]="payrollConfigurationModel.payrollPeriodInDays" required>
+            <mat-select matNativeControl placeholder="1 - 31" formControlName="payrollPeriodInDaysCtrl" [(ngModel)]="payrollConfigurationModel.payrollPeriodInDays" (selectionChange)="renderCalendars()" required>
                 <mat-option value="{{day}}" *ngFor="let day of days">{{day}}</mat-option>
             </mat-select>
         </mat-form-field><br>

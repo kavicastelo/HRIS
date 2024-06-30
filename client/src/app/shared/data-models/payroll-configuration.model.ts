@@ -7,7 +7,7 @@ export class PayrollConfigurationModel {
     id: String = "";
     organizationId: String = "";
     payrollFrequency: String = "Monthly";
-    payrollPeriodStartDate: String = "";
+    payrollPeriodStartDate: string = "";
     payrollPeriodInDays: number = 30;
     daysToRunPayroll: number = 1;
     daysToPayday: number = 1;
