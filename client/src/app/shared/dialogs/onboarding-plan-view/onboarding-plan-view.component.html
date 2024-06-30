@@ -124,8 +124,8 @@
           <td>{{t.closed}}</td>
           <td>{{t.status}}</td>
           <td>{{t.monitoredBy}}</td>
-          <td>{{t.activityNotes}}</td>
-          <td>{{t.statusNotes}}</td>
+          <td title="{{t.activityNotes}}">{{t.activityNotes | truncate:20}}</td>
+          <td title="{{t.statusNotes}}">{{t.statusNotes | truncate:20}}</td>
         </tr>
         </tbody>
       </table>

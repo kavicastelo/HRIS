@@ -6,6 +6,7 @@ import {tap} from "rxjs";
 import {CreatePlanDialogComponent} from "../create-plan-dialog/create-plan-dialog.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CreateTaskDialogComponent} from "../create-task-dialog/create-task-dialog.component";
+import {OnboardingTaskViewComponent} from "../onboarding-task-view/onboarding-task-view.component";
 
 @Component({
   selector: 'app-onboarding-plan-view',
@@ -122,13 +123,11 @@ export class OnboardingPlanViewComponent implements OnInit {
   editTask(t: any, p: any) {
     const data = {
       taskId: t.id,
-      task:t,
-      userId: p.empId,
-      userName: p.empName,
-      userEmail: t.adminEmail,
-      organizationId: t.organizationId
+      planId: p.id,
+      task: t,
+      plan: p
     }
 
-    this.toggleDialog('', '', data, CreateTaskDialogComponent)
+    this.toggleDialog('', '', data, OnboardingTaskViewComponent)
   }
 }

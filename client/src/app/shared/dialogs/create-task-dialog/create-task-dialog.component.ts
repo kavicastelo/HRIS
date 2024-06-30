@@ -24,10 +24,16 @@ export class CreateTaskDialogComponent {
 
   plansStore: any[] = [];
   employeeDataStore:any[] = [];
+  filteredEmployees:any[] = [];
+
+  selectedPlan: any;
 
 
   thisUser:any;
   thisUserId:any;
+
+  targetInput: any;
+  organizationId: any;
 
 
   onboardinTaskForm = new FormGroup({
@@ -58,8 +64,11 @@ export class CreateTaskDialogComponent {
   async ngOnInit(): Promise<any> {
     this.receivedData = this.data;
     this.thisUserId = this.cookieService.userID().toString();
+    this.organizationId = this.cookieService.organization().toString();
 
-    await this.loadAllPlans().subscribe(()=>{})
+    await this.loadAllPlans().subscribe(()=>{
+      this.getCurrentPlan();
+    })
     await this.loadAllUsers().subscribe(()=>{
       this.getCurrentUser()
     })
@@ -70,6 +79,10 @@ export class CreateTaskDialogComponent {
     return this.onboardinService.getAllPlans().pipe(
         tap(data => this.plansStore = data)
     );
+  }
+
+  getCurrentPlan(): Observable<any> {
+    return this.selectedPlan = this.plansStore.find((plan: any) => plan.id === this.receivedData.data.task.onBoardingPlanId);
   }
 
   loadAllUsers(): Observable<any> {
@@ -83,9 +96,37 @@ export class CreateTaskDialogComponent {
   }
 
   filterEmployees(): any[]{
-    this.employeeDataStore = this.employeeDataStore.filter((data:any) => data.organizationId == this.receivedData.data.organizationId? this.employeeDataStore = [data]: this.employeeDataStore = [])
+    if (this.targetInput === undefined){
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId)
+    }
+    this.filteredEmployees.sort((a:any, b:any) => {
+      return new Date(b.jobData.doj).getTime() - new Date(a.jobData.doj).getTime()
+    })
 
-    return this.employeeDataStore;
+    return this.filteredEmployees;
+  }
+
+  handleManagerSearch(data: any): void {
+    const dp = document.getElementById('managerDropdown') as HTMLElement;
+
+
+    this.targetInput = data as HTMLInputElement;
+    const value = this.targetInput.value
+    if (value) {
+      dp.style.display = 'block';
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) =>
+        data.organizationId === this.organizationId && data.level === 1 && data.name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      dp.style.display = 'block';
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId && data.level === 1);
+    }
+  }
+
+  chooseManager(manager:any) {
+    this.onboardinTaskForm.get('monitorBy')?.setValue(manager.name);
+    const dp = document.getElementById('managerDropdown') as HTMLElement;
+    dp.style.display = 'none';
   }
 
   closePopup(){
@@ -128,17 +169,17 @@ export class CreateTaskDialogComponent {
       }).subscribe(data=>{
         this.closePopup()
         this.snackbar.open("Please wait a moment...!");
-        this.filterEmployees().forEach((emp)=>{
-          const notificationData = {
-            userId: emp.id,
-            notification: this.thisUser.name + ` created a new task under the ${this.receivedData.data.task.taskTitle} topic`,
-            timestamp: new Date(),
-            router: '/onboardin/task',
-            status: true
-          }
 
-          this.pushNotification(notificationData);
-        })
+        const notificationData = {
+          userId: this.selectedPlan.empEmail,
+          notification: this.thisUser.name + ` created a new task under the ${this.receivedData.data.task.taskTitle} topic`,
+          timestamp: new Date(),
+          router: '/onboardin/task',
+          status: true
+        }
+
+        this.pushNotification(notificationData);
+
         this.snackbar.dismiss();
         this.snackbar.open("Task Created Successfully", "OK", {duration:3000})
       }, error => {
@@ -166,17 +207,17 @@ export class CreateTaskDialogComponent {
       }).subscribe(data => {
         this.closePopup()
         this.snackbar.open("Please wait a moment...!");
-        this.filterEmployees().forEach((emp)=>{
-          const notificationData = {
-            userId: emp.id,
-            notification: this.thisUser.name + ` updated the task- ${this.receivedData.data.taskName} under ${this.receivedData.data.task.taskTitle} topic`,
-            timestamp: new Date(),
-            router: '/onboardin/task',
-            status: true
-          }
 
-          this.pushNotification(notificationData);
-        })
+        const notificationData = {
+          userId: this.selectedPlan.empEmail,
+          notification: this.thisUser.name + ` updated the task- ${this.receivedData.data.taskName} under ${this.receivedData.data.task.taskTitle} topic`,
+          timestamp: new Date(),
+          router: '/onboardin/task',
+          status: true
+        }
+
+        this.pushNotification(notificationData);
+
         this.snackbar.dismiss();
         this.snackbar.open("Task Edited Successfully", "OK", {duration:3000})
       }, error => {

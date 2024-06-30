@@ -1,0 +1,185 @@
+<div class="container" *ngFor="let t of filterTasks()">
+  <div class="sticky-top" style="background-color: #fff">
+    <div class="d-flex align-items-center justify-content-between px-2 py-2">
+      <h5>{{receivedData.data.task.taskName}} Task Details</h5>
+      <mat-icon (click)="closePopup()">close</mat-icon>
+    </div>
+    <hr>
+  </div>
+
+  <div class="container">
+    <div class="row" *ngFor="let p of filterPlans();">
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Plan: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.title}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Task Title: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{t.taskTitle}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Task Name: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{t.taskName}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Employee Name: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.empName}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Employee Id: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.empId}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Email: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.empEmail}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Department: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.department}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Manager: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.manager}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Start Date: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{t.startdate| date}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>End Date: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{t.taskdate | date}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Status: </div>
+          </div>
+          <div class="col-6 plan-value" [ngStyle]="{'background-color':t.status=='Completed'?'rgba(12, 188, 135, 0.5)':t.status=='Open'?'rgba(190, 149, 255, 0.5)':t.status=='In Progress'?'rgba(115, 172, 255, 0.5)':t.status=='On Hold'?'rgba(232, 232, 232, 0.5)':t.status=='Pending Review'?'rgba(247, 195, 46, 0.5)':t.status=='Canceled'?'rgba(230, 41, 41, 0.5)':'rgba(255, 174, 252, 0.5)'}">
+            <div>{{t.status}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Monitor By: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{t.monitoredBy}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row main-data">
+          <div class="col-2 plan-label">
+            <div>Description: </div>
+          </div>
+          <div class="col-10 plan-value">
+            <div>{{t.description}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row main-data">
+          <div class="col-2 plan-label">
+            <div>Activity Notes: </div>
+          </div>
+          <div class="col-10 plan-value">
+            <div>{{t.activityNotes}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row main-data">
+          <div class="col-2 plan-label">
+            <div>Status Notes: </div>
+          </div>
+          <div class="col-10 plan-value">
+            <div>{{t.statusNotes}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="row main-data">
+          <div class="col-2 plan-label">
+            <div>Task Closed: </div>
+          </div>
+          <div class="col-10 plan-value" [ngStyle]="{'background-color':t.closed=='yes'?'rgba(255, 0, 0, 0.5)':t.closed=='no'?'rgba(0, 255, 0, 0.5)':'#d9e1f2'}">
+            <div>{{t.closed}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sticky-bottom" style="background-color: #fff">
+    <hr>
+    <div class="d-flex align-items-center justify-content-end px-2 py-2">
+      <button class="btn" (click)="closePopup()">Close</button>
+      <button class="btn btn-primary mx-2" (click)="editTask(t, filterPlans()[0])">Edit</button>
+      <button class="btn btn-danger" (click)="deleteTask(t)">Delete</button>
+    </div>
+  </div>
+</div>
