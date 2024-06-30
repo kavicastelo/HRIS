@@ -103,7 +103,13 @@ export class OnboardingPlanViewComponent implements OnInit {
       }
     });
     _popup.afterClosed().subscribe(item => {
-      //TODO: load all onboarding plans
+      this.loadAllOnboardingPlans().subscribe(() => {
+        this.filterOnboardingPlans();
+      })
+
+      this.loadAllOnBoardingTasks().subscribe(() => {
+        this.filterOnBoardingTasks(undefined);
+      })
     })
   }
 
