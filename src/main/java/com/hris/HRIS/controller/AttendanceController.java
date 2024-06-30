@@ -163,6 +163,7 @@ public class AttendanceController {
                     .collect(Collectors.toList());
 
         }catch (ParseException e) {
+            System.out.println(e.getMessage());
             return new ArrayList<>();
         }
     }
