@@ -1,4 +1,4 @@
-<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" routerLink="../../../employee-payments">arrow_back</mat-icon>
+<mat-icon style="margin-bottom: 10px; margin-top: 10px; color: var(--color-text-400); cursor: pointer;" *ngIf="isDisplayGoBackIcon" routerLink="../../../employee-payments">arrow_back</mat-icon>
 <div class="card" *ngIf="!notfoundError">
     <ul class="list-group list-group-flush">
         <li class="list-group-item">

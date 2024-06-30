@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
@@ -34,6 +34,9 @@ export class ViewEmployeePayitemsComponent {
   isEditEnabledItemInputsDisabled: boolean = false;
 
   isDisplayAssignNewItemForm = true;
+  isDisplayGoBackIcon = false;
+
+  @Input() employeeId: string = "";
   
 
   constructor(private employeePayitemService: EmployeePayitemService,
@@ -45,7 +48,11 @@ export class ViewEmployeePayitemsComponent {
   ){}
 
   ngOnInit(): void {
-      this.employeesService.getEmployeeById(this.route.snapshot.params['id']).subscribe(res => {
+      if(this.employeeId == "" || this.employeeId == null){
+        this.employeeId = this.route.snapshot.params['id'];
+        this.isDisplayGoBackIcon = true;
+      }
+      this.employeesService.getEmployeeById(this.employeeId).subscribe(res => {
         this.currentEmployee = res;
         this.viewEmployeePaymentDetails(this.currentEmployee);
       },(error: any) => {
