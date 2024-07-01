@@ -23,12 +23,15 @@ export class OnboardingHandleComponent implements OnInit{
   isDarkMode: boolean | undefined;
 
   employeeDataStore:any;
-  employee: any
+  employee: any ={
+    level:''
+  }
 
   constructor(
       private themeService: ThemeService,
       private dialog: MatDialog,
       private router: Router,
+      private employeeService: EmployeesService,
       private cookieService: AuthService) {
     this.themeSubscription = this.themeService.getThemeObservable().subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
@@ -39,7 +42,7 @@ export class OnboardingHandleComponent implements OnInit{
     this.themeSubscription.unsubscribe();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.loggedUserId = this.cookieService.userID().toString();
 
     this.router.events.subscribe(event => {
@@ -48,6 +51,20 @@ export class OnboardingHandleComponent implements OnInit{
         this.updateActiveClass();
       }
     });
+
+    this.loadAllUsers().subscribe(()=>{this.getUser();})
+  }
+
+  loadAllUsers(): Observable<any> {
+    return this.employeeService.getAllEmployees().pipe(
+        tap(data => this.employeeDataStore = data)
+    )
+  }
+
+  getUser(){
+    this.employeeService.getEmployeeById(this.loggedUserId).subscribe(data => {
+      this.employee = data
+    })
   }
 
   navigateBetweenTabs(path: string) {

@@ -150,10 +150,10 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard, AdminGuard], children: [
-      {path: '', redirectTo: '/onboardin/assign', pathMatch: "full"},
+    path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard], children: [
+      {path: '', redirectTo: '/onboardin/plan', pathMatch: "full"},
       {path: 'assign', component: AssignTaskComponent},
-      {path: 'plan', component: CreatePlanComponent},
+      {path: 'plan', component: CreatePlanComponent, canActivate: [AdminGuard]},
       {path: 'task', component: CreateTaskComponent},
     ]
   },
@@ -166,7 +166,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardInitialComponent, canActivate: [AuthGuard, AdminGuard], children: [
     {path: '', redirectTo: '/dashboard/main', pathMatch: 'full'},
     {path: 'main', component: DashboardMainComponent},
-    {path: 'onboarding', component: DashboardOnboardinMainComponent},
+    {path: 'onboarding', component: DashboardOnboardinMainComponent, canActivate: [AuthGuard, AdminGuard]},
   ]},
   {path: '**', component: NotFoundComponent},
 

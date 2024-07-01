@@ -31,6 +31,10 @@ export class OnboardinService {
     return this.http.put(this.baseUrl+'onboardingPlan/update/id/'+plan.id, plan);
   }
 
+  public updatePlanStatus(id: any): Observable<any> {
+    return this.http.put(this.baseUrl+'onboardingPlan/update/status/id/'+id, {});
+  }
+
   public saveOnboardin(onboarding: Onboardin): Observable<any> {
     return this.http.post(this.baseUrl+'onboarding/save', onboarding);
   }

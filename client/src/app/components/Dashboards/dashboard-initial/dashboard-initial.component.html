@@ -18,7 +18,7 @@
             <table class="table table-hover">
               <tbody>
               <tr *ngFor="let pTask of filteredPendingTasks()">
-                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{pTask.description}}</td>
+                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{pTask.taskName}}</td>
               </tr>
               </tbody>
               <tfoot *ngIf="!isFoundPTask">
@@ -35,7 +35,7 @@
             <table class="table table-hover">
               <tbody>
               <tr *ngFor="let cTask of filteredCompletedTasks()">
-                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{cTask.description}}</td>
+                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{cTask.taskName}}</td>
               </tr>
               </tbody>
               <tfoot *ngIf="!isFoundCTask">

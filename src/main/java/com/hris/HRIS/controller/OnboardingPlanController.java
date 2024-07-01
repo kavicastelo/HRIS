@@ -88,4 +88,24 @@ public class OnboardingPlanController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/update/status/id/{id}")
+    public ResponseEntity<ApiResponse> updateOnboardingPlanStatus(@PathVariable String id) {
+        Optional<OnboardingPlanModel> onboardingPlanModelOptional = onboardingPlanRepository.findById(id);
+
+        if (onboardingPlanModelOptional.isPresent()) {
+            OnboardingPlanModel existingOnboardingPlan = onboardingPlanModelOptional.get();
+            if (existingOnboardingPlan.getStatus().equals("Open")) {
+                existingOnboardingPlan.setStatus("Closed");
+            } else {
+                existingOnboardingPlan.setStatus("Open");
+            }
+            onboardingPlanRepository.save(existingOnboardingPlan);
+
+            ApiResponse apiResponse = new ApiResponse("Onboarding plan status updated successfully.");
+            return ResponseEntity.ok(apiResponse);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

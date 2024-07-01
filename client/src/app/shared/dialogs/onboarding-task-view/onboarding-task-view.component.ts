@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {Observable, tap} from "rxjs";
 import {CreateTaskDialogComponent} from "../create-task-dialog/create-task-dialog.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-onboarding-task-view',
@@ -17,8 +18,11 @@ export class OnboardingTaskViewComponent implements OnInit {
   tasksStore: any[] = []
   filteredPlans: any[] = []
   filteredTasks: any[] = []
+
+  thisUserLevel: any
   constructor(private onboardingService: OnboardinService,
               private dialog: MatDialog,
+              private cookieService: AuthService,
               private snackBar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<OnboardingTaskViewComponent>) {
@@ -26,6 +30,7 @@ export class OnboardingTaskViewComponent implements OnInit {
 
   async ngOnInit(): Promise<any> {
     this.receivedData = this.data
+    this.thisUserLevel = this.cookieService.level()
 
     await this.loadAllPlans().subscribe(() => {
       this.filterPlans()

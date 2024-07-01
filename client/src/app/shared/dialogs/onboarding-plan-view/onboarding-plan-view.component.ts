@@ -7,6 +7,7 @@ import {CreatePlanDialogComponent} from "../create-plan-dialog/create-plan-dialo
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CreateTaskDialogComponent} from "../create-task-dialog/create-task-dialog.component";
 import {OnboardingTaskViewComponent} from "../onboarding-task-view/onboarding-task-view.component";
+import {EmployeesService} from "../../../services/employees.service";
 
 @Component({
   selector: 'app-onboarding-plan-view',
@@ -19,6 +20,10 @@ export class OnboardingPlanViewComponent implements OnInit {
 
   organizationId: any;
   thisUserId: any;
+  employeeDataStore: any[] = [];
+  thisUser: any = {
+    level: ''
+  };
 
   onboardingPlans: any[] = [];
   filteredOnboardingPlans: any[] = [];
@@ -28,6 +33,7 @@ export class OnboardingPlanViewComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private cookieService: AuthService,
               private snackBar: MatSnackBar,
+              private employeeService: EmployeesService,
               private onboardingService: OnboardinService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<OnboardingPlanViewComponent>) {
@@ -36,6 +42,7 @@ export class OnboardingPlanViewComponent implements OnInit {
   async ngOnInit(): Promise<any> {
     this.receivedData = this.data
     this.organizationId = this.cookieService.organization().toString();
+    this.thisUserId = this.cookieService.userID().toString();
 
     await this.loadAllOnboardingPlans().subscribe(() => {
       this.filterOnboardingPlans();
@@ -44,6 +51,20 @@ export class OnboardingPlanViewComponent implements OnInit {
     await this.loadAllOnBoardingTasks().subscribe(() => {
       this.filterOnBoardingTasks(undefined);
     })
+
+    await this.loadAllEmployees().subscribe(() => {
+      this.getUser();
+    })
+  }
+
+  loadAllEmployees() {
+    return this.employeeService.getAllEmployees().pipe(
+      tap(data => this.employeeDataStore = data)
+    )
+  }
+
+  getUser() {
+    return this.thisUser = this.employeeDataStore.find((emp: any) => emp.id === this.thisUserId);
   }
 
   loadAllOnboardingPlans() {
@@ -87,8 +108,17 @@ export class OnboardingPlanViewComponent implements OnInit {
     this.toggleDialog('', '', data, CreatePlanDialogComponent)
   }
 
-  editTasks() {
-    //TODO: edit tasks
+  changeStatus(id: any, status: any) {
+    if (id) {
+      if (confirm(`Are you sure you want to ${status == 'Open'?'Closed':'Open'} this plan?`)) {
+        this.onboardingService.updatePlanStatus(id).subscribe(() => {
+          this.closePopup();
+          this.snackBar.open(`Plan Marked as ${status == 'Open'?'Closed':'Open'}`, 'Close', {
+            duration: 3000
+          })
+        })
+      }
+    }
   }
 
   toggleDialog(title: any, msg: any, data: any, component: any) {

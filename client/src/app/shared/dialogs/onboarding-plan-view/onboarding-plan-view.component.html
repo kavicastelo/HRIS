@@ -1,7 +1,10 @@
 <div class="container">
   <div class="sticky-top" style="background-color: #fff">
     <div class="d-flex align-items-center justify-content-between px-2 py-2">
-      <h5>{{receivedData.data.title}} Plan Details</h5>
+      <div class="d-flex align-items-center">
+        <h5>{{receivedData.data.title}} Plan Details</h5>
+        <div class="status-mark" [ngStyle]="{'background-color':receivedData.data.status=='Open'?'#0CBC87':'#E62929'}"></div>
+      </div>
       <mat-icon (click)="closePopup()">close</mat-icon>
     </div>
     <hr>
@@ -133,11 +136,11 @@
   </div>
 </div>
 
-<div class="sticky-bottom" style="background-color: #fff">
+<div class="sticky-bottom" style="background-color: #fff" *ngIf="thisUser.level != 2">
   <hr>
-  <div class="d-flex align-items-center justify-content-end px-2 py-2">
+  <div class="d-flex align-items-center justify-content-end px-2 py-2" *ngFor="let fp of filterOnboardingPlans()">
     <button class="btn btn-primary" (click)="EditPlan()">Edit Plan</button>
-    <button class="btn btn-primary mx-2" (click)="editTasks()">Edit Tasks</button>
+    <button class="btn mx-2" style="color: #fff" [ngStyle]="{'background-color':fp.status=='Open'?'#E62929':'#0CBC87'}" (click)="changeStatus(fp.id, fp.status)" [matTooltip]="fp.status == 'Open'?'Plan is Opened. Mark as Closed':'Plan is Closed. Mark as Open'">Mark as {{fp.status == 'Open'?'Closed':'Open'}}</button>
     <button class="btn btn-danger" (click)="deletePlan()">Delete Plan</button>
   </div>
 </div>
