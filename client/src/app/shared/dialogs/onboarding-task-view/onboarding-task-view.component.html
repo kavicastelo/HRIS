@@ -178,8 +178,8 @@
     <hr>
     <div class="d-flex align-items-center justify-content-end px-2 py-2">
       <button class="btn" (click)="closePopup()">Close</button>
-      <button class="btn btn-primary mx-2" (click)="editTask(t, filterPlans()[0])">Edit</button>
-      <button class="btn btn-danger" (click)="deleteTask(t)">Delete</button>
+      <button class="btn btn-primary mx-2" [disabled]="thisUserLevel == 2" (click)="editTask(t, filterPlans()[0])">Edit</button>
+      <button class="btn btn-danger" [disabled]="thisUserLevel == 2" (click)="deleteTask(t)">Delete</button>
     </div>
   </div>
 </div>

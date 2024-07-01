@@ -8,6 +8,8 @@ import {ShiftsService} from "../../../services/shifts.service";
 import {NotificationsService} from "../../../services/notifications.service";
 import {TimeFormatPipe} from "../../../DTO/TimeFormatPipe";
 import {DateFormatPipe} from "../../../DTO/DateFormatPipe";
+import {OnboardingPlanViewComponent} from "../../../shared/dialogs/onboarding-plan-view/onboarding-plan-view.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-assign-task',
@@ -44,6 +46,7 @@ export class AssignTaskComponent {
   constructor(private onboardinService: OnboardinService,
               private employeeService: EmployeesService,
               private cookiesService: AuthService,
+              private dialog: MatDialog,
               private notificationsService: NotificationsService,
               private shiftService: ShiftsService) {
   }
@@ -52,7 +55,6 @@ export class AssignTaskComponent {
     this.organizationId = this.cookiesService.organization();
     this.loadAllUsers().subscribe(()=>{
       this.filterEmployees()
-      this.initializeCheckboxes();
     })
     this.loadAllPlans().subscribe(()=>{})
     this.loadAllTasks().subscribe(()=>{})
@@ -73,9 +75,9 @@ export class AssignTaskComponent {
     this.targetInput = data as HTMLInputElement;
     const value = this.targetInput.value
     if (value) {
-      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.name.toLowerCase().includes(value.toLowerCase()));
+      this.filteredPlans = this.planDataStore.filter((data: any) => data.title.toLowerCase().includes(value.toLowerCase()) || data.empName.toLowerCase().includes(value.toLowerCase()));
     } else {
-      this.filteredEmployees = this.employeeDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+      this.filteredPlans = this.planDataStore.filter((data:any)=> data.organizationId == this.organizationId);
     }
   }
 
@@ -126,7 +128,9 @@ export class AssignTaskComponent {
   }
 
   filterPlans(): any[]{
-    this.filteredPlans = this.planDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    if (this.targetInput === undefined){
+      this.filteredPlans = this.planDataStore.filter((data:any)=> data.organizationId == this.organizationId);
+    }
 
     return this.filteredPlans;
   }
@@ -208,4 +212,25 @@ export class AssignTaskComponent {
     }
   }
 
+  viewPlan(p: any) {
+    this.toggleDialog('', '', p, OnboardingPlanViewComponent)
+  }
+
+  toggleDialog(title: any, msg: any, data: any, component: any) {
+    const _popup = this.dialog.open(component, {
+      enterAnimationDuration: '400ms',
+      exitAnimationDuration: '500ms',
+      maxHeight: '80vh',
+      data: {
+        data: data,
+        title: title,
+        msg: msg
+      }
+    });
+    _popup.afterClosed().subscribe(item => {
+      this.loadAllPlans().subscribe(() => {
+        this.filterPlans();
+      });
+    })
+  }
 }

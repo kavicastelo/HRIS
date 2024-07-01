@@ -10,6 +10,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {CreatePlanDialogComponent} from "../../../shared/dialogs/create-plan-dialog/create-plan-dialog.component";
 import {CreateTaskDialogComponent} from "../../../shared/dialogs/create-task-dialog/create-task-dialog.component";
 import {NotificationsService} from "../../../services/notifications.service";
+import {OnboardingTaskViewComponent} from "../../../shared/dialogs/onboarding-task-view/onboarding-task-view.component";
 
 @Component({
     selector: 'app-create-task',
@@ -42,7 +43,7 @@ export class CreateTaskComponent {
         })
 
         await this.loadAllTasks().subscribe(() => {
-            this.filterTasks();
+            this.filterTasks(undefined);
         })
 
         await this.loadAllPlans().subscribe(() => {
@@ -67,8 +68,8 @@ export class CreateTaskComponent {
         );
     }
 
-    filterTasks(): any[] {
-        this.filteredTasks = this.tasksStore.filter((data: any) => data.organizationId == this.employee.organizationId ? this.filteredTasks = [data] : this.filteredTasks = null)
+    filterTasks(id: any): any[] {
+        this.filteredTasks = this.tasksStore.filter((data: any) => data.organizationId == this.employee.organizationId && data.onBoardingPlanId == id ? this.filteredTasks = [data] : this.filteredTasks = null)
         this.filteredTasks.sort((a: any, b: any) => {
             return new Date(b.startdate).getTime() - new Date(a.startdate).getTime()
         })
@@ -76,10 +77,14 @@ export class CreateTaskComponent {
         return this.filteredTasks;
     }
 
-    filterPlan(id: any): any {
-        this.filteredPlans = this.plansStore.filter(data => data.id == id)
+    filterPlans(): any[] {
+      if (this.employee.level == 0 || this.employee.level == 1) {
+        this.filteredPlans = this.plansStore.filter((data: any) => data.organizationId == this.employee.organizationId ? this.filteredPlans = [data] : this.filteredPlans = null)
+      } else {
+        this.filteredPlans = this.plansStore.filter((data: any) => data.organizationId == this.employee.organizationId && data.empId == this.employee.id ? this.filteredPlans = [data] : this.filteredPlans = null)
+      }
 
-        return this.filteredPlans[0] ? this.filteredPlans[0].title : null
+        return this.filteredPlans;
     }
 
     getUser() {
@@ -111,7 +116,7 @@ export class CreateTaskComponent {
         });
         _popup.afterClosed().subscribe(item => {
             this.loadAllTasks().subscribe(() => {
-                this.filterTasks()
+                this.filterTasks(undefined)
             });
             this.loadAllPlans().subscribe(() => {
 
@@ -135,4 +140,15 @@ export class CreateTaskComponent {
 
         this.toggleDialog('', '', data, CreateTaskDialogComponent)
     }
+
+  viewTask(t: any, p: any) {
+    const data = {
+      taskId: t.id,
+      planId: p.id,
+      task: t,
+      plan: p
+    }
+
+    this.toggleDialog('', '', data, OnboardingTaskViewComponent)
+  }
 }

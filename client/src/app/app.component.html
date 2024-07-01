@@ -114,17 +114,17 @@
                                     <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm/mark-attendance">Mark attendance</li>
                                 </ul>
                             </mat-expansion-panel>
-                            <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
+                            <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Ongoing Processes
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <ul>
-                                    <li routerLink="/dashboard/onboarding">Dashboard</li>
-                                    <li routerLink="/onboardin/plan">Create Ongoing Plan</li>
-                                    <li routerLink="/onboardin/task">Create Ongoing Tasks</li>
-                                    <li routerLink="/onboardin">Assign employees</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard/onboarding">Dashboard</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/onboardin/plan">Assign Plans</li>
+                                    <li routerLink="/onboardin/assign">Ongoing Plans</li>
+                                    <li routerLink="/onboardin/task">Ongoing Tasks</li>
                                 </ul>
                             </mat-expansion-panel>
                             <mat-expansion-panel>
