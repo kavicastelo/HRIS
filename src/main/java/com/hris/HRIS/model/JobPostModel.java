@@ -18,7 +18,7 @@ public class JobPostModel {
 
     private String organizationId;
 
-    private String caption;
+    private String caption; //means title
 
     private String about_job;
 

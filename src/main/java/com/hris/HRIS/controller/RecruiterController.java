@@ -10,7 +10,6 @@ import com.hris.HRIS.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
@@ -124,6 +123,7 @@ public class RecruiterController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    // select applicant as favorite
     @PostMapping("/favorite/{id}")
     public ResponseEntity<ApiResponse> favorite(@PathVariable String id) {
         Optional<ApplyJobModel> optionalJob = applyJobRepository.findById(id);
@@ -137,5 +137,4 @@ public class RecruiterController {
         ApiResponse apiResponse = new ApiResponse("Candidate added to favorites");
         return ResponseEntity.ok(apiResponse);
     }
-
 }
