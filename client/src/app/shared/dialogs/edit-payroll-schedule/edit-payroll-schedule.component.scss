@@ -1,0 +1,78 @@
+.btn{
+    border: none;
+    outline: none;
+    background-color: #8b8b8b;
+    border-radius: 5px;
+    padding: 3px 10px;
+    color: white;
+  
+    &:nth-child(2){
+      background-color: #382bf0;
+    }
+  
+    &:disabled{
+      background-color: #a6a6a6;
+    }
+  }
+  
+.btn-2{
+  flex: 1;
+  margin: 0;
+  padding: 0 5px;
+  border-radius: 0;
+
+  &:nth-child(1){
+    border-radius: 0 5px 0 0;
+    background-color: #DEE2E6;
+  }
+  &:nth-child(2){
+    border-radius: 0 0 5px 0;
+    background-color: #99A1B7;
+  }
+}
+
+.container {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.calendarDate{
+  // padding: 5px;
+  // border: 1px solid gray;
+}
+
+.calendar, td, th {
+  border: 1px solid #C4C0B8;
+  background-color: #FBFBFB;
+  padding: 3px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.calendar {
+  border-collapse: collapse;
+}
+
+.payPeriodClass{
+  background-color: #D5F0F9;
+}
+
+.payrollDeadlineClass{
+  background-color: #FECECE;
+}

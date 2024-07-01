@@ -1,0 +1,22 @@
+<div class="runPayrollSection">
+    <p *ngIf="isReportsGeneratingProcessInProgress" style="padding: 10px;">Monthly payroll process may take some time depending on the organization's size. You can leave this page and come back later.</p>
+    <!-- <div class="row" *ngIf="!isReportsGeneratingProcessInProgress">
+        <div class="col-12 col-md-6" style="display: flex; align-items: center; justify-content: center;"><p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p></div>
+        <div class="col-12 col-md-6"><button class="btn-1 my-4" (click)="runMonthlyPayrollProcess()" >Run Payroll</button></div>
+    </div> -->
+    <div *ngIf="!isReportsGeneratingProcessInProgress">
+        <h4>Regular Payroll <span class="badge rounded-pill" [ngClass]="datesLeftForThePayrollDeadline <= 5 ? 'bg-warning text-dark' : 'bg-success'" style="font-size: 15px;"> Due in {{ datesLeftForThePayrollDeadline }} {{datesLeftForThePayrollDeadline == 1?'day':'days'}} </span></h4>
+        <p style="font-weight: 200;">Pay period: {{ getMonthName(payrollStartDate.getMonth()) }} {{ payrollStartDate.getFullYear() }} ({{ payrollStartDateFormatted }} - {{ payrollEndDateFormatted }})</p>
+        <p style="font-size: 16px;">Start generating this month's payroll reports of your organization.</p>
+        <button class="btn-1" style="padding-right:10px;" (click)="runMonthlyPayrollProcess()" ><mat-icon>play_arrow</mat-icon> Run Payroll</button>
+    </div>
+</div>
+
+<br><br>
+<h4>Payroll Schedule</h4>
+<P>Pay period ({{payrollConfigurationModel.payrollFrequency}}): {{ getMonthName(payrollStartDate.getMonth()) }} {{ payrollStartDate.getFullYear() }} ({{ payrollStartDateFormatted }} - {{ payrollEndDateFormatted }})</P>
+<p>Last day to run payroll: {{formatDate(payrollDeadline)}}</p>
+<p>Payday: {{formatDate(payDay)}}</p>
+<div class="icon-text-group" (click)="editPayrollSchedule(payrollConfigurationModel)">
+    <span style="color: blue;">Edit Payroll Schedule</span>&nbsp;<mat-icon style="font-size: 18px;">edit</mat-icon>
+</div>

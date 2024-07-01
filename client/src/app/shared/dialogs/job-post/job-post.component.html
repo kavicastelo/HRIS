@@ -1,0 +1,77 @@
+<div class="d-flex align-items-center justify-content-between">
+  <h2 mat-dialog-title>{{this.receivedData.data.id?'Edit':'Create'}} Job Post</h2>
+  <button mat-icon-button (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content style="max-width: 600px">
+  <div class="container">
+    <form [formGroup]="jobForm">
+      <div class="row">
+        <div class="col-12">
+          <p>Job Title</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <input class="form-control" matInput placeholder="UI/UX Designer" formControlName="title">
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>About Job</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <textarea class="form-control" matInput placeholder="Type here..." formControlName="about"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Technical Requirements</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <textarea class="form-control" matInput placeholder="Type here..." formControlName="technical"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Educational Requirements</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <textarea class="form-control" matInput placeholder="Type here..." formControlName="educational"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Job Responsibilities</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <textarea class="form-control" matInput placeholder="Type here..."
+                      formControlName="responsibilities"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Closing Date</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <input class="form-control" matInput [matDatepicker]="picker" formControlName="closingDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Experience Level</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <input class="form-control" matInput placeholder="Type here..." formControlName="experience">
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Contact Email</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <input class="form-control" matInput placeholder="Type here..." formControlName="contactEmail">
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <p>Description</p>
+          <mat-form-field class="w-100" appearance="outline">
+            <textarea class="form-control" matInput placeholder="Type here..." formControlName="description"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+
+    <div class="d-flex align-items-center justify-content-end">
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button mat-button color="primary" [disabled]="jobForm.invalid" (click)="this.receivedData.data.id?updateJob() : postJob()">{{this.receivedData.data.id?'Edit Job':'Post Job'}}</button>
+    </div>
+  </div>
+</div>

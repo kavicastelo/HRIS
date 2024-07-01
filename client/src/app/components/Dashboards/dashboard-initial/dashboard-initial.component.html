@@ -1,0 +1,102 @@
+<div class="container mb-4 mt-4">
+  <div class="row">
+    <div class="col-12 col-md-8">
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <div class="card-1">
+            <div class="img-wrapper">
+              <img [src]="convertToSafeUrl(employee.photo)" alt="profile image">
+            </div>
+            <div class="welcome-text">
+              Welcome {{employee.name.split(' ')[0]}} !
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card-2">
+            <div class="card-2-title"><mat-icon style="color: #F6C000"> list_alt</mat-icon> Pending Tasks</div>
+            <table class="table table-hover">
+              <tbody>
+              <tr *ngFor="let pTask of filteredPendingTasks()">
+                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{pTask.taskName}}</td>
+              </tr>
+              </tbody>
+              <tfoot *ngIf="!isFoundPTask">
+                <tr>
+                  <td colspan="2">No pending tasks found</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card-2">
+            <div class="card-2-title"><mat-icon style="color: #0CBC87"> assignment_turned_in</mat-icon> Completed Tasks</div>
+            <table class="table table-hover">
+              <tbody>
+              <tr *ngFor="let cTask of filteredCompletedTasks()">
+                <td matTooltip="View on tasks list" class="d-none d-md-table-cell" routerLink="/onboardin/task">{{cTask.taskName}}</td>
+              </tr>
+              </tbody>
+              <tfoot *ngIf="!isFoundCTask">
+                <tr>
+                  <td colspan="2">No completed tasks found</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card-2 mb-4">
+        <div class="card-2-title"><mat-icon style="color: #3498db"> offline_bolt</mat-icon> Quick Access</div>
+
+        <div class="quick-access-list">
+          <table class="table table-hover">
+            <tbody>
+            <tr *ngFor="let quickAccess of quickAccessDataStore">
+              <td matTooltip="View on calendar" class="d-none d-md-table-cell" routerLink="/event-calendar">{{quickAccess.title}}</td>
+              <td matTooltip="View on calendar" class="d-none d-md-table-cell">{{quickAccess.start | date}}</td>
+            </tr>
+            </tbody>
+            <tfoot *ngIf="!isFoundQuickAccess">
+              <tr>
+                <td colspan="2">No quick access found</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="card-2">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="card-2-title"><mat-icon style="color: #7a5af5"> today</mat-icon> Events</div>
+          <button class="btn-1" (click)="openCreateDialog()">Add new</button>
+        </div>
+
+        <div class="events-list">
+          <table class="table table-hover">
+            <tbody>
+            <tr *ngFor="let event of eventDataStore" matTooltip="View on calendar" routerLink="/event-calendar">
+              <td class="d-none d-md-table-cell">{{event.title}}</td>
+              <td class="d-none d-md-table-cell">{{event.start | date}}</td>
+            </tr>
+            </tbody>
+            <tfoot *ngIf="!isFoundEvent">
+              <tr>
+                <td colspan="2">No events found</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <div *ngIf="isLoadingEvent">
+<!--            TODO: add loading-->
+            <app-server-loading></app-server-loading>
+          </div>
+        </div>
+      </div>
+      <app-latest-news></app-latest-news>
+    </div>
+  </div>
+</div>

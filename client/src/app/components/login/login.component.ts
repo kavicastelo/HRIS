@@ -41,7 +41,7 @@ export class LogInComponent implements OnInit{
         this.cookieService.createLevel(data.level);
 
         if (data.level == '0' || data.level == '1') {
-          this.router.navigate(['/employee']).then(()=>{
+          this.router.navigate(['/dashboard']).then(()=>{
             location.reload()
           })
         }

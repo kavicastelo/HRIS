@@ -1,31 +1,31 @@
 <div class="d-flex align-items-center justify-content-end">
-    <button class="btn-1 px-2" matTooltip="Create new plan" (click)="cratePlan()">
-        <mat-icon>add</mat-icon>
-        <span class="d-none d-md-block">&nbsp;&nbsp;Create Task</span></button>
+    <button class="btn-1 px-2" matTooltip="This feature will release in further">
+        <mat-icon>send</mat-icon>
+        <span class="d-none d-md-block">&nbsp;&nbsp;Request</span></button>
 </div>
 
 <div class="card">
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <div class="d-md-flex align-items-center justify-content-between">
-                <h5>Onboarding Task</h5>
+                <h5>{{employee.level == 2?'My ':'All '}}Onboarding Tasks List</h5>
             </div>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item" *ngFor="let p of filterPlans()">
             <div class="transfer-list">
                 <table class="table table-hover">
                     <thead>
                     <tr>
                         <th>Plan Title</th>
-                        <th>Task Description</th>
+                        <th>Task Name</th>
                         <th>Task Date Range</th>
                         <th>State</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let t of filterTasks()" (click)="openEdit(t)">
-                        <td [title]="filterPlan(t.onBoardingPlanId)">{{filterPlan(t.onBoardingPlanId) | truncate:18}}</td>
-                        <td [title]="t.description">{{t.description | truncate:40}}</td>
+                    <tr *ngFor="let t of filterTasks(p.id)" (click)="viewTask(t, p)">
+                        <td [title]="p.title">{{p.title | truncate:18}}</td>
+                        <td [title]="t.taskName">{{t.taskName | truncate:40}}</td>
                         <td>
                             <div class="d-flex align-items-center">
                                 {{t.startdate | dateFormat}}&nbsp;-&nbsp;{{t.taskdate | dateFormat}}
@@ -42,7 +42,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <div *ngIf="filterTasks().length == 0">
+                <div *ngIf="filterTasks(p.id).length == 0">
                     <div class="data-not-found">
                         <p>Data not available!</p>
                     </div>

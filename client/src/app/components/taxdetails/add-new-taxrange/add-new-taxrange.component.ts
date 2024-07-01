@@ -51,11 +51,21 @@ export class AddNewTaxrangeComponent implements OnInit {
  
   }
   ngOnInit(): void {
-    
+    if(this.route.snapshot.params['taxdetailId']){
+      this.title = "Edit Tax Range";
+      this.finalizeBtnText = "Save changes";
+      this.action = "EDIT";
+
+      this.taxservice.getTaxInfoById(this.route.snapshot.params['taxdetailId']).subscribe((res:any) => {
+        this.taxModel = res;
+      },(error: any) => {
+        this.notfoundError = true;
+      });
+    }
   }
 
   addNewTaxRange(){
-    this._snackBar.open("Creating the payitem...", "Dismiss", {duration: 5 * 1000});
+    this._snackBar.open("Updating the tax information...", "Dismiss", {duration: 5 * 1000});
     this.taxModel.organizationId = this.cookieService.organization();
     this.taxservice.saveTaxInfo(this.taxModel).subscribe((res: any) => {
       if(res){
@@ -67,7 +77,24 @@ export class AddNewTaxrangeComponent implements OnInit {
         }
       }
     },(error: any) => {
-      this._snackBar.open("Failed to create the taxiteam.", "Dismiss", {duration: 5 * 1000});
+      this._snackBar.open("Failed to update the tax details.", "Dismiss", {duration: 5 * 1000});
+    })
+  }
+
+  editTaxRange(){
+    this._snackBar.open("Updating the tax details...", "Dismiss", {duration: 5 * 1000});
+
+    this.taxservice.updateTaxInfo(this.taxModel).subscribe((res: any) => {
+      if(res){
+        if(res.errorCode == "INVALID_INFOMARTION"){
+          this._snackBar.open(res.message, "Ok");
+        }else{
+          this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+          this.router.navigate(['payroll', 'taxdetails']);
+        }
+      }
+    },(error: any) => {
+      this._snackBar.open("Failed to update the tax details.", "Ok");
     })
   }
 

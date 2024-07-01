@@ -74,19 +74,15 @@ export class PayitemsComponent {
       
 
       if (confirm('Are you sure you want to delete this pay item?')){
-        this.payitemService.deletePayitemById(id).subscribe(data => {
           this._snackBar.open("Deleting the payitem...", "Dismiss", {duration: 5 * 1000});
-            this.payitemService.deletePayitemById(id).subscribe((res: any) => {
-              if(res){
-                this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
-                this.updatePayitemsList();
-              }
-            },(error: any) => {
-              this._snackBar.open("Failed to delete the payitem.", "Dismiss", {duration: 5 * 1000});
-            })
-        }, error => {
-          console.log(error)
-        })
+          this.payitemService.deletePayitemById(id).subscribe((res: any) => {
+            if(res){
+              this._snackBar.open(res.message, "Dismiss", {duration: 5 * 1000});
+              this.updatePayitemsList();
+            }
+          },(error: any) => {
+            this._snackBar.open("Failed to delete the payitem.", "Dismiss", {duration: 5 * 1000});
+          })
       }
     }
   }

@@ -65,9 +65,20 @@ import {
 import {
   RecruitmentJobListComponent
 } from "./components/recruitment/recruitment-job-list/recruitment-job-list.component";
+import {DashboardInitialComponent} from "./components/Dashboards/dashboard-initial/dashboard-initial.component";
+import {EventCalendarComponent} from "./shared/components/event-calendar/event-calendar.component";
+import {
+  DashboardMainComponent
+} from "./components/Dashboards/dashboard-initial/dashboard-main/dashboard-main.component";
+import {
+  DashboardOnboardinMainComponent
+} from "./components/Dashboards/dashboard-initial/dashboard-onboardin-main/dashboard-onboardin-main.component";
+import { PayrollConfigurationComponent } from './components/payroll/payroll-configuration/payroll-configuration.component';
+import { RunPayrollComponent } from './components/payroll/run-payroll/run-payroll.component';
+import {ForbiddenComponent} from "./shared/components/forbidden/forbidden.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: 'feed', pathMatch: 'full'},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {
     path: 'feed', component: FeedWrapperComponent, canActivate: [AuthGuard], children: [
@@ -133,20 +144,18 @@ const routes: Routes = [
       {path: 'view-payroll-reports/:id', component: ViewPayrollReportsComponent},
       {path: 'payroll-history', component: PayrollHistoryComponent},
       {path: 'taxdetails', component: TaxdetailsComponent},
-      {path: 'new-tax-detail', component: AddNewTaxrangeComponent}
+      {path: 'taxdetails/new-tax-detail', component: AddNewTaxrangeComponent},
+      {path: 'taxdetails/edit-tax-detail/:taxdetailId', component: AddNewTaxrangeComponent},
+      {path: 'payroll-configuration', component: PayrollConfigurationComponent},
+      {path: 'run-payroll', component: RunPayrollComponent}
     ]
   },
   {
-    path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard, AdminGuard], children: [
-      {path: '', redirectTo: '/onboardin/assign', pathMatch: "full"},
+    path: 'onboardin', component: OnboardingHandleComponent, canActivate: [AuthGuard], children: [
+      {path: '', redirectTo: '/onboardin/plan', pathMatch: "full"},
       {path: 'assign', component: AssignTaskComponent},
-      {path: 'plan', component: CreatePlanComponent},
+      {path: 'plan', component: CreatePlanComponent, canActivate: [AdminGuard]},
       {path: 'task', component: CreateTaskComponent},
-    ]
-  },
-  {
-    path: 'taxdetails', component: TaxdetailsComponent, canActivate: [AuthGuard, AdminGuard], children: [
-      {path: 'tax-details-info', component: AddNewTaxrangeComponent}
     ]
   },
   {path: 'recruitment', component: RecruitmentComponent, canActivate: [AuthGuard, AdminGuard], children: [
@@ -154,6 +163,13 @@ const routes: Routes = [
     {path: 'applicants', component: RecruitmentApplicantsComponent},
     {path: 'job-listing', component: RecruitmentJobListComponent},
   ]},
+  {path: 'event-calendar', component: EventCalendarComponent, canActivate: [AuthGuard]},
+  {path: 'dashboard', component: DashboardInitialComponent, canActivate: [AuthGuard, AdminGuard], children: [
+    {path: '', redirectTo: '/dashboard/main', pathMatch: 'full'},
+    {path: 'main', component: DashboardMainComponent},
+    {path: 'onboarding', component: DashboardOnboardinMainComponent, canActivate: [AuthGuard, AdminGuard]},
+  ]},
+  {path: '403', component: ForbiddenComponent},
   {path: '**', component: NotFoundComponent},
 
 ];

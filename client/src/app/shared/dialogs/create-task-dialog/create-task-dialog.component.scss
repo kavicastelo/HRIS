@@ -14,3 +14,29 @@
     background-color: #a6a6a6;
   }
 }
+
+p{
+  margin-bottom: 0;
+}
+
+.dropdown-visible{
+  position: absolute;
+  background-color: #fff;
+  left: 20px;
+  top: 70px;
+  width: 100%;
+  z-index: 9;
+  display: none;
+  max-height: 50vh;
+  overflow-y: auto;
+
+  li{
+    list-style: none;
+    cursor: pointer;
+    padding: 3px 0;
+
+    &:hover{
+      background-color: #e5e5e5;
+    }
+  }
+}

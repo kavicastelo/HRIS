@@ -1,0 +1,146 @@
+<div class="container">
+  <div class="sticky-top" style="background-color: #fff">
+    <div class="d-flex align-items-center justify-content-between px-2 py-2">
+      <div class="d-flex align-items-center">
+        <h5>{{receivedData.data.title}} Plan Details</h5>
+        <div class="status-mark" [ngStyle]="{'background-color':receivedData.data.status=='Open'?'#0CBC87':'#E62929'}"></div>
+      </div>
+      <mat-icon (click)="closePopup()">close</mat-icon>
+    </div>
+    <hr>
+  </div>
+
+  <div class="container" *ngFor="let p of filterOnboardingPlans()">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Name: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.empName}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Employee Id: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.empId}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Email: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.empEmail}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Title: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.title}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Department: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.department}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Manager: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.manager}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Start Date: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.startDate | date}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>End Date: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.taskDate | date}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="row main-data">
+          <div class="col-6 plan-label">
+            <div>Location: </div>
+          </div>
+          <div class="col-6 plan-value">
+            <div>{{p.location}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div style="width: 100%; overflow-x: auto">
+      <table class="table table-hover" style="min-width: 600px;">
+        <thead>
+        <tr>
+          <th>Activity Type</th>
+          <th>Closed</th>
+          <th>Status</th>
+          <th>Activity Monitored By</th>
+          <th>Activity Notes</th>
+          <th>Status Notes</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let tt of p.taskTitles">
+        <tr>
+          <td colspan="6" class="task-title">
+            {{tt}}
+          </td>
+        </tr>
+        <tr *ngFor="let t of filterOnBoardingTasks(tt)" (click)="editTask(t, p)">
+          <td>{{t.taskName}}</td>
+          <td>{{t.closed}}</td>
+          <td>{{t.status}}</td>
+          <td>{{t.monitoredBy}}</td>
+          <td title="{{t.activityNotes}}">{{t.activityNotes | truncate:20}}</td>
+          <td title="{{t.statusNotes}}">{{t.statusNotes | truncate:20}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="sticky-bottom" style="background-color: #fff" *ngIf="thisUser.level != 2">
+  <hr>
+  <div class="d-flex align-items-center justify-content-end px-2 py-2" *ngFor="let fp of filterOnboardingPlans()">
+    <button class="btn btn-primary" (click)="EditPlan()">Edit Plan</button>
+    <button class="btn mx-2" style="color: #fff" [ngStyle]="{'background-color':fp.status=='Open'?'#E62929':'#0CBC87'}" (click)="changeStatus(fp.id, fp.status)" [matTooltip]="fp.status == 'Open'?'Plan is Opened. Mark as Closed':'Plan is Closed. Mark as Open'">Mark as {{fp.status == 'Open'?'Closed':'Open'}}</button>
+    <button class="btn btn-danger" (click)="deletePlan()">Delete Plan</button>
+  </div>
+</div>

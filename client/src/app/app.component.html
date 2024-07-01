@@ -1,4 +1,4 @@
-<div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}">
+<div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}" style="max-height: 100vh; overflow: hidden">
 
     <div class="w-100 main-body"  *ngFor="let e of employee">
         <button class="theme-btn" (click)="toggleTheme()" title="Theme">
@@ -62,7 +62,18 @@
                     <span>MENU</span>
                     <div class="accordian">
                         <mat-accordion>
-                            <mat-expansion-panel expanded>
+                          <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                Tools
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ul>
+                              <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard">Dashboard</li>
+                              <li routerLink="/event-calendar">Calendar</li>
+                            </ul>
+                          </mat-expansion-panel>
+                            <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Employee
@@ -103,16 +114,17 @@
                                     <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm/mark-attendance">Mark attendance</li>
                                 </ul>
                             </mat-expansion-panel>
-                            <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
+                            <mat-expansion-panel>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Ongoing Processes
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <ul>
-                                    <li routerLink="/onboardin/plan">Create Ongoing Plan</li>
-                                    <li routerLink="/onboardin/task">Create Ongoing Tasks</li>
-                                    <li routerLink="/onboardin">Assign employees</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard/onboarding">Dashboard</li>
+                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/onboardin/plan">Assign Plans</li>
+                                    <li routerLink="/onboardin/assign">Ongoing Plans</li>
+                                    <li routerLink="/onboardin/task">Ongoing Tasks</li>
                                 </ul>
                             </mat-expansion-panel>
                             <mat-expansion-panel>

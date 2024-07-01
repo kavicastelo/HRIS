@@ -56,7 +56,6 @@ export class EditAttendanceComponent {
             this.startTime = new Date(this.receivedData.data.attendance.recordInTime)
             this.endTime = new Date(this.receivedData.data.attendance.recordOutTime)
         }
-        console.log(this.attendanceForm.value)
     }
 
     closePopup() {

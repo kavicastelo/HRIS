@@ -1,1 +1,59 @@
-<p>recruitment-job-list works!</p>
+<div class="d-flex align-items-start justify-content-between">
+  <div class="row w-100 w-md-60">
+    <div class="col-12 col-md-6">
+      <div class="input-group px-2" style="max-width: 500px">
+        <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+        <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username"
+               aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)">
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <p>({{filterJobPosts().length?filterJobPosts().length:0}} results found.)</p>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center">
+    <button class="btn-1 px-2" style="white-space: nowrap" matTooltip="Create new job post" (click)="createJobPost()">
+      Create Post
+    </button>
+  </div>
+</div>
+
+<div class="transfer-list">
+  <table class="table table-hover" style="min-width: 700px">
+    <thead>
+    <tr>
+      <th>Job Title</th>
+      <th>Open Date</th>
+      <th>Close Date</th>
+      <th>-</th>
+      <th>-</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let e of filterJobPosts(); let i = index">
+      <td (click)="viewJobPost(e)">{{e.caption}}</td>
+      <td (click)="viewJobPost(e)">{{e.open_date | date}}</td>
+      <td (click)="viewJobPost(e)">{{e.end_date | date}}</td>
+      <td>-</td>
+      <td>-</td>
+      <td>
+        <button class="btn-2" matTooltip="More" type="button" [matMenuTriggerFor]="more">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #more="matMenu">
+          <button mat-menu-item (click)="editJobPost(e)">Edit</button>
+          <button mat-menu-item (click)="deleteJobPost(e)" style="color: red!important;">Delete</button>
+        </mat-menu>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div *ngIf="filterJobPosts().length == 0">
+    <div class="data-not-found">
+      <p>Data not available!</p>
+    </div>
+  </div>
+</div>

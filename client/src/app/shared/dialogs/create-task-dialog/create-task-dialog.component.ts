@@ -8,6 +8,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationsService} from "../../../services/notifications.service";
 import {EmployeesService} from "../../../services/employees.service";
 import {MatSelect} from "@angular/material/select";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-create-task-dialog',
@@ -18,26 +19,41 @@ export class CreateTaskDialogComponent {
 
   receivedData:any;
   selectedStatus:any;
-  selectedPlan:any;
+  selectedCloseStatus:any;
   statusTypes:any[] = ["Open", "In Progress", "On Hold", "Pending Review", "Completed", "Canceled", "Reopened"]
 
   plansStore: any[] = [];
   employeeDataStore:any[] = [];
-  filteredPlans: any;
+  filteredEmployees:any[] = [];
+
+  selectedPlan: any;
+
+
+  thisUser:any;
+  thisUserId:any;
+
+  targetInput: any;
+  organizationId: any;
 
 
   onboardinTaskForm = new FormGroup({
-    onboardingPlanId: new FormControl(null, [Validators.required]),
-    descriptionTask: new FormControl(null, [Validators.required]),
+    nameTask: new FormControl(null, [Validators.required]),
+    adminEmail: new FormControl({value: null, disabled: true}, [Validators.required]),
     startDateTask: new FormControl(null, [Validators.required]),
     endDateTask: new FormControl(null, [Validators.required]),
-    statusTask: new FormControl(null, [Validators.required])
+    close: new FormControl(null, [Validators.required]),
+    statusTask: new FormControl(null, [Validators.required]),
+    monitorBy: new FormControl(null, [Validators.required]),
+    descriptionTask: new FormControl(null, [Validators.required]),
+    activityNotes: new FormControl("N/A"),
+    statusNotes: new FormControl("N/A"),
   })
 
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private onboardinService: OnboardinService,
               private snackbar: MatSnackBar,
+              private cookieService: AuthService,
               private renderer: Renderer2,
               private employeesService: EmployeesService,
               private notificationsService: NotificationsService,
@@ -47,9 +63,15 @@ export class CreateTaskDialogComponent {
 
   async ngOnInit(): Promise<any> {
     this.receivedData = this.data;
+    this.thisUserId = this.cookieService.userID().toString();
+    this.organizationId = this.cookieService.organization().toString();
 
-    await this.loadAllPlans().subscribe(()=>{})
-    await this.loadAllUsers().subscribe(()=>{})
+    await this.loadAllPlans().subscribe(()=>{
+      this.getCurrentPlan();
+    })
+    await this.loadAllUsers().subscribe(()=>{
+      this.getCurrentUser()
+    })
     this.patchValues();
   }
 
@@ -59,13 +81,8 @@ export class CreateTaskDialogComponent {
     );
   }
 
-  filterPlans(): any[]{
-    this.filteredPlans = this.plansStore.filter((data:any) => data.organizationId == this.receivedData.data.organizationId? this.filteredPlans = [data]: this.filteredPlans = null)
-    this.filteredPlans.sort((a:any, b:any) => {
-      return new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
-    })
-
-    return this.filteredPlans;
+  getCurrentPlan(): Observable<any> {
+    return this.selectedPlan = this.plansStore.find((plan: any) => plan.id === this.receivedData.data.task.onBoardingPlanId);
   }
 
   loadAllUsers(): Observable<any> {
@@ -74,10 +91,42 @@ export class CreateTaskDialogComponent {
     );
   }
 
-  filterEmployees(): any[]{
-    this.employeeDataStore = this.employeeDataStore.filter((data:any) => data.organizationId == this.receivedData.data.organizationId? this.employeeDataStore = [data]: this.employeeDataStore = [])
+  getCurrentUser(): Observable<any> {
+    return this.thisUser = this.employeeDataStore.find((emp: any) => emp.id === this.thisUserId);
+  }
 
-    return this.employeeDataStore;
+  filterEmployees(): any[]{
+    if (this.targetInput === undefined){
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId)
+    }
+    this.filteredEmployees.sort((a:any, b:any) => {
+      return new Date(b.jobData.doj).getTime() - new Date(a.jobData.doj).getTime()
+    })
+
+    return this.filteredEmployees;
+  }
+
+  handleManagerSearch(data: any): void {
+    const dp = document.getElementById('managerDropdown') as HTMLElement;
+
+
+    this.targetInput = data as HTMLInputElement;
+    const value = this.targetInput.value
+    if (value) {
+      dp.style.display = 'block';
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) =>
+        data.organizationId === this.organizationId && data.level === 1 && data.name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      dp.style.display = 'block';
+      this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId && data.level === 1);
+    }
+  }
+
+  chooseManager(manager:any) {
+    this.onboardinTaskForm.get('monitorBy')?.setValue(manager.name);
+    const dp = document.getElementById('managerDropdown') as HTMLElement;
+    dp.style.display = 'none';
   }
 
   closePopup(){
@@ -86,12 +135,18 @@ export class CreateTaskDialogComponent {
 
   patchValues(){
     if (this.receivedData.data.taskId){
-      this.selectedPlan = this.receivedData.data.task.onBoardingPlanId
-      this.onboardinTaskForm.get('onboardingPlanId')?.setValue(this.receivedData.data.task.onBoardingPlanId)
-      this.onboardinTaskForm.get('descriptionTask')?.setValue(this.receivedData.data.task.description)
+      this.selectedStatus = this.receivedData.data.task.status
+      this.selectedCloseStatus = this.receivedData.data.task.closed
+      this.onboardinTaskForm.get('nameTask')?.setValue(this.receivedData.data.task.taskName)
+      this.onboardinTaskForm.get('adminEmail')?.setValue(this.receivedData.data.task.adminEmail)
       this.onboardinTaskForm.get('startDateTask')?.setValue(this.receivedData.data.task.startdate)
       this.onboardinTaskForm.get('endDateTask')?.setValue(this.receivedData.data.task.taskdate)
+      this.onboardinTaskForm.get('close')?.setValue(this.receivedData.data.task.closed)
       this.onboardinTaskForm.get('statusTask')?.setValue(this.receivedData.data.task.status)
+      this.onboardinTaskForm.get('monitorBy')?.setValue(this.receivedData.data.task.monitoredBy)
+      this.onboardinTaskForm.get('descriptionTask')?.setValue(this.receivedData.data.task.description)
+      this.onboardinTaskForm.get('activityNotes')?.setValue(this.receivedData.data.task.activityNotes)
+      this.onboardinTaskForm.get('statusNotes')?.setValue(this.receivedData.data.task.statusNotes)
     }
   }
 
@@ -99,26 +154,32 @@ export class CreateTaskDialogComponent {
     if (this.onboardinTaskForm.valid){
       this.onboardinService.saveOnboardin({
         organizationId: this.receivedData.data.organizationId,
-        onBoardingPlanId: this.onboardinTaskForm.value.onboardingPlanId,
-        adminEmail: this.receivedData.data.adminEmail,
+        onBoardingPlanId: this.receivedData.data.task.onBoardingPlanId,
+        taskTitle: this.receivedData.data.task.taskTitle,
+        taskName: this.onboardinTaskForm.value.nameTask,
+        adminEmail: this.receivedData.data.task.adminEmail,
         description: this.onboardinTaskForm.value.descriptionTask,
         startdate: this.onboardinTaskForm.value.startDateTask,
         taskdate: this.onboardinTaskForm.value.endDateTask,
+        closed: this.onboardinTaskForm.value.close,
         status: this.onboardinTaskForm.value.statusTask,
+        monitoredBy: this.onboardinTaskForm.value.monitorBy,
+        activityNotes: this.onboardinTaskForm.value.activityNotes,
+        statusNotes: this.onboardinTaskForm.value.statusNotes
       }).subscribe(data=>{
         this.closePopup()
         this.snackbar.open("Please wait a moment...!");
-        this.filterEmployees().forEach((emp)=>{
-          const notificationData = {
-            userId: emp.id,
-            notification: this.receivedData.data.userName + ` created a new task for ${this.selectedPlan} plan`,
-            timestamp: new Date(),
-            router: '/onboardin/task',
-            status: true
-          }
 
-          this.pushNotification(notificationData);
-        })
+        const notificationData = {
+          userId: this.selectedPlan.empEmail,
+          notification: this.thisUser.name + ` created a new task under the ${this.receivedData.data.task.taskTitle} topic`,
+          timestamp: new Date(),
+          router: '/onboardin/task',
+          status: true
+        }
+
+        this.pushNotification(notificationData);
+
         this.snackbar.dismiss();
         this.snackbar.open("Task Created Successfully", "OK", {duration:3000})
       }, error => {
@@ -131,26 +192,32 @@ export class CreateTaskDialogComponent {
     if (this.receivedData.data.taskId){
       this.onboardinService.editTaskById(this.receivedData.data.taskId, {
         organizationId: this.receivedData.data.organizationId,
-        onBoardingPlanId: this.onboardinTaskForm.value.onboardingPlanId,
-        adminEmail: this.receivedData.data.userEmail,
+        onBoardingPlanId: this.receivedData.data.task.onBoardingPlanId,
+        taskTitle: this.receivedData.data.task.taskTitle,
+        taskName: this.onboardinTaskForm.value.nameTask,
+        adminEmail: this.receivedData.data.task.adminEmail,
         description: this.onboardinTaskForm.value.descriptionTask,
         startdate: this.onboardinTaskForm.value.startDateTask,
         taskdate: this.onboardinTaskForm.value.endDateTask,
-        status: this.onboardinTaskForm.value.statusTask
+        closed: this.onboardinTaskForm.value.close,
+        status: this.onboardinTaskForm.value.statusTask,
+        monitoredBy: this.onboardinTaskForm.value.monitorBy,
+        activityNotes: this.onboardinTaskForm.value.activityNotes,
+        statusNotes: this.onboardinTaskForm.value.statusNotes
       }).subscribe(data => {
         this.closePopup()
         this.snackbar.open("Please wait a moment...!");
-        this.filterEmployees().forEach((emp)=>{
-          const notificationData = {
-            userId: emp.id,
-            notification: this.receivedData.data.userName + ` updated the task- ${this.receivedData.data.taskId} in ${this.selectedPlan} plan`,
-            timestamp: new Date(),
-            router: '/onboardin/task',
-            status: true
-          }
 
-          this.pushNotification(notificationData);
-        })
+        const notificationData = {
+          userId: this.selectedPlan.empEmail,
+          notification: this.thisUser.name + ` updated the task- ${this.receivedData.data.taskName} under ${this.receivedData.data.task.taskTitle} topic`,
+          timestamp: new Date(),
+          router: '/onboardin/task',
+          status: true
+        }
+
+        this.pushNotification(notificationData);
+
         this.snackbar.dismiss();
         this.snackbar.open("Task Edited Successfully", "OK", {duration:3000})
       }, error => {

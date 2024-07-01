@@ -137,6 +137,4 @@ public class RecruiterController {
         ApiResponse apiResponse = new ApiResponse("Candidate added to favorites");
         return ResponseEntity.ok(apiResponse);
     }
-
-
 }

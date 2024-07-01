@@ -1,19 +1,21 @@
 package com.hris.HRIS.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hris.HRIS.controller.AttendanceController;
 import com.hris.HRIS.dto.PayrollReportItem;
 import com.hris.HRIS.dto.SummaryReportItem;
 import com.hris.HRIS.model.*;
-import com.hris.HRIS.repository.EmployeeRepository;
-import com.hris.HRIS.repository.OrganizationRepository;
-import com.hris.HRIS.repository.SummaryReportRepository;
+import com.hris.HRIS.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
@@ -21,7 +23,6 @@ import org.thymeleaf.context.Context;
 import com.hris.HRIS.controller.EmployeePayItemController;
 import com.hris.HRIS.controller.PayItemController;
 import com.hris.HRIS.controller.TaxController;
-import com.hris.HRIS.repository.PayrollReportRepository;
 
 @Service
 public class PayrollReportsGenerationService {
@@ -50,7 +51,10 @@ public class PayrollReportsGenerationService {
     @Autowired
     OrganizationRepository organizationRepository;
 
-    public void generatePayrollReport(String reportType, String payPeriod, String email, String organizationId){
+    @Autowired
+    PayrollConfigurationRepository payrollConfigurationRepository;
+
+    public void generatePayrollReport(String reportType, String payPeriod, String email, String organizationId) {
         List<EmployeePayItemModel> employeePayItemsList = employeePayItemController.getPayItemsByEmail(email);
         List<PayrollReportItem> payitems = new ArrayList<>();
         List<PayrollReportItem> deductions = new ArrayList<>();
@@ -63,8 +67,26 @@ public class PayrollReportsGenerationService {
         employeePayItemController.addEPFDeductions(email);
         employeePayItemController.addETFDeductions(email);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+        Optional<PayrollConfigurationModel> payrollConfigurationOptional = payrollConfigurationRepository.findByOrganizationId(organizationId);
+        PayrollConfigurationModel existingPayrollConfiguration;
+        if (payrollConfigurationOptional.isPresent()) {
+            existingPayrollConfiguration = payrollConfigurationOptional.get();
+        } else {
+            return;
+        }
+
+        LocalDateTime payrollPeriodStartDate = LocalDate.parse(existingPayrollConfiguration.getPayrollPeriodStartDate(), formatter2).atStartOfDay();
+        LocalDateTime payrollPeriodEndDate = payrollPeriodStartDate.plusDays(Long.parseLong(existingPayrollConfiguration.getPayrollPeriodInDays()) - 1);
+
+        calculatePaymentsRelatedToAttendanceRecords(email, payrollPeriodStartDate.format(formatter), payrollPeriodEndDate.format(formatter));
+
+        //TODO: Temporarily disabled generating the payroll reports and summary reports since the service method is improving to handle the payroll process based on payroll periods.
+
         // Calculate earnings for the pay items.
-        for(int i = 0; i < employeePayItemsList.size(); i++){
+        for (int i = 0; i < employeePayItemsList.size(); i++) {
             PayItemModel payItemModel = payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody();
 
             PayrollReportItem payitem = new PayrollReportItem();
@@ -72,22 +94,22 @@ public class PayrollReportsGenerationService {
             payitem.setItemName(payItemModel.getItemName());
             payitem.setDescription(payItemModel.getDescription());
 
-            if(employeePayItemsList.get(i).getType().equals("Percentage")) {
+            if (employeePayItemsList.get(i).getType().equals("Percentage")) {
                 payitem.setAmount(
                         employeePayItemsList.get(0).getValue() * (employeePayItemsList.get(i).getValue() / 100)
                 );
-            }else if(employeePayItemsList.get(i).getType().equals("Hourly Rate")){
+            } else if (employeePayItemsList.get(i).getType().equals("Hourly Rate")) {
 //                payitem.setAmount(
 //                        attendanceController.getHoursWorkedByEmailAndDateRange(email, YearMonth.now()) * employeePayItemsList.get(i).getValue()
 //                );
-            }else{
+            } else {
                 payitem.setAmount(employeePayItemsList.get(i).getValue());
             }
 
-            if(payItemModel.getItemType().equals("Deletion")){
+            if (payItemModel.getItemType().equals("Deletion")) {
                 deductedAmount += payitem.getAmount();
                 deductions.add(payitem);
-            }else{
+            } else {
                 amount += payitem.getAmount();
                 payitems.add(payitem);
             }
@@ -95,7 +117,7 @@ public class PayrollReportsGenerationService {
         }
 
         double taxRate = Double.parseDouble(taxController.getTaxRateForSalary(amount - deductedAmount, organizationId).getBody().getMessage());
-        double totalTax = (amount - deductedAmount) * (taxRate/100);
+        double totalTax = (amount - deductedAmount) * (taxRate / 100);
 
         PayrollReportItem deduction = new PayrollReportItem();
         deduction.setItemName("Tax");
@@ -118,9 +140,9 @@ public class PayrollReportsGenerationService {
         String generatedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         payrollReportModel.setReportGeneratedDate(generatedDateTime);
 
-        payrollReportRepository.save(payrollReportModel);
+//        payrollReportRepository.save(payrollReportModel);
 
-        employeePayItemController.resetCommonPayItems(email);
+//        employeePayItemController.resetCommonPayItems(email);
     }
 
     public void generateSummaryReport(String reportType, String payPeriod, String organizationId){
@@ -171,6 +193,37 @@ public class PayrollReportsGenerationService {
 
         summaryReportModel.setStatus("Available");
 
-        summaryReportRepository.save(summaryReportModel);
+//        summaryReportRepository.save(summaryReportModel);
+    }
+
+    public void calculatePaymentsRelatedToAttendanceRecords(String email, String startDate, String endDate){
+        List<AttendanceModel> attendanceRecords = attendanceController.getAllAttendanceRecordsByEmailAndDateRange(email, startDate, endDate);
+
+        double totalLateMinutes = 0.0;
+        double totalEarlyDepartureMinutes = 0.0;
+        double totalNoPayHours = 0.0;
+        double totalOvertimeHours = 0.0;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        for(AttendanceModel attendanceModel : attendanceRecords){
+            totalLateMinutes += attendanceModel.getLateMinutes();
+            totalEarlyDepartureMinutes += attendanceModel.getEarlyDepartureMinutes();
+            totalOvertimeHours += attendanceModel.getOvertimeHours();
+        }
+
+        employeePayItemController.resetCommonPayItems(email);
+
+        // TODO: Temporary added a fixed value as the total hours allowed.
+
+        ObjectNode lateMinuteRecord = objectMapper.createObjectNode();
+        lateMinuteRecord.put("totalHoursAllowed", 240);
+        lateMinuteRecord.put("lateMinutes", totalLateMinutes);
+        employeePayItemController.addLateMinuteDeductions(email, lateMinuteRecord.toString());
+
+        ObjectNode overtimeHoursRecord = objectMapper.createObjectNode();
+        overtimeHoursRecord.put("totalHoursAllowed", 240);
+        overtimeHoursRecord.put("lateMinutes", totalOvertimeHours);
+        employeePayItemController.addOvertimePayments(email, overtimeHoursRecord.toString());
     }
 }

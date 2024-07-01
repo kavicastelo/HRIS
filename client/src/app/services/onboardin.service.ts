@@ -19,8 +19,32 @@ export class OnboardinService {
     return this.http.post(this.baseUrl+'onboardingPlan/save',plan);
   }
 
+  public deleteOnboardingPlan(id:any):Observable<any> {
+    return this.http.delete(this.baseUrl+'onboardingPlan/delete/id/'+id);
+  }
+
+  public deleteOnboarding(id:any):Observable<any> {
+    return this.http.delete(this.baseUrl+'onboarding/delete/id/'+id);
+  }
+
+  public updatePlan(plan: OnboardinPlan): Observable<any> {
+    return this.http.put(this.baseUrl+'onboardingPlan/update/id/'+plan.id, plan);
+  }
+
+  public updatePlanStatus(id: any): Observable<any> {
+    return this.http.put(this.baseUrl+'onboardingPlan/update/status/id/'+id, {});
+  }
+
   public saveOnboardin(onboarding: Onboardin): Observable<any> {
     return this.http.post(this.baseUrl+'onboarding/save', onboarding);
+  }
+
+  public saveTasksList(planId:any, onboarding: any): Observable<any> {
+    return this.http.post(this.baseUrl+'onboarding/save/tasks/'+planId, onboarding);
+  }
+
+  public updateTasksList(planId:any, onboarding: any): Observable<any> {
+    return this.http.put(this.baseUrl+'onboarding/update/tasks/'+planId, onboarding);
   }
 
   public getAllPlans(): Observable<any> {
