@@ -18,7 +18,7 @@ export class AdminGuard implements CanActivate {
       return true;
     }
     else{
-      this.route.navigateByUrl('/feed');
+      this.route.navigateByUrl('/403');
       return false;
     }
   }

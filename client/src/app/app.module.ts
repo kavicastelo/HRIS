@@ -150,6 +150,7 @@ import { EditPayrollScheduleComponent } from './shared/dialogs/edit-payroll-sche
 import { OnboardingPlanViewComponent } from './shared/dialogs/onboarding-plan-view/onboarding-plan-view.component';
 import { RunPayrollComponent } from './components/payroll/run-payroll/run-payroll.component';
 import { OnboardingTaskViewComponent } from './shared/dialogs/onboarding-task-view/onboarding-task-view.component';
+import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
 
 @NgModule({
   declarations: [
@@ -247,7 +248,8 @@ import { OnboardingTaskViewComponent } from './shared/dialogs/onboarding-task-vi
     EditPayrollScheduleComponent,
     OnboardingPlanViewComponent,
     RunPayrollComponent,
-    OnboardingTaskViewComponent
+    OnboardingTaskViewComponent,
+    ForbiddenComponent
   ],
     imports: [
         BrowserModule,

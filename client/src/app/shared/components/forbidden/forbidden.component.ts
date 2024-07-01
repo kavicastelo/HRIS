@@ -3,20 +3,20 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
 
 @Component({
-  selector: 'app-not-found',
-  templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.scss']
+  selector: 'app-forbidden',
+  templateUrl: './forbidden.component.html',
+  styleUrls: ['./forbidden.component.scss']
 })
-export class NotFoundComponent implements OnInit {
+export class ForbiddenComponent implements OnInit{
+  userLevel: any
 
-  userLevel:any
   constructor(private router: Router, private cookieService: AuthService) {
   }
   ngOnInit(): void {
     this.userLevel = this.cookieService.level()
     setTimeout(() => {
       this.goHome()
-    }, 5000)
+    }, 3000)
   }
 
   goHome() {
@@ -27,5 +27,4 @@ export class NotFoundComponent implements OnInit {
       this.router.navigate(['/feed']);
     }
   }
-
 }
