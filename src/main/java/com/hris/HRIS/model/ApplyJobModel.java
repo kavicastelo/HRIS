@@ -32,8 +32,6 @@ public class ApplyJobModel {
 
     private byte[] cv;
 
-    private boolean favorite; // select applicant as favorite
-
     private boolean action; //1st stage to 2nd stage
 
     private boolean hire; //2nd stage to hiring stage
