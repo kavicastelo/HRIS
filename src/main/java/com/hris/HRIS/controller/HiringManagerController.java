@@ -16,10 +16,10 @@ import java.util.Map;
 public class HiringManagerController {
 
     @Autowired
-    HiringManagerRepository hiringManagerRepository;
+    private HiringManagerRepository hiringManagerRepository;
 
     @Autowired
-    HiringManagerService hiringManagerService;
+    private HiringManagerService hiringManagerService;
 
     @GetMapping("/all/details")
     public List<HiringManagerModel> getAllDetails(){
