@@ -1,0 +1,65 @@
+<div class="sticky-top" style="background-color: #fff">
+  <div class="d-flex align-items-center justify-content-between px-2 py-2">
+    <h5>{{receivedData.data.id?'Edit':'Configure'}} Leave Balance</h5>
+    <mat-icon (click)="closePopup()">close</mat-icon>
+  </div>
+  <hr>
+</div>
+
+<div class="container" style="overflow: auto">
+  <form [formGroup]="leavesConfigForm">
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <p>Annual Leaves</p>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Annual Leaves</mat-label>
+          <input type="number" matInput id="annualLeave" formControlName="annualLeave" placeholder="Annual Leaves..." #annualInput (keydown)="focusFieldOnEnter($event, sickInput)">
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p>Sick Leaves</p>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Sick Leaves</mat-label>
+          <input type="number" matInput id="sickLeave" formControlName="sickLeave" placeholder="Sick Leaves..." #sickInput (keydown)="focusFieldOnEnter($event, casualInput)">
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p>Casual Leaves</p>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Casual Leaves</mat-label>
+          <input type="number" matInput id="casualLeave" formControlName="casualLeave" placeholder="Casual Leaves..." #casualInput (keydown)="focusFieldOnEnter($event, maternityInput)">
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p>Maternity Leaves</p>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Maternity Leaves</mat-label>
+          <input type="number" matInput id="maternityLeave" formControlName="maternityLeave" placeholder="Maternity Leaves..." #maternityInput (keydown)="focusFieldOnEnter($event, paternityInput)">
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p>Paternity Leaves</p>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Paternity Leaves</mat-label>
+          <input type="number" matInput id="paternityLeave" formControlName="paternityLeave" placeholder="Paternity Leaves..." #paternityInput (keydown)="focusFieldOnEnter($event, noPayInput)">
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-sm-6">
+        <p>No Pay Leaves</p>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>No Pay Leaves</mat-label>
+          <input type="number" matInput id="noPayLeave" formControlName="noPayLeave" placeholder="No Pay Leaves..." #noPayInput (keydown)="keyFormSubmit($event,receivedData.data.id?'edit':'save')">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="sticky-bottom" style="background-color: #fff">
+  <hr>
+  <div class="d-flex align-items-center justify-content-end px-2 py-2">
+    <button class="btn me-2" (click)="closePopup()">Cancel</button>
+    <button class="btn btn-primary" [disabled]="leavesConfigForm.invalid" (click)="receivedData.data.id?editConfig():saveConfig()">{{receivedData.data.id?'Edit':'Save'}}</button>
+  </div>
+</div>
+

@@ -152,6 +152,7 @@ import { RunPayrollComponent } from './components/payroll/run-payroll/run-payrol
 import { OnboardingTaskViewComponent } from './shared/dialogs/onboarding-task-view/onboarding-task-view.component';
 import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
 import { DashboardConfigComponent } from './components/Dashboards/dashboard-config/dashboard-config.component';
+import { LeavesConfigDialogComponent } from './shared/dialogs/leaves-config-dialog/leaves-config-dialog.component';
 
 @NgModule({
   declarations: [
@@ -251,7 +252,8 @@ import { DashboardConfigComponent } from './components/Dashboards/dashboard-conf
     RunPayrollComponent,
     OnboardingTaskViewComponent,
     ForbiddenComponent,
-    DashboardConfigComponent
+    DashboardConfigComponent,
+    LeavesConfigDialogComponent
   ],
     imports: [
         BrowserModule,

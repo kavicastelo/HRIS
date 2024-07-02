@@ -16,41 +16,46 @@
         <div class="row">
           <p>These are the default values we provided for your organization. You can change these values once and <span
             class="danger">it cannot be undone</span>. <br>
-            <span class="link">Change Here</span></p>
+            <span class="link"
+                  [matTooltip]="organization.isLeavesConfigured?'Leaves Configurations already configured':'Config Leaves'"
+                  [ngClass]="organization.isLeavesConfigured?'link-disabled':'link-enabled'"
+                  (click)="updateLeaveConfig(organization)">Change Here</span>
+            <span class="danger" *ngIf="organization.isLeavesConfigured">&nbsp;&nbsp;&target;Configured</span>
+          </p>
           <div class="col-6">
             <div class="card-3">
               <div class="card-3-sm-text">Annual Leave</div>
-              <div class="card-3-lg-text">{{organization.annualLeave?organization.annualLeave:'0'}} Days</div>
+              <div class="card-3-lg-text">{{organization.annualLeave ? organization.annualLeave : '0'}} Days</div>
             </div>
           </div>
           <div class="col-6">
             <div class="card-3">
               <div class="card-3-sm-text">Sick Leave</div>
-              <div class="card-3-lg-text">{{organization.sickLeave?organization.sickLeave:'0'}} Days</div>
+              <div class="card-3-lg-text">{{organization.sickLeave ? organization.sickLeave : '0'}} Days</div>
             </div>
           </div>
           <div class="col-6">
             <div class="card-3">
               <div class="card-3-sm-text">Casual Leave</div>
-              <div class="card-3-lg-text">{{organization.casualLeave?organization.casualLeave:'0'}} Days</div>
+              <div class="card-3-lg-text">{{organization.casualLeave ? organization.casualLeave : '0'}} Days</div>
             </div>
           </div>
           <div class="col-6">
             <div class="card-3">
               <div class="card-3-sm-text">Maternity Leave</div>
-              <div class="card-3-lg-text">{{organization.maternityLeave?organization.maternityLeave:'0'}} Days</div>
+              <div class="card-3-lg-text">{{organization.maternityLeave ? organization.maternityLeave : '0'}} Days</div>
             </div>
           </div>
           <div class="col-6">
             <div class="card-3">
               <div class="card-3-sm-text">Paternity Leave</div>
-              <div class="card-3-lg-text">{{organization.paternityLeave?organization.paternityLeave:'0'}} Days</div>
+              <div class="card-3-lg-text">{{organization.paternityLeave ? organization.paternityLeave : '0'}} Days</div>
             </div>
           </div>
           <div class="col-6">
             <div class="card-3">
               <div class="card-3-sm-text">No Pay</div>
-              <div class="card-3-lg-text">{{organization.noPayLeave?organization.noPayLeave:'0'}} Days</div>
+              <div class="card-3-lg-text">{{organization.noPayLeave ? organization.noPayLeave : '0'}} Days</div>
             </div>
           </div>
         </div>

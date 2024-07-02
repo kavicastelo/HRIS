@@ -6,11 +6,18 @@ p{
   }
 
   .link{
-    cursor: pointer;
     color: var(--color-primary-300);
 
     &:hover{
       text-decoration: underline;
     }
+  }
+
+  .link-enabled{
+    cursor: pointer;
+  }
+
+  .link-disabled{
+    cursor: not-allowed;
   }
 }
