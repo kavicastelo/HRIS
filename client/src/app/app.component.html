@@ -1,221 +1,241 @@
-<div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}" style="max-height: 100vh; overflow: hidden">
+<div [ngClass]="{'theme-light': !themeService.isDarkMode(), 'theme-dark': themeService.isDarkMode()}"
+     style="max-height: 100vh; overflow: hidden">
 
-    <div class="w-100 main-body"  *ngFor="let e of employee">
-        <button class="theme-btn" (click)="toggleTheme()" title="Theme">
-            <img [src]="themeService.isDarkMode()?'https://img.icons8.com/clouds/100/sun.png':'https://img.icons8.com/bubbles/50/moon-satellite.png'"
-                 alt="theme" height="40" width="40">
+  <div class="w-100 main-body" *ngFor="let e of employee">
+    <button class="theme-btn" (click)="toggleTheme()" title="Theme">
+      <img
+        [src]="themeService.isDarkMode()?'https://img.icons8.com/clouds/100/sun.png':'https://img.icons8.com/bubbles/50/moon-satellite.png'"
+        alt="theme" height="40" width="40">
+    </button>
+
+    <div class="heading w-100 sticky-top" *ngIf="employee[0].id != null">
+      <div class="d-flex align-items-center justify-content-center">
+        <button class="btn-1" (click)="drawer.toggle()">
+          <mat-icon>reorder</mat-icon>
         </button>
-
-        <div class="heading w-100 sticky-top" *ngIf="employee[0].id != null">
-            <div class="d-flex align-items-center justify-content-center">
-                <button class="btn-1" (click)="drawer.toggle()">
-                    <mat-icon>reorder</mat-icon>
-                </button>
-                <!--    <img src="./assets/images/logo.png" alt="logo" routerLink="/home">-->
-                <span id="orgName" class="d-none d-md-flex" [innerText]="organizationName" routerLink="/">SPARKC HR Systems</span>
-            </div>
-            <div class="d-flex align-items-center justify-content-around">
-                <button class="d-flex d-sm-none btn-1" routerLink="/chat-list">
-                    <mat-icon>forum</mat-icon>
-                </button>
-                <button class="d-flex d-md-none btn-1" routerLink="/news">
-                    <mat-icon>chrome_reader_mode</mat-icon>
-                </button>
-                <button class="btn-1" (click)="navigateUrl('edit')">
-                    <mat-icon>settings</mat-icon>
-                </button>
-                <button class="btn-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                    <mat-icon class="position-relative" style="overflow: visible">
-                        notifications
-                        <span *ngIf="notifications.length !=0" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border-light rounded-circle">
+        <!--    <img src="./assets/images/logo.png" alt="logo" routerLink="/home">-->
+        <span id="orgName" class="d-none d-md-flex" [innerText]="organizationName"
+              routerLink="/">SPARKC HR Systems</span>
+      </div>
+      <div class="d-flex align-items-center justify-content-around">
+        <button class="d-flex d-sm-none btn-1" routerLink="/chat-list">
+          <mat-icon>forum</mat-icon>
+        </button>
+        <button class="d-flex d-md-none btn-1" routerLink="/news">
+          <mat-icon>chrome_reader_mode</mat-icon>
+        </button>
+        <button class="btn-1" (click)="navigateUrl('edit')">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button class="btn-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+                aria-controls="offcanvasWithBothOptions">
+          <mat-icon class="position-relative" style="overflow: visible">
+            notifications
+            <span *ngIf="notifications.length !=0"
+                  class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border-light rounded-circle">
                         <span class="visually-hidden">New alerts</span></span>
-                    </mat-icon>
-                </button>
-                <div class="main-bar-profile-tag" *ngFor="let e of employee">
-                    <div class="d-flex align-items-center">
-                        <div class="profile-pic me-md-3" (click)="navigateUrl('about')">
-                            <img [src]="e.photo" alt="profile">
-                        </div>
-                        <div class="d-none d-md-flex flex-column justify-content-between profile-tag">
-                            <h6 (click)="navigateUrl('about')">{{e.name}}</h6>
-                            <span (click)="logOut()">Sign out</span>
-                        </div>
-                    </div>
-                </div>
+          </mat-icon>
+        </button>
+        <div class="main-bar-profile-tag" *ngFor="let e of employee">
+          <div class="d-flex align-items-center">
+            <div class="profile-pic me-md-3" (click)="navigateUrl('about')">
+              <img [src]="e.photo" alt="profile">
             </div>
-        </div>
-        <div class="w-100">
-            <mat-drawer-container class="drawer-container main-body">
-                <mat-drawer #drawer mode="over" class="drawer">
-                    <div class="profile-div sticky-top">
-                        <div class="d-flex align-items-center justify-content-center flex-column">
-                            <div class="profile-pic">
-                                <img [src]="e.photo" alt="{{e.name}}">
-                            </div>
-                            <div>
-                                <h6>{{e.name}}</h6>
-                                <small>{{e.jobData.position}}</small>
-                            </div>
-                        </div>
-                        <hr style="color: var(--color-primary-400)">
-                    </div>
-                    <span>MENU</span>
-                    <div class="accordian">
-                        <mat-accordion>
-                          <mat-expansion-panel expanded>
-                            <mat-expansion-panel-header>
-                              <mat-panel-title>
-                                Tools
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <ul>
-                              <li *ngIf="e.level == 0" routerLink="/config" class="d-flex align-items-center">Configuration <mat-icon class="d-flex align-items-center justify-content-center" style="font-size: 18px">settings</mat-icon></li>
-                              <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard">Dashboard</li>
-                              <li routerLink="/event-calendar">Calendar</li>
-                            </ul>
-                          </mat-expansion-panel>
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                        Employee
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <ul>
-                                    <li routerLink="/profile/{{e.id}}/about/{{e.id}}">Profile</li>
-                                    <li routerLink="/feed">News Feed</li>
-                                    <li routerLink="/chat-list">Connections</li>
-                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/employee">Manage Employees</li>
-                                </ul>
-                            </mat-expansion-panel>
-                          <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                              <mat-panel-title>
-                                Ongoing Processes
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <ul>
-                              <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard/onboarding">Dashboard</li>
-                              <li *ngIf="e.level == 0 || e.level == 1" routerLink="/onboardin/plan">Assign Plans</li>
-                              <li routerLink="/onboardin/assign">Ongoing Plans</li>
-                              <li routerLink="/onboardin/task">Ongoing Tasks</li>
-                            </ul>
-                          </mat-expansion-panel>
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                        Requests
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <ul>
-                                    <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">My Requests</li>
-                                    <ul class="list-2">
-                                        <li routerLink="/requests/{{e.id}}/promotion/{{e.id}}">Promotion</li>
-                                        <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">Transfer</li>
-                                        <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">Leave</li>
-                                    </ul>
-                                </ul>
-                            </mat-expansion-panel>
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                        Attendance & Leaves
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <ul>
-                                    <li routerLink="/profile/{{e.id}}/attendance/{{e.id}}">My Attendance</li>
-                                    <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">My Leaves</li>
-                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm">Manage Attendance & Leaves</li>
-                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm/mark-attendance">Mark attendance</li>
-                                </ul>
-                            </mat-expansion-panel>
-                          <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
-                            <mat-expansion-panel-header>
-                              <mat-panel-title>
-                                Recruitments
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <ul>
-<!--                              TODO: dashboard and others-->
-                              <li routerLink="/recruitment">Applicants</li>
-                              <li routerLink="/recruitment/job-listing">Job Listing</li>
-                            </ul>
-                          </mat-expansion-panel>
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                        Payroll
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <ul>
-                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payitems">Manage pay items</li>
-                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/employee-payments">Employee pay items</li>
-                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payroll-reports-overview">Payroll Reports</li>
-                                    <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payroll-history">Payroll History</li>
-                                    <li routerLink="/payroll/view-payroll-reports/{{e.id}}">My Pay Slips</li>
-                                </ul>
-                            </mat-expansion-panel>
-                            <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                        Bulletins & News
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <ul>
-                                    <li routerLink="/bulletins">Create</li>
-                                </ul>
-                            </mat-expansion-panel>
-                        </mat-accordion>
-                    </div>
-                    <div class="footer-tag">
-                        Powered By: SPARCKC
-                    </div>
-
-                </mat-drawer>
-                <mat-drawer-content [ngStyle]="{'max-height':employee[0].id == null?'100vh':'calc(100vh - 70px)'}" style="overflow-y: auto">
-                    <router-outlet></router-outlet>
-                </mat-drawer-content>
-            </mat-drawer-container>
-        </div>
-
-        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Notifications</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <div class="d-none d-md-flex flex-column justify-content-between profile-tag">
+              <h6 (click)="navigateUrl('about')">{{e.name}}</h6>
+              <span (click)="logOut()">Sign out</span>
             </div>
-            <div class="offcanvas-body">
-                <div class="notifications" *ngFor="let n of notifications | truncateComments: maxNotificationsDisplayed">
-                    <div class="w-100 notification" [routerLink]=n.router.toString() (click)="readNotification(n.id)" data-bs-dismiss="offcanvas" aria-label="Close">
-                        <p [ngStyle]="{'font-weight': n.status?'700':'normal'}">{{n.notification}}</p>
-                        <span><small>{{n.timestamp | timeAgo}}</small></span>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <button class="btn-2 me-1" [matTooltip]="n.status?'Mark as read':'Mark as unread'" (click)="readNotification(n.id)"><mat-icon>{{n.status?'visibility_off':'visibility'}}</mat-icon></button>
-                        <button class="btn-2" matTooltip="Delete" (click)="deleteNotification(n.id)"><mat-icon>delete_forever</mat-icon></button>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between see-more"
-                     *ngIf="notifications.length>5">
-                    <div class="flex-1 w-100">
-                        <hr>
-                    </div>
-                    <button class="see-more-btn" (click)="toggleNotifications()">
-                        Show {{ showAllNotifications ? 'less' : 'all' }}</button>
-                    <div class="flex-1 w-100">
-                        <hr>
-                    </div>
-                </div>
-                <div *ngIf="notifications.length == 0">
-                    <div class="data-not-found">
-                        <h4>All caught up!</h4>
-                        <p>No new notifications found for you</p>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
+    <div class="w-100">
+      <mat-drawer-container class="drawer-container main-body">
+        <mat-drawer #drawer mode="over" class="drawer">
+          <div class="profile-div sticky-top">
+            <div class="d-flex align-items-center justify-content-center flex-column">
+              <div class="profile-pic">
+                <img [src]="e.photo" alt="{{e.name}}">
+              </div>
+              <div>
+                <h6>{{e.name}}</h6>
+                <small>{{e.jobData.position}}</small>
+              </div>
+            </div>
+            <hr style="color: var(--color-primary-400)">
+          </div>
+          <span>MENU</span>
+          <div class="accordian">
+            <mat-accordion>
+              <mat-expansion-panel expanded>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Tools
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <li *ngIf="e.level == 0" routerLink="/config" class="d-flex align-items-center">Configuration
+                    <mat-icon class="d-flex align-items-center justify-content-center" style="font-size: 18px">
+                      settings
+                    </mat-icon>
+                  </li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard">Dashboard</li>
+                  <li routerLink="/event-calendar">Calendar</li>
+                </ul>
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Employee
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <li routerLink="/profile/{{e.id}}/about/{{e.id}}">Profile</li>
+                  <li routerLink="/feed">News Feed</li>
+                  <li routerLink="/chat-list">Connections</li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/employee">Manage Employees</li>
+                </ul>
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Ongoing Processes
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard/onboarding">Dashboard</li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/onboardin/plan">Assign Plans</li>
+                  <li routerLink="/onboardin/assign">Ongoing Plans</li>
+                  <li routerLink="/onboardin/task">Ongoing Tasks</li>
+                </ul>
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Requests
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">My Requests</li>
+                  <ul class="list-2">
+                    <li routerLink="/requests/{{e.id}}/promotion/{{e.id}}">Promotion</li>
+                    <li routerLink="/requests/{{e.id}}/transfer/{{e.id}}">Transfer</li>
+                    <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">Leave</li>
+                  </ul>
+                </ul>
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Attendance & Leaves
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <li routerLink="/profile/{{e.id}}/attendance/{{e.id}}">My Attendance</li>
+                  <li routerLink="/requests/{{e.id}}/leave/{{e.id}}">My Leaves</li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm">Manage Attendance & Leaves</li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/alm/mark-attendance">Mark attendance</li>
+                </ul>
+              </mat-expansion-panel>
+              <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Recruitments
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <!--                              TODO: dashboard and others-->
+                  <li routerLink="/recruitment">Applicants</li>
+                  <li routerLink="/recruitment/job-listing">Job Listing</li>
+                </ul>
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Payroll
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payitems">Manage pay items</li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/employee-payments">Employee pay items
+                  </li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payroll-reports-overview">Payroll
+                    Reports
+                  </li>
+                  <li *ngIf="e.level == 0 || e.level == 1" routerLink="/payroll/payroll-history">Payroll History</li>
+                  <li routerLink="/payroll/view-payroll-reports/{{e.id}}">My Pay Slips</li>
+                </ul>
+              </mat-expansion-panel>
+              <mat-expansion-panel *ngIf="e.level == 0 || e.level == 1">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Bulletins & News
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                  <li routerLink="/bulletins">Create</li>
+                </ul>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+          <div class="footer-tag">
+            Powered By: SPARCKC
+          </div>
+
+        </mat-drawer>
+        <mat-drawer-content [ngStyle]="{'max-height':employee[0].id == null?'100vh':'calc(100vh - 70px)'}"
+                            style="overflow-y: auto">
+          <router-outlet></router-outlet>
+        </mat-drawer-content>
+      </mat-drawer-container>
+    </div>
+
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+         aria-labelledby="offcanvasWithBothOptionsLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Notifications</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="notifications" *ngFor="let n of notifications | truncateComments: maxNotificationsDisplayed">
+          <div class="w-100 notification" [routerLink]=n.router.toString() (click)="readNotification(n.id)"
+               data-bs-dismiss="offcanvas" aria-label="Close">
+            <p [ngStyle]="{'font-weight': n.status?'700':'normal'}">{{n.notification}}</p>
+            <span><small>{{n.timestamp | timeAgo}}</small></span>
+          </div>
+          <div class="d-flex align-items-center">
+            <button class="btn-2 me-1" [matTooltip]="n.status?'Mark as read':'Mark as unread'"
+                    (click)="readNotification(n.id)">
+              <mat-icon>{{n.status ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <button class="btn-2" matTooltip="Delete" (click)="deleteNotification(n.id)">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between see-more"
+             *ngIf="notifications.length>5">
+          <div class="flex-1 w-100">
+            <hr>
+          </div>
+          <button class="see-more-btn" (click)="toggleNotifications()">
+            Show {{ showAllNotifications ? 'less' : 'all' }}</button>
+          <div class="flex-1 w-100">
+            <hr>
+          </div>
+        </div>
+        <div *ngIf="notifications.length == 0">
+          <div class="data-not-found">
+            <h4>All caught up!</h4>
+            <p>No new notifications found for you</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 <div *ngIf="isServerConfig">
-    <app-server-loading></app-server-loading>
+  <app-server-loading></app-server-loading>
 </div>
 
