@@ -69,6 +69,7 @@
                               </mat-panel-title>
                             </mat-expansion-panel-header>
                             <ul>
+                              <li *ngIf="e.level == 0" routerLink="/config" class="d-flex align-items-center">Configuration <mat-icon class="d-flex align-items-center justify-content-center" style="font-size: 18px">settings</mat-icon></li>
                               <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard">Dashboard</li>
                               <li routerLink="/event-calendar">Calendar</li>
                             </ul>
