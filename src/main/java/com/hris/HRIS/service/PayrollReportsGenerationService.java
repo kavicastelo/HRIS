@@ -83,8 +83,6 @@ public class PayrollReportsGenerationService {
 
         calculatePaymentsRelatedToAttendanceRecords(email, payrollPeriodStartDate.format(formatter), payrollPeriodEndDate.format(formatter));
 
-        //TODO: Temporarily disabled generating the payroll reports and summary reports since the service method is improving to handle the payroll process based on payroll periods.
-
         // Calculate earnings for the pay items.
         for (int i = 0; i < employeePayItemsList.size(); i++) {
             PayItemModel payItemModel = payItemController.getPayItemById(employeePayItemsList.get(i).getPayItemId()).getBody();
@@ -140,9 +138,9 @@ public class PayrollReportsGenerationService {
         String generatedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         payrollReportModel.setReportGeneratedDate(generatedDateTime);
 
-//        payrollReportRepository.save(payrollReportModel);
+        payrollReportRepository.save(payrollReportModel);
 
-//        employeePayItemController.resetCommonPayItems(email);
+        employeePayItemController.resetCommonPayItems(email);
     }
 
     public void generateSummaryReport(String reportType, String payPeriod, String organizationId){
@@ -193,7 +191,7 @@ public class PayrollReportsGenerationService {
 
         summaryReportModel.setStatus("Available");
 
-//        summaryReportRepository.save(summaryReportModel);
+        summaryReportRepository.save(summaryReportModel);
     }
 
     public void calculatePaymentsRelatedToAttendanceRecords(String email, String startDate, String endDate){

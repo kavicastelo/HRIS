@@ -4,6 +4,32 @@
 
 }
 
+.controllesSection{
+  background-color: var(--color-surface-mixed-300);
+  width: 100%; 
+  // height: 100px; 
+  position: fixed; 
+  bottom: 0px; 
+  left: 0px;
+  // display: flex;
+  // justify-content: flex-end;
+  padding: 20px;
+}
+
+.stepperItem{
+  padding: 20px;
+  cursor: pointer;
+  border-bottom: 2px solid var(--color-surface-600);
+}
+
+.stepperItem-selected{
+  border-bottom: 2px solid var(--color-primary-200);
+}
+
+.stepperItem-completed{
+  border-bottom: 2px solid green;
+}
+
 .btn-1{
     color: white;
     font-weight: 500;
