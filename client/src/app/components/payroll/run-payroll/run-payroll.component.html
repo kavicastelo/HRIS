@@ -1,6 +1,23 @@
 <h4>Run Payroll</h4>
 
-<div id="step1" *ngIf="isDisplayEmployeePayments">
+<div>
+    <div class="row justify-content-md-center">
+        <div class="col-sm-6">
+            <div class="stepperItem" [ngClass]="step == 1 ? 'stepperItem-selected' : ''">
+                <span style="font-weight: 600;">Step 1:</span>&nbsp;
+                <span style="font-weight: 200;">Confirm Payments of the Employees</span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="stepperItem" [ngClass]="step == 2 ? 'stepperItem-selected' : ''">
+                <span style="font-weight: 600;">Step 2:</span>&nbsp;
+                <span style="font-weight: 200;">Finish</span>
+            </div>
+        </div>
+    </div>
+</div><br>
+
+<div id="step1" *ngIf="isDisplayEmployeePayments && step == 1">
     <div class="card">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -41,7 +58,24 @@
     <app-view-employee-payitems [employeeId]="selectedEmployeeId"></app-view-employee-payitems>
 </div>
 
-<div style="width: 100%; height: 110px;"></div>
-<div style="background-color: white; width: 100%; height: 100px; position: fixed; bottom: 0px; left: 0px;">
+<div id="step1" *ngIf="step == 2">
+    <div style="text-align: center; padding: 20px; margin-top: 50px;">
+        <mat-icon style="color: green; font-size: 60px; width: 60px; height: 60px;">task_alt</mat-icon>
+        <h3>You did it!</h3>
+        <p>The monthly payroll process may take some time depending on the organization's size. You can leave this page for now. Once completed, you can check and approve the reports and payslips through the "payroll reports" section before the payday.</p>
+    </div>
+</div>
 
+<div style="width: 100%; height: 110px;"></div>
+<div class="controllesSection">
+    <div class="container" style="display: flex; justify-content: flex-end;">
+        <ng-container *ngIf="step == 1">
+            <button class="btn btn-secondary" style="padding-right:10px;" (click)="cancelPayroll()" >Cancel</button>&nbsp;&nbsp;
+            <button class="btn-1" style="padding-right:10px;" (click)="submitPayroll()" >&nbsp;Confirm & Submit Payroll</button>
+        </ng-container>
+
+        <ng-container *ngIf="step >= endStep">
+            <button class="btn-1" style="padding-right:10px;" (click)="finishPayroll()" >&nbsp;Finish & Close</button>
+        </ng-container>
+    </div>
 </div>

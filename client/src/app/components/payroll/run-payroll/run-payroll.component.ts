@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { EmployeesService } from 'src/app/services/employees.service';
+import { PayrollReportService } from 'src/app/services/payroll-report.service';
 import { EmployeeModel } from 'src/app/shared/data-models/Employee.model';
 
 @Component({
@@ -16,9 +18,14 @@ export class RunPayrollComponent {
   isDisplayEmployeePayItems = false;
 
   selectedEmployeeId: string = "";
+
+  step: number = 1;
+  endStep: number = 2;
   
   constructor(private employeesService: EmployeesService,
-    private router: Router
+    private router: Router,
+    private payrollReportService: PayrollReportService,
+    private cookieService: AuthService
   ) { }
 
   async ngOnInit(): Promise<any> {
@@ -40,5 +47,21 @@ export class RunPayrollComponent {
   unselectEmployeeViewPayItems(){
     this.isDisplayEmployeePayments = true;
     this.isDisplayEmployeePayItems = false;
+  }
+
+  submitPayroll(){
+      this.step = 2;
+      this.isDisplayEmployeePayments = false;
+      this.isDisplayEmployeePayItems = false;
+
+      this.payrollReportService.generateAllPayrollReportsByOrganizationId(this.cookieService.organization()).subscribe((res: any) => {},(error: any) => {})
+  }
+
+  cancelPayroll(){
+    this.router.navigate(['payroll', 'payroll-configuration']);
+  }
+
+  finishPayroll(){
+    this.router.navigate(['payroll', 'payroll-configuration']);
   }
 }
