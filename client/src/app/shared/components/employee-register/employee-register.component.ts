@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EmployeesService} from "../../../services/employees.service";
 import {NGXLogger} from "ngx-logger";
 import {DepartmentService} from "../../../services/department.service";
 import {AuthService} from "../../../services/auth.service";
-import {Observable, tap} from "rxjs";
+import {Observable, Subscription, tap} from "rxjs";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -12,13 +12,18 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   CreateDepartmentDialogComponent
 } from "../../dialogs/create-department-dialog/create-department-dialog.component";
+import {ShiftsService} from "../../../services/shifts.service";
+import {CreateShiftDialogComponent} from "../../dialogs/create-shift-dialog/create-shift-dialog.component";
+import {OrganizationService} from "../../../services/organization.service";
 
 @Component({
   selector: 'app-employee-register',
   templateUrl: './employee-register.component.html',
-  styleUrls: ['./employee-register.component.scss']
+  styleUrls: ['./employee-register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeeRegisterComponent implements OnInit{
+export class EmployeeRegisterComponent implements OnInit, OnDestroy{
+  private subscriptions: Subscription = new Subscription();
   employeeForm: FormGroup | any;
   organizationId: any;
   departmentId:any
@@ -29,31 +34,40 @@ export class EmployeeRegisterComponent implements OnInit{
   employee:any;
   userId:any;
   chosenPhoto: File | any;
+  shiftId:any
+  shiftDataStore:any[] = [];
+  filteredShifts:any[] = [];
+  selectedShift:any[] = [];
+  organization:any
 
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
+              private organizationService: OrganizationService,
               private logger: NGXLogger,
               private departmentService:DepartmentService,
               private multimediaService: MultimediaService,
+              private shiftService: ShiftsService,
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
               private dialog: MatDialog,
               private cookieService: AuthService) { }
 
-  async ngOnInit(): Promise<any> {
+  ngOnInit(): void {
     this.organizationId = this.cookieService.organization();
 
+    this.defaultPhoto()
     this.initForm()
 
-    this.defaultPhoto()
+    this.subscriptions.add(this.loadAllDepartments().subscribe());
+    this.subscriptions.add(this.loadAllUsers().subscribe(() => this.getUser()));
+    this.subscriptions.add(this.loadAllShifts().subscribe(() => this.filterShifts()));
+    this.subscriptions.add(this.loadOrganization().subscribe());
+  }
 
-    await this.loadAllDepartments().subscribe(()=>{
-      //TODO: do something
-    })
-
-    await this.loadAllUsers().subscribe(()=>{
-      this.getUser()
-    })
+  ngOnDestroy(){
+    // Unsubscribe from all subscriptions
+    this.subscriptions.unsubscribe();
+    this.clearImage();
   }
 
   initForm(){
@@ -80,6 +94,7 @@ export class EmployeeRegisterComponent implements OnInit{
         salary: ['', Validators.required],
         doj: ['', Validators.required],
       }),
+      shift: ['', Validators.required],
       gender: ['', Validators.required],
       dob: ['', Validators.required],
       nic: ['', Validators.required],
@@ -115,8 +130,9 @@ export class EmployeeRegisterComponent implements OnInit{
 
   onSubmit() {
     sessionStorage.setItem('orgId', this.cookieService.organization())
-    if (this.employeeForm.valid) {
+    if (!this.employeeForm.valid) {
       const jobData = this.employeeForm.get('jobData').value;
+      const shift = this.employeeForm.get('shift').value;
       this.employeeForm.patchValue({ jobData: null });
 
       const formData = new FormData();
@@ -130,6 +146,17 @@ export class EmployeeRegisterComponent implements OnInit{
       const stringifiedJobData = typeof jobData === 'object' ? JSON.stringify(jobData) : jobData;
       sessionStorage.setItem('jobData', stringifiedJobData);
       formData.append('jobData', stringifiedJobData);
+
+      const stringifiedShift = typeof shift === 'object' ? JSON.stringify(shift) : shift;
+      sessionStorage.setItem('shift', stringifiedShift);
+      formData.append('shift', stringifiedShift);
+
+      sessionStorage.setItem('annual', this.organization.annualLeave);
+      sessionStorage.setItem('sick', this.organization.sickLeave);
+      sessionStorage.setItem('maternity', this.organization.maternityLeave);
+      sessionStorage.setItem('paternity', this.organization.paternityLeave);
+      sessionStorage.setItem('casual', this.organization.casualLeave);
+      sessionStorage.setItem('noPay', this.organization.noPayLeave);
 
       this.departmentDataStore.forEach((d:any) => {
         if(d.name == this.selectedDepartment){
@@ -161,14 +188,31 @@ export class EmployeeRegisterComponent implements OnInit{
     );
   }
 
+  loadOrganization(): Observable<any> {
+    return this.organizationService.getOrganizationById(this.organizationId).pipe(
+      tap(data => this.organization = data)
+    );
+  }
+
   filterDepartments():any[]{
     this.filteredDepartments = this.departmentDataStore.filter((dep:any) => dep.organizationId == this.organizationId)
 
     return this.filteredDepartments;
   }
 
+  loadAllShifts(): Observable<any> {
+    return this.shiftService.getAllShifts().pipe(
+      tap(data => this.shiftDataStore = data)
+    );
+  }
+
+  filterShifts():any[]{
+    this.filteredShifts = this.shiftDataStore.filter((dep:any) => dep.organizationId == this.organizationId)
+
+    return this.filteredShifts;
+  }
+
   choosePhoto(): void {
-    this.chosenPhoto = null // clear the photo input field before assign a value
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/jpeg';
@@ -180,31 +224,37 @@ export class EmployeeRegisterComponent implements OnInit{
 
   handleFileInput(event: any): void {
     const maxSize = 5 * 1024 * 1024;
-    // Extract the chosen image file
     const files = event.target.files;
-    if (files.length > 0) {
-      if (files[0].size <= maxSize){
-        this.chosenPhoto = files[0];
-        this.employeeForm.patchValue({ photo: this.chosenPhoto });
-        this.onFileSelected()
-      }
-      else{
-        alert("Your Image is too large. Select under 5MB")
-      }
+    if (files.length > 0 && files[0].size <= maxSize) {
+      this.clearImage();  // Clear the previous image
+      this.chosenPhoto = files[0];
+      this.employeeForm.patchValue({ photo: this.chosenPhoto });
+      this.onFileSelected();
+    } else {
+      alert("Your Image is too large. Select under 5MB");
     }
   }
 
   onFileSelected() {
     const reader = new FileReader();
-
-    const imgtag: any = document.getElementById("empAddProfile");
-    imgtag.title = this.chosenPhoto?.name;
-
-    reader.onload = function(event) {
+    reader.onload = (event: any) => {
+      const imgtag: any = document.getElementById("empAddProfile");
       imgtag.src = event.target?.result;
     };
+    if (typeof this.chosenPhoto !== 'string') {
+      reader.readAsDataURL(this.chosenPhoto);
+    }
+  }
 
-    reader.readAsDataURL(this.chosenPhoto);
+  clearImage() {
+    if (this.chosenPhoto) {
+      URL.revokeObjectURL(this.chosenPhoto);
+      this.chosenPhoto = null;
+      const imgtag: any = document.getElementById("empAddProfile");
+      if (imgtag) {
+        imgtag.src = '';
+      }
+    }
   }
 
   defaultPhoto() {
@@ -218,22 +268,27 @@ export class EmployeeRegisterComponent implements OnInit{
 
     // Load the default image file
     fetch(defaultImagePath)
-        .then(response => response.blob())
-        .then(blob => {
-          // Create a File object from the blob
-          const defaultImageFile = new File([blob], 'default_profile.jpg', { type: 'image/jpeg' });
+      .then(response => response.blob())
+      .then(blob => {
+        // Revoke previous object URL if any
+        if (this.chosenPhoto) {
+          URL.revokeObjectURL(this.chosenPhoto);
+        }
 
-          // Assign the default image file to the chosenPhoto variable
-          this.chosenPhoto = defaultImageFile;
-          this.employeeForm.patchValue({ photo: this.chosenPhoto });
+        // Create a File object from the blob
+        const defaultImageFile = new File([blob], 'default_profile.jpg', { type: 'image/jpeg' });
 
-          // Display the default image in the UI
-          const imgtag: any = document.getElementById("empAddProfile");
-          imgtag.src = URL.createObjectURL(defaultImageFile);
-        })
-        .catch(error => {
-          console.error('Failed to load default image:', error);
-        });
+        // Assign the default image file to the chosenPhoto variable
+        this.chosenPhoto = defaultImageFile;
+        this.employeeForm.patchValue({ photo: this.chosenPhoto });
+
+        // Display the default image in the UI
+        const imgtag: any = document.getElementById("empAddProfile");
+        imgtag.src = URL.createObjectURL(this.chosenPhoto);
+      })
+      .catch(error => {
+        console.error('Failed to load default image:', error);
+      });
   }
 
   addDepartment() {
@@ -243,9 +298,16 @@ export class EmployeeRegisterComponent implements OnInit{
     this.toggleDialog('','',data,CreateDepartmentDialogComponent)
   }
 
+  addShift() {
+    const data = {
+      organizationId: this.organizationId
+    }
+    this.toggleDialog('','',data,CreateShiftDialogComponent)
+  }
+
   toggleDialog(title:any, msg:any, data: any, component:any) {
     const _popup = this.dialog.open(component, {
-      width: '350px',
+      maxHeight: '80vh',
       enterAnimationDuration: '500ms',
       exitAnimationDuration: '500ms',
       data: {
@@ -257,6 +319,9 @@ export class EmployeeRegisterComponent implements OnInit{
     _popup.afterClosed().subscribe(item => {
       this.loadAllDepartments().subscribe(()=>{
         this.filterDepartments()
+      })
+      this.loadAllShifts().subscribe(()=>{
+        this.filterShifts()
       })
     })
   }

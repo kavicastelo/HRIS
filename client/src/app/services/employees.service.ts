@@ -20,6 +20,7 @@ export class EmployeesService {
     this.http.post(this.baseUrl + 'employee/save', formData, {headers}).subscribe(
       response => {
         sessionStorage.clear();
+        this.snackBar.open("Employee added successfully!", "OK", {duration:3000})
       },
       error => {
         this.snackBar.open("Server error! try again in few minutes", "OK", {duration:3000})
@@ -288,8 +289,8 @@ export class EmployeesService {
     if (fileInput) {
       const jobData = form.get('jobData') as Object;
 
-      const requestBody:any = {
-        name: form.get('name')+ " "+ form.get('lname') as string,
+      const requestBody: any = {
+        name: form.get('name') + " " + form.get('lname') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
         telephone: form.get('telephone') as string,
@@ -297,6 +298,7 @@ export class EmployeesService {
         organizationId: sessionStorage.getItem('orgId') as string,
         departmentId: sessionStorage.getItem('depId') as string,
         jobData: sessionStorage.getItem('jobData'),
+        workShift: JSON.parse(sessionStorage.getItem('shift') as string), // Ensure workShift is sent as a JSON array
         gender: form.get('gender') as string,
         dob: form.get('dob') as string,
         nic: form.get('nic') as string,
@@ -309,21 +311,25 @@ export class EmployeesService {
         dateOfRetirement: form.get('dateOfRetirement') as string,
         dateOfExit: form.get('dateOfExit') as string,
         exitReason: form.get('exitReason') as string,
-        dateOfContractEnd: form.get('dateOfContractEnd') as string
+        dateOfContractEnd: form.get('dateOfContractEnd') as string,
+        annualLeaveBalance: sessionStorage.getItem('annual'),
+        sickLeaveBalance: sessionStorage.getItem('sick'),
+        casualLeaveBalance: sessionStorage.getItem('casual'),
+        maternityLeaveBalance: sessionStorage.getItem('maternity'),
+        paternityLeaveBalance: sessionStorage.getItem('paternity'),
+        noPayLeaveBalance: sessionStorage.getItem('noPay')
       };
 
       const formData = new FormData();
       for (const key in requestBody) {
         if (requestBody.hasOwnProperty(key)) {
-          if (key === 'jobData1') {
-            formData.append(key, JSON.stringify(requestBody[key])); // Stringify jobData here
+          if (key === 'jobData1' || key === 'workShift') {
+            formData.append(key, JSON.stringify(requestBody[key])); // Stringify jobData and workShift here
           } else {
             formData.append(key, requestBody[key]);
           }
         }
       }
-
-      this.logger.info(requestBody.jobData);
 
       // Set Content-Type header to multipart/form-data
       const headers = new HttpHeaders();

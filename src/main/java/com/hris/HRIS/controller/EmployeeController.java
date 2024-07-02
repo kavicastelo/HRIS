@@ -1,5 +1,7 @@
 package com.hris.HRIS.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.ChannelModel;
@@ -46,6 +48,7 @@ public class EmployeeController {
                                                     @RequestParam("organizationId") String organizationId,
                                                     @RequestParam("departmentId") String departmentId,
                                                     @RequestParam("jobData") String jobData,
+                                                    @RequestParam("workShift") String workShift,
                                                     @RequestParam("gender") String gender,
                                                     @RequestParam("dob") String dob,
                                                     @RequestParam("nic") String nic,
@@ -57,12 +60,21 @@ public class EmployeeController {
                                                     @RequestParam("dateOfRetirement") String dateOfRetirement,
                                                     @RequestParam("dateOfExit") String dateOfExit,
                                                     @RequestParam("exitReason") String exitReason,
-                                                    @RequestParam("dateOfContractEnd") String dateOfContractEnd
+                                                    @RequestParam("dateOfContractEnd") String dateOfContractEnd,
+                                                    @RequestParam("annualLeaveBalance") String annualLeaveBalance,
+                                                    @RequestParam("sickLeaveBalance") String sickLeaveBalance,
+                                                    @RequestParam("casualLeaveBalance") String casualLeaveBalance,
+                                                    @RequestParam("maternityLeaveBalance") String maternityLeaveBalance,
+                                                    @RequestParam("paternityLeaveBalance") String paternityLeaveBalance,
+                                                    @RequestParam("noPayLeaveBalance") String noPayLeaveBalance
     ) throws IOException {
 
-//        Integer.parseInt(jobData);
         ObjectMapper objectMapper = new ObjectMapper();
         Object fixedJobData = objectMapper.readValue(jobData, Object.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        List<ShiftModel> fixedWorkShift = mapper.readValue(workShift, new TypeReference<List<ShiftModel>>() {});
 
         EmployeeModel newEmployee = new EmployeeModel();
         newEmployee.setName(name);
@@ -86,6 +98,14 @@ public class EmployeeController {
         newEmployee.setDateOfExit(dateOfExit);
         newEmployee.setExitReason(exitReason);
         newEmployee.setDateOfContractEnd(dateOfContractEnd);
+        newEmployee.setAnnualLeaveBalance(Integer.parseInt(annualLeaveBalance));
+        newEmployee.setSickLeaveBalance(Integer.parseInt(sickLeaveBalance));
+        newEmployee.setCasualLeaveBalance(Integer.parseInt(casualLeaveBalance));
+        newEmployee.setMaternityLeaveBalance(Integer.parseInt(maternityLeaveBalance));
+        newEmployee.setPaternityLeaveBalance(Integer.parseInt(paternityLeaveBalance));
+        newEmployee.setNoPayLeaveBalance(Integer.parseInt(noPayLeaveBalance));
+
+        newEmployee.setWorkShift(fixedWorkShift);
 
         EmployeeModel emp = employeeRepository.save(newEmployee);
 
