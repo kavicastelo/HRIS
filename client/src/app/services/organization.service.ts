@@ -14,4 +14,8 @@ export class OrganizationService {
   getOrganizationById(id:any): Observable<any> {
     return this.http.get(this.baseUrl+'organization/get/id/'+id)
   }
+
+  updateLeaveCounts(id:any): Observable<any> {
+    return this.http.get(this.baseUrl+'organization/updateLeaves/'+id)
+  }
 }

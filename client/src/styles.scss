@@ -212,7 +212,10 @@ body { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 
 // mat form field
 .mat-mdc-form-field{
-  background-color: var(--color-surface-mixed-200);
+  background-color: var(--color-surface-200);
+}
+.mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
+  border-color: var(--color-surface-mixed-500) !important;
 }
 .mdc-text-field--filled:not(.mdc-text-field--disabled){
   background-color: unset!important;

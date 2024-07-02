@@ -45,4 +45,11 @@ public class EmployeeModel {
     private String workRoster; //TODO: need to initialize
     private Boolean activityStatus;
     private String lastSeen;
+    private int annualLeaveBalance;
+    private int sickLeaveBalance;
+    private int casualLeaveBalance;
+    private int maternityLeaveBalance;
+    private int paternityLeaveBalance;
+    private int noPayLeaveBalance;
+
 }
