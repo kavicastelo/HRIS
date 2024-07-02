@@ -6,6 +6,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CreateShiftDialogComponent} from "../../../shared/dialogs/create-shift-dialog/create-shift-dialog.component";
 import {OrganizationService} from "../../../services/organization.service";
 import {EmployeesService} from "../../../services/employees.service";
+import {LeavesConfigDialogComponent} from "../../../shared/dialogs/leaves-config-dialog/leaves-config-dialog.component";
 
 @Component({
   selector: 'app-dashboard-config',
@@ -15,13 +16,14 @@ import {EmployeesService} from "../../../services/employees.service";
 export class DashboardConfigComponent implements OnInit{
 
   organizationId: any
-  organization: any
+  organization: any = {
+    isLeavesConfigured: false
+  }
 
   constructor(
     private dialog: MatDialog,
     private cookieService: AuthService,
-    private organizationService: OrganizationService,
-    private employeesService: EmployeesService
+    private organizationService: OrganizationService
   ) {
 
   }
@@ -49,7 +51,7 @@ export class DashboardConfigComponent implements OnInit{
       }
     });
     _popup.afterClosed().subscribe(item => {
-      //TODO: do something after close the popup
+      this.getOrganization().subscribe(()=>{})
     })
   }
 
@@ -58,5 +60,18 @@ export class DashboardConfigComponent implements OnInit{
       organizationId: this.organizationId
     }
     this.toggleDialog('', '', data, CreateShiftDialogComponent)
+  }
+
+  updateLeaveConfig(organization: any) {
+    if (!organization.isLeavesConfigured) {
+      if (organization) {
+        const data = {
+          id: organization.isLeavesConfigured,
+          organizationId: this.organizationId,
+          data: organization
+        }
+        this.toggleDialog('', '', data, LeavesConfigDialogComponent)
+      }
+    }
   }
 }

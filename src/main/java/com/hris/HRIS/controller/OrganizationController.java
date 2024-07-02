@@ -91,6 +91,7 @@ public class OrganizationController {
         employeeModel.setStatus("N/A");
         employeeModel.setAnnualLeaveBalance(14);
         employeeModel.setSickLeaveBalance(7);
+        employeeModel.setCasualLeaveBalance(7);
         employeeModel.setMaternityLeaveBalance(84);
         employeeModel.setPaternityLeaveBalance(3);
         employeeModel.setNoPayLeaveBalance(14);
