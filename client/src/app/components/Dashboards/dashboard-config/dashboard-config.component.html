@@ -1,0 +1,63 @@
+<div class="container my-3">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="card-2">
+        <div class="card-2-title">Attendance & Leave Configurations</div>
+        <hr style="color: var(--color-primary-300)">
+        <div class="d-flex align-items-center justify-content-around my-3">
+          <div>
+            <p>Create default Work Shifts</p>
+          </div>
+          <div>
+            <button class="btn-1 px-3" (click)="addShift()">Create Shifts</button>
+          </div>
+        </div>
+        <hr style="color: var(--color-primary-300)">
+        <div class="row">
+          <p>These are the default values we provided for your organization. You can change these values once and <span
+            class="danger">it cannot be undone</span>. <br>
+            <span class="link">Change Here</span></p>
+          <div class="col-6">
+            <div class="card-3">
+              <div class="card-3-sm-text">Annual Leave</div>
+              <div class="card-3-lg-text">{{organization.annualLeave?organization.annualLeave:'0'}} Days</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-3">
+              <div class="card-3-sm-text">Sick Leave</div>
+              <div class="card-3-lg-text">{{organization.sickLeave?organization.sickLeave:'0'}} Days</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-3">
+              <div class="card-3-sm-text">Casual Leave</div>
+              <div class="card-3-lg-text">{{organization.casualLeave?organization.casualLeave:'0'}} Days</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-3">
+              <div class="card-3-sm-text">Maternity Leave</div>
+              <div class="card-3-lg-text">{{organization.maternityLeave?organization.maternityLeave:'0'}} Days</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-3">
+              <div class="card-3-sm-text">Paternity Leave</div>
+              <div class="card-3-lg-text">{{organization.paternityLeave?organization.paternityLeave:'0'}} Days</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-3">
+              <div class="card-3-sm-text">No Pay</div>
+              <div class="card-3-lg-text">{{organization.noPayLeave?organization.noPayLeave:'0'}} Days</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6"></div>
+    <div class="col-12 col-md-6"></div>
+    <div class="col-12 col-md-6"></div>
+  </div>
+</div>

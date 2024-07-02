@@ -52,6 +52,13 @@ public class OrganizationController {
         jobData.setDepartment("N/A");
         jobData.setDoj(String.valueOf(new Date()));
         jobData.setSalary("N/A");
+        jobData.setEmployementType("N/A");
+        jobData.setJobGrade("N/A");
+        jobData.setPersonalGrade("N/A");
+        jobData.setSupervisor("N/A");
+        jobData.setBusinessUnit("N/A");
+        jobData.setLocation("N/A");
+        jobData.setBranch("N/A");
 
         EmployeeModel employeeModel = new EmployeeModel();
         employeeModel.setName(organizationModel.getContactPerson());
@@ -62,6 +69,14 @@ public class OrganizationController {
         employeeModel.setDob("N/A");
         employeeModel.setAddress("N/A");
         employeeModel.setNic("N/A");
+        employeeModel.setMaritalStatus("N/A");
+        employeeModel.setGender("N/A");
+        employeeModel.setReligion("N/A");
+        employeeModel.setNationality("N/A");
+        employeeModel.setDateOfRetirement("N/A");
+        employeeModel.setDateOfExit("N/A");
+        employeeModel.setExitReason("N/A");
+        employeeModel.setDateOfContractEnd("N/A");
         // Set default photo from resources directory
         try {
             Resource defaultPhotoResource = new ClassPathResource("default_profile.jpg");
@@ -74,6 +89,11 @@ public class OrganizationController {
         }
         employeeModel.setLevel(0);
         employeeModel.setStatus("N/A");
+        employeeModel.setAnnualLeaveBalance(14);
+        employeeModel.setSickLeaveBalance(7);
+        employeeModel.setMaternityLeaveBalance(84);
+        employeeModel.setPaternityLeaveBalance(3);
+        employeeModel.setNoPayLeaveBalance(14);
 
         EmployeeModel emp = employeeRepository.save(employeeModel);
         systemAutomateService.updateOrganizationEmployees(emp);
@@ -165,5 +185,28 @@ public class OrganizationController {
 
         ApiResponse apiResponse = new ApiResponse("Organization deleted successfully");
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/updateLeaves/{id}")
+    public ResponseEntity<ApiResponse> updateLeaves(@PathVariable String id, @RequestBody OrganizationModel organizationModel) {
+        Optional<OrganizationModel> organizationModelOptional = organizationRepository.findById(id);
+
+        if (organizationModelOptional.isPresent()) {
+            OrganizationModel existingOrganization = organizationModelOptional.get();
+            existingOrganization.setAnnualLeave(organizationModel.getAnnualLeave());
+            existingOrganization.setSickLeave(organizationModel.getSickLeave());
+            existingOrganization.setMaternityLeave(organizationModel.getMaternityLeave());
+            existingOrganization.setPaternityLeave(organizationModel.getPaternityLeave());
+            existingOrganization.setNoPayLeave(organizationModel.getNoPayLeave());
+            existingOrganization.setCasualLeave(organizationModel.getCasualLeave());
+            existingOrganization.setIsLeavesConfigured(true);
+
+            organizationRepository.save(existingOrganization);
+
+            ApiResponse apiResponse = new ApiResponse("Leaves updated successfully");
+            return ResponseEntity.ok(apiResponse);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

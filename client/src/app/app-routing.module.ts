@@ -76,6 +76,8 @@ import {
 import { PayrollConfigurationComponent } from './components/payroll/payroll-configuration/payroll-configuration.component';
 import { RunPayrollComponent } from './components/payroll/run-payroll/run-payroll.component';
 import {ForbiddenComponent} from "./shared/components/forbidden/forbidden.component";
+import {DashboardConfigComponent} from "./components/Dashboards/dashboard-config/dashboard-config.component";
+import {ConfigGuard} from "./guards/config.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -169,6 +171,7 @@ const routes: Routes = [
     {path: 'main', component: DashboardMainComponent},
     {path: 'onboarding', component: DashboardOnboardinMainComponent, canActivate: [AuthGuard, AdminGuard]},
   ]},
+  {path: 'config', component: DashboardConfigComponent, canActivate: [AuthGuard, ConfigGuard]},
   {path: '403', component: ForbiddenComponent},
   {path: '**', component: NotFoundComponent},
 
