@@ -8,4 +8,10 @@ import java.util.List;
 public interface ApplyJobRepository extends MongoRepository<ApplyJobModel, String> {
 
     List<ApplyJobModel> findByFavoriteTrue();
+
+    //count CVs
+    long countCvNotNull();
+
+    //Count by favourite true
+    long countByFavoriteTrue();
 }

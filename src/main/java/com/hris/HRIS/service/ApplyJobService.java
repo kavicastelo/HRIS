@@ -30,4 +30,14 @@ public class ApplyJobService {
     public void deleteById(String id) {
         applyJobRepository.deleteById(id);
     }
+
+    public long countCvs() {
+        return applyJobRepository.countCvNotNull();
+    }
+
+    public long countFavoriteCvs() {
+        long count = applyJobRepository.countByFavoriteTrue();
+
+        return count;
+    }
 }

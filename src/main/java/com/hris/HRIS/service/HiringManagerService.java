@@ -7,6 +7,9 @@ import com.hris.HRIS.repository.HiringManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +70,60 @@ public class HiringManagerService {
             // Handle case where hiring manager with given ID is not found
             throw new IllegalArgumentException("Hiring manager not found with ID: " + hiringManagerId);
         }
+    }
+
+    //calculate average cost per hire
+    public double calculateAverageCostPerHire() {
+        List<HiringManagerModel> hiringManagers = hiringManagerRepository.findAll();
+
+        if (hiringManagers.isEmpty()) {
+            return 0;
+        }
+
+        double totalCost = 0;
+        for (HiringManagerModel manager : hiringManagers) {
+            totalCost += manager.getCost_per_hire();
+        }
+
+        return totalCost / hiringManagers.size();
+    }
+
+
+    //calculate average time to recruit
+    public double calculateAverageTimeToRecruit() {
+        List<HiringManagerModel> hiringManagers = hiringManagerRepository.findAll();
+
+        if (hiringManagers.isEmpty()) {
+            return 0;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        double totalTime = 0;
+
+        for (HiringManagerModel manager : hiringManagers) {
+            LocalDateTime startTime = LocalDateTime.parse(manager.getDate() + " " + manager.getMeeting_start_time(), formatter);
+            LocalDateTime endTime = LocalDateTime.parse(manager.getDate() + " " + manager.getMeeting_end_time(), formatter);
+            totalTime += Duration.between(startTime, endTime).toMinutes();
+        }
+
+        return totalTime / hiringManagers.size();
+    }
+
+
+    //calculate average satisfaction score
+    public double calculateAverageSatisfactionScore() {
+        List<HiringManagerModel> hiringManagers = hiringManagerRepository.findAll();
+
+        if (hiringManagers.isEmpty()) {
+            return 0;
+        }
+
+        double totalSatisfactionScore = 0;
+        for (HiringManagerModel manager : hiringManagers) {
+            totalSatisfactionScore += manager.getSatisfaction_score();
+        }
+
+        return totalSatisfactionScore / hiringManagers.size();
     }
 
 }
