@@ -371,4 +371,22 @@ public class EmployeeController {
         ApiResponse apiResponse = new ApiResponse("Shift updated successfully");
         return ResponseEntity.ok(apiResponse);
     }
+
+    @PutMapping("/update/leave/count/{id}")
+    public ResponseEntity<ApiResponse> updateLeaveCount(@PathVariable String id, @RequestBody EmployeeModel employeeModel) {
+        Optional<EmployeeModel> optionalEmployeeModel = employeeRepository.findById(id);
+        if (optionalEmployeeModel.isPresent()) {
+            EmployeeModel existModel = optionalEmployeeModel.get();
+            existModel.setAnnualLeaveBalance(employeeModel.getAnnualLeaveBalance());
+            existModel.setSickLeaveBalance(employeeModel.getSickLeaveBalance());
+            existModel.setCasualLeaveBalance(employeeModel.getCasualLeaveBalance());
+            existModel.setMaternityLeaveBalance(employeeModel.getMaternityLeaveBalance());
+            existModel.setPaternityLeaveBalance(employeeModel.getPaternityLeaveBalance());
+            existModel.setNoPayLeaveBalance(employeeModel.getNoPayLeaveBalance());
+
+            employeeRepository.save(existModel);
+        }
+        ApiResponse apiResponse = new ApiResponse("Leave count updated successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
 }
