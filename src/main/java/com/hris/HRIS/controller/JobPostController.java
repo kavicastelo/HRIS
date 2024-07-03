@@ -71,4 +71,14 @@ public class JobPostController {
         ApiResponse apiResponse = new ApiResponse("Job Post Deleted Successfully");
         return ResponseEntity.ok(apiResponse);
     }
+
+    //view by id
+    @GetMapping("/get/id/{id}")
+    public ResponseEntity<ApiResponse> viewJobPost(@PathVariable String id){
+
+        jobPostRepository.findById(id);
+
+        ApiResponse apiResponse = new ApiResponse("View Job Details by Id");
+        return ResponseEntity.ok(apiResponse);
+    }
 }
