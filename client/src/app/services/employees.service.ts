@@ -354,4 +354,15 @@ export class EmployeesService {
   public updateShift(id: string, shift: any): Observable<any> {
     return this.http.put(this.baseUrl + 'employee/update/shift/' + id, shift);
   }
+
+  public updateEmployeeLeaves(id: string, leaves: any): Observable<any> {
+    return this.http.put(this.baseUrl + 'employee/update/leave/count/' + id, {
+      annualLeaveBalance: leaves.annualLeaveBalance,
+      sickLeaveBalance: leaves.sickLeaveBalance,
+      casualLeaveBalance: leaves.casualLeaveBalance,
+      maternityLeaveBalance: leaves.maternityLeaveBalance,
+      paternityLeaveBalance: leaves.paternityLeaveBalance,
+      noPayLeaveBalance: leaves.noPayLeaveBalance
+    });
+  }
 }

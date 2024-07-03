@@ -93,7 +93,7 @@ export class LeaveComponent implements OnInit{
 
   toggleDialog(title: any, msg: any, data: any, component: any) {
     const _popup = this.dialog.open(component, {
-      width: '350px',
+      maxHeight: '80vh',
       enterAnimationDuration: '500ms',
       exitAnimationDuration: '500ms',
       data: {

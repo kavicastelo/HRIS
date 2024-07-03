@@ -85,7 +85,7 @@ export class LeaveRequestComponent implements OnInit{
 
   filterLeaves(): any[]{
     if (!this.filterForm.value.filter || this.filterForm.value.filter == "ALL")
-      this.filteredLeaves = this.leaveDataStore.filter((data: any) => data.organizationId === this.employee.organizationId && data.name === this.employee.name)
+      this.filteredLeaves = this.leaveDataStore.filter((data: any) => data.organizationId === this.employee.organizationId && data.empId === this.employee.id)
 
     this.filteredLeaves.sort((a:any, b:any) => {
       return new Date(b.leaveStartDate).getTime() - new Date(a.leaveStartDate).getTime()
@@ -96,7 +96,7 @@ export class LeaveRequestComponent implements OnInit{
 
   toggleDialog(title: any, msg: any, data: any, component: any) {
     const _popup = this.dialog.open(component, {
-      width: '350px',
+      maxHeight: '80vh',
       enterAnimationDuration: '500ms',
       exitAnimationDuration: '500ms',
       data: {
