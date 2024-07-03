@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EmployeesService} from "../../../services/employees.service";
 import {NGXLogger} from "ngx-logger";
@@ -6,16 +6,24 @@ import {DepartmentService} from "../../../services/department.service";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../../services/auth.service";
-import {Observable, tap} from "rxjs";
+import {Observable, Subscription, tap} from "rxjs";
 import {SafeResourceUrl} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {
+  CreateDepartmentDialogComponent
+} from "../../dialogs/create-department-dialog/create-department-dialog.component";
+import {CreateShiftDialogComponent} from "../../dialogs/create-shift-dialog/create-shift-dialog.component";
+import {ShiftsService} from "../../../services/shifts.service";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-employee-update',
   templateUrl: './employee-update.component.html',
-  styleUrls: ['./employee-update.component.scss']
+  styleUrls: ['./employee-update.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeeUpdateComponent {
+export class EmployeeUpdateComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   employeeForm: FormGroup | any;
   organizationId: any;
   departmentId:any
@@ -26,7 +34,10 @@ export class EmployeeUpdateComponent {
   userId:any;
   chosenPhoto: File | any;
 
+  filteredDepartments: any[] = [];
+
   constructor(private formBuilder: FormBuilder,
+              private shiftService: ShiftsService,
               private employeeService: EmployeesService,
               private logger: NGXLogger,
               private departmentService:DepartmentService,
@@ -34,19 +45,22 @@ export class EmployeeUpdateComponent {
               private changeDetectorRef: ChangeDetectorRef,
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
+              private dialog: MatDialog,
               private cookieService: AuthService) { }
 
   async ngOnInit(): Promise<any> {
+    this.organizationId = this.cookieService.organization().toString();
 
     this.initForm()
 
-    this.loadAllDepartments().subscribe(()=>{
-      //TODO: do something
-    })
+    this.subscriptions.add(this.loadAllDepartments().subscribe());
+    this.subscriptions.add(this.loadAllUsers().subscribe(() => this.getUser()));
+  }
 
-    this.loadAllUsers().subscribe(()=>{
-      this.getUser()
-    })
+  ngOnDestroy(){
+    // Unsubscribe from all subscriptions
+    this.subscriptions.unsubscribe();
+    this.clearImage();
   }
 
   initForm(){
@@ -139,7 +153,7 @@ export class EmployeeUpdateComponent {
     jobData.get('salary')?.setValue(this.employee[0].jobData.salary);
 
     this.employeeForm.get('status')?.setValue(this.employee[0].status);
-    this.selectedDepartment = this.employee[0].jobData.department
+    this.selectedDepartment = this.employee[0].jobData.department;
   }
 
   convertToSafeUrl(url:any):SafeResourceUrl{
@@ -184,8 +198,13 @@ export class EmployeeUpdateComponent {
     );
   }
 
+  filterDepartments():any[]{
+    this.filteredDepartments = this.departmentDataStore.filter((dep:any) => dep.organizationId == this.organizationId)
+
+    return this.filteredDepartments;
+  }
+
   choosePhoto(): void {
-    this.chosenPhoto = null // clear the photo input field before assign a value
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/jpeg';
@@ -197,55 +216,95 @@ export class EmployeeUpdateComponent {
 
   handleFileInput(event: any): void {
     const maxSize = 5 * 1024 * 1024;
-    // Extract the chosen image file
     const files = event.target.files;
-    if (files.length > 0) {
-      if (files[0].size <= maxSize){
-        this.chosenPhoto = files[0];
-        this.employeeForm.patchValue({ photo: this.chosenPhoto });
-        this.onFileSelected()
-      }
-      else{
-        alert("Your Image is too large. Select under 5MB")
-      }
+    if (files.length > 0 && files[0].size <= maxSize) {
+      this.clearImage();  // Clear the previous image
+      this.chosenPhoto = files[0];
+      this.employeeForm.patchValue({ photo: this.chosenPhoto });
+      this.onFileSelected();
+    } else {
+      alert("Your Image is too large. Select under 5MB");
     }
   }
 
   onFileSelected() {
     const reader = new FileReader();
-
-    const imgtag: any = document.getElementById("empAddProfile");
-    imgtag.title = this.chosenPhoto?.name;
-
-    reader.onload = function(event) {
+    reader.onload = (event: any) => {
+      const imgtag: any = document.getElementById("empAddProfile");
       imgtag.src = event.target?.result;
     };
+    if (typeof this.chosenPhoto !== 'string') {
+      reader.readAsDataURL(this.chosenPhoto);
+    }
+  }
 
-    reader.readAsDataURL(this.chosenPhoto);
+  clearImage() {
+    if (this.chosenPhoto) {
+      URL.revokeObjectURL(this.chosenPhoto);
+      this.chosenPhoto = null;
+      const imgtag: any = document.getElementById("empAddProfile");
+      if (imgtag) {
+        imgtag.src = '';
+      }
+    }
   }
 
   defaultPhoto() {
-    this.chosenPhoto = null;
+    // Check if default photo already loaded
+    if (this.chosenPhoto) {
+      return;
+    }
+
     // Create a path to the default image file in the assets folder
     const defaultImagePath = 'assets/imgs/shared/default_profile.jpg';
 
     // Load the default image file
     fetch(defaultImagePath)
-        .then(response => response.blob())
-        .then(blob => {
-          // Create a File object from the blob
-          const defaultImageFile = new File([blob], 'default_profile.jpg', { type: 'image/jpeg' });
+      .then(response => response.blob())
+      .then(blob => {
+        // Revoke previous object URL if any
+        if (this.chosenPhoto) {
+          URL.revokeObjectURL(this.chosenPhoto);
+        }
 
-          // Assign the default image file to the chosenPhoto variable
-          this.chosenPhoto = defaultImageFile;
-          this.employeeForm.patchValue({ photo: this.chosenPhoto });
+        // Create a File object from the blob
+        const defaultImageFile = new File([blob], 'default_profile.jpg', { type: 'image/jpeg' });
 
-          // Display the default image in the UI
-          const imgtag: any = document.getElementById("empAddProfile");
-          imgtag.src = URL.createObjectURL(defaultImageFile);
-        })
-        .catch(error => {
-          console.error('Failed to load default image:', error);
-        });
+        // Assign the default image file to the chosenPhoto variable
+        this.chosenPhoto = defaultImageFile;
+        this.employeeForm.patchValue({ photo: this.chosenPhoto });
+
+        // Display the default image in the UI
+        const imgtag: any = document.getElementById("empAddProfile");
+        imgtag.src = URL.createObjectURL(this.chosenPhoto);
+      })
+      .catch(error => {
+        console.error('Failed to load default image:', error);
+      });
+  }
+
+  addDepartment() {
+    const data = {
+      organizationId: this.organizationId
+    }
+    this.toggleDialog('','',data,CreateDepartmentDialogComponent)
+  }
+
+  toggleDialog(title:any, msg:any, data: any, component:any) {
+    const _popup = this.dialog.open(component, {
+      maxHeight: '80vh',
+      enterAnimationDuration: '500ms',
+      exitAnimationDuration: '500ms',
+      data: {
+        data: data,
+        title: title,
+        msg: msg
+      }
+    });
+    _popup.afterClosed().subscribe(item => {
+      this.loadAllDepartments().subscribe(()=>{
+        this.filterDepartments()
+      })
+    })
   }
 }

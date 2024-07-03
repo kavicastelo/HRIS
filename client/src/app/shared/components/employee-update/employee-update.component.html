@@ -15,7 +15,7 @@
                    alt="profile image">
             </div>
             <div class="profile-img-setting">
-              <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span
+              <span class="tag-1 d-flex"><span class="d-flex" style="color: #c0392b">&ast;</span><span
                 class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .pjp</span>
               <div class="d-flex">
                 <button type="button" class="btn-1 me-2 px-2" (click)="choosePhoto()">
@@ -81,9 +81,6 @@
           </div>
 
           <div class="col-12 col-md-6">
-          </div>
-
-          <div class="col-12 col-md-6">
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>NIC</mat-label>
               <input matInput id="nic" formControlName="nic" placeholder="9567568909v">
@@ -107,12 +104,12 @@
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>DEPARTMENT</mat-label>
                   <mat-select id="department" formControlName="department" [(value)]="selectedDepartment">
-                    <mat-option *ngFor="let d of departmentDataStore" [value]="d.name">{{d.name}}</mat-option>
+                    <mat-option *ngFor="let d of filterDepartments()" [value]="d.name">{{d.name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="col-12 col-md-6">
-                <button type="button" id="dep-btn" class="btn-1 px-2">
+                <button type="button" id="dep-btn" class="btn-1 px-2" (click)="addDepartment()">
                   <mat-icon>add</mat-icon>
                   Create New Department
                 </button>
