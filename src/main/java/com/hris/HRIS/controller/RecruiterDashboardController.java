@@ -16,6 +16,7 @@ public class RecruiterDashboardController {
     //No of CVs
     @GetMapping("/count-Cvs")
     public long countCvs() {
+
         return applyJobService.countCvs();
     }
 

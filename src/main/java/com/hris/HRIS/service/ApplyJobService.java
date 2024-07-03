@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ApplyJobService {
 
     @Autowired
-    ApplyJobRepository applyJobRepository;
+    private ApplyJobRepository applyJobRepository;
 
     public List<ApplyJobModel> getAllDetails(){
 
@@ -28,11 +28,12 @@ public class ApplyJobService {
     }
 
     public void deleteById(String id) {
+
         applyJobRepository.deleteById(id);
     }
 
     public long countCvs() {
-        return applyJobRepository.countCvNotNull();
+        return applyJobRepository.countByCvNotNull();
     }
 
     public long countFavoriteCvs() {
