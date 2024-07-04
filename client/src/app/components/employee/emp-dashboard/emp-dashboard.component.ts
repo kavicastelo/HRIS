@@ -152,21 +152,32 @@ export class EmpDashboardComponent implements OnInit{
   assignShift(id: any, shift: any) {
     if (id){
       this.employeesService.getEmployeeById(id).subscribe(data =>{
-        data.workShift.map((data: any) => {
-          if (data.id === shift.id){
-            this.openSnackBar("Already assigned", "OK")
-          }
-          else {
-            this.employeesService.assignShift(id, shift).subscribe(data =>{
-              this.loadAllUsers().subscribe(()=>{
-                this.filterEmployees()
-              })
-              this.openSnackBar("Shift Assigned", "OK")
-            }, error => {
-              this.openSnackBar("Error assigning shift", "OK")
+        if (data.workShift == null){
+          this.employeesService.assignShift(id, shift).subscribe(data =>{
+            this.loadAllUsers().subscribe(()=>{
+              this.filterEmployees()
             })
-          }
-        })
+            this.openSnackBar("Shift Assigned", "OK")
+          }, error => {
+            this.openSnackBar("Error assigning shift", "OK")
+          })
+        } else {
+          data.workShift.map((data: any) => {
+            if (data.id === shift.id){
+              this.openSnackBar("Already assigned", "OK")
+            }
+            else {
+              this.employeesService.assignShift(id, shift).subscribe(data =>{
+                this.loadAllUsers().subscribe(()=>{
+                  this.filterEmployees()
+                })
+                this.openSnackBar("Shift Assigned", "OK")
+              }, error => {
+                this.openSnackBar("Error assigning shift", "OK")
+              })
+            }
+          })
+        }
       })
     }
   }
