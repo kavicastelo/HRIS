@@ -23,6 +23,16 @@ public class RecruiterDashboardController {
     //No of Interviewers - In first stage
     @GetMapping("/count-favorite-Cvs")
     public long countFavoriteCvs() {
+
         return applyJobService.countFavoriteCvs();
     }
+
+    //No of interviews - in hiring stage
+    @GetMapping("/count-hired")
+    public long getCountOfHiredApplicants() {
+        return applyJobService.getCountOfHiredApplicants();
+    }
+
+    //Days taken to complete
+
 }

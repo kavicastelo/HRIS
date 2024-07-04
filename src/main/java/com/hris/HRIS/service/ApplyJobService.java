@@ -41,4 +41,12 @@ public class ApplyJobService {
 
         return count;
     }
+
+    public long getCountOfHiredApplicants() {
+        return applyJobRepository.countByHire(true);
+    }
+
+    public List<ApplyJobModel> getPendingRecruitments() {
+        return applyJobRepository.findPendingRecruitments();
+    }
 }
