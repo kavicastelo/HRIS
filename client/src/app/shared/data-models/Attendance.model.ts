@@ -14,5 +14,10 @@ export interface AttendanceModel {
     lateMinutes?:any,
     earlyDepartureMinutes?:any,
     noPayDays?:any,
-    overtimeHour?:any
+    overtimeHours?:any,
+    shiftStartTime?:any,
+    shiftEndTime?:any,
+    earliestInTime?:any,
+    latestOutTime?:any,
+    deductingHours?:any,
 }
