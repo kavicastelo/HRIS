@@ -153,6 +153,7 @@ import { OnboardingTaskViewComponent } from './shared/dialogs/onboarding-task-vi
 import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
 import { DashboardConfigComponent } from './components/Dashboards/dashboard-config/dashboard-config.component';
 import { LeavesConfigDialogComponent } from './shared/dialogs/leaves-config-dialog/leaves-config-dialog.component';
+import {RoundFloats} from "./DTO/RoundFloats";
 
 @NgModule({
   declarations: [
@@ -253,7 +254,8 @@ import { LeavesConfigDialogComponent } from './shared/dialogs/leaves-config-dial
     OnboardingTaskViewComponent,
     ForbiddenComponent,
     DashboardConfigComponent,
-    LeavesConfigDialogComponent
+    LeavesConfigDialogComponent,
+    RoundFloats
   ],
     imports: [
         BrowserModule,
