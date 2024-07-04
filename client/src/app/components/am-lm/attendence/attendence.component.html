@@ -23,7 +23,7 @@
             <th>Date</th>
             <th>In</th>
             <th>Out</th>
-            <th>No. Hours</th>
+            <th>No. Hours (Without deductions)</th>
             <th></th>
           </tr>
           </thead>
@@ -31,10 +31,7 @@
           <tr *ngFor="let a of filterAttendance()">
             <td>{{a.name}}</td>
             <td>{{a.recordInTime | dateFormat}}</td>
-            <td
-              [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime, a.deductingHours) < workShiftDuration(a.shiftStartTime, a.shiftEndTime, a.deductingHours) ? 'red':'var(--color-text-200)'}">
-              {{a.recordInTime | timeFormat}}
-            </td>
+            <td>{{a.recordInTime | timeFormat}}</td>
             <td>{{a.recordOutTime == null ? '-' : a.recordOutTime | timeFormat}}</td>
             <td
               [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime, a.deductingHours) < workShiftDuration(a.shiftStartTime, a.shiftEndTime, a.deductingHours) ? 'red' : 'var(--color-text-200)'}">

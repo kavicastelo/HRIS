@@ -8,27 +8,30 @@
         <li class="list-group-item">
 
             <div class="attendance-list">
-                <table class="table table-hover">
+                <table class="table table-hover" style="min-width: 800px">
                     <thead>
                     <tr>
                         <th>Date</th>
                         <th>In</th>
                         <th>Out</th>
                         <th>No. Hours</th>
-                        <th>Work Shift</th>
+                        <th>Late Min.</th>
+                        <th>Early Departure Min.</th>
+                        <th>OT Hours</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let a of filterAttendance()">
-                        <td>{{a.recordInTime | dateFormat}}</td>
-                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red':'var(--color-text-200)'}">
-                            {{a.recordInTime | timeFormat}}
-                        </td>
-                        <td>{{a.recordOutTime==null ? '-' : a.recordOutTime | timeFormat}}</td>
-                        <td [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime) < 9 ? 'red' : 'var(--color-text-200)'}">
-                            {{a.recordOutTime==null ? '-' : calculateHours(a.recordInTime, a.recordOutTime) | hourMinuteFormat}}
-                        </td>
-                        <td>{{a.workShift ? a.workShift : 'N/A'}}</td>
+                      <td>{{a.recordInTime | dateFormat}}</td>
+                      <td>{{a.recordInTime | timeFormat}}</td>
+                      <td>{{a.recordOutTime == null ? '-' : a.recordOutTime | timeFormat}}</td>
+                      <td
+                        [ngStyle]="{'color': calculateHours(a.recordInTime, a.recordOutTime, a.deductingHours) < workShiftDuration(a.shiftStartTime, a.shiftEndTime, a.deductingHours) ? 'red' : 'var(--color-text-200)'}">
+                        {{a.recordOutTime == null ? '-' : calculateHours(a.recordInTime, a.recordOutTime, a.deductingHours) | hourMinuteFormat}}
+                      </td>
+                      <td [ngStyle]="{'color': a.lateMinutes > 0 ? 'red' : 'var(--color-text-200)'}">{{a.lateMinutes}}</td>
+                      <td [ngStyle]="{'color': a.earlyDepartureMinutes > 0 ? 'red' : 'var(--color-text-200)'}">{{a.earlyDepartureMinutes}}</td>
+                      <td [ngStyle]="{'color': a.overtimeHours > 0 ? '#a2c155' : 'var(--color-text-200)'}">{{a.overtimeHours | roundFloats}}</td>
                     </tr>
                     </tbody>
                 </table>
