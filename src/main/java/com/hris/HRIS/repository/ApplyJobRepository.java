@@ -10,7 +10,7 @@ public interface ApplyJobRepository extends MongoRepository<ApplyJobModel, Strin
     List<ApplyJobModel> findByFavoriteTrue();
 
     //count CVs
-    long countCvNotNull();
+    long countByCvNotNull();
 
     //Count by favourite true
     long countByFavoriteTrue();

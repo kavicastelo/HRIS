@@ -32,7 +32,7 @@ public class ApplyJobService {
     }
 
     public long countCvs() {
-        return applyJobRepository.countCvNotNull();
+        return applyJobRepository.countByCvNotNull();
     }
 
     public long countFavoriteCvs() {
