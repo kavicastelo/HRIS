@@ -57,18 +57,54 @@ export class AttendenceComponent implements OnInit{
     }
   }
 
-  calculateHours(timestamp1: string, timestamp2: string): number {
+  calculateHours(timestamp1: string, timestamp2: string, deductingHours: string): number {
     // Convert timestamps to Date objects
     const date1 = new Date(timestamp1);
     const date2 = new Date(timestamp2);
+    const deductingHour = parseInt(deductingHours);
 
     // Calculate the difference in milliseconds
-    const differenceMs = Math.abs(date2.getTime() - date1.getTime());
+    const differenceMs = date2.getTime() - date1.getTime();
 
     // Convert milliseconds to hours
-    const hours = differenceMs / (1000 * 60 * 60);
+    const hours = (differenceMs / (1000 * 60 * 60)) - deductingHour;
 
-    return hours;
+    return hours > 0 ? hours : 0;
+  }
+
+  workShiftDuration(shiftStartTime: string, shiftEndTime: string, deductingHours: any): number {
+
+    const shiftStart = new Date();
+    const shiftEnd = new Date();
+    const deductingHour = parseInt(deductingHours);
+
+    const [startHour, startPeriod] = shiftStartTime.split(' ');
+    const shiftStartHour = parseInt(startHour.split('.')[0]);
+    const shiftStartMinute = parseInt(startHour.split('.')[1]) || 0;
+
+    const [endHour, endPeriod] = shiftEndTime.split(' ');
+    const shiftEndHour = parseInt(endHour.split('.')[0]);
+    const shiftEndMinute = parseInt(endHour.split('.')[1]) || 0;
+
+
+    if (startPeriod === 'AM' && shiftStartHour === 12) {
+      shiftStart.setHours(0, shiftStartMinute, 0, 0); // handle 12 AM case
+    } else if (startPeriod === 'PM' && shiftStartHour !== 12) {
+      shiftStart.setHours(shiftStartHour + 12, shiftStartMinute, 0, 0); // PM case, not 12 PM
+    } else {
+      shiftStart.setHours(shiftStartHour, shiftStartMinute, 0, 0); // AM case or 12 PM case
+    }
+
+    if (endPeriod === 'AM' && shiftEndHour === 12) {
+      shiftEnd.setHours(0, shiftEndMinute, 0, 0); // handle 12 AM case
+    } else if (endPeriod === 'PM' && shiftEndHour !== 12) {
+      shiftEnd.setHours(shiftEndHour + 12, shiftEndMinute, 0, 0); // PM case, not 12 PM
+    } else {
+      shiftEnd.setHours(shiftEndHour, shiftEndMinute, 0, 0); // AM case or 12 PM case
+    }
+
+    const differenceMs = shiftEnd.getTime() - shiftStart.getTime();
+    return differenceMs / (1000 * 60 * 60) - deductingHour;
   }
 
   editAttendance(attendance: any) {
