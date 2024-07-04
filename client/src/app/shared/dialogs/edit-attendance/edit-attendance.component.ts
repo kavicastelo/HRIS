@@ -47,8 +47,8 @@ export class EditAttendanceComponent {
 
     patchValue() {
         if (this.receivedData.data) {
-            const startTime = `${new Date(this.receivedData.data.attendance.recordInTime).getHours()}:${(new Date(this.receivedData.data.attendance.recordInTime).getMinutes() < 10 ? '0' : '') + new Date(this.receivedData.data.attendance.recordInTime).getMinutes()}`;
-            const endTime = `${new Date(this.receivedData.data.attendance.recordOutTime).getHours()}:${(new Date(this.receivedData.data.attendance.recordOutTime).getMinutes() < 10 ? '0' : '') + new Date(this.receivedData.data.attendance.recordOutTime).getMinutes()}`;
+            const startTime = `${(new Date(this.receivedData.data.attendance.recordInTime).getHours() < 10 ? '0' : '') + new Date(this.receivedData.data.attendance.recordInTime).getHours()}:${(new Date(this.receivedData.data.attendance.recordInTime).getMinutes() < 10 ? '0' : '') + new Date(this.receivedData.data.attendance.recordInTime).getMinutes()}`;
+            const endTime = `${(new Date(this.receivedData.data.attendance.recordOutTime).getHours() < 10 ? '0' : '') + new Date(this.receivedData.data.attendance.recordOutTime).getHours()}:${(new Date(this.receivedData.data.attendance.recordOutTime).getMinutes() < 10 ? '0' : '') + new Date(this.receivedData.data.attendance.recordOutTime).getMinutes()}`;
             this.attendanceForm.get('date').setValue(new Date(this.receivedData.data.attendance.recordInTime))
             this.attendanceForm.get('name').setValue(this.receivedData.data.attendance.name)
             this.attendanceForm.get('start').setValue(startTime)
@@ -64,7 +64,6 @@ export class EditAttendanceComponent {
 
     editAttendance() {
         if (this.attendanceForm.valid) {
-            console.log(this.attendanceForm.value)
 
 // Extract the date, start time, and end time from the form data
             const {date, start, end} = this.attendanceForm.value;
@@ -90,7 +89,14 @@ export class EditAttendanceComponent {
                 email: this.receivedData.data.attendance.email,
                 recordInTime: startTimeStamp.toString(),
                 recordOutTime: endTimeStamp.toString(),
-                lateMinutes: this.calculateLateMins(startTimeStamp.toString(), endTimeStamp.toString())
+                lateMinutes: this.calculateLateMins(startTimeStamp.toString(), this.receivedData.data.attendance.shiftStartTime),
+                earlyDepartureMinutes: this.calculateEarlyDepartureMins(endTimeStamp.toString(), this.receivedData.data.attendance.shiftEndTime),
+                overtimeHours: this.calculateOvertimeHours(endTimeStamp.toString(), this.receivedData.data.attendance.shiftEndTime),
+                shiftStartTime: this.receivedData.data.attendance.shiftStartTime,
+                shiftEndTime: this.receivedData.data.attendance.shiftEndTime,
+                earliestInTime: this.receivedData.data.attendance.earliestInTime,
+                latestOutTime: this.receivedData.data.attendance.latestOutTime,
+                deductingHours: this.receivedData.data.attendance.deductingHours
             }).subscribe(data=>{
               this.closePopup()
               this.snackBar.open("Attendance data updated","OK", {duration:3000})
@@ -100,17 +106,72 @@ export class EditAttendanceComponent {
         }
     }
 
-    calculateLateMins(timestamp1: string, timestamp2: string): number {
-        // Convert timestamps to Date objects
-        const date1 = new Date(timestamp1);
-        const date2 = new Date(timestamp2);
+  calculateLateMins(recordInTime: string, shiftStartTime: any): number {
+    const inTime = new Date(recordInTime);
+    const shiftStart = new Date(inTime);
 
-        // Calculate the difference in milliseconds
-        const differenceMs = Math.abs(date2.getTime() - date1.getTime());
+    const [startHour, startPeriod] = shiftStartTime.split(' ');
+    const shiftStartHour = parseInt(startHour.split('.')[0]);
+    const shiftStartMinute = parseInt(startHour.split('.')[1]) || 0;
 
-        const mins = differenceMs / (1000 * 60)
-
-        // Convert milliseconds to minutes
-        return mins < (9*60)? (9*60) - mins : 0;
+    if (startPeriod === 'AM' && shiftStartHour === 12) {
+      shiftStart.setHours(0, shiftStartMinute, 0, 0); // handle 12 AM case
+    } else if (startPeriod === 'PM' && shiftStartHour !== 12) {
+      shiftStart.setHours(shiftStartHour + 12, shiftStartMinute, 0, 0); // PM case, not 12 PM
+    } else {
+      shiftStart.setHours(shiftStartHour, shiftStartMinute, 0, 0); // AM case or 12 PM case
     }
+
+    // Calculate the difference in milliseconds
+    const differenceMs = inTime.getTime() - shiftStart.getTime();
+
+    // Convert milliseconds to minutes
+    return differenceMs > 0 ? differenceMs / (1000 * 60) : 0;
+  }
+
+  calculateEarlyDepartureMins(recordOutTime: string, shiftEndTime: any): number {
+    const outTime = new Date(recordOutTime);
+    const shiftEnd = new Date(outTime);
+
+    const [endHour, endPeriod] = shiftEndTime.split(' ');
+    const shiftEndHour = parseInt(endHour.split('.')[0]);
+    const shiftEndMinute = parseInt(endHour.split('.')[1]) || 0;
+
+    if (endPeriod === 'AM' && shiftEndHour === 12) {
+      shiftEnd.setHours(0, shiftEndMinute, 0, 0); // handle 12 AM case
+    } else if (endPeriod === 'PM' && shiftEndHour !== 12) {
+      shiftEnd.setHours(shiftEndHour + 12, shiftEndMinute, 0, 0); // PM case, not 12 PM
+    } else {
+      shiftEnd.setHours(shiftEndHour, shiftEndMinute, 0, 0); // AM case or 12 PM case
+    }
+
+    // Calculate the difference in milliseconds
+    const differenceMs = shiftEnd.getTime() - outTime.getTime();
+
+    // Convert milliseconds to minutes, return 0 if no early departure
+    return differenceMs > 0 ? differenceMs / (1000 * 60) : 0;
+  }
+
+  calculateOvertimeHours(recordOutTime: string, shiftEndTime: any): number {
+    const outTime = new Date(recordOutTime);
+    const shiftEnd = new Date(outTime);
+
+    const [endHour, endPeriod] = shiftEndTime.split(' ');
+    const shiftEndHour = parseInt(endHour.split('.')[0]);
+    const shiftEndMinute = parseInt(endHour.split('.')[1]) || 0;
+
+    if (endPeriod === 'AM' && shiftEndHour === 12) {
+      shiftEnd.setHours(0, shiftEndMinute, 0, 0); // handle 12 AM case
+    } else if (endPeriod === 'PM' && shiftEndHour !== 12) {
+      shiftEnd.setHours(shiftEndHour + 12, shiftEndMinute, 0, 0); // PM case, not 12 PM
+    } else {
+      shiftEnd.setHours(shiftEndHour, shiftEndMinute, 0, 0); // AM case or 12 PM case
+    }
+
+    // Calculate the difference in milliseconds
+    const differenceMs = outTime.getTime() - shiftEnd.getTime();
+
+    // Convert milliseconds to hours, return 0 if no overtime
+    return differenceMs > 0 ? differenceMs / (1000 * 60 * 60) : 0;
+  }
 }
