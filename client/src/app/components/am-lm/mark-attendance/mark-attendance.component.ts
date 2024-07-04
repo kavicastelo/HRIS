@@ -408,10 +408,10 @@ export class MarkAttendanceComponent implements OnInit{
     }
 
     // Calculate the difference in milliseconds
-    const differenceMs = Math.abs(inTime.getTime() - shiftStart.getTime());
+    const differenceMs = inTime.getTime() - shiftStart.getTime();
 
     // Convert milliseconds to minutes
-    return differenceMs / (1000 * 60);
+    return differenceMs > 0 ? differenceMs / (1000 * 60) : 0;
   }
 
   calculateEarlyDepartureMins(recordOutTime: string, shiftEndTime: Date, shiftDetails: any): number {
