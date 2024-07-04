@@ -33,6 +33,9 @@ public class AttendanceModel {
     private long earlyDepartureMinutes;
     private int noPayDays;
     private double overtimeHours;
-
-
+    private String shiftStartTime;
+    private String shiftEndTime;
+    private String earliestInTime;
+    private String latestOutTime;
+    private String deductingHours;
 }
