@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.hris.HRIS.controller.AttendanceController;
+import com.hris.HRIS.controller.*;
 import com.hris.HRIS.dto.PayrollReportItem;
 import com.hris.HRIS.dto.SummaryReportItem;
 import com.hris.HRIS.model.*;
@@ -19,10 +19,6 @@ import com.hris.HRIS.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
-
-import com.hris.HRIS.controller.EmployeePayItemController;
-import com.hris.HRIS.controller.PayItemController;
-import com.hris.HRIS.controller.TaxController;
 
 @Service
 public class PayrollReportsGenerationService {
@@ -53,9 +49,10 @@ public class PayrollReportsGenerationService {
 
     @Autowired
     PayrollConfigurationRepository payrollConfigurationRepository;
+    @Autowired
+    private SummaryReportController summaryReportController;
 
-    public void generatePayrollReport(String reportType, String payPeriod, String email, String organizationId) {
-        List<EmployeePayItemModel> employeePayItemsList = employeePayItemController.getPayItemsByEmail(email);
+    public void generatePayrollReport(String reportType, String payPeriod, String email, String organizationId, boolean isPreCalculation) {
         List<PayrollReportItem> payitems = new ArrayList<>();
         List<PayrollReportItem> deductions = new ArrayList<>();
 
@@ -82,6 +79,8 @@ public class PayrollReportsGenerationService {
         LocalDateTime payrollPeriodEndDate = payrollPeriodStartDate.plusDays(Long.parseLong(existingPayrollConfiguration.getPayrollPeriodInDays()) - 1);
 
         calculatePaymentsRelatedToAttendanceRecords(email, payrollPeriodStartDate.format(formatter), payrollPeriodEndDate.format(formatter));
+
+        List<EmployeePayItemModel> employeePayItemsList = employeePayItemController.getPayItemsByEmail(email);
 
         // Calculate earnings for the pay items.
         for (int i = 0; i < employeePayItemsList.size(); i++) {
@@ -138,12 +137,13 @@ public class PayrollReportsGenerationService {
         String generatedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         payrollReportModel.setReportGeneratedDate(generatedDateTime);
 
-        payrollReportRepository.save(payrollReportModel);
-
-        employeePayItemController.resetCommonPayItems(email);
+        if (!isPreCalculation){
+            payrollReportRepository.save(payrollReportModel);
+            employeePayItemController.resetCommonPayItems(email);
+        }
     }
 
-    public void generateSummaryReport(String reportType, String payPeriod, String organizationId){
+    public void generateSummaryReport(String reportType, String payPeriod, String organizationId, boolean isPreCalculation){
 
         double totalEarnings = 0.0;
         double totalDeductions = 0.0;
@@ -189,7 +189,12 @@ public class PayrollReportsGenerationService {
         String generatedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         summaryReportModel.setReportGeneratedDate(generatedDateTime);
 
-        summaryReportModel.setStatus("Available");
+        if(!isPreCalculation){
+            summaryReportModel.setStatus("Available");
+        }else{
+            clearTemporarySummaryReports(organizationId);
+            summaryReportModel.setStatus("Temporary report");
+        }
 
         summaryReportRepository.save(summaryReportModel);
     }
@@ -223,5 +228,13 @@ public class PayrollReportsGenerationService {
         overtimeHoursRecord.put("totalHoursAllowed", 240);
         overtimeHoursRecord.put("lateMinutes", totalOvertimeHours);
         employeePayItemController.addOvertimePayments(email, overtimeHoursRecord.toString());
+    }
+
+    public void clearTemporarySummaryReports(String organizationId){
+        for (SummaryReportModel summaryReportModel : summaryReportController.getAllSummaryReportsByOrganizationId(organizationId)) {
+            if(summaryReportModel.getStatus().equals("Temporary report")){
+                summaryReportRepository.delete(summaryReportModel);
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@ export class PayrollHistoryComponent {
 
     this.summaryReportService.getAllSummaryReportsByOrganizationId(this.cookieService.organization()).subscribe((res:any) =>{
       if(res){
-        this.summaryReportsTabledataSource.data = res;
+        this.summaryReportsTabledataSource.data = res.filter((report: any) => report.status !== "Temporary report");
       }
 
     },(error: any) => {})

@@ -51,18 +51,18 @@ public class PayrollReportController {
 //        }
 //    }
 
-    @PostMapping("/generate/organizationId/{organizationId}")
-    public ResponseEntity<ApiResponse> generateAllPayrollReportsByOrganizationId(@PathVariable String organizationId) {
+    @PostMapping("/generate/organizationId/{organizationId}/isPreCalculation/{isPreCalculation}")
+    public ResponseEntity<ApiResponse> generateAllPayrollReportsByOrganizationId(@PathVariable String organizationId, @PathVariable boolean isPreCalculation) {
 
         System.out.println("Process: Generate Payroll Reports - Running...");
 
         String payPeriod = LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM-yyyy"));
 
         for (EmployeeModel employeeModel : organizationRepository.findById(organizationId).get().getEmployees()) {
-            payrollReportsGenerationService.generatePayrollReport("paysheet", payPeriod, employeeModel.getEmail(), employeeModel.getOrganizationId());
+            payrollReportsGenerationService.generatePayrollReport("paysheet", payPeriod, employeeModel.getEmail(), employeeModel.getOrganizationId(), isPreCalculation);
         }
 
-        payrollReportsGenerationService.generateSummaryReport("Summary Report", payPeriod, organizationId);
+        payrollReportsGenerationService.generateSummaryReport("Summary Report", payPeriod, organizationId, isPreCalculation);
 
 
         ApiResponse apiResponse = new ApiResponse("Reports generated successfuly.");
@@ -72,7 +72,7 @@ public class PayrollReportController {
     @PostMapping("/{organizationId}/{reportType}/{payPeriod}/generate/{email}")
     public ResponseEntity<ApiResponse> generatePayrollReport(@PathVariable String organizationId, @PathVariable String reportType, @PathVariable String payPeriod, @PathVariable String email) {
 
-        payrollReportsGenerationService.generatePayrollReport(reportType, payPeriod, email, organizationId);
+        payrollReportsGenerationService.generatePayrollReport(reportType, payPeriod, email, organizationId, false);
 
         ApiResponse apiResponse = new ApiResponse("Report generated successfuly.");
         return ResponseEntity.ok(apiResponse);
