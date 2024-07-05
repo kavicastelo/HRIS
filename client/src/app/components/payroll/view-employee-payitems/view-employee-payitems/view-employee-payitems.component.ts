@@ -36,6 +36,9 @@ export class ViewEmployeePayitemsComponent {
   isDisplayAssignNewItemForm = true;
   isDisplayGoBackIcon = false;
 
+  isError = false;
+  isLoading = true;
+
   @Input() employeeId: string = "";
   
 
@@ -88,8 +91,7 @@ export class ViewEmployeePayitemsComponent {
 
     viewEmployeePaymentDetails(employeeModel: EmployeeModel){
       this.totalSalaryOfTheSelectedEmployee = 0.0;
-  
-      // this.resetAssignPayitemForm();
+      this.isLoading = true;
   
       this.employeePayitemService.getPayItemsByEmail(employeeModel.email).subscribe((res:any) =>{
         if(res){
@@ -97,37 +99,22 @@ export class ViewEmployeePayitemsComponent {
             if (res.length > 0){
               this.selectedEmployeeBasicSalary = res[0].value;
             }
-  
-            for(let employeePayitem of res){
-              
-              this.payitemService.getPayItemById(employeePayitem.payItemId).subscribe((payitemRes:any) =>{
-                if(payitemRes){
+
+            this.employeePayitemService.calculateTotalSalaryOfTheSelectedEmployee(this.selectedEmployeeBasicSalary, res)
+              .then(([employeePayitemsList, totalSalaryOfTheSelectedEmployee]) => {
+                  if(totalSalaryOfTheSelectedEmployee < 0){
+                    this.isError = true;
+                  }else{
+                    this.totalSalaryOfTheSelectedEmployee = totalSalaryOfTheSelectedEmployee;
+                    this.employeePayitemsList = employeePayitemsList;
+                  }
+              })
+              .catch(error => {
+                  this.isError = true;
                   
-                      employeePayitem.payitem = payitemRes;
-  
-                      if(employeePayitem.type == "Percentage"){
-                        employeePayitem.amount = this.selectedEmployeeBasicSalary * (employeePayitem.value/100);
-                        employeePayitem.payitem.paymentType += " (" + employeePayitem.value + "% of basic)";
-                      }else if(employeePayitem.type == "Hourly Rate"){              
-                          // employeePayitem.amount = employeePayitem.value * parseFloat(hoursWorkedRes.toString());
-                          employeePayitem.amount = 0.00;
-                          employeePayitem.payitem.paymentType += " (" + employeePayitem.value + "% Hourly Rate)";
-                        }else{
-                        employeePayitem.amount = employeePayitem.value;
-                      }
-  
-                      if(employeePayitem.payitem.itemType == "Deletion"){
-                        this.totalSalaryOfTheSelectedEmployee -= employeePayitem.amount;
-                      }else{
-                        this.totalSalaryOfTheSelectedEmployee += employeePayitem.amount;
-                      }
-                }
-          
-              },(error: any) => {})
-  
-            }
-  
-            this.employeePayitemsList = res;
+              }).finally(() => {
+                  this.isLoading = false;
+              });
         }
   
       },(error: any) => {})

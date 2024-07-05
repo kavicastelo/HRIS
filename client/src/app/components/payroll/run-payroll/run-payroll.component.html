@@ -1,5 +1,10 @@
 <h4>Run Payroll</h4>
 
+<div *ngIf="isLoading">
+    <app-in-progress></app-in-progress>
+    <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+</div>
+
 <div>
     <div class="row justify-content-md-center">
         <div class="col-sm-6">
@@ -27,28 +32,33 @@
             </li>
             <li class="list-group-item">
 
-                <div class="table-data-list">
+                <div class="alert alert-danger" role="alert" style="margin-top: 12px;" *ngIf="isError">
+                    An unexpected error occurred while loading the requested data. Please try again.
+                </div>
+
+                <div class="table-data-list" *ngIf="!isError">
                     <table class="table table-hover">
                         <thead>
                         <tr>
                             <th></th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Contact</th>
+                            <th style="text-align: right;">Estimated Salary (LKR)</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let employee of employees" (click)="displayEmployeePayitems(employee.id)" style="cursor: pointer;">
-                            <td><mat-icon>navigate_next</mat-icon></td>
-                            <td>{{ employee.name }}</td>
-                            <td>{{ employee.email }}</td>
-                            <td>{{ employee.phone }}</td>
+                            <tr *ngFor="let employeePayment of employeePayments" (click)="displayEmployeePayitems(employeePayment.id)" style="cursor: pointer;">
+                                <td><mat-icon>navigate_next</mat-icon></td>
+                                <td>{{ employeePayment.name }}</td>
+                                <td>{{ employeePayment.email }}</td>
+                                <td style="text-align: right;">{{ employeePayment.amount.toFixed(2) }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
             </li>
-            <li class="list-group-item">&nbsp;</li>
+            <li class="list-group-item" *ngIf="!isError">&nbsp;</li>
         </ul>
     </div>
 </div>    
