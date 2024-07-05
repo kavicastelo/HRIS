@@ -140,6 +140,10 @@ public class PayrollReportsGenerationService {
         if (!isPreCalculation){
             payrollReportRepository.save(payrollReportModel);
             employeePayItemController.resetCommonPayItems(email);
+        }else{
+            clearTemporaryPayrollReports(organizationId, email);
+            payrollReportModel.setStatus("Temporary report");
+            payrollReportRepository.save(payrollReportModel);
         }
     }
 
@@ -228,6 +232,14 @@ public class PayrollReportsGenerationService {
         overtimeHoursRecord.put("totalHoursAllowed", 240);
         overtimeHoursRecord.put("lateMinutes", totalOvertimeHours);
         employeePayItemController.addOvertimePayments(email, overtimeHoursRecord.toString());
+    }
+
+    public void clearTemporaryPayrollReports(String organizationId, String email){
+        for(PayrollReportModel payrollReportModel : payrollReportRepository.findAllByEmail(email)){
+            if(payrollReportModel.getStatus().equals("Temporary report")){
+                payrollReportRepository.delete(payrollReportModel);
+            }
+        }
     }
 
     public void clearTemporarySummaryReports(String organizationId){
