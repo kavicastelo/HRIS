@@ -154,6 +154,7 @@ import { ForbiddenComponent } from './shared/components/forbidden/forbidden.comp
 import { DashboardConfigComponent } from './components/Dashboards/dashboard-config/dashboard-config.component';
 import { LeavesConfigDialogComponent } from './shared/dialogs/leaves-config-dialog/leaves-config-dialog.component';
 import {RoundFloats} from "./DTO/RoundFloats";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -293,6 +294,7 @@ import {RoundFloats} from "./DTO/RoundFloats";
         FlatpickrModule.forRoot(),
         CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
         MatPaginatorModule,
+        MatProgressSpinnerModule
     ],
   providers: [],
   bootstrap: [AppComponent]

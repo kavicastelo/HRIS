@@ -7,20 +7,30 @@
 
 <div>
     <div class="row justify-content-md-center">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="stepperItem" [ngClass]="step == 1 ? 'stepperItem-selected' : ''">
                 <span style="font-weight: 600;">Step 1:</span>&nbsp;
                 <span style="font-weight: 200;">Confirm Payments of the Employees</span>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="stepperItem" [ngClass]="step == 2 ? 'stepperItem-selected' : ''">
                 <span style="font-weight: 600;">Step 2:</span>&nbsp;
+                <span style="font-weight: 200;">Review and Submit</span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="stepperItem" [ngClass]="step == 3 ? 'stepperItem-selected' : ''">
+                <span style="font-weight: 600;">Step 3:</span>&nbsp;
                 <span style="font-weight: 200;">Finish</span>
             </div>
         </div>
     </div>
 </div><br>
+
+<div class="alert alert-danger" role="alert" style="margin-top: 12px;" *ngIf="isError">
+    An unexpected error occurred. Please try again.
+</div>
 
 <div id="step1" *ngIf="isDisplayEmployeePayments && step == 1">
     <div class="card">
@@ -31,11 +41,6 @@
                 </div>
             </li>
             <li class="list-group-item">
-
-                <div class="alert alert-danger" role="alert" style="margin-top: 12px;" *ngIf="isError">
-                    An unexpected error occurred while loading the requested data. Please try again.
-                </div>
-
                 <div class="table-data-list" *ngIf="!isError">
                     <table class="table table-hover">
                         <thead>
@@ -68,7 +73,52 @@
     <app-view-employee-payitems [employeeId]="selectedEmployeeId"></app-view-employee-payitems>
 </div>
 
-<div id="step1" *ngIf="step == 2">
+<div id="step2" *ngIf="step == 2">
+    <div *ngIf="isPreparingPreview" style="display: flex; text-align: center; justify-content: center; align-items: center; padding: 20px; margin-top: 50px;">
+        <div style="display: flex; text-align: center; justify-content: center; align-items: center; padding: 20px; border: 1px solid var(--color-surface-mixed-600); border-radius: 7px; width: 300px;">
+            <mat-spinner [diameter]="40"></mat-spinner>&nbsp;&nbsp;
+            <h5 style="margin-top: 8px;">Preparing preview...</h5>
+        </div>
+    </div>
+
+    <div class="card" *ngIf="!isPreparingPreview">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <div class="table-data-list" *ngIf="!isError">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th style="text-align: right;">Earnings (LKR)</th>
+                            <th style="text-align: right;">Deductions (LKR)</th>
+                            <th style="text-align: right;">Net Pay (LKR)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let employeePayment of payrollPreviewReport.employeePayments">
+                                <td>{{ employeePayment.employeeName }}</td>
+                                <td style="text-align: right;">{{ employeePayment.earnings.toFixed(2) }}</td>
+                                <td style="text-align: right;">{{ employeePayment.deductions.toFixed(2) }}</td>
+                                <td style="text-align: right;">{{ employeePayment.netPay.toFixed(2) }}</td>
+                            </tr>
+                            <tr style="background-color: var(--color-surface-mixed-300); color: var(--color-text-200);">
+                                <td>Salary Distribution:</td>
+                                <td style="text-align: right;">{{ payrollPreviewReport.totalEarnings.toFixed(2) }}</td>
+                                <td style="text-align: right;">{{ payrollPreviewReport.totalDeductions.toFixed(2) }}</td>
+                                <td style="text-align: right;">{{ payrollPreviewReport.netPayTotal.toFixed(2) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="width: 100%; height: 1.4px; background-color: #A3A3A3;"></div>
+                        <div style="text-align: right; width: 100%; padding-top: 5px; padding-bottom: 5px; font-weight: bold; color: var(--color-text-200);">Total Payroll: LKR {{ payrollPreviewReport.netPayTotal.toFixed(2) }} &nbsp;&nbsp; </div>
+                    <div style="width: 100%; height: 1.4px; background-color: #A3A3A3;"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="step3" *ngIf="step == 3">
     <div style="text-align: center; padding: 20px; margin-top: 50px;">
         <mat-icon style="color: green; font-size: 60px; width: 60px; height: 60px;">task_alt</mat-icon>
         <h3>You did it!</h3>
@@ -79,8 +129,17 @@
 <div style="width: 100%; height: 110px;"></div>
 <div class="controllesSection">
     <div class="container" style="display: flex; justify-content: flex-end;">
+        <ng-container *ngIf="step == 0">
+            <button class="btn btn-danger" style="padding-right:10px;" (click)="finishPayroll()" >Close</button>
+        </ng-container>
+
         <ng-container *ngIf="step == 1">
             <button class="btn btn-secondary" style="padding-right:10px;" (click)="cancelPayroll()" >Cancel</button>&nbsp;&nbsp;
+            <button class="btn-1" style="padding-right:10px;" (click)="generatePreview()" >&nbsp;Continue</button>
+        </ng-container>
+
+        <ng-container *ngIf="step == 2">
+            <button class="btn btn-secondary" style="padding-right:10px;" (click)="goToStep(1)" >Go Back</button>&nbsp;&nbsp;
             <button class="btn-1" style="padding-right:10px;" (click)="submitPayroll()" >&nbsp;Confirm & Submit Payroll</button>
         </ng-container>
 

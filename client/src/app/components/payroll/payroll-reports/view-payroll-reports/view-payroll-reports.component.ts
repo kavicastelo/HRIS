@@ -36,6 +36,8 @@ export class ViewPayrollReportsComponent {
     this.payrollReportsService.getAllPayrollReportsByEmail(employeeModel.email).subscribe((res:any) =>{
       if(res){
 
+        res = res.filter((report: any) => report.status !== "Temporary report");
+        
         if(this.isEmployee){
           for(let payrollReport of res){
             if(payrollReport.status == "Pending approval"){

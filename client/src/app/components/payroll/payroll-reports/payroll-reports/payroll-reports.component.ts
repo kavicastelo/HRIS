@@ -35,10 +35,4 @@ export class PayrollReportsComponent {
           tap(data => this.employees = data)
       );
     }
-
-    runMonthlyPayrollProcess(){
-      this.isReportsGeneratingProcessInProgress = true;
-
-      this.payrollReportService.generateAllPayrollReportsByOrganizationId(this.cookieService.organization()).subscribe((res: any) => {},(error: any) => {})
-    }
 }
