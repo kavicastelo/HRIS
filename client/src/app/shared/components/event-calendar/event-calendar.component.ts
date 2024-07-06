@@ -31,7 +31,6 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
         this.handleEvent('Deleted', event);
       },
     },
@@ -79,6 +78,7 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
         let orgId = event.meta.organizationId ? event.meta.organizationId : null;
 
         return {
+          id: event.id?event.id:null,
           meta: event.meta?event.meta:{},
           title: event.title,
           start: new Date(event.start),
@@ -139,13 +139,44 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    const dialogRef = this.dialog.open(EventDialogComponent, {
-      data: { event, action }
-    });
+    let dialogRef: any;
+    switch (action) {
+      case 'Clicked':
+        dialogRef = this.dialog.open(EventDialogComponent, {
+          data: { event, action }
+        });
+        dialogRef.afterClosed().subscribe((result: any) => {
+          this.fetchEvents();
+        });
+        break;
+      case 'Edited':
+        dialogRef = this.dialog.open(EventAddComponent, {
+          maxHeight: '90vh',
+          data: {
+            holiday: false,
+            title: event.title,
+            event: event,
+            userId: event.meta.userId,
+            organizationId: event.meta.organizationId,
+            startDate: event.start
+          }
+        });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.fetchEvents();
-    });
+        dialogRef.afterClosed().subscribe((result: any) => {
+          this.fetchEvents();
+        });
+        break;
+      case 'Deleted':
+        if (confirm('Are you sure you want to delete this event?')) {
+          if (event.id) {
+            this.eventService.deleteEvent(event.id.toString()).subscribe(() => {
+              this.fetchEvents();
+            })
+          }
+          this.events = this.events.filter((iEvent) => iEvent !== event);
+        }
+        break;
+    }
   }
 
   openCreateDialog(date: any) {

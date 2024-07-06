@@ -1,21 +1,31 @@
-<h1 mat-dialog-title>Event</h1>
-<div mat-dialog-content>
-  <mat-form-field>
-    <input matInput placeholder="Title" [(ngModel)]="data.event.title">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput [matDatepicker]="startPicker" placeholder="Start Date" [(ngModel)]="data.event.start">
-    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-    <mat-datepicker #startPicker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="data.event.end">
-    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-    <mat-datepicker #endPicker></mat-datepicker>
-  </mat-form-field>
-  <mat-checkbox [(ngModel)]="data.event.allDay">All Day</mat-checkbox>
+<div class="sticky-top" style="background-color: #fff">
+  <div class="d-flex align-items-center justify-content-between px-2 py-2">
+    <h5>Event Details</h5>
+    <mat-icon (click)="onNoClick()">close</mat-icon>
+  </div>
+  <hr>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data.event">Save</button>
+<div mat-dialog-content>
+  <div class="container">
+    <table class="table">
+      <tbody>
+      <tr>
+        <td>Title</td>
+        <td>{{data.event.title}}</td>
+      </tr>
+      <tr>
+        <td>Start date</td>
+        <td>{{data.event.start|date}}</td>
+      </tr>
+      <tr>
+        <td>End date</td>
+        <td>{{data.event.end|date}}</td>
+      </tr>
+      <tr>
+        <td>Time</td>
+        <td>{{data.event.start|timeFormat}} - {{data.event.end|timeFormat}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
