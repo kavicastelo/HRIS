@@ -9,31 +9,32 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
+
 @Getter
 @Setter
 @ToString
-@Document(collection = "events")
-public class EventModel {
+
+@Document(collection = "holiday")
+public class HolidayModel {
     @Id
     private String id;
 
     @Field("meta")
-    private Meta meta;
+    private EventModel.Meta meta;
 
     private String title;
     private String start;
-    private String end;
     private boolean allDay;
     private boolean draggable;
 
     @Field("color")
-    private EventColor color;
+    private EventModel.EventColor color;
 
     @Field("resizable")
-    private EventResizable resizable;
+    private EventModel.EventResizable resizable;
 
     @Field("actions")
-    private List<EventAction> actions;
+    private List<EventModel.EventAction> actions;
 
     // Embedded classes for complex types
     @Getter

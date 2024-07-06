@@ -78,6 +78,7 @@ import { RunPayrollComponent } from './components/payroll/run-payroll/run-payrol
 import {ForbiddenComponent} from "./shared/components/forbidden/forbidden.component";
 import {DashboardConfigComponent} from "./components/Dashboards/dashboard-config/dashboard-config.component";
 import {ConfigGuard} from "./guards/config.guard";
+import {HolidayCalendarComponent} from "./shared/components/holiday-calendar/holiday-calendar.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -166,6 +167,7 @@ const routes: Routes = [
     {path: 'job-listing', component: RecruitmentJobListComponent},
   ]},
   {path: 'event-calendar', component: EventCalendarComponent, canActivate: [AuthGuard]},
+  {path: 'holiday-calendar', component: HolidayCalendarComponent, canActivate: [AuthGuard, AdminGuard]},
   {path: 'dashboard', component: DashboardInitialComponent, canActivate: [AuthGuard, AdminGuard], children: [
     {path: '', redirectTo: '/dashboard/main', pathMatch: 'full'},
     {path: 'main', component: DashboardMainComponent},

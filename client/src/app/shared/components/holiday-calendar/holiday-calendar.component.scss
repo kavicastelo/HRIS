@@ -1,0 +1,27 @@
+.event-calendar{
+  color: #3498db;
+  font-size: 12px;
+  font-weight: 400;
+
+  .cal-month-view .cal-day-number{
+    color: #3498db;
+  }
+}
+
+.calendar-options{
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: calc(100vh - 70px);
+  overflow-y: scroll;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+
+    .col-4{
+      display: flex;
+      align-items: center;
+    }
+  }
+}

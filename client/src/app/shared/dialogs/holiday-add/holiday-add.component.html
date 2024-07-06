@@ -1,0 +1,116 @@
+<div class="container mt-2 mb-2" style="position: relative">
+  <h3 class="sticky-top py-2" style="background-color: #fff">
+    Edit events
+    <button class="btn btn-primary float-end" (click)="addHoliday()">
+      Add new
+    </button>
+    <div class="clearfix"></div>
+  </h3>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>Primary color</th>
+        <th>Secondary + text color</th>
+        <th>Holiday date</th>
+        <th>Options</th>
+      </tr>
+      </thead>
+
+      <tbody *ngFor="let event of events">
+      <tr>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="event.title"
+            (keyup)="refresh.next(undefined)"
+          />
+        </td>
+        <td *ngIf="event.color">
+          <input
+            type="color"
+            [(ngModel)]="event.color.primary"
+            (change)="refresh.next(undefined)"
+          />
+        </td>
+        <td *ngIf="event.color">
+          <input
+            type="color"
+            [(ngModel)]="event.color.secondary"
+            (change)="refresh.next(undefined)"
+          />
+          <input
+            type="color"
+            [ngModel]="event.color.secondaryText ?? '#1e90ff'"
+            (ngModelChange)="event.color.secondaryText = $event"
+            (change)="refresh.next(undefined)"
+          />
+        </td>
+        <td>
+          <input
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="event.start"
+            (ngModelChange)="refresh.next(undefined)"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Not set"
+          />
+        </td>
+        <td *ngIf="!event.actions">
+          Unauthorized
+        </td>
+        <td class="d-flex align-items-center justify-content-around" *ngIf="event.actions">
+          <button class="btn btn-danger" (click)="deleteEvent(event)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button class="btn btn-primary" (click)="event.id?updateEvent(event) : addToDB(event)">
+            <mat-icon [matTooltip]="event.id ? 'update event' : 'add event'">{{event.id ? 'create' : 'check'}}</mat-icon>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot *ngIf="!isFound">
+      <tr>
+        <td colspan="6" class="text-center">No events found</td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <ng-template #modalContent let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Event action occurred</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        Action:
+        <pre>{{ modalData?.action }}</pre>
+      </div>
+      <div>
+        Event:
+        <pre>{{ modalData?.event | json }}</pre>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+    </div>
+  </ng-template>
+
+  <div *ngIf="isLoadingResults">
+    <!--    TODO: add loading-->
+    <app-in-progress></app-in-progress>
+  </div>
+</div>
