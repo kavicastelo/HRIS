@@ -8,6 +8,8 @@ import {AuthService} from "../../../services/auth.service";
 import {isSameDay, isSameMonth} from "date-fns";
 import {HolidayDialogComponent} from "../../dialogs/holiday-dialog/holiday-dialog.component";
 import {HolidayAddComponent} from "../../dialogs/holiday-add/holiday-add.component";
+import {EventDialogComponent} from "../../dialogs/event-dialog/event-dialog.component";
+import {EventAddComponent} from "../../dialogs/event-add/event-add.component";
 
 @Component({
   selector: 'app-holiday-calendar',
@@ -31,7 +33,6 @@ export class HolidayCalendarComponent implements OnInit, AfterViewInit{
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
         this.handleEvent('Deleted', event);
       },
     },
@@ -79,6 +80,7 @@ export class HolidayCalendarComponent implements OnInit, AfterViewInit{
         let orgId = event.meta.organizationId ? event.meta.organizationId : null;
 
         return {
+          id: event.id?event.id:null,
           meta: event.meta?event.meta:{},
           title: event.title,
           start: new Date(event.start),
@@ -136,13 +138,44 @@ export class HolidayCalendarComponent implements OnInit, AfterViewInit{
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    const dialogRef = this.dialog.open(HolidayDialogComponent, {
-      data: { event, action }
-    });
+    let dialogRef: any;
+    switch (action) {
+      case 'Clicked':
+        dialogRef = this.dialog.open(HolidayDialogComponent, {
+          data: { event, action }
+        });
+        dialogRef.afterClosed().subscribe((result: any) => {
+          this.fetchHolidays();
+        });
+        break;
+      case 'Edited':
+        dialogRef = this.dialog.open(HolidayAddComponent, {
+          maxHeight: '90vh',
+          data: {
+            holiday: false,
+            title: event.title,
+            event: event,
+            userId: event.meta.userId,
+            organizationId: event.meta.organizationId,
+            startDate: event.start
+          }
+        });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.fetchHolidays();
-    });
+        dialogRef.afterClosed().subscribe((result: any) => {
+          this.fetchHolidays();
+        });
+        break;
+      case 'Deleted':
+        if (confirm('Are you sure you want to delete this holiday?')) {
+          if (event.id) {
+            this.eventService.deleteEvent(event.id.toString()).subscribe(() => {
+              this.fetchHolidays();
+            })
+          }
+          this.events = this.events.filter((iEvent) => iEvent !== event);
+        }
+        break;
+    }
   }
 
   openCreateDialog(date: any) {
