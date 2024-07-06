@@ -28,4 +28,20 @@ export class EventService {
   deleteEvent(eventId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}event/delete/${eventId}`);
   }
+
+  getHolidays(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}holiday/get/all`);
+  }
+
+  saveHoliday(holiday: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}holiday/save`, holiday);
+  }
+
+  updateHoliday(holiday: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}holiday/update/${holiday.id}`, holiday);
+  }
+
+  deleteHoliday(holidayId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}holiday/delete/${holidayId}`);
+  }
 }

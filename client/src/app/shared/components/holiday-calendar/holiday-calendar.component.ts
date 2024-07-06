@@ -1,20 +1,20 @@
 import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarEventAction} from 'angular-calendar';
-import { Subject } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import {addDays, addHours, endOfDay, endOfMonth, isSameDay, isSameMonth, startOfDay, subDays} from "date-fns";
+import {CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarEventAction} from "angular-calendar";
+import {EventColor} from "calendar-utils";
+import {Subject} from "rxjs";
 import {EventService} from "../../../services/event.service";
-import {EventDialogComponent} from "../../dialogs/event-dialog/event-dialog.component";
-import { EventColor } from 'calendar-utils';
-import {EventAddComponent} from "../../dialogs/event-add/event-add.component";
+import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../../services/auth.service";
+import {isSameDay, isSameMonth} from "date-fns";
+import {HolidayDialogComponent} from "../../dialogs/holiday-dialog/holiday-dialog.component";
+import {HolidayAddComponent} from "../../dialogs/holiday-add/holiday-add.component";
 
 @Component({
-  selector: 'app-event-calendar',
-  templateUrl: './event-calendar.component.html',
-  styleUrls: ['./event-calendar.component.scss']
+  selector: 'app-holiday-calendar',
+  templateUrl: './holiday-calendar.component.html',
+  styleUrls: ['./holiday-calendar.component.scss']
 })
-export class EventCalendarComponent implements OnInit, AfterViewInit {
+export class HolidayCalendarComponent implements OnInit, AfterViewInit{
   @ViewChild('scrollable') scrollable!: ElementRef | any;
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
@@ -65,15 +65,15 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.userId = this.cookieService.userID().toString();
     this.organizationId = this.cookieService.organization().toString();
-    this.fetchEvents();
+    this.fetchHolidays();
   }
 
   ngAfterViewInit() {
     this.addPassiveEventListener()
   }
 
-  fetchEvents() {
-    this.eventService.getEvents().subscribe(data => {
+  fetchHolidays() {
+    this.eventService.getHolidays().subscribe(data => {
       this.events = data.filter((event: any) => event.meta.organizationId === this.organizationId).map((event: any) => {
         let uid = event.meta.userId ? event.meta.userId : '000000000000000000000000';
         let orgId = event.meta.organizationId ? event.meta.organizationId : null;
@@ -82,7 +82,6 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
           meta: event.meta?event.meta:{},
           title: event.title,
           start: new Date(event.start),
-          end: event.end ? new Date(event.end) : null,
           color: event.color,
           draggable: event.draggable,
           resizable: {
@@ -115,14 +114,12 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
   eventTimesChanged({
                       event,
                       newStart,
-                      newEnd,
                     }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
         return {
           ...event,
           start: newStart,
-          end: newEnd,
         };
       }
       return iEvent;
@@ -139,22 +136,22 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    const dialogRef = this.dialog.open(EventDialogComponent, {
+    const dialogRef = this.dialog.open(HolidayDialogComponent, {
       data: { event, action }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.fetchEvents();
+      this.fetchHolidays();
     });
   }
 
   openCreateDialog(date: any) {
 
-    const dialogRef = this.dialog.open(EventAddComponent, {
+    const dialogRef = this.dialog.open(HolidayAddComponent, {
       maxHeight: '90vh',
       data: {
-        holiday: false,
-        title: 'Add Event',
+        holiday: true,
+        title: 'Add Holiday',
         event: null,
         userId: this.userId,
         organizationId: this.organizationId,
@@ -163,7 +160,7 @@ export class EventCalendarComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.fetchEvents();
+      this.fetchHolidays();
     });
   }
 

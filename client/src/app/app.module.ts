@@ -155,6 +155,9 @@ import { DashboardConfigComponent } from './components/Dashboards/dashboard-conf
 import { LeavesConfigDialogComponent } from './shared/dialogs/leaves-config-dialog/leaves-config-dialog.component';
 import {RoundFloats} from "./DTO/RoundFloats";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { HolidayCalendarComponent } from './shared/components/holiday-calendar/holiday-calendar.component';
+import { HolidayDialogComponent } from './shared/dialogs/holiday-dialog/holiday-dialog.component';
+import { HolidayAddComponent } from './shared/dialogs/holiday-add/holiday-add.component';
 
 @NgModule({
   declarations: [
@@ -256,7 +259,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ForbiddenComponent,
     DashboardConfigComponent,
     LeavesConfigDialogComponent,
-    RoundFloats
+    RoundFloats,
+    HolidayCalendarComponent,
+    HolidayDialogComponent,
+    HolidayAddComponent
   ],
     imports: [
         BrowserModule,
