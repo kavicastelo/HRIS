@@ -20,6 +20,13 @@ export class EditAttendanceComponent {
 
     attendanceForm: FormGroup | any;
 
+  weekendFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    // Prevent Saturday and Sunday from being selected.
+    // return day !== 0 && day !== 6; // TODO: uncomment this line to add weekends to blocklist
+    return true
+  };
+
     constructor(private multimediaService: MultimediaService,
                 private dialog: MatDialog,
                 private formBuilder: FormBuilder,
