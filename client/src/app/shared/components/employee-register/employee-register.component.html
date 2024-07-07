@@ -191,7 +191,7 @@
               <div class="col-12 col-md-6">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>JOINING DATE</mat-label>
-                  <input matInput [matDatepicker]="doj" formControlName="doj">
+                  <input matInput [matDatepicker]="doj" formControlName="doj" [matDatepickerFilter]="weekendFilter">
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle matIconSuffix [for]="doj"></mat-datepicker-toggle>
                   <mat-datepicker #doj></mat-datepicker>
@@ -280,7 +280,7 @@
           </div>
 
           <div class="col-12 col-md-6">
-            <button type="submit" class="btn-1 my-4 w-100" [disabled]="!employeeForm.invalid" (click)="onSubmit()">
+            <button type="submit" class="btn-1 my-4 w-100" [disabled]="employeeForm.invalid" (click)="onSubmit()">
               Submit
             </button>
           </div>

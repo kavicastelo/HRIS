@@ -37,6 +37,9 @@ public class SystemAutomateService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    EncryptionService encryptionService;
+
     public void UpdateEmployeeJobDataExit(ExitListModel exitListModel) {
         Optional<EmployeeModel> employee =  employeeRepository.findOneByEmail(exitListModel.getEmail());
 
@@ -67,7 +70,7 @@ public class SystemAutomateService {
         }
     }
 
-    public void CreateCredentials(EmployeeModel employeeModel){
+    public void CreateCredentials(EmployeeModel employeeModel) throws Exception {
         Optional<OrganizationModel> optionalOrganizationModel = organizationRepository.findById(employeeModel.getOrganizationId());
         if (optionalOrganizationModel.isPresent()){
             OrganizationModel organizationModel = optionalOrganizationModel.get();
@@ -75,6 +78,7 @@ public class SystemAutomateService {
             String orgName = organizationModel.getOrganizationName();
             String email = employeeModel.getEmail();
             String password = String.valueOf(random_Password(10));
+            String encryptedPassword = encryptionService.encryptPassword(password);
             String name = employeeModel.getName().split(" ")[0];
             String para = "Thank you for registering with "+orgName+".\n\nUse following credentials to login to the system at first time.\nEmail: "+email+"\nPassword: "+password+"\n\n";
             String tag = "Best Regards,\n"+orgName+" Team.\n\n";
@@ -82,7 +86,7 @@ public class SystemAutomateService {
 
             CredentialsModel credentialsModel = new CredentialsModel();
             credentialsModel.setEmail(employeeModel.getEmail());
-            credentialsModel.setPassword(password);
+            credentialsModel.setPassword(encryptedPassword);
             credentialsModel.setLevel("1");
             credentialsRepository.save(credentialsModel);
 

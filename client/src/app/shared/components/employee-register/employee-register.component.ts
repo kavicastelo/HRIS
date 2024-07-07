@@ -40,6 +40,13 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
   selectedShift:any[] = [];
   organization:any
 
+  weekendFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    // Prevent Saturday and Sunday from being selected.
+    // return day !== 0 && day !== 6; // TODO: uncomment this line to add weekends to blocklist
+    return true
+  };
+
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
               private organizationService: OrganizationService,
@@ -130,7 +137,7 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
 
   onSubmit() {
     sessionStorage.setItem('orgId', this.cookieService.organization())
-    if (!this.employeeForm.valid) {
+    if (this.employeeForm.valid) {
       const jobData = this.employeeForm.get('jobData').value;
       const shift = this.employeeForm.get('shift').value;
       this.employeeForm.patchValue({ jobData: null });

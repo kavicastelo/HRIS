@@ -67,7 +67,7 @@ public class EmployeeController {
                                                     @RequestParam("maternityLeaveBalance") String maternityLeaveBalance,
                                                     @RequestParam("paternityLeaveBalance") String paternityLeaveBalance,
                                                     @RequestParam("noPayLeaveBalance") String noPayLeaveBalance
-    ) throws IOException {
+    ) throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper();
         Object fixedJobData = objectMapper.readValue(jobData, Object.class);

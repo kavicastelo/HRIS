@@ -8,6 +8,7 @@ import com.hris.HRIS.repository.CredentialsRepository;
 import com.hris.HRIS.repository.EmployeeRepository;
 import com.hris.HRIS.repository.OrganizationRepository;
 import com.hris.HRIS.service.EmailService;
+import com.hris.HRIS.service.EncryptionService;
 import com.hris.HRIS.service.SystemAutomateService;
 import com.hris.HRIS.shared.objects.JobData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,11 @@ public class OrganizationController {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    EncryptionService encryptionService;
+
     @PostMapping("/save")
-    public ResponseEntity<ApiResponse> saveOrganization(@RequestBody OrganizationModel organizationModel) {
+    public ResponseEntity<ApiResponse> saveOrganization(@RequestBody OrganizationModel organizationModel) throws Exception {
         OrganizationModel orgModel = organizationRepository.save(organizationModel);
 
         JobData jobData = new JobData();
@@ -100,6 +104,7 @@ public class OrganizationController {
         systemAutomateService.updateOrganizationEmployees(emp);
 
         String password = String.valueOf(random_Password(10));
+        String encryptedPassword = encryptionService.encryptPassword(password);
         String name = employeeModel.getName().split(" ")[0];
         String para = "Thank you for choosing us as your organization's HR Information platform. We can help you to manage your organization easily and in flexible ways. You are the main administrator of your organization and start your journey with SPARKC HR Systems.\n\n" +
                 "Email: "+organizationModel.getEmail()+"\n" +
@@ -110,7 +115,7 @@ public class OrganizationController {
 
         CredentialsModel credentialsModel = new CredentialsModel();
         credentialsModel.setEmail(organizationModel.getEmail());
-        credentialsModel.setPassword(password);
+        credentialsModel.setPassword(encryptedPassword);
         credentialsModel.setLevel("0");
         credentialsRepository.save(credentialsModel);
 
