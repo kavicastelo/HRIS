@@ -27,6 +27,7 @@ export class EditProfileComponent {
         Validators.required
       ]
     ),
+    middlename: new FormControl(null),
     lastname: new FormControl(null),
     dob: new FormControl({value:null, disabled: true}),
     gender: new FormControl({value:null, disabled: true}),
@@ -112,7 +113,8 @@ export class EditProfileComponent {
     const doce:any = new Date(this.employee[0].dateOfContractEnd).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
     this.editProfileForm.get('firstname')?.setValue(firstName.split(' ')[0]);
-    this.editProfileForm.get('lastname')?.setValue(firstName.split(' ')[1]);
+    this.editProfileForm.get('middlename')?.setValue(firstName.split(' ')[1]?firstName.split(' ')[1]:'');
+    this.editProfileForm.get('lastname')?.setValue(firstName.split(' ')[2]);
     this.editProfileForm.get('dob')?.setValue(dob);
     this.editProfileForm.get('gender')?.setValue(this.employee[0].gender);
     this.editProfileForm.get('nic')?.setValue(this.employee[0].nic);

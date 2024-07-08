@@ -134,6 +134,11 @@ export class FeedComponent implements OnInit {
     async onSubmit(): Promise<void> {
         this.chosenChannel = sessionStorage.getItem('posting-channel')
         if (this.chosenChannel != null && this.chosenChannel != ''){
+
+          if (this.chosenPhoto?.type != 'image/jpeg' && this.chosenVideo?.type != 'video/mp4') {
+            this.openSnackBar('Please select jpeg or mp4 file', 'OK')
+            return;
+          }
             if (!this.chosenPhoto && !this.chosenVideo) {
                 const metadata: any = {
                     userId: this.userId,

@@ -73,6 +73,7 @@ export class EmployeeUpdateComponent implements OnInit, OnDestroy {
   initForm(){
     this.employeeForm = this.formBuilder.group({
       name: ['', Validators.required],
+      mname: [''],
       lname: ['', Validators.required],
       email: ['', Validators.required],
       phone: ['', Validators.required],
@@ -128,7 +129,8 @@ export class EmployeeUpdateComponent implements OnInit, OnDestroy {
   patchValues() {
     const firstName = this.employee[0].name;
     this.employeeForm.get('name')?.setValue(firstName.split(' ')[0]);
-    this.employeeForm.get('lname')?.setValue(firstName.split(' ')[1]);
+    this.employeeForm.get('mname')?.setValue(firstName.split(' ')[1]?firstName.split(' ')[1]:'');
+    this.employeeForm.get('lname')?.setValue(firstName.split(' ')[2]);
     this.employeeForm.get('dob')?.setValue(new Date(this.employee[0].dob));
     this.employeeForm.get('nic')?.setValue(this.employee[0].nic);
     this.employeeForm.get('gender')?.setValue(this.employee[0].gender);
