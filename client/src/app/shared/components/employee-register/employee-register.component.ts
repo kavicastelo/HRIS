@@ -80,6 +80,7 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
   initForm(){
     this.employeeForm = this.formBuilder.group({
       name: ['', Validators.required],
+      mname: [''],
       lname: ['', Validators.required],
       email: ['', Validators.required],
       phone: ['', Validators.required],

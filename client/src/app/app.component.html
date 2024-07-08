@@ -15,7 +15,7 @@
         </button>
         <!--    <img src="./assets/images/logo.png" alt="logo" routerLink="/home">-->
         <span id="orgName" class="d-none d-md-flex" [innerText]="organizationName"
-              routerLink="/">SPARKC HR Systems</span>
+              routerLink="/feed">SPARKC HR Systems</span>
       </div>
       <div class="d-flex align-items-center justify-content-around">
         <button class="d-flex d-sm-none btn-1" routerLink="/chat-list">
@@ -42,7 +42,7 @@
               <img [src]="e.photo" alt="profile">
             </div>
             <div class="d-none d-md-flex flex-column justify-content-between profile-tag">
-              <h6 (click)="navigateUrl('about')">{{e.name}}</h6>
+              <h6 (click)="navigateUrl('about')">{{e.name.split(' ')[0]}}</h6>
               <span (click)="logOut()">Sign out</span>
             </div>
           </div>
@@ -80,7 +80,7 @@
                     </mat-icon>
                   </li>
                   <li *ngIf="e.level == 0 || e.level == 1" routerLink="/dashboard">Dashboard</li>
-                  <li routerLink="/event-calendar">Calendar</li>
+                  <li routerLink="/event-calendar">Event Calendar</li>
                   <li routerLink="/holiday-calendar">Holidays Calendar</li>
                 </ul>
               </mat-expansion-panel>

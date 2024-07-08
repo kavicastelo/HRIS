@@ -158,7 +158,7 @@ export class EmployeesService {
 
       const requestBody:any = {
         id: sessionStorage.getItem('updatingUserId') as string,
-        name: form.get('name') +" "+ form.get('lname') as string,
+        name: form.get('name') +" "+ form.get('mname') +" "+ form.get('lname') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
         telephone: form.get('telephone') as string,
@@ -290,7 +290,7 @@ export class EmployeesService {
       const jobData = form.get('jobData') as Object;
 
       const requestBody: any = {
-        name: form.get('name') + " " + form.get('lname') as string,
+        name: form.get('name') + " " + form.get('mname') + " " + form.get('lname') as string,
         email: form.get('email') as string,
         phone: form.get('phone') as string,
         telephone: form.get('telephone') as string,
