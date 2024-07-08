@@ -34,7 +34,11 @@
               "src/styles.scss",
               "node_modules/angular-calendar/css/angular-calendar.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "chart.js",
+              "crypto-js"
+            ]
           },
           "configurations": {
             "production": {

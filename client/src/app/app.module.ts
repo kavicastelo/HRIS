@@ -158,6 +158,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { HolidayCalendarComponent } from './shared/components/holiday-calendar/holiday-calendar.component';
 import { HolidayDialogComponent } from './shared/dialogs/holiday-dialog/holiday-dialog.component';
 import { HolidayAddComponent } from './shared/dialogs/holiday-add/holiday-add.component';
+import { DecryptDataComponent } from './temp/decrypt-data/decrypt-data.component';
 
 @NgModule({
   declarations: [
@@ -262,7 +263,8 @@ import { HolidayAddComponent } from './shared/dialogs/holiday-add/holiday-add.co
     RoundFloats,
     HolidayCalendarComponent,
     HolidayDialogComponent,
-    HolidayAddComponent
+    HolidayAddComponent,
+    DecryptDataComponent
   ],
     imports: [
         BrowserModule,
