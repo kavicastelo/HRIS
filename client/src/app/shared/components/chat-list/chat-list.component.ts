@@ -18,6 +18,7 @@ import {AuthService} from "../../../services/auth.service";
 export class ChatListComponent implements OnInit, OnDestroy {
 
   employeeDataStore: any[]=[];
+  filteredEmployeeDataStore: any[]=[];
   channelsDataStore = channelsDataStore;
   chatsDataStore: any
   senderId: any;
@@ -27,12 +28,15 @@ export class ChatListComponent implements OnInit, OnDestroy {
   employee:any = {
     name:''
   }
+  organizationId: any;
 
   availableChats: any[] = [];
 
   message: string = '';
   messages: string[] = [];
   messageSubscription: Subscription | any;
+
+  targetInput:any;
 
   constructor(private multimediaService: MultimediaService,
               private employeeService: EmployeesService,
@@ -43,9 +47,11 @@ export class ChatListComponent implements OnInit, OnDestroy {
               private webSocketService: WebSocketService, private logger: NGXLogger) {
   }
   async ngOnInit(): Promise<any> {
+    this.organizationId = this.cookieService.organization().toString();
     this.loadAllUsers().subscribe(()=>{
       this.getUser()
       this.loadChats()
+      this.filterEmployees()
     })
 
     try {
@@ -69,6 +75,37 @@ export class ChatListComponent implements OnInit, OnDestroy {
     return this.employeeService.getAllEmployees().pipe(
         tap(data => this.employeeDataStore = data)
     );
+  }
+
+  filterEmployees(): any[]{
+    if (this.targetInput === undefined){
+      this.filteredEmployeeDataStore = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId)
+    }
+
+    return this.filteredEmployeeDataStore;
+  }
+
+  handleSearch(data: any): void {
+    this.targetInput = data as HTMLInputElement;
+    const value = this.targetInput.value
+    if (value) {
+      this.filteredEmployeeDataStore = this.employeeDataStore.filter((data: any) =>
+        data.organizationId === this.organizationId && data.name.toLowerCase().includes(value.toLowerCase())
+      );
+    } else {
+      this.filteredEmployeeDataStore = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId);
+    }
+  }
+
+  onEnterKey(event: any, drawer: any) {
+    const key = event as KeyboardEvent;
+    // Check if the Enter key is pressed and the Shift key is not pressed
+    if (key.key === 'Enter' && !key.shiftKey) {
+      // Prevent the default Enter key behavior (e.g., newline in textarea)
+      key.preventDefault();
+      // Call the sendMessage function
+      drawer.toggle();
+    }
   }
 
   getUser() {

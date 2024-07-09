@@ -31,6 +31,7 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
   filteredDepartments:any[] = [];
   selectedDepartment:any[] = [];
   employeeDataStore:any[] = [];
+  filteredEmployees:any[] = [];
   employee:any;
   userId:any;
   chosenPhoto: File | any;
@@ -66,7 +67,10 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
     this.initForm()
 
     this.subscriptions.add(this.loadAllDepartments().subscribe());
-    this.subscriptions.add(this.loadAllUsers().subscribe(() => this.getUser()));
+    this.subscriptions.add(this.loadAllUsers().subscribe(() => {
+      this.getUser();
+      this.filterEmployees();
+    }));
     this.subscriptions.add(this.loadAllShifts().subscribe(() => this.filterShifts()));
     this.subscriptions.add(this.loadOrganization().subscribe());
   }
@@ -124,6 +128,12 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
     );
   }
 
+  filterEmployees(): any[]{
+    this.filteredEmployees = this.employeeDataStore.filter((data: any) => data.organizationId === this.organizationId)
+
+    return this.filteredEmployees;
+  }
+
   getUser() {
     this.employeeDataStore.forEach((emp:any) => {
       this.route.paramMap.subscribe(params => {
@@ -172,7 +182,7 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
         }
       })
 
-      this.employeeDataStore.forEach((e:any) =>{
+      this.filterEmployees().forEach((e:any) =>{
         if(e.email == this.employeeForm.value.email){
           sessionStorage.setItem('isExists', "1");
         }
