@@ -87,7 +87,7 @@ public class SystemAutomateService {
             CredentialsModel credentialsModel = new CredentialsModel();
             credentialsModel.setEmail(employeeModel.getEmail());
             credentialsModel.setPassword(encryptedPassword);
-            credentialsModel.setLevel("1");
+            credentialsModel.setLevel("2");
             credentialsRepository.save(credentialsModel);
 
             emailService.sendSimpleEmail(employeeModel.getEmail(),"Login Credentials","Hello "+name+",\n"+para+tag+footer);

@@ -2,9 +2,11 @@
   <div class="w-100 c-main">
     <div class="card">
       <div class="card-body">
-        <div class="input-group mb-3">
+        <div class="input-group mb-3" (click)="drawer.toggle()">
           <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
-          <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1"  (click)="drawer.toggle()">
+          <input id="search-chat" type="text" class="form-control" placeholder="Search" aria-label="Username"
+                 aria-describedby="basic-addon1" (keyup)="handleSearch($event.target)"
+                 (keydown.enter)="onEnterKey($event, drawer)">
         </div>
       </div>
     </div>
@@ -15,7 +17,7 @@
           <div class="d-flex align-items-center justify-content-end">
             <span class="lnr lnr-cross" (click)="drawer.toggle()"></span>
           </div>
-          <div class="direct-messages-chat-area all-contacts" *ngFor="let e of employeeDataStore">
+          <div class="direct-messages-chat-area all-contacts" *ngFor="let e of filterEmployees()">
             <div class="chat-wrapper" (click)="navigateUrl(e.id); drawer.toggle()">
               <div class="chat-icon">
                 <img [src]="convertToSafeUrl(e.photo)" alt="profile">
@@ -35,7 +37,8 @@
                   Direct Messages
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <div class="d-flex align-items-center justify-content-start mt-2" style="cursor: pointer" *ngIf="availableChats.length == 0" (click)="drawer.toggle()">
+              <div class="d-flex align-items-center justify-content-start mt-2" style="cursor: pointer"
+                   *ngIf="availableChats.length == 0" (click)="drawer.toggle()">
                 <span class="lnr lnr-plus-circle"></span>
                 <div>
                   <h6 style="margin: 0">Welcome {{employee.name.split(' ')[0]}}!</h6>
@@ -49,12 +52,15 @@
                   </div>
                   <div class="chat-content">
                     <h6>{{e.name}}</h6>
-                    <p [ngStyle]="{'font-weight':e.status=='sent'&&e.messageSenderId!=senderId?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
+                    <p
+                      [ngStyle]="{'font-weight':e.status=='sent'&&e.messageSenderId!=senderId?'700':'normal'}">{{e.lastMessage | truncate:18}}</p>
                   </div>
 
                   <div class="d-flex flex-column align-items-center justify-content-end">
-                    <small class="chat-time" [ngStyle]="{'color':e.status=='sent'&&e.messageSenderId!=senderId?'var(--color-primary-300)':'var(--color-text-300)'}">{{e.time | timeAgo}}</small>
-                    <div class="active-chat-count" [ngStyle]="{'display':e.status=='sent'&&e.messageSenderId!=senderId?'block':'none'}"></div>
+                    <small class="chat-time"
+                           [ngStyle]="{'color':e.status=='sent'&&e.messageSenderId!=senderId?'var(--color-primary-300)':'var(--color-text-300)'}">{{e.time | timeAgo}}</small>
+                    <div class="active-chat-count"
+                         [ngStyle]="{'display':e.status=='sent'&&e.messageSenderId!=senderId?'block':'none'}"></div>
                   </div>
 
                 </div>
@@ -71,15 +77,15 @@
               </mat-expansion-panel-header>
               <div class="direct-messages-chat-area">
                 <p>This feature is under development</p>
-<!--                <div class="chat-wrapper" *ngFor="let c of channelsDataStore">-->
-<!--                  <div class="chat-icon">-->
-<!--                    <img src="{{c.photo}}" alt="{{c.name}}">-->
-<!--                  </div>-->
-<!--                  <div class="chat-content">-->
-<!--                    <h6>{{c.name}}</h6>-->
-<!--                    <p>Lorem ipsum dolor sit</p>-->
-<!--                  </div>-->
-<!--                </div>-->
+                <!--                <div class="chat-wrapper" *ngFor="let c of channelsDataStore">-->
+                <!--                  <div class="chat-icon">-->
+                <!--                    <img src="{{c.photo}}" alt="{{c.name}}">-->
+                <!--                  </div>-->
+                <!--                  <div class="chat-content">-->
+                <!--                    <h6>{{c.name}}</h6>-->
+                <!--                    <p>Lorem ipsum dolor sit</p>-->
+                <!--                  </div>-->
+                <!--                </div>-->
               </div>
             </mat-expansion-panel>
           </mat-accordion>
