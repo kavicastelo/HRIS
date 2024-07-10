@@ -70,6 +70,23 @@ public class SystemAutomateService {
         }
     }
 
+    public void resetPassword(CredentialsModel credentialsModel) throws Exception {
+        Optional<CredentialsModel> optionalCredentialsModel = credentialsRepository.findById(credentialsModel.getId());
+
+        if (optionalCredentialsModel.isPresent()){
+            CredentialsModel credentials = optionalCredentialsModel.get();
+
+            String email = credentials.getEmail();
+            String password = String.valueOf(random_Password(10));
+            String encryptedPassword = encryptionService.encryptPassword(password);
+
+            credentials.setPassword(encryptedPassword);
+            credentialsRepository.save(credentials);
+
+            emailService.sendSimpleEmail(email,"Reset Password","Hello,\n\nYour password has been reset to "+password+".\n\nBest Regards,\nHRIS Team.");
+        }
+    }
+
     public void CreateCredentials(EmployeeModel employeeModel) throws Exception {
         Optional<OrganizationModel> optionalOrganizationModel = organizationRepository.findById(employeeModel.getOrganizationId());
         if (optionalOrganizationModel.isPresent()){
