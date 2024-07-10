@@ -83,7 +83,7 @@ public class SystemAutomateService {
             credentials.setPassword(encryptedPassword);
             credentialsRepository.save(credentials);
 
-            emailService.sendSimpleEmail(email,"Reset Password","Hello,\n\nYour password has been reset to "+password+".\n\nBest Regards,\nHRIS Team.");
+            emailService.sendSimpleEmail(email,"Reset Password","Hello,\n\nYour password has been reset to: "+password+"\n\nBest Regards,\nHRIS Team.");
         }
     }
 

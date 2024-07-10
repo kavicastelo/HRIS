@@ -93,6 +93,11 @@
       cursor: pointer;
       transition: background-color 0.5s ease;
       color: aliceblue;
+
+      &:disabled{
+        background-color: #908d96;
+        cursor: not-allowed;
+      }
     }
 
     .box05 button:hover {

@@ -18,6 +18,8 @@ export class LogInComponent implements OnInit{
   errorMassage:string='';
   credentialsDataStore:any;
   filteredCredential:any[] = [];
+  attempts = 4;
+  disabled: boolean = false;
 
   constructor(private router: Router,
               private credentialsService: CredentialsService,
@@ -42,12 +44,27 @@ export class LogInComponent implements OnInit{
   }
 
   login() {
+    this.attempts --;
     const password = this.encryptionService.encryptPassword(this.password.toString());
     let foundUser = this.filterCredentials()[0];
     const encryptedPassword = this.encryptionService.decryptPassword(foundUser.password.toString());
-    console.log(password, encryptedPassword)
 
-    if (foundUser) {
+    if (this.attempts <= 0 || sessionStorage.getItem('LgnAtT') == '0'){
+      sessionStorage.setItem('LgnAtT', '0');
+      this.errorMassage='Too many attempts! Try again in 5 minutes';
+      this.email = '';
+      this.password = '';
+      this.disabled = true;
+      setTimeout(()=>{
+        this.errorMassage='';
+        this.attempts = 4;
+        sessionStorage.removeItem('LgnAtT');
+        this.disabled = false;
+      }, 1000 * 60 * 5);
+      return;
+    }
+
+    if (foundUser && sessionStorage.getItem('LgnAtT') != '0') {
       if (this.password.toString() !== encryptedPassword) {
         this.errorMassage='Invalid password';
         return
