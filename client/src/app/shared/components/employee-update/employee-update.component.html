@@ -178,7 +178,7 @@
               <div class="col-12 col-md-6">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>JOINING DATE</mat-label>
-                  <input matInput [matDatepicker]="doj" formControlName="doj" [matDatepickerFilter]="weekendFilter">
+                  <input matInput [matDatepicker]="doj" formControlName="doj" [matDatepickerFilter]="dateFilter">
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle matIconSuffix [for]="doj"></mat-datepicker-toggle>
                   <mat-datepicker #doj></mat-datepicker>
@@ -218,7 +218,7 @@
           <div class="col-12 col-md-6">
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>DATE OF RETIREMENT</mat-label>
-              <input matInput [matDatepicker]="dor" formControlName="dateOfRetirement">
+              <input matInput [matDatepicker]="dor" formControlName="dateOfRetirement" [matDatepickerFilter]="dateFilter">
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="dor"></mat-datepicker-toggle>
               <mat-datepicker #dor></mat-datepicker>
@@ -227,7 +227,7 @@
           <div class="col-12 col-md-6">
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>DATE OF EXIT</mat-label>
-              <input matInput [matDatepicker]="doe" formControlName="dateOfExit">
+              <input matInput [matDatepicker]="doe" formControlName="dateOfExit" [matDatepickerFilter]="dateFilter">
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="doe"></mat-datepicker-toggle>
               <mat-datepicker #doe></mat-datepicker>
@@ -242,7 +242,7 @@
           <div class="col-12 col-md-6">
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>DATE OF CONTRACT END</mat-label>
-              <input matInput [matDatepicker]="doce" formControlName="dateOfContractEnd">
+              <input matInput [matDatepicker]="doce" formControlName="dateOfContractEnd" [matDatepickerFilter]="dateFilter">
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="doce"></mat-datepicker-toggle>
               <mat-datepicker #doce></mat-datepicker>

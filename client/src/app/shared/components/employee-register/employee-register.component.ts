@@ -15,6 +15,7 @@ import {
 import {ShiftsService} from "../../../services/shifts.service";
 import {CreateShiftDialogComponent} from "../../dialogs/create-shift-dialog/create-shift-dialog.component";
 import {OrganizationService} from "../../../services/organization.service";
+import {EventService} from "../../../services/event.service";
 
 @Component({
   selector: 'app-employee-register',
@@ -41,15 +42,21 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
   selectedShift:any[] = [];
   organization:any
 
-  weekendFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    // return day !== 0 && day !== 6; // TODO: uncomment this line to add weekends to blocklist
-    return true
-  };
+  holidaysStore:any[] = [];
+  filteredHolidays:any[] = [];
+  disabledDates: any[] = [];
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) {
+      return true;
+    }
+    const time = date.getTime();
+    return !this.disabledDates.includes(time);
+  }
 
   constructor(private formBuilder: FormBuilder,
               private employeeService: EmployeesService,
+              private eventService: EventService,
               private organizationService: OrganizationService,
               private logger: NGXLogger,
               private departmentService:DepartmentService,
@@ -73,6 +80,10 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
     }));
     this.subscriptions.add(this.loadAllShifts().subscribe(() => this.filterShifts()));
     this.subscriptions.add(this.loadOrganization().subscribe());
+    this.subscriptions.add(this.loadAllHolidays().subscribe(() => {
+      this.filterHolidays()
+      this.addDisabledDates()
+    }));
   }
 
   ngOnDestroy(){
@@ -228,6 +239,25 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy{
     this.filteredShifts = this.shiftDataStore.filter((dep:any) => dep.organizationId == this.organizationId)
 
     return this.filteredShifts;
+  }
+
+  loadAllHolidays(): Observable<any> {
+    return this.eventService.getHolidays().pipe(
+      tap(data => this.holidaysStore = data)
+    );
+  }
+
+  filterHolidays():any[]{
+    this.filteredHolidays = this.holidaysStore.filter((data:any) => data.meta.organizationId == this.organizationId)
+
+    return this.filteredHolidays;
+  }
+
+  addDisabledDates(): void {
+    this.disabledDates = [];
+    this.filterHolidays().forEach((h:any) => {
+      this.disabledDates.push(new Date(h.start).getTime())
+    })
   }
 
   choosePhoto(): void {

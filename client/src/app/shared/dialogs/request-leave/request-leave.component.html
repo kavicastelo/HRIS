@@ -4,28 +4,42 @@
 </div>
 <hr>
 <div class="container">
-    <form [formGroup]="leaveForm">
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>LEAVE TYPE</mat-label>
-            <mat-select id="leaveTYpe" formControlName="leaveType" [(value)]="selectedLeave">
-                <mat-option *ngFor="let l of leaveTypes" [value]="l">{{l}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>REASON</mat-label>
-            <textarea matInput id="reason" formControlName="reason" placeholder="Reason to ask a leave..." ></textarea>
-        </mat-form-field>
-        <mat-form-field class="w-100" appearance="outline">
-            <mat-label>DATE RANGE</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date" formControlName="startDate">
-                <input matEndDate placeholder="End date" formControlName="endDate">
-            </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
-    </form>
+  <form [formGroup]="leaveForm">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>LEAVE TYPE</mat-label>
+      <mat-select id="leaveType" formControlName="leaveType">
+        <mat-option *ngFor="let l of leaveTypes" [value]="l">{{ l }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="leaveForm.controls['leaveType'].hasError('required')">
+        Leave type is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>REASON</mat-label>
+      <textarea matInput id="reason" formControlName="reason" placeholder="Reason to ask a leave..."></textarea>
+      <mat-error *ngIf="leaveForm.controls['reason'].hasError('required')">
+        Reason is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>DATE RANGE</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date" formControlName="startDate">
+        <input matEndDate placeholder="End date" formControlName="endDate">
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-error *ngIf="leaveForm.controls['startDate'].hasError('invalidDate')">
+        Invalid start date (Must be a Holiday)
+      </mat-error>
+      <mat-error *ngIf="leaveForm.controls['endDate'].hasError('invalidDate')">
+        Invalid end date (Must be a Holiday)
+      </mat-error>
+    </mat-form-field>
+  </form>
 </div>
 <hr>
 <div class="d-flex align-items-center justify-content-end px-2 my-2">

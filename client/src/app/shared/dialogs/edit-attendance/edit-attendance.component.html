@@ -7,7 +7,7 @@
     <form [formGroup]="attendanceForm">
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="date" [matDatepickerFilter]="weekendFilter">
+            <input matInput [matDatepicker]="picker" formControlName="date" [matDatepickerFilter]="dateFilter">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
