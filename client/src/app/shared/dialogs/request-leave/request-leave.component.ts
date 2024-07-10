@@ -1,44 +1,91 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LeaveService} from "../../../services/leave.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {EventService} from "../../../services/event.service";
+import {Observable, Subscription, tap} from "rxjs";
 
 @Component({
   selector: 'app-request-leave',
   templateUrl: './request-leave.component.html',
   styleUrls: ['./request-leave.component.scss']
 })
-export class RequestLeaveComponent implements OnInit{
-
+export class RequestLeaveComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   receivedData:any;
   selectedLeave:any;
   leaveTypes:any = ["ANNUAL", "SICK", "CASUAL", "MATERNITY", "PATERNITY", "UNPAID"]
 
-  leaveForm = new FormGroup({
-    leaveType: new FormControl(null, [Validators.required]),
-    reason: new FormControl(null, [Validators.required]),
-    startDate: new FormControl(null, [Validators.required]),
-    endDate: new FormControl(null, [Validators.required])
-  })
+  leaveForm: FormGroup | any;
 
   requestedEmployee:any
+  holidaysStore:any[] = [];
+  filteredHolidays:any[] = [];
+  disabledDates: any[] = [];
 
   constructor(private multimediaService: MultimediaService,
               private dialog: MatDialog,
               private leaveService: LeaveService,
+              private eventService: EventService,
               private snackBar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ref: MatDialogRef<RequestLeaveComponent>) {
   }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.receivedData = this.data;
 
-    if (this.receivedData.data.leaveId != null){
-      this.patchValue()
+    this.initializeForm();
+
+    this.subscriptions.add(await this.loadAllHolidays().subscribe(() => {
+      this.filterHolidays();
+      this.addDisabledDates();
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  initializeForm() {
+    this.leaveForm = new FormGroup({
+      leaveType: new FormControl(null, [Validators.required]),
+      reason: new FormControl(null, [Validators.required]),
+      startDate: new FormControl(null, [Validators.required, this.dateFilter.bind(this)]),
+      endDate: new FormControl(null, [Validators.required, this.dateFilter.bind(this)])
+    });
+
+    // Re-validate the form controls after the disabled dates are set
+    this.leaveForm.controls['startDate'].updateValueAndValidity();
+    this.leaveForm.controls['endDate'].updateValueAndValidity();
+  }
+
+  // Validator
+  dateFilter(control: FormControl): { [key: string]: boolean } | null {
+    const date = control.value;
+    if (date) {
+      const time = new Date(date).getTime();
+      if (this.disabledDates.includes(time)) {
+        return { 'invalidDate': true };
+      }
     }
+    return null;
+  }
+
+  loadAllHolidays(): Observable<any> {
+    return this.eventService.getHolidays().pipe(
+      tap(data => this.holidaysStore = data)
+    );
+  }
+
+  filterHolidays(): void {
+    this.filteredHolidays = this.holidaysStore.filter((data: any) => data.meta.organizationId == this.receivedData.data.organizationId);
+  }
+
+  addDisabledDates(): void {
+    this.disabledDates = this.filteredHolidays.map((h: any) => new Date(h.start).getTime());
   }
 
   closePopup(){

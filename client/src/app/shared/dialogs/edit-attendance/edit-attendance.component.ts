@@ -2,9 +2,10 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MultimediaService} from "../../../services/multimedia.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ShiftsService} from "../../../services/shifts.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AttendanceService} from "../../../services/attendance.service";
+import {Observable, tap} from "rxjs";
+import {EventService} from "../../../services/event.service";
 
 @Component({
     selector: 'app-edit-attendance',
@@ -20,16 +21,22 @@ export class EditAttendanceComponent {
 
     attendanceForm: FormGroup | any;
 
-  weekendFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    // return day !== 0 && day !== 6; // TODO: uncomment this line to add weekends to blocklist
-    return true
-  };
+  holidaysStore:any[] = [];
+  filteredHolidays:any[] = [];
+  disabledDates: any[] = [];
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) {
+      return true;
+    }
+    const time = date.getTime();
+    return !this.disabledDates.includes(time);
+  }
 
     constructor(private multimediaService: MultimediaService,
                 private dialog: MatDialog,
                 private formBuilder: FormBuilder,
+                private eventService: EventService,
                 private attendanceService: AttendanceService,
                 private snackBar: MatSnackBar,
                 @Inject(MAT_DIALOG_DATA) public data: any,
@@ -41,9 +48,34 @@ export class EditAttendanceComponent {
 
         this.createForm();
         this.patchValue();
+
+      await this.loadAllHolidays().subscribe(() => {
+        this.filterHolidays()
+        this.addDisabledDates()
+      });
     }
 
-    createForm() {
+  loadAllHolidays(): Observable<any> {
+    return this.eventService.getHolidays().pipe(
+      tap(data => this.holidaysStore = data)
+    );
+  }
+
+  filterHolidays():any[]{
+    this.filteredHolidays = this.holidaysStore.filter((data:any) => data.meta.organizationId == this.receivedData.data.attendance.organizationId)
+
+    return this.filteredHolidays;
+  }
+
+  addDisabledDates(): void {
+    this.disabledDates = [];
+    this.filterHolidays().forEach((h:any) => {
+      this.disabledDates.push(new Date(h.start).getTime())
+    })
+  }
+
+
+  createForm() {
         this.attendanceForm = this.formBuilder.group({
             date: ['', Validators.required],
             name: ['', Validators.required],
