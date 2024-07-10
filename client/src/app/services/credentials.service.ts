@@ -14,4 +14,8 @@ export class CredentialsService {
   public getAllCredentials(): Observable<any> {
     return this.http.get(this.baseUrl+'credentials/get/all');
   }
+
+  public resetPassword(id: any): Observable<any> {
+    return this.http.put(this.baseUrl+'credentials/reset/'+id,{});
+  }
 }

@@ -3,6 +3,7 @@ package com.hris.HRIS.controller;
 import com.hris.HRIS.dto.ApiResponse;
 import com.hris.HRIS.model.CredentialsModel;
 import com.hris.HRIS.repository.CredentialsRepository;
+import com.hris.HRIS.service.SystemAutomateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class CredentialsController {
 
     @Autowired
     CredentialsRepository credentialsRepository;
+
+    @Autowired
+    SystemAutomateService systemAutomateService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveCredentials(@RequestBody CredentialsModel credentialsModel) {
@@ -72,6 +76,18 @@ public class CredentialsController {
         }
 
         ApiResponse apiResponse = new ApiResponse("Credentials updated successfully");
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/reset/{id}")
+    public ResponseEntity<ApiResponse> resetPassword(@PathVariable String id) throws Exception {
+        Optional<CredentialsModel> credentialsModelOptional = credentialsRepository.findById(id);
+        System.out.println(id);
+        if (credentialsModelOptional.isPresent()) {
+            CredentialsModel credentialsModel = credentialsModelOptional.get();
+            systemAutomateService.resetPassword(credentialsModel);
+        }
+        ApiResponse apiResponse = new ApiResponse("Credentials reset successfully");
         return ResponseEntity.ok(apiResponse);
     }
 }
