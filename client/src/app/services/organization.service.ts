@@ -15,6 +15,10 @@ export class OrganizationService {
     return this.http.get(this.baseUrl+'organization/get/id/'+id)
   }
 
+  updateOrganization(id:any, data:any): Observable<any> {
+    return this.http.put(this.baseUrl+'organization/update/id/'+id,data)
+  }
+
   updateLeaveCounts(id:any, data:any): Observable<any> {
     return this.http.put(this.baseUrl+'organization/updateLeaves/'+id,data)
   }
