@@ -23,6 +23,8 @@ import java.util.Random;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -166,16 +168,33 @@ public class OrganizationController {
     }
 
     @PutMapping("/update/id/{id}")
-    public ResponseEntity<ApiResponse> updateOrganization(@PathVariable String id, @RequestBody OrganizationModel organizationModel) {
+    public ResponseEntity<ApiResponse> updateOrganization(@PathVariable String id,
+                                                          @RequestPart(value = "photo", required = false) MultipartFile photo,
+                                                          @RequestParam("organizationName") String organizationName,
+                                                          @RequestParam("description") String description,
+                                                          @RequestParam("contactPerson") String contactPerson,
+                                                          @RequestParam("contactEmail") String contactEmail,
+                                                          @RequestParam("email") String email,
+                                                          @RequestParam("address") String address,
+                                                          @RequestParam("phone") String phone,
+                                                          @RequestParam("telephone") String telephone) throws IOException {
         Optional<OrganizationModel> organizationModelOptional = organizationRepository.findById(id);
 
         if (organizationModelOptional.isPresent()) {
             OrganizationModel existingOrganization = organizationModelOptional.get();
-            existingOrganization.setOrganizationName(organizationModel.getOrganizationName());
-            existingOrganization.setContactPerson(organizationModel.getContactPerson());
-            existingOrganization.setEmail(organizationModel.getEmail());
-            existingOrganization.setAddress(organizationModel.getAddress());
-            existingOrganization.setPhone(organizationModel.getPhone());
+
+            if (photo != null) {
+                existingOrganization.setPhoto(photo.getBytes());
+            }
+            existingOrganization.setOrganizationName(organizationName);
+            existingOrganization.setDescription(description);
+            existingOrganization.setContactPerson(contactPerson);
+            existingOrganization.setContactEmail(contactEmail);
+            existingOrganization.setEmail(email);
+            existingOrganization.setAddress(address);
+            existingOrganization.setPhone(phone);
+            existingOrganization.setTelephone(telephone);
+
             organizationRepository.save(existingOrganization);
 
             ApiResponse apiResponse = new ApiResponse("Organization updated successfully");

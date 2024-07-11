@@ -2,6 +2,130 @@
   <div class="row">
     <div class="col-12 col-md-6">
       <div class="card-2">
+        <div class="card-2-title">Organization Configurations</div>
+        <hr style="color: var(--color-primary-300)">
+        <form [formGroup]="editProfileForm">
+
+          <h6>Organization Information</h6>
+          <div class="h6-supporter"></div>
+          <div class="row my-2">
+            <div class="col-4 col-sm-3 title-label">Avatar</div>
+            <div class="col-8 col-sm-9">
+              <div class="d-flex align-items-center">
+                <div class="profile-img me-2">
+                  <img id="orgProfile" [src]="chosenPhoto==null?organization.photo?convertToSafeUrl(organization.photo):'./assets/imgs/shared/organization.svg':onFileSelected()" alt="profile image">
+                </div>
+                <div class="profile-img-setting">
+                  <span class="tag-1 d-flex"><span class="d-flex d-md-none" style="color: #c0392b">&ast;</span><span class="d-none d-md-flex">Allowed file types</span>: .jpg, .jpeg, .pjp</span>
+                  <div class="d-flex">
+                    <button class="btn-1 me-2 px-2" (click)="choosePhoto()"><mat-icon class="d-flex d-md-none">add</mat-icon><span class="d-none d-md-flex w-col">Upload Image</span></button>
+                    <button class="btn-3 px-2" (click)="removePhoto()"><mat-icon class="d-flex d-md-none">delete_sweep</mat-icon><span class="d-none d-md-flex">Remove</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Organization Name</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="orgName" placeholder="Organization Name">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Description</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <textarea type="text" class="form-control" formControlName="description" placeholder="Organization Description"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h6>Contact Information</h6>
+          <div class="h6-supporter"></div>
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Contact Person</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="contactPerson" placeholder="Contact Person">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Contact Email</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="contactEmail" placeholder="Contact Email">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Mobile Number</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="number" class="form-control" formControlName="phone" placeholder="Mobile">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Telephone Number</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="number" class="form-control" formControlName="telephone" placeholder="Telephone">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Email Address</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="email" placeholder="Email">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col-12 col-sm-3 title-label">Address</div>
+            <div class="col-12 col-sm-9">
+              <div class="row">
+                <div class="col-12">
+                  <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+        <hr style="color: var(--color-primary-300)">
+        <div class="d-flex align-items-center justify-content-end">
+          <button class="btn-3 px-3 py-2" (click)="patchValues()">Discard</button>
+          <button class="btn-1 px-3 py-2" [disabled]="editProfileForm.invalid" (click)="updateOrganization()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="card-2">
         <div class="card-2-title">Attendance & Leave Configurations</div>
         <hr style="color: var(--color-primary-300)">
         <div class="d-flex align-items-center justify-content-around my-3">
@@ -61,7 +185,6 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6"></div>
     <div class="col-12 col-md-6"></div>
     <div class="col-12 col-md-6"></div>
   </div>

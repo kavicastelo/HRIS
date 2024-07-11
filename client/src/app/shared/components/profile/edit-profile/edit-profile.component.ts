@@ -41,7 +41,8 @@ export class EditProfileComponent {
     address2: new FormControl(null),
     address3: new FormControl(null),
     email: new FormControl(null, [
-      Validators.required
+      Validators.required,
+      Validators.email
     ]),
     phone: new FormControl(null, [
       Validators.required,
