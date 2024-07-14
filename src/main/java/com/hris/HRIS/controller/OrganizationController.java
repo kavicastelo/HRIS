@@ -210,6 +210,34 @@ public class OrganizationController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/update/main/id/{id}")
+    public ResponseEntity<ApiResponse> updateMainOrganization(@PathVariable String id, @RequestBody OrganizationModel organizationModel) {
+        Optional<OrganizationModel> organizationModelOptional = organizationRepository.findById(id);
+
+        if (organizationModelOptional.isPresent()) {
+            OrganizationModel existingOrganization = organizationModelOptional.get();
+
+            existingOrganization.setOrganizationName(organizationModel.getOrganizationName());
+            existingOrganization.setDescription(organizationModel.getDescription());
+            existingOrganization.setContactPerson(organizationModel.getContactPerson());
+            existingOrganization.setContactEmail(organizationModel.getContactEmail());
+            existingOrganization.setEmail(organizationModel.getEmail());
+            existingOrganization.setAddress(organizationModel.getAddress());
+            existingOrganization.setPhone(organizationModel.getPhone());
+            existingOrganization.setTelephone(organizationModel.getTelephone());
+            existingOrganization.setContractStart(organizationModel.getContractStart());
+            existingOrganization.setContractEnd(organizationModel.getContractEnd());
+            existingOrganization.setStatus(organizationModel.getStatus());
+
+            organizationRepository.save(existingOrganization);
+
+            ApiResponse apiResponse = new ApiResponse("Organization updated successfully");
+            return ResponseEntity.ok(apiResponse);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/delete/id/{id}")
     public ResponseEntity<ApiResponse> deleteOrganization(@PathVariable String id) {
         organizationRepository.deleteById(id);
