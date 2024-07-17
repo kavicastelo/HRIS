@@ -12,7 +12,7 @@ export class SocketService {
   constructor() { }
 
   connect(): void {
-    this.socket = io('http://localhost:3269', {
+    this.socket = io('http://localhost:3000', {
       transports: ['websocket', 'polling'],
     });
 
