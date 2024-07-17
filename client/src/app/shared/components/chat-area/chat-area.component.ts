@@ -11,7 +11,7 @@ import {
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../../services/chat.service";
-import {SocketService} from "../../../services/socket.service"; // Updated import
+import {SocketService} from "../../../services/socket.service";
 import {finalize, Observable, Subject, Subscription, tap} from "rxjs";
 import {MessageModel} from "../../data-models/Message.model";
 import {EmployeesService} from "../../../services/employees.service";
@@ -30,14 +30,14 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
 
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any> | any;
 
-  employeeDataStore: any
-  chatDataStore: any
-  sender: any
-  receiver: any
-  chat: any[] = []
+  employeeDataStore: any;
+  chatDataStore: any;
+  sender: any;
+  receiver: any;
+  chat: any[] = [];
   senderId: any;
-  receiverId: any
-  chatMessages: any[] = []
+  receiverId: any;
+  chatMessages: any[] = [];
   isMessageFromSender: boolean = false;
 
   message: string = '';
@@ -61,15 +61,17 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
 
   showEmojiPicker = false;
 
-  constructor(private route: ActivatedRoute,
-              private chatService: ChatService,
-              private socketService: SocketService, // Updated constructor
-              private multimediaService: MultimediaService,
-              private cookieService: AuthService,
-              private renderer: Renderer2,
-              private storage: AngularFireStorage,
-              private employeeService: EmployeesService, private logger: NGXLogger) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private chatService: ChatService,
+    private socketService: SocketService,
+    private multimediaService: MultimediaService,
+    private cookieService: AuthService,
+    private renderer: Renderer2,
+    private storage: AngularFireStorage,
+    private employeeService: EmployeesService,
+    private logger: NGXLogger
+  ) {}
 
   async ngOnInit(): Promise<any> {
     await this.loadAllUsers().subscribe(() => {
@@ -77,15 +79,19 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
       this.loadReceiver();
     });
     this.scrollBottom();
+    this.socketService.connect();
 
-    this.socketService.connect(); // Connect to the socket
-    this.socketService.onMessage().subscribe((message: any) => {
+    // Subscribe to incoming messages
+    this.messageSubscription = this.socketService.onMessage().subscribe((message: string) => {
       this.handleIncomingMessage(message);
     });
   }
 
   ngAfterViewInit(): void {
-    // Removed old WebSocket logic
+    // Ensure connection status is logged
+    this.socketService.getConnectionStatus().subscribe((status: boolean) => {
+      console.log('WebSocket connection status:', status);
+    });
   }
 
   ngAfterViewChecked() {
@@ -96,7 +102,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe();
     }
-    this.socketService.disconnect(); // Disconnect the socket
+    this.socketService.disconnect();
   }
 
   loadAllUsers(): Observable<any> {
@@ -117,7 +123,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
           })
         }
       }
-    })
+    });
   }
 
   loadSender() {
@@ -162,13 +168,25 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
   }
 
   handleIncomingMessage(message: string): void {
-    const parsedMessage: MessageModel = JSON.parse(message);
-    console.log(message);
-    if (parsedMessage.chatId === (this.receiverId + this.senderId) || parsedMessage.chatId === (this.senderId + this.receiverId)) {
-      this.chatMessages.push(parsedMessage);
+    try {
+      const parsedMessage: MessageModel = JSON.parse(message);
+      console.log(parsedMessage);
 
-      // Optionally, you can scroll to the bottom of the chat window to show the latest message
-      this.scrollBottom();
+      if (parsedMessage && parsedMessage.chatId && this.receiverId && this.senderId) {
+        const combinedId1 = this.receiverId.toString() + this.senderId.toString();
+        const combinedId2 = this.senderId.toString() + this.receiverId.toString();
+
+        if (parsedMessage.chatId === combinedId1 || parsedMessage.chatId === combinedId2) {
+          this.chatMessages.push(parsedMessage);
+
+          // Optionally, you can scroll to the bottom of the chat window to show the latest message
+          this.scrollBottom();
+        }
+      } else {
+        console.error('Invalid message format or missing IDs:', message);
+      }
+    } catch (e) {
+      console.error('Failed to parse message as JSON:', message, e);
     }
   }
 
@@ -177,14 +195,21 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
   }
 
   sendMessage() {
-    this.socketService.sendMessage(this.messageForm.value.message);
-
     if (this.messageForm.valid) {
+      const messageContent = this.messageForm.value.message;
+      const message = {
+        userId: this.senderId,
+        chatId: this.receiverId + this.senderId,
+        content: messageContent,
+        timestamp: new Date().toISOString()
+      };
+      this.socketService.sendMessage(JSON.stringify(message));
+
       this.chatService.addMessage({
         id: null,
         userId: this.senderId,
         chatId: (this.receiverId + "") + (this.senderId + ""),
-        content: this.messageForm.value.message,
+        content: messageContent,
         status: 'sent',
         timestamp: new Date()
       }).subscribe(() => {
@@ -232,7 +257,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
     const fileRef = this.storage.ref(filePath);
     const uploadTask = this.storage.upload(filePath, file);
 
-    uploadTask.percentageChanges().subscribe((progress: any) => {
+    uploadTask.percentageChanges().subscribe((progress:any) => {
       this.uploadProgress = progress;
     });
 
@@ -245,18 +270,20 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit, Afte
   }
 
   addImageToMessage(imageUrl: string) {
-    const markdown: string = `![image](${imageUrl})`; // Markdown syntax for displaying image
-    // Assuming messageForm is your FormGroup for the message
-    this.messageForm.get('message')?.setValue(this.messageForm.get('message')?.value + markdown);
+    const markdown: string = `![alt text](${imageUrl})`;
+    const currentMessage = this.messageForm.value.message || '';
+    this.messageForm.patchValue({message: currentMessage + markdown});
     this.progressBar = false;
+  }
+
+  insertEmoji(event:any) {
+    const emoji = event.emoji.native;
+    const currentMessage = this.messageForm.value.message || '';
+    this.messageForm.patchValue({ message: currentMessage + emoji });
+    this.showEmojiPicker = false; // Close the emoji picker after selection
   }
 
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
-  }
-
-  addEmoji(event: any) {
-    const emoji = `${event.emoji.native}`;
-    this.messageForm.get('message')?.setValue(this.messageForm.get('message')?.value + emoji);
   }
 }
