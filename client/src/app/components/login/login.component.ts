@@ -86,7 +86,8 @@ export class LogInComponent implements OnInit{
             });
           }
         }, error => {
-          console.log(error)
+          console.log('User not found!');
+          return;
         })
       }
     } else {

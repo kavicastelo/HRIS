@@ -49,9 +49,11 @@ export class AppComponent implements OnInit {
         this.userId = this.cookieService.userID().toString();
         this.organizationId = this.cookieService.organization().toString();
 
-        await this.getOrganization().subscribe(()=>{
+        if (this.organizationId){
+          await this.getOrganization().subscribe(()=>{
             this.organizationName = this.organization.organizationName + " HR System"
-        });
+          });
+        }
 
         if (this.cookieService.isExists()) {
             // Establish WebSocket connection
