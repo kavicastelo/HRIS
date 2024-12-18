@@ -68,7 +68,7 @@ public class OrganizationController {
 
         EmployeeModel employeeModel = new EmployeeModel();
         employeeModel.setName(organizationModel.getContactPerson());
-        employeeModel.setEmail(organizationModel.getEmail());
+        employeeModel.setEmail(organizationModel.getContactEmail());
         employeeModel.setPhone(organizationModel.getPhone());
         employeeModel.setOrganizationId(orgModel.getId());
         employeeModel.setJobData(jobData);
@@ -109,14 +109,14 @@ public class OrganizationController {
         String encryptedPassword = encryptionService.encryptPassword(password);
         String name = employeeModel.getName().split(" ")[0];
         String para = "Thank you for choosing us as your organization's HR Information platform. We can help you to manage your organization easily and in flexible ways. You are the main administrator of your organization and start your journey with SPARKC HR Systems.\n\n" +
-                "Email: "+organizationModel.getEmail()+"\n" +
+                "Email: "+organizationModel.getContactEmail()+"\n" +
                 "Password: "+password+"\n\n" +
                 "We hope you can work with us on a long journey and for any further assistance, don't hesitate to get in touch with us at support@sparckc.com.\n\n";
         String tag = "Best Regards,\nTeam SPARKC.\n\n";
         String footer = "Powered by SparkC";
 
         CredentialsModel credentialsModel = new CredentialsModel();
-        credentialsModel.setEmail(organizationModel.getEmail());
+        credentialsModel.setEmail(organizationModel.getContactEmail());
         credentialsModel.setPassword(encryptedPassword);
         credentialsModel.setLevel("0");
         credentialsRepository.save(credentialsModel);
@@ -177,7 +177,10 @@ public class OrganizationController {
                                                           @RequestParam("email") String email,
                                                           @RequestParam("address") String address,
                                                           @RequestParam("phone") String phone,
-                                                          @RequestParam("telephone") String telephone) throws IOException {
+                                                          @RequestParam("telephone") String telephone,
+                                                          @RequestParam("contractStart") String contractStart,
+                                                          @RequestParam("contractEnd") String contractEnd,
+                                                          @RequestParam("status") String status) throws IOException {
         Optional<OrganizationModel> organizationModelOptional = organizationRepository.findById(id);
 
         if (organizationModelOptional.isPresent()) {
@@ -194,6 +197,37 @@ public class OrganizationController {
             existingOrganization.setAddress(address);
             existingOrganization.setPhone(phone);
             existingOrganization.setTelephone(telephone);
+            existingOrganization.setContractStart(contractStart);
+            existingOrganization.setContractEnd(contractEnd);
+            existingOrganization.setStatus(status);
+
+            organizationRepository.save(existingOrganization);
+
+            ApiResponse apiResponse = new ApiResponse("Organization updated successfully");
+            return ResponseEntity.ok(apiResponse);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/update/main/id/{id}")
+    public ResponseEntity<ApiResponse> updateMainOrganization(@PathVariable String id, @RequestBody OrganizationModel organizationModel) {
+        Optional<OrganizationModel> organizationModelOptional = organizationRepository.findById(id);
+
+        if (organizationModelOptional.isPresent()) {
+            OrganizationModel existingOrganization = organizationModelOptional.get();
+
+            existingOrganization.setOrganizationName(organizationModel.getOrganizationName());
+            existingOrganization.setDescription(organizationModel.getDescription());
+            existingOrganization.setContactPerson(organizationModel.getContactPerson());
+            existingOrganization.setContactEmail(organizationModel.getContactEmail());
+            existingOrganization.setEmail(organizationModel.getEmail());
+            existingOrganization.setAddress(organizationModel.getAddress());
+            existingOrganization.setPhone(organizationModel.getPhone());
+            existingOrganization.setTelephone(organizationModel.getTelephone());
+            existingOrganization.setContractStart(organizationModel.getContractStart());
+            existingOrganization.setContractEnd(organizationModel.getContractEnd());
+            existingOrganization.setStatus(organizationModel.getStatus());
 
             organizationRepository.save(existingOrganization);
 

@@ -1,35 +1,31 @@
 import { Injectable } from '@angular/core';
-import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
-import {Observable, Subject} from "rxjs";
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebSocketService {
-
-  private socket$: WebSocketSubject<any> | any;
-  private websocket: WebSocket | any;
+  private websocket: WebSocket | null = null;
   private connectionStatusSubject: Subject<boolean> = new Subject<boolean>();
   private messageSubject: Subject<any> = new Subject<any>();
-
-  constructor() { }
 
   connect(url: string): void {
     this.websocket = new WebSocket(url);
 
-    this.websocket.onmessage = (event:any) => {
-      this.messageSubject.next(event.data);
-    };
-
-    this.websocket.onopen = (event:any) => {
+    this.websocket.onopen = (event: Event) => {
       this.connectionStatusSubject.next(true);
     };
 
-    this.websocket.onclose = (event:any) => {
+    this.websocket.onmessage = (event: MessageEvent) => {
+      this.messageSubject.next(event.data);
+    };
+
+    this.websocket.onclose = (event: CloseEvent) => {
       this.connectionStatusSubject.next(false);
     };
 
-    this.websocket.onerror = (error:any) => {
+    this.websocket.onerror = (error: Event) => {
+      console.error('WebSocket error observed:', error);
       this.connectionStatusSubject.next(false);
     };
   }
@@ -44,7 +40,7 @@ export class WebSocketService {
     return this.connectionStatusSubject.asObservable();
   }
 
-  public sendMessage(message: any): void {
+  sendMessage(message: any): void {
     if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
       this.websocket.send(message);
     }

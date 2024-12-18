@@ -36,6 +36,7 @@
     "ngx-logger": "^5.0.12",
     "ngx-markdown": "^15.1.2",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.7.5",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "tslib": "^2.3.0",

@@ -49,19 +49,21 @@ export class AppComponent implements OnInit {
         this.userId = this.cookieService.userID().toString();
         this.organizationId = this.cookieService.organization().toString();
 
-        await this.getOrganization().subscribe(()=>{
+        if (this.organizationId){
+          await this.getOrganization().subscribe(()=>{
             this.organizationName = this.organization.organizationName + " HR System"
-        });
+          });
+        }
 
         if (this.cookieService.isExists()) {
             // Establish WebSocket connection
-            this.webSocketService.connect('wss://hris-prod.onrender.com/ws');
-
-            this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
-                this.logger.log('WebSocket connection status:', status);
-            }, (error: any) => {
-                this.logger.error('WebSocket connection error:', error);
-            });
+            // this.webSocketService.connect('ws://localhost:3269/ws');
+            //
+            // this.webSocketService.getConnectionStatus().subscribe((status: boolean) => {
+            //     this.logger.log('WebSocket connection status:', status);
+            // }, (error: any) => {
+            //     this.logger.error('WebSocket connection error:', error);
+            // });
 
             this.updateLastSeen();
             await this.loadAllNotifications().subscribe(() => {
